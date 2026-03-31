@@ -1,4 +1,12 @@
 #!/usr/bin/env node
+
+// [ARES LOCKDOWN]: Redirect all non-protocol noise to stderr
+const originalLog = console.log;
+console.log = (...args) => {
+  console.error("[LOG_REDIRECT]:", ...args); 
+};
+// This ensures ONLY the MCP Transport can write to process.stdout.
+
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { InitializeRequestSchema, CallToolRequestSchema, ListToolsRequestSchema } from "@modelcontextprotocol/sdk/types.js";
@@ -27,7 +35,7 @@ import { fileURLToPath } from "url";
 // Initialize server
 const server = new Server({
   name: "SWEObeyMe",
-  version: "1.0.0",
+  version: "1.0.2",
 }, {
   capabilities: { tools: {} }
 });
@@ -893,13 +901,27 @@ Reminder: You are a surgeon. Precision over speed.`
   }
 });
 
+// [STRICT TRANSPORT]: Standard Input/Output
 const transport = new StdioServerTransport();
-await server.connect(transport);
+
+// Re-check the handshake logic
+const startServer = async () => {
+  try {
+    await server.connect(transport);
+    console.error("[ARES]: Governor Online. Handshake Complete.");
+  } catch (error) {
+    console.error("[CRITICAL]: Handshake Failed:", error);
+    process.exit(1);
+  }
+};
 
 // PHASE 8: Initialize backup system
 await ensureBackupDir();
 
 log("Server started successfully.");
+
+// Start the server with strict handshake
+await startServer();
 
 // [LIFECYCLE MANAGEMENT]: Surgical Self-Termination
 const initiateShutdown = (reason) => {
