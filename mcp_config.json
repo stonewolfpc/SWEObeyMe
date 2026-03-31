@@ -1,0 +1,54 @@
+{
+  "mcpServers": {
+    "swe-automation": {
+      "command": "node",
+      "args": ["dist/index.js"],
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "NODE_ENV": "production"
+      },
+      "description": "SWE Automation MCP Server - Advanced automation capabilities for SWE-1.5 and AI models",
+      "capabilities": [
+        "project_analysis",
+        "file_operations",
+        "automated_testing",
+        "code_quality",
+        "dependency_management",
+        "debug_assistance",
+        "performance_optimization",
+        "documentation_generation",
+        "security_scanning",
+        "deployment_automation"
+      ],
+      "tools": [
+        "analyze_project_structure",
+        "smart_file_operations",
+        "automated_testing",
+        "code_quality_analysis",
+        "dependency_management",
+        "debug_assistant",
+        "performance_optimization",
+        "documentation_generator",
+        "security_scanner",
+        "deployment_automation"
+      ],
+      "settings": {
+        "backup_enabled": true,
+        "backup_directory": ".swe-backups",
+        "max_backup_age": 604800000,
+        "cache_enabled": true,
+        "log_level": "info",
+        "timeout_ms": 30000
+      },
+      "permissions": {
+        "read": ["**/*"],
+        "write": ["**/*"],
+        "execute": ["npm", "node", "python", "java", "mvn", "cargo", "pip"],
+        "network": ["https://registry.npmjs.org", "https://pypi.org", "https://api.github.com"]
+      },
+      "version": "1.0.0",
+      "author": "SWE Automation Team",
+      "license": "MIT"
+    }
+  }
+}

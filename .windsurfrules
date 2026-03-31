@@ -1,0 +1,58 @@
+# SWEObeyMe ARCHITECTURAL DIRECTIVE
+
+## Core Principles
+- ALL EDITS ARE HIGH-STAKES SURGERY.
+- Every action must be planned, validated, and executed with precision.
+
+## Rule 1: Repair, Never Delete
+- Never delete a function to fix an error. Repair it.
+- Deletion is only allowed after verification that the replacement is superior.
+
+## Rule 2: The 700-Line Limit
+- Maximum line count per file is 700 lines.
+- If 650 lines is hit, trigger a Split Plan immediately.
+- Prevention is better than cure - plan splits before they become necessary.
+
+## Rule 3: Split Workflow (Mandatory for files >650 lines)
+1. Copy chunk to new file.
+2. Verify line counts match.
+3. Delete old chunk from source.
+4. Update all imports/references.
+5. Test both files independently.
+
+## Rule 4: Documentation for Non-Coders
+- Every function, class, and module must be documented for a "Non-Coder" to understand.
+- Comments explain WHY, not just WHAT.
+- Complex logic requires step-by-step explanation.
+
+## Rule 5: Zero Digital Debt
+- No warnings allowed. Every warning is a fail.
+- No TODO comments without issue tracking.
+- No dead code. No commented-out blocks.
+- No console.log in production (use console.error for logs).
+
+## Rule 6: Surgical Planning Protocol
+- REQUIRED: Use `obey_surgical_plan` tool before ANY edit.
+- Define: target file, current line count, estimated additions, action type.
+- If projected total >700 lines, REJECTED - execute Split Protocol instead.
+
+## Rule 7: MCP Server Protocol
+- All stdout must be valid MCP JSON-RPC.
+- Use console.error for all logging (never console.log).
+- Never block the constructor with async operations.
+- Lazy-load utilities only when tools are called.
+
+## Rule 8: Testing Discipline
+- Test after every meaningful change.
+- Green dot in MCP panel is the minimum bar.
+- If server fails, diagnose before adding more code.
+
+## Rule 9: File Organization
+- Follow project directory structure strictly.
+- 500 line limit per file (soft limit at 450 for early warning).
+- Enhanced, easy-to-read documentation in every major function.
+
+## Rule 10: Cascade Memory System
+- Use mcp1_create_entities for project context.
+- Use mcp1_create_relations for architectural relationships.
+- Use create_memory for user preferences and project state.
