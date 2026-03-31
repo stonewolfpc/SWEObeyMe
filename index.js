@@ -1,11 +1,14 @@
 #!/usr/bin/env node
 
-// [ARES LOCKDOWN]: Redirect all non-protocol noise to stderr
+// [LOCKDOWN]: Ensure NOTHING hits stdout except the MCP Protocol
 const originalLog = console.log;
 console.log = (...args) => {
-  console.error("[LOG_REDIRECT]:", ...args); 
+  // Redirects all standard logs to the error channel (safe for Windsurf)
+  process.stderr.write(args.join(' ') + '\n');
 };
-// This ensures ONLY the MCP Transport can write to process.stdout.
+
+// Also silence the Audit/ARES messages specifically
+const auditLog = (msg) => process.stderr.write(`[AUDIT]: ${msg}\n`);
 
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
@@ -42,7 +45,7 @@ const server = new Server({
 
 const MAX_LINES = 700;
 const WARNING_THRESHOLD = 600;
-const log = (msg) => console.error(`[SWEObeyMe-Audit]: ${msg}`);
+const log = (msg) => process.stderr.write(`[SWEObeyMe-Audit]: ${msg}\n`);
 
 // Backup Directory Setup
 const BACKUP_DIR = path.join(process.cwd(), ".sweobeyme-backups");
@@ -53,7 +56,7 @@ async function ensureBackupDir() {
     await fs.mkdir(BACKUP_DIR, { recursive: true });
     log(`Backup directory ready: ${BACKUP_DIR}`);
   } catch (error) {
-    console.error(`[CRITICAL] Failed to create backup directory: ${error.message}`);
+    process.stderr.write(`[CRITICAL] Failed to create backup directory: ${error.message}\n`);
   }
 }
 
@@ -74,7 +77,7 @@ async function createBackup(filePath) {
     log(`Backup created: ${backupFileName}`);
     return backupPath;
   } catch (error) {
-    console.error(`[BACKUP FAILED] ${error.message}`);
+    process.stderr.write(`[BACKUP FAILED] ${error.message}\n`);
     return null;
   }
 }
@@ -908,9 +911,9 @@ const transport = new StdioServerTransport();
 const startServer = async () => {
   try {
     await server.connect(transport);
-    console.error("[ARES]: Governor Online. Handshake Complete.");
+    process.stderr.write("[ARES]: Governor Online. Handshake Complete.\n");
   } catch (error) {
-    console.error("[CRITICAL]: Handshake Failed:", error);
+    process.stderr.write(`[CRITICAL]: Handshake Failed: ${error}\n`);
     process.exit(1);
   }
 };
@@ -925,48 +928,49 @@ await startServer();
 
 // [LIFECYCLE MANAGEMENT]: Surgical Self-Termination
 const initiateShutdown = (reason) => {
-  console.error(`[SHUTDOWN] ${reason}. Cleaning up SWEObeyMe...`);
-  // Add any cleanup for Project ARES state files here
+  process.stderr.write(`[SHUTDOWN] ${reason}. Cleaning up...\n`);
   process.exit(0);
 };
 
+// Use the global process object explicitly
+global.process.on("SIGINT", () => initiateShutdown("SIGINT"));
+global.process.on("SIGTERM", () => initiateShutdown("SIGTERM"));
+
+// Listen for pipe closure (The Windsurf "Reload" fix)
+global.process.stdin.on("close", () => initiateShutdown("Stdin Closed"));
+
 // [DISTRIBUTION PATCH]: Active Parent Monitoring
 // Stores/VSIX often mask stdin 'close' events.
-const parentPid = process.ppid;
+const parentPid = global.process.ppid;
 
 setInterval(() => {
   try {
     // Check if the parent process still exists
-    process.kill(parentPid, 0); 
+    global.process.kill(parentPid, 0); 
   } catch (e) {
     // Parent is gone (or we lost permission to see it), time to exit.
     initiateShutdown("Parent Process (IDE) not found. Store-Life Protocol triggered.");
   }
 }, 5000); // Check every 5 seconds
 
-// 1. Detect Pipe Closure (Crucial for Windsurf reloads)
-process.stdin.on("close", () => {
-  initiateShutdown("IDE Disconnected (Stdin Closed)");
-});
-
 // 2. Handle "End of File" on stdin (Standard MCP exit)
-process.stdin.on("end", () => {
+global.process.stdin.on("end", () => {
   initiateShutdown("IDE sent EOF");
 });
 
 // [ZOMBIE PREVENTION]: Force absolute termination on any pipe error
-process.stdout.on('error', (err) => {
+global.process.stdout.on('error', (err) => {
   if (err.code === 'EPIPE') initiateShutdown("Stdout Pipe Broken (EPIPE)");
 });
 
 // 3. Handle standard Windows termination signals
-process.on("SIGINT", () => initiateShutdown("SIGINT received"));
-process.on("SIGTERM", () => initiateShutdown("SIGTERM received"));
+global.process.on("SIGINT", () => initiateShutdown("SIGINT received"));
+global.process.on("SIGTERM", () => initiateShutdown("SIGTERM received"));
 
 // 4. Catch Unhandled Errors to prevent silent zombie hangs
-process.on("uncaughtException", (err) => {
-  console.error(`[CRITICAL ERROR] ${err.message}`);
+global.process.on("uncaughtException", (err) => {
+  process.stderr.write(`[CRITICAL ERROR] ${err.message}\n`);
   initiateShutdown("Uncaught Exception");
-})();
+});
 
 })(); // Close async IIFE
