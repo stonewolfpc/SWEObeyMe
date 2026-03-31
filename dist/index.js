@@ -5867,8 +5867,8 @@ console.log = (...args) => {
 
 // Initialize server
 const server = new Server({
-  name: "SWEObeyMe",
-  version: "1.0.2",
+  name: "swe-obey-me",
+  version: "1.0.3",
 }, {
   capabilities: { tools: {} }
 });

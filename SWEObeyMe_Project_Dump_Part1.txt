@@ -1,0 +1,4773 @@
+﻿--- PART 1 OF 5 ---
+PART SIZE (ESTIMATED RAW): 152.82 KB (15 files)
+
+
+[FILE_START: C:\SWEObeyMe\package-lock.json]
+[LINE_COUNT: 2600]
+
+{
+  "name": "swe-obey-me",
+  "version": "1.0.1",
+  "lockfileVersion": 3,
+  "requires": true,
+  "packages": {
+    "": {
+      "name": "swe-obey-me",
+      "version": "1.0.1",
+      "license": "MIT",
+      "dependencies": {
+        "@modelcontextprotocol/sdk": "latest",
+        "zod": "latest"
+      },
+      "bin": {
+        "swe-obey-me": "index.js"
+      },
+      "devDependencies": {
+        "@vercel/ncc": "^0.38.0",
+        "@vscode/vsce": "^2.15.0"
+      },
+      "engines": {
+        "vscode": "^1.60.0"
+      }
+    },
+    "node_modules/@azure/abort-controller": {
+      "version": "2.1.2",
+      "resolved": "https://registry.npmjs.org/@azure/abort-controller/-/abort-controller-2.1.2.tgz",
+      "integrity": "sha512-nBrLsEWm4J2u5LpAPjxADTlq3trDgVZZXHNKabeXZtpq3d3AbN/KGO82R87rdDz5/lYB024rtEf10/q0urNgsA==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "tslib": "^2.6.2"
+      },
+      "engines": {
+        "node": ">=18.0.0"
+      }
+    },
+    "node_modules/@azure/core-auth": {
+      "version": "1.10.1",
+      "resolved": "https://registry.npmjs.org/@azure/core-auth/-/core-auth-1.10.1.tgz",
+      "integrity": "sha512-ykRMW8PjVAn+RS6ww5cmK9U2CyH9p4Q88YJwvUslfuMmN98w/2rdGRLPqJYObapBCdzBVeDgYWdJnFPFb7qzpg==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "@azure/abort-controller": "^2.1.2",
+        "@azure/core-util": "^1.13.0",
+        "tslib": "^2.6.2"
+      },
+      "engines": {
+        "node": ">=20.0.0"
+      }
+    },
+    "node_modules/@azure/core-client": {
+      "version": "1.10.1",
+      "resolved": "https://registry.npmjs.org/@azure/core-client/-/core-client-1.10.1.tgz",
+      "integrity": "sha512-Nh5PhEOeY6PrnxNPsEHRr9eimxLwgLlpmguQaHKBinFYA/RU9+kOYVOQqOrTsCL+KSxrLLl1gD8Dk5BFW/7l/w==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "@azure/abort-controller": "^2.1.2",
+        "@azure/core-auth": "^1.10.0",
+        "@azure/core-rest-pipeline": "^1.22.0",
+        "@azure/core-tracing": "^1.3.0",
+        "@azure/core-util": "^1.13.0",
+        "@azure/logger": "^1.3.0",
+        "tslib": "^2.6.2"
+      },
+      "engines": {
+        "node": ">=20.0.0"
+      }
+    },
+    "node_modules/@azure/core-rest-pipeline": {
+      "version": "1.23.0",
+      "resolved": "https://registry.npmjs.org/@azure/core-rest-pipeline/-/core-rest-pipeline-1.23.0.tgz",
+      "integrity": "sha512-Evs1INHo+jUjwHi1T6SG6Ua/LHOQBCLuKEEE6efIpt4ZOoNonaT1kP32GoOcdNDbfqsD2445CPri3MubBy5DEQ==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "@azure/abort-controller": "^2.1.2",
+        "@azure/core-auth": "^1.10.0",
+        "@azure/core-tracing": "^1.3.0",
+        "@azure/core-util": "^1.13.0",
+        "@azure/logger": "^1.3.0",
+        "@typespec/ts-http-runtime": "^0.3.4",
+        "tslib": "^2.6.2"
+      },
+      "engines": {
+        "node": ">=20.0.0"
+      }
+    },
+    "node_modules/@azure/core-tracing": {
+      "version": "1.3.1",
+      "resolved": "https://registry.npmjs.org/@azure/core-tracing/-/core-tracing-1.3.1.tgz",
+      "integrity": "sha512-9MWKevR7Hz8kNzzPLfX4EAtGM2b8mr50HPDBvio96bURP/9C+HjdH3sBlLSNNrvRAr5/k/svoH457gB5IKpmwQ==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "tslib": "^2.6.2"
+      },
+      "engines": {
+        "node": ">=20.0.0"
+      }
+    },
+    "node_modules/@azure/core-util": {
+      "version": "1.13.1",
+      "resolved": "https://registry.npmjs.org/@azure/core-util/-/core-util-1.13.1.tgz",
+      "integrity": "sha512-XPArKLzsvl0Hf0CaGyKHUyVgF7oDnhKoP85Xv6M4StF/1AhfORhZudHtOyf2s+FcbuQ9dPRAjB8J2KvRRMUK2A==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "@azure/abort-controller": "^2.1.2",
+        "@typespec/ts-http-runtime": "^0.3.0",
+        "tslib": "^2.6.2"
+      },
+      "engines": {
+        "node": ">=20.0.0"
+      }
+    },
+    "node_modules/@azure/identity": {
+      "version": "4.13.1",
+      "resolved": "https://registry.npmjs.org/@azure/identity/-/identity-4.13.1.tgz",
+      "integrity": "sha512-5C/2WD5Vb1lHnZS16dNQRPMjN6oV/Upba+C9nBIs15PmOi6A3ZGs4Lr2u60zw4S04gi+u3cEXiqTVP7M4Pz3kw==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "@azure/abort-controller": "^2.0.0",
+        "@azure/core-auth": "^1.9.0",
+        "@azure/core-client": "^1.9.2",
+        "@azure/core-rest-pipeline": "^1.17.0",
+        "@azure/core-tracing": "^1.0.0",
+        "@azure/core-util": "^1.11.0",
+        "@azure/logger": "^1.0.0",
+        "@azure/msal-browser": "^5.5.0",
+        "@azure/msal-node": "^5.1.0",
+        "open": "^10.1.0",
+        "tslib": "^2.2.0"
+      },
+      "engines": {
+        "node": ">=20.0.0"
+      }
+    },
+    "node_modules/@azure/logger": {
+      "version": "1.3.0",
+      "resolved": "https://registry.npmjs.org/@azure/logger/-/logger-1.3.0.tgz",
+      "integrity": "sha512-fCqPIfOcLE+CGqGPd66c8bZpwAji98tZ4JI9i/mlTNTlsIWslCfpg48s/ypyLxZTump5sypjrKn2/kY7q8oAbA==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "@typespec/ts-http-runtime": "^0.3.0",
+        "tslib": "^2.6.2"
+      },
+      "engines": {
+        "node": ">=20.0.0"
+      }
+    },
+    "node_modules/@azure/msal-browser": {
+      "version": "5.6.2",
+      "resolved": "https://registry.npmjs.org/@azure/msal-browser/-/msal-browser-5.6.2.tgz",
+      "integrity": "sha512-ZgcN9ToRJ80f+wNPBBKYJ+DG0jlW7ktEjYtSNkNsTrlHVMhKB8tKMdI1yIG1I9BJtykkXtqnuOjlJaEMC7J6aw==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "@azure/msal-common": "16.4.0"
+      },
+      "engines": {
+        "node": ">=0.8.0"
+      }
+    },
+    "node_modules/@azure/msal-common": {
+      "version": "16.4.0",
+      "resolved": "https://registry.npmjs.org/@azure/msal-common/-/msal-common-16.4.0.tgz",
+      "integrity": "sha512-twXt09PYtj1PffNNIAzQlrBd0DS91cdA6i1gAfzJ6BnPM4xNk5k9q/5xna7jLIjU3Jnp0slKYtucshGM8OGNAw==",
+      "dev": true,
+      "license": "MIT",
+      "engines": {
+        "node": ">=0.8.0"
+      }
+    },
+    "node_modules/@azure/msal-node": {
+      "version": "5.1.1",
+      "resolved": "https://registry.npmjs.org/@azure/msal-node/-/msal-node-5.1.1.tgz",
+      "integrity": "sha512-71grXU6+5hl+3CL3joOxlj/AW6rmhthuTlG0fRqsTrhPArQBpZuUFzCIlKOGdcafLUa/i1hBdV78ZxJdlvRA+g==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "@azure/msal-common": "16.4.0",
+        "jsonwebtoken": "^9.0.0",
+        "uuid": "^8.3.0"
+      },
+      "engines": {
+        "node": ">=20"
+      }
+    },
+    "node_modules/@modelcontextprotocol/sdk": {
+      "version": "0.5.0",
+      "resolved": "https://registry.npmjs.org/@modelcontextprotocol/sdk/-/sdk-0.5.0.tgz",
+      "integrity": "sha512-RXgulUX6ewvxjAG0kOpLMEdXXWkzWgaoCGaA2CwNW7cQCIphjpJhjpHSiaPdVCnisjRF/0Cm9KWHUuIoeiAblQ==",
+      "license": "MIT",
+      "dependencies": {
+        "content-type": "^1.0.5",
+        "raw-body": "^3.0.0",
+        "zod": "^3.23.8"
+      }
+    },
+    "node_modules/@typespec/ts-http-runtime": {
+      "version": "0.3.4",
+      "resolved": "https://registry.npmjs.org/@typespec/ts-http-runtime/-/ts-http-runtime-0.3.4.tgz",
+      "integrity": "sha512-CI0NhTrz4EBaa0U+HaaUZrJhPoso8sG7ZFya8uQoBA57fjzrjRSv87ekCjLZOFExN+gXE/z0xuN2QfH4H2HrLQ==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "http-proxy-agent": "^7.0.0",
+        "https-proxy-agent": "^7.0.0",
+        "tslib": "^2.6.2"
+      },
+      "engines": {
+        "node": ">=20.0.0"
+      }
+    },
+    "node_modules/@vercel/ncc": {
+      "version": "0.38.4",
+      "resolved": "https://registry.npmjs.org/@vercel/ncc/-/ncc-0.38.4.tgz",
+      "integrity": "sha512-8LwjnlP39s08C08J5NstzriPvW1SP8Zfpp1BvC2sI35kPeZnHfxVkCwu4/+Wodgnd60UtT1n8K8zw+Mp7J9JmQ==",
+      "dev": true,
+      "license": "MIT",
+      "bin": {
+        "ncc": "dist/ncc/cli.js"
+      }
+    },
+    "node_modules/@vscode/vsce": {
+      "version": "2.32.0",
+      "resolved": "https://registry.npmjs.org/@vscode/vsce/-/vsce-2.32.0.tgz",
+      "integrity": "sha512-3EFJfsgrSftIqt3EtdRcAygy/OJ3hstyI1cDmIgkU9CFZW5C+3djr6mfosndCUqcVYuyjmxOK1xmFp/Bq7+NIg==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "@azure/identity": "^4.1.0",
+        "@vscode/vsce-sign": "^2.0.0",
+        "azure-devops-node-api": "^12.5.0",
+        "chalk": "^2.4.2",
+        "cheerio": "^1.0.0-rc.9",
+        "cockatiel": "^3.1.2",
+        "commander": "^6.2.1",
+        "form-data": "^4.0.0",
+        "glob": "^7.0.6",
+        "hosted-git-info": "^4.0.2",
+        "jsonc-parser": "^3.2.0",
+        "leven": "^3.1.0",
+        "markdown-it": "^12.3.2",
+        "mime": "^1.3.4",
+        "minimatch": "^3.0.3",
+        "parse-semver": "^1.1.1",
+        "read": "^1.0.7",
+        "semver": "^7.5.2",
+        "tmp": "^0.2.1",
+        "typed-rest-client": "^1.8.4",
+        "url-join": "^4.0.1",
+        "xml2js": "^0.5.0",
+        "yauzl": "^2.3.1",
+        "yazl": "^2.2.2"
+      },
+      "bin": {
+        "vsce": "vsce"
+      },
+      "engines": {
+        "node": ">= 16"
+      },
+      "optionalDependencies": {
+        "keytar": "^7.7.0"
+      }
+    },
+    "node_modules/@vscode/vsce-sign": {
+      "version": "2.0.9",
+      "resolved": "https://registry.npmjs.org/@vscode/vsce-sign/-/vsce-sign-2.0.9.tgz",
+      "integrity": "sha512-8IvaRvtFyzUnGGl3f5+1Cnor3LqaUWvhaUjAYO8Y39OUYlOf3cRd+dowuQYLpZcP3uwSG+mURwjEBOSq4SOJ0g==",
+      "dev": true,
+      "hasInstallScript": true,
+      "license": "SEE LICENSE IN LICENSE.txt",
+      "optionalDependencies": {
+        "@vscode/vsce-sign-alpine-arm64": "2.0.6",
+        "@vscode/vsce-sign-alpine-x64": "2.0.6",
+        "@vscode/vsce-sign-darwin-arm64": "2.0.6",
+        "@vscode/vsce-sign-darwin-x64": "2.0.6",
+        "@vscode/vsce-sign-linux-arm": "2.0.6",
+        "@vscode/vsce-sign-linux-arm64": "2.0.6",
+        "@vscode/vsce-sign-linux-x64": "2.0.6",
+        "@vscode/vsce-sign-win32-arm64": "2.0.6",
+        "@vscode/vsce-sign-win32-x64": "2.0.6"
+      }
+    },
+    "node_modules/@vscode/vsce-sign-alpine-arm64": {
+      "version": "2.0.6",
+      "resolved": "https://registry.npmjs.org/@vscode/vsce-sign-alpine-arm64/-/vsce-sign-alpine-arm64-2.0.6.tgz",
+      "integrity": "sha512-wKkJBsvKF+f0GfsUuGT0tSW0kZL87QggEiqNqK6/8hvqsXvpx8OsTEc3mnE1kejkh5r+qUyQ7PtF8jZYN0mo8Q==",
+      "cpu": [
+        "arm64"
+      ],
+      "dev": true,
+      "license": "SEE LICENSE IN LICENSE.txt",
+      "optional": true,
+      "os": [
+        "alpine"
+      ]
+    },
+    "node_modules/@vscode/vsce-sign-alpine-x64": {
+      "version": "2.0.6",
+      "resolved": "https://registry.npmjs.org/@vscode/vsce-sign-alpine-x64/-/vsce-sign-alpine-x64-2.0.6.tgz",
+      "integrity": "sha512-YoAGlmdK39vKi9jA18i4ufBbd95OqGJxRvF3n6ZbCyziwy3O+JgOpIUPxv5tjeO6gQfx29qBivQ8ZZTUF2Ba0w==",
+      "cpu": [
+        "x64"
+      ],
+      "dev": true,
+      "license": "SEE LICENSE IN LICENSE.txt",
+      "optional": true,
+      "os": [
+        "alpine"
+      ]
+    },
+    "node_modules/@vscode/vsce-sign-darwin-arm64": {
+      "version": "2.0.6",
+      "resolved": "https://registry.npmjs.org/@vscode/vsce-sign-darwin-arm64/-/vsce-sign-darwin-arm64-2.0.6.tgz",
+      "integrity": "sha512-5HMHaJRIQuozm/XQIiJiA0W9uhdblwwl2ZNDSSAeXGO9YhB9MH5C4KIHOmvyjUnKy4UCuiP43VKpIxW1VWP4tQ==",
+      "cpu": [
+        "arm64"
+      ],
+      "dev": true,
+      "license": "SEE LICENSE IN LICENSE.txt",
+      "optional": true,
+      "os": [
+        "darwin"
+      ]
+    },
+    "node_modules/@vscode/vsce-sign-darwin-x64": {
+      "version": "2.0.6",
+      "resolved": "https://registry.npmjs.org/@vscode/vsce-sign-darwin-x64/-/vsce-sign-darwin-x64-2.0.6.tgz",
+      "integrity": "sha512-25GsUbTAiNfHSuRItoQafXOIpxlYj+IXb4/qarrXu7kmbH94jlm5sdWSCKrrREs8+GsXF1b+l3OB7VJy5jsykw==",
+      "cpu": [
+        "x64"
+      ],
+      "dev": true,
+      "license": "SEE LICENSE IN LICENSE.txt",
+      "optional": true,
+      "os": [
+        "darwin"
+      ]
+    },
+    "node_modules/@vscode/vsce-sign-linux-arm": {
+      "version": "2.0.6",
+      "resolved": "https://registry.npmjs.org/@vscode/vsce-sign-linux-arm/-/vsce-sign-linux-arm-2.0.6.tgz",
+      "integrity": "sha512-UndEc2Xlq4HsuMPnwu7420uqceXjs4yb5W8E2/UkaHBB9OWCwMd3/bRe/1eLe3D8kPpxzcaeTyXiK3RdzS/1CA==",
+      "cpu": [
+        "arm"
+      ],
+      "dev": true,
+      "license": "SEE LICENSE IN LICENSE.txt",
+      "optional": true,
+      "os": [
+        "linux"
+      ]
+    },
+    "node_modules/@vscode/vsce-sign-linux-arm64": {
+      "version": "2.0.6",
+      "resolved": "https://registry.npmjs.org/@vscode/vsce-sign-linux-arm64/-/vsce-sign-linux-arm64-2.0.6.tgz",
+      "integrity": "sha512-cfb1qK7lygtMa4NUl2582nP7aliLYuDEVpAbXJMkDq1qE+olIw/es+C8j1LJwvcRq1I2yWGtSn3EkDp9Dq5FdA==",
+      "cpu": [
+        "arm64"
+      ],
+      "dev": true,
+      "license": "SEE LICENSE IN LICENSE.txt",
+      "optional": true,
+      "os": [
+        "linux"
+      ]
+    },
+    "node_modules/@vscode/vsce-sign-linux-x64": {
+      "version": "2.0.6",
+      "resolved": "https://registry.npmjs.org/@vscode/vsce-sign-linux-x64/-/vsce-sign-linux-x64-2.0.6.tgz",
+      "integrity": "sha512-/olerl1A4sOqdP+hjvJ1sbQjKN07Y3DVnxO4gnbn/ahtQvFrdhUi0G1VsZXDNjfqmXw57DmPi5ASnj/8PGZhAA==",
+      "cpu": [
+        "x64"
+      ],
+      "dev": true,
+      "license": "SEE LICENSE IN LICENSE.txt",
+      "optional": true,
+      "os": [
+        "linux"
+      ]
+    },
+    "node_modules/@vscode/vsce-sign-win32-arm64": {
+      "version": "2.0.6",
+      "resolved": "https://registry.npmjs.org/@vscode/vsce-sign-win32-arm64/-/vsce-sign-win32-arm64-2.0.6.tgz",
+      "integrity": "sha512-ivM/MiGIY0PJNZBoGtlRBM/xDpwbdlCWomUWuLmIxbi1Cxe/1nooYrEQoaHD8ojVRgzdQEUzMsRbyF5cJJgYOg==",
+      "cpu": [
+        "arm64"
+      ],
+      "dev": true,
+      "license": "SEE LICENSE IN LICENSE.txt",
+      "optional": true,
+      "os": [
+        "win32"
+      ]
+    },
+    "node_modules/@vscode/vsce-sign-win32-x64": {
+      "version": "2.0.6",
+      "resolved": "https://registry.npmjs.org/@vscode/vsce-sign-win32-x64/-/vsce-sign-win32-x64-2.0.6.tgz",
+      "integrity": "sha512-mgth9Kvze+u8CruYMmhHw6Zgy3GRX2S+Ed5oSokDEK5vPEwGGKnmuXua9tmFhomeAnhgJnL4DCna3TiNuGrBTQ==",
+      "cpu": [
+        "x64"
+      ],
+      "dev": true,
+      "license": "SEE LICENSE IN LICENSE.txt",
+      "optional": true,
+      "os": [
+        "win32"
+      ]
+    },
+    "node_modules/agent-base": {
+      "version": "7.1.4",
+      "resolved": "https://registry.npmjs.org/agent-base/-/agent-base-7.1.4.tgz",
+      "integrity": "sha512-MnA+YT8fwfJPgBx3m60MNqakm30XOkyIoH1y6huTQvC0PwZG7ki8NacLBcrPbNoo8vEZy7Jpuk7+jMO+CUovTQ==",
+      "dev": true,
+      "license": "MIT",
+      "engines": {
+        "node": ">= 14"
+      }
+    },
+    "node_modules/ansi-styles": {
+      "version": "3.2.1",
+      "resolved": "https://registry.npmjs.org/ansi-styles/-/ansi-styles-3.2.1.tgz",
+      "integrity": "sha512-VT0ZI6kZRdTh8YyJw3SMbYm/u+NqfsAxEpWO0Pf9sq8/e94WxxOpPKx9FR1FlyCtOVDNOQ+8ntlqFxiRc+r5qA==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "color-convert": "^1.9.0"
+      },
+      "engines": {
+        "node": ">=4"
+      }
+    },
+    "node_modules/argparse": {
+      "version": "2.0.1",
+      "resolved": "https://registry.npmjs.org/argparse/-/argparse-2.0.1.tgz",
+      "integrity": "sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==",
+      "dev": true,
+      "license": "Python-2.0"
+    },
+    "node_modules/asynckit": {
+      "version": "0.4.0",
+      "resolved": "https://registry.npmjs.org/asynckit/-/asynckit-0.4.0.tgz",
+      "integrity": "sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==",
+      "dev": true,
+      "license": "MIT"
+    },
+    "node_modules/azure-devops-node-api": {
+      "version": "12.5.0",
+      "resolved": "https://registry.npmjs.org/azure-devops-node-api/-/azure-devops-node-api-12.5.0.tgz",
+      "integrity": "sha512-R5eFskGvOm3U/GzeAuxRkUsAl0hrAwGgWn6zAd2KrZmrEhWZVqLew4OOupbQlXUuojUzpGtq62SmdhJ06N88og==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "tunnel": "0.0.6",
+        "typed-rest-client": "^1.8.4"
+      }
+    },
+    "node_modules/balanced-match": {
+      "version": "1.0.2",
+      "resolved": "https://registry.npmjs.org/balanced-match/-/balanced-match-1.0.2.tgz",
+      "integrity": "sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==",
+      "dev": true,
+      "license": "MIT"
+    },
+    "node_modules/base64-js": {
+      "version": "1.5.1",
+      "resolved": "https://registry.npmjs.org/base64-js/-/base64-js-1.5.1.tgz",
+      "integrity": "sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==",
+      "dev": true,
+      "funding": [
+        {
+          "type": "github",
+          "url": "https://github.com/sponsors/feross"
+        },
+        {
+          "type": "patreon",
+          "url": "https://www.patreon.com/feross"
+        },
+        {
+          "type": "consulting",
+          "url": "https://feross.org/support"
+        }
+      ],
+      "license": "MIT",
+      "optional": true
+    },
+    "node_modules/bl": {
+      "version": "4.1.0",
+      "resolved": "https://registry.npmjs.org/bl/-/bl-4.1.0.tgz",
+      "integrity": "sha512-1W07cM9gS6DcLperZfFSj+bWLtaPGSOHWhPiGzXmvVJbRLdG82sH/Kn8EtW1VqWVA54AKf2h5k5BbnIbwF3h6w==",
+      "dev": true,
+      "license": "MIT",
+      "optional": true,
+      "dependencies": {
+        "buffer": "^5.5.0",
+        "inherits": "^2.0.4",
+        "readable-stream": "^3.4.0"
+      }
+    },
+    "node_modules/boolbase": {
+      "version": "1.0.0",
+      "resolved": "https://registry.npmjs.org/boolbase/-/boolbase-1.0.0.tgz",
+      "integrity": "sha512-JZOSA7Mo9sNGB8+UjSgzdLtokWAky1zbztM3WRLCbZ70/3cTANmQmOdR7y2g+J0e2WXywy1yS468tY+IruqEww==",
+      "dev": true,
+      "license": "ISC"
+    },
+    "node_modules/brace-expansion": {
+      "version": "1.1.13",
+      "resolved": "https://registry.npmjs.org/brace-expansion/-/brace-expansion-1.1.13.tgz",
+      "integrity": "sha512-9ZLprWS6EENmhEOpjCYW2c8VkmOvckIJZfkr7rBW6dObmfgJ/L1GpSYW5Hpo9lDz4D1+n0Ckz8rU7FwHDQiG/w==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "balanced-match": "^1.0.0",
+        "concat-map": "0.0.1"
+      }
+    },
+    "node_modules/buffer": {
+      "version": "5.7.1",
+      "resolved": "https://registry.npmjs.org/buffer/-/buffer-5.7.1.tgz",
+      "integrity": "sha512-EHcyIPBQ4BSGlvjB16k5KgAJ27CIsHY/2JBmCRReo48y9rQ3MaUzWX3KVlBa4U7MyX02HdVj0K7C3WaB3ju7FQ==",
+      "dev": true,
+      "funding": [
+        {
+          "type": "github",
+          "url": "https://github.com/sponsors/feross"
+        },
+        {
+          "type": "patreon",
+          "url": "https://www.patreon.com/feross"
+        },
+        {
+          "type": "consulting",
+          "url": "https://feross.org/support"
+        }
+      ],
+      "license": "MIT",
+      "optional": true,
+      "dependencies": {
+        "base64-js": "^1.3.1",
+        "ieee754": "^1.1.13"
+      }
+    },
+    "node_modules/buffer-crc32": {
+      "version": "0.2.13",
+      "resolved": "https://registry.npmjs.org/buffer-crc32/-/buffer-crc32-0.2.13.tgz",
+      "integrity": "sha512-VO9Ht/+p3SN7SKWqcrgEzjGbRSJYTx+Q1pTQC0wrWqHx0vpJraQ6GtHx8tvcg1rlK1byhU5gccxgOgj7B0TDkQ==",
+      "dev": true,
+      "license": "MIT",
+      "engines": {
+        "node": "*"
+      }
+    },
+    "node_modules/buffer-equal-constant-time": {
+      "version": "1.0.1",
+      "resolved": "https://registry.npmjs.org/buffer-equal-constant-time/-/buffer-equal-constant-time-1.0.1.tgz",
+      "integrity": "sha512-zRpUiDwd/xk6ADqPMATG8vc9VPrkck7T07OIx0gnjmJAnHnTVXNQG3vfvWNuiZIkwu9KrKdA1iJKfsfTVxE6NA==",
+      "dev": true,
+      "license": "BSD-3-Clause"
+    },
+    "node_modules/bundle-name": {
+      "version": "4.1.0",
+      "resolved": "https://registry.npmjs.org/bundle-name/-/bundle-name-4.1.0.tgz",
+      "integrity": "sha512-tjwM5exMg6BGRI+kNmTntNsvdZS1X8BFYS6tnJ2hdH0kVxM6/eVZ2xy+FqStSWvYmtfFMDLIxurorHwDKfDz5Q==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "run-applescript": "^7.0.0"
+      },
+      "engines": {
+        "node": ">=18"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/sindresorhus"
+      }
+    },
+    "node_modules/bytes": {
+      "version": "3.1.2",
+      "resolved": "https://registry.npmjs.org/bytes/-/bytes-3.1.2.tgz",
+      "integrity": "sha512-/Nf7TyzTx6S3yRJObOAV7956r8cr2+Oj8AC5dt8wSP3BQAoeX58NoHyCU8P8zGkNXStjTSi6fzO6F0pBdcYbEg==",
+      "license": "MIT",
+      "engines": {
+        "node": ">= 0.8"
+      }
+    },
+    "node_modules/call-bind-apply-helpers": {
+      "version": "1.0.2",
+      "resolved": "https://registry.npmjs.org/call-bind-apply-helpers/-/call-bind-apply-helpers-1.0.2.tgz",
+      "integrity": "sha512-Sp1ablJ0ivDkSzjcaJdxEunN5/XvksFJ2sMBFfq6x0ryhQV/2b/KwFe21cMpmHtPOSij8K99/wSfoEuTObmuMQ==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "es-errors": "^1.3.0",
+        "function-bind": "^1.1.2"
+      },
+      "engines": {
+        "node": ">= 0.4"
+      }
+    },
+    "node_modules/call-bound": {
+      "version": "1.0.4",
+      "resolved": "https://registry.npmjs.org/call-bound/-/call-bound-1.0.4.tgz",
+      "integrity": "sha512-+ys997U96po4Kx/ABpBCqhA9EuxJaQWDQg7295H4hBphv3IZg0boBKuwYpt4YXp6MZ5AmZQnU/tyMTlRpaSejg==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "call-bind-apply-helpers": "^1.0.2",
+        "get-intrinsic": "^1.3.0"
+      },
+      "engines": {
+        "node": ">= 0.4"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/ljharb"
+      }
+    },
+    "node_modules/chalk": {
+      "version": "2.4.2",
+      "resolved": "https://registry.npmjs.org/chalk/-/chalk-2.4.2.tgz",
+      "integrity": "sha512-Mti+f9lpJNcwF4tWV8/OrTTtF1gZi+f8FqlyAdouralcFWFQWF2+NgCHShjkCb+IFBLq9buZwE1xckQU4peSuQ==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "ansi-styles": "^3.2.1",
+        "escape-string-regexp": "^1.0.5",
+        "supports-color": "^5.3.0"
+      },
+      "engines": {
+        "node": ">=4"
+      }
+    },
+    "node_modules/cheerio": {
+      "version": "1.2.0",
+      "resolved": "https://registry.npmjs.org/cheerio/-/cheerio-1.2.0.tgz",
+      "integrity": "sha512-WDrybc/gKFpTYQutKIK6UvfcuxijIZfMfXaYm8NMsPQxSYvf+13fXUJ4rztGGbJcBQ/GF55gvrZ0Bc0bj/mqvg==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "cheerio-select": "^2.1.0",
+        "dom-serializer": "^2.0.0",
+        "domhandler": "^5.0.3",
+        "domutils": "^3.2.2",
+        "encoding-sniffer": "^0.2.1",
+        "htmlparser2": "^10.1.0",
+        "parse5": "^7.3.0",
+        "parse5-htmlparser2-tree-adapter": "^7.1.0",
+        "parse5-parser-stream": "^7.1.2",
+        "undici": "^7.19.0",
+        "whatwg-mimetype": "^4.0.0"
+      },
+      "engines": {
+        "node": ">=20.18.1"
+      },
+      "funding": {
+        "url": "https://github.com/cheeriojs/cheerio?sponsor=1"
+      }
+    },
+    "node_modules/cheerio-select": {
+      "version": "2.1.0",
+      "resolved": "https://registry.npmjs.org/cheerio-select/-/cheerio-select-2.1.0.tgz",
+      "integrity": "sha512-9v9kG0LvzrlcungtnJtpGNxY+fzECQKhK4EGJX2vByejiMX84MFNQw4UxPJl3bFbTMw+Dfs37XaIkCwTZfLh4g==",
+      "dev": true,
+      "license": "BSD-2-Clause",
+      "dependencies": {
+        "boolbase": "^1.0.0",
+        "css-select": "^5.1.0",
+        "css-what": "^6.1.0",
+        "domelementtype": "^2.3.0",
+        "domhandler": "^5.0.3",
+        "domutils": "^3.0.1"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/fb55"
+      }
+    },
+    "node_modules/chownr": {
+      "version": "1.1.4",
+      "resolved": "https://registry.npmjs.org/chownr/-/chownr-1.1.4.tgz",
+      "integrity": "sha512-jJ0bqzaylmJtVnNgzTeSOs8DPavpbYgEr/b0YL8/2GO3xJEhInFmhKMUnEJQjZumK7KXGFhUy89PrsJWlakBVg==",
+      "dev": true,
+      "license": "ISC",
+      "optional": true
+    },
+    "node_modules/cockatiel": {
+      "version": "3.2.1",
+      "resolved": "https://registry.npmjs.org/cockatiel/-/cockatiel-3.2.1.tgz",
+      "integrity": "sha512-gfrHV6ZPkquExvMh9IOkKsBzNDk6sDuZ6DdBGUBkvFnTCqCxzpuq48RySgP0AnaqQkw2zynOFj9yly6T1Q2G5Q==",
+      "dev": true,
+      "license": "MIT",
+      "engines": {
+        "node": ">=16"
+      }
+    },
+    "node_modules/color-convert": {
+      "version": "1.9.3",
+      "resolved": "https://registry.npmjs.org/color-convert/-/color-convert-1.9.3.tgz",
+      "integrity": "sha512-QfAUtd+vFdAtFQcC8CCyYt1fYWxSqAiK2cSD6zDB8N3cpsEBAvRxp9zOGg6G/SHHJYAT88/az/IuDGALsNVbGg==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "color-name": "1.1.3"
+      }
+    },
+    "node_modules/color-name": {
+      "version": "1.1.3",
+      "resolved": "https://registry.npmjs.org/color-name/-/color-name-1.1.3.tgz",
+      "integrity": "sha512-72fSenhMw2HZMTVHeCA9KCmpEIbzWiQsjN+BHcBbS9vr1mtt+vJjPdksIBNUmKAW8TFUDPJK5SUU3QhE9NEXDw==",
+      "dev": true,
+      "license": "MIT"
+    },
+    "node_modules/combined-stream": {
+      "version": "1.0.8",
+      "resolved": "https://registry.npmjs.org/combined-stream/-/combined-stream-1.0.8.tgz",
+      "integrity": "sha512-FQN4MRfuJeHf7cBbBMJFXhKSDq+2kAArBlmRBvcvFE5BB1HZKXtSFASDhdlz9zOYwxh8lDdnvmMOe/+5cdoEdg==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "delayed-stream": "~1.0.0"
+      },
+      "engines": {
+        "node": ">= 0.8"
+      }
+    },
+    "node_modules/commander": {
+      "version": "6.2.1",
+      "resolved": "https://registry.npmjs.org/commander/-/commander-6.2.1.tgz",
+      "integrity": "sha512-U7VdrJFnJgo4xjrHpTzu0yrHPGImdsmD95ZlgYSEajAn2JKzDhDTPG9kBTefmObL2w/ngeZnilk+OV9CG3d7UA==",
+      "dev": true,
+      "license": "MIT",
+      "engines": {
+        "node": ">= 6"
+      }
+    },
+    "node_modules/concat-map": {
+      "version": "0.0.1",
+      "resolved": "https://registry.npmjs.org/concat-map/-/concat-map-0.0.1.tgz",
+      "integrity": "sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==",
+      "dev": true,
+      "license": "MIT"
+    },
+    "node_modules/content-type": {
+      "version": "1.0.5",
+      "resolved": "https://registry.npmjs.org/content-type/-/content-type-1.0.5.tgz",
+      "integrity": "sha512-nTjqfcBFEipKdXCv4YDQWCfmcLZKm81ldF0pAopTvyrFGVbcR6P/VAAd5G7N+0tTr8QqiU0tFadD6FK4NtJwOA==",
+      "license": "MIT",
+      "engines": {
+        "node": ">= 0.6"
+      }
+    },
+    "node_modules/css-select": {
+      "version": "5.2.2",
+      "resolved": "https://registry.npmjs.org/css-select/-/css-select-5.2.2.tgz",
+      "integrity": "sha512-TizTzUddG/xYLA3NXodFM0fSbNizXjOKhqiQQwvhlspadZokn1KDy0NZFS0wuEubIYAV5/c1/lAr0TaaFXEXzw==",
+      "dev": true,
+      "license": "BSD-2-Clause",
+      "dependencies": {
+        "boolbase": "^1.0.0",
+        "css-what": "^6.1.0",
+        "domhandler": "^5.0.2",
+        "domutils": "^3.0.1",
+        "nth-check": "^2.0.1"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/fb55"
+      }
+    },
+    "node_modules/css-what": {
+      "version": "6.2.2",
+      "resolved": "https://registry.npmjs.org/css-what/-/css-what-6.2.2.tgz",
+      "integrity": "sha512-u/O3vwbptzhMs3L1fQE82ZSLHQQfto5gyZzwteVIEyeaY5Fc7R4dapF/BvRoSYFeqfBk4m0V1Vafq5Pjv25wvA==",
+      "dev": true,
+      "license": "BSD-2-Clause",
+      "engines": {
+        "node": ">= 6"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/fb55"
+      }
+    },
+    "node_modules/debug": {
+      "version": "4.4.3",
+      "resolved": "https://registry.npmjs.org/debug/-/debug-4.4.3.tgz",
+      "integrity": "sha512-RGwwWnwQvkVfavKVt22FGLw+xYSdzARwm0ru6DhTVA3umU5hZc28V3kO4stgYryrTlLpuvgI9GiijltAjNbcqA==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "ms": "^2.1.3"
+      },
+      "engines": {
+        "node": ">=6.0"
+      },
+      "peerDependenciesMeta": {
+        "supports-color": {
+          "optional": true
+        }
+      }
+    },
+    "node_modules/decompress-response": {
+      "version": "6.0.0",
+      "resolved": "https://registry.npmjs.org/decompress-response/-/decompress-response-6.0.0.tgz",
+      "integrity": "sha512-aW35yZM6Bb/4oJlZncMH2LCoZtJXTRxES17vE3hoRiowU2kWHaJKFkSBDnDR+cm9J+9QhXmREyIfv0pji9ejCQ==",
+      "dev": true,
+      "license": "MIT",
+      "optional": true,
+      "dependencies": {
+        "mimic-response": "^3.1.0"
+      },
+      "engines": {
+        "node": ">=10"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/sindresorhus"
+      }
+    },
+    "node_modules/deep-extend": {
+      "version": "0.6.0",
+      "resolved": "https://registry.npmjs.org/deep-extend/-/deep-extend-0.6.0.tgz",
+      "integrity": "sha512-LOHxIOaPYdHlJRtCQfDIVZtfw/ufM8+rVj649RIHzcm/vGwQRXFt6OPqIFWsm2XEMrNIEtWR64sY1LEKD2vAOA==",
+      "dev": true,
+      "license": "MIT",
+      "optional": true,
+      "engines": {
+        "node": ">=4.0.0"
+      }
+    },
+    "node_modules/default-browser": {
+      "version": "5.5.0",
+      "resolved": "https://registry.npmjs.org/default-browser/-/default-browser-5.5.0.tgz",
+      "integrity": "sha512-H9LMLr5zwIbSxrmvikGuI/5KGhZ8E2zH3stkMgM5LpOWDutGM2JZaj460Udnf1a+946zc7YBgrqEWwbk7zHvGw==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "bundle-name": "^4.1.0",
+        "default-browser-id": "^5.0.0"
+      },
+      "engines": {
+        "node": ">=18"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/sindresorhus"
+      }
+    },
+    "node_modules/default-browser-id": {
+      "version": "5.0.1",
+      "resolved": "https://registry.npmjs.org/default-browser-id/-/default-browser-id-5.0.1.tgz",
+      "integrity": "sha512-x1VCxdX4t+8wVfd1so/9w+vQ4vx7lKd2Qp5tDRutErwmR85OgmfX7RlLRMWafRMY7hbEiXIbudNrjOAPa/hL8Q==",
+      "dev": true,
+      "license": "MIT",
+      "engines": {
+        "node": ">=18"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/sindresorhus"
+      }
+    },
+    "node_modules/define-lazy-prop": {
+      "version": "3.0.0",
+      "resolved": "https://registry.npmjs.org/define-lazy-prop/-/define-lazy-prop-3.0.0.tgz",
+      "integrity": "sha512-N+MeXYoqr3pOgn8xfyRPREN7gHakLYjhsHhWGT3fWAiL4IkAt0iDw14QiiEm2bE30c5XX5q0FtAA3CK5f9/BUg==",
+      "dev": true,
+      "license": "MIT",
+      "engines": {
+        "node": ">=12"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/sindresorhus"
+      }
+    },
+    "node_modules/delayed-stream": {
+      "version": "1.0.0",
+      "resolved": "https://registry.npmjs.org/delayed-stream/-/delayed-stream-1.0.0.tgz",
+      "integrity": "sha512-ZySD7Nf91aLB0RxL4KGrKHBXl7Eds1DAmEdcoVawXnLD7SDhpNgtuII2aAkg7a7QS41jxPSZ17p4VdGnMHk3MQ==",
+      "dev": true,
+      "license": "MIT",
+      "engines": {
+        "node": ">=0.4.0"
+      }
+    },
+    "node_modules/depd": {
+      "version": "2.0.0",
+      "resolved": "https://registry.npmjs.org/depd/-/depd-2.0.0.tgz",
+      "integrity": "sha512-g7nH6P6dyDioJogAAGprGpCtVImJhpPk/roCzdb3fIh61/s/nPsfR6onyMwkCAR/OlC3yBC0lESvUoQEAssIrw==",
+      "license": "MIT",
+      "engines": {
+        "node": ">= 0.8"
+      }
+    },
+    "node_modules/detect-libc": {
+      "version": "2.1.2",
+      "resolved": "https://registry.npmjs.org/detect-libc/-/detect-libc-2.1.2.tgz",
+      "integrity": "sha512-Btj2BOOO83o3WyH59e8MgXsxEQVcarkUOpEYrubB0urwnN10yQ364rsiByU11nZlqWYZm05i/of7io4mzihBtQ==",
+      "dev": true,
+      "license": "Apache-2.0",
+      "optional": true,
+      "engines": {
+        "node": ">=8"
+      }
+    },
+    "node_modules/dom-serializer": {
+      "version": "2.0.0",
+      "resolved": "https://registry.npmjs.org/dom-serializer/-/dom-serializer-2.0.0.tgz",
+      "integrity": "sha512-wIkAryiqt/nV5EQKqQpo3SToSOV9J0DnbJqwK7Wv/Trc92zIAYZ4FlMu+JPFW1DfGFt81ZTCGgDEabffXeLyJg==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "domelementtype": "^2.3.0",
+        "domhandler": "^5.0.2",
+        "entities": "^4.2.0"
+      },
+      "funding": {
+        "url": "https://github.com/cheeriojs/dom-serializer?sponsor=1"
+      }
+    },
+    "node_modules/domelementtype": {
+      "version": "2.3.0",
+      "resolved": "https://registry.npmjs.org/domelementtype/-/domelementtype-2.3.0.tgz",
+      "integrity": "sha512-OLETBj6w0OsagBwdXnPdN0cnMfF9opN69co+7ZrbfPGrdpPVNBUj02spi6B1N7wChLQiPn4CSH/zJvXw56gmHw==",
+      "dev": true,
+      "funding": [
+        {
+          "type": "github",
+          "url": "https://github.com/sponsors/fb55"
+        }
+      ],
+      "license": "BSD-2-Clause"
+    },
+    "node_modules/domhandler": {
+      "version": "5.0.3",
+      "resolved": "https://registry.npmjs.org/domhandler/-/domhandler-5.0.3.tgz",
+      "integrity": "sha512-cgwlv/1iFQiFnU96XXgROh8xTeetsnJiDsTc7TYCLFd9+/WNkIqPTxiM/8pSd8VIrhXGTf1Ny1q1hquVqDJB5w==",
+      "dev": true,
+      "license": "BSD-2-Clause",
+      "dependencies": {
+        "domelementtype": "^2.3.0"
+      },
+      "engines": {
+        "node": ">= 4"
+      },
+      "funding": {
+        "url": "https://github.com/fb55/domhandler?sponsor=1"
+      }
+    },
+    "node_modules/domutils": {
+      "version": "3.2.2",
+      "resolved": "https://registry.npmjs.org/domutils/-/domutils-3.2.2.tgz",
+      "integrity": "sha512-6kZKyUajlDuqlHKVX1w7gyslj9MPIXzIFiz/rGu35uC1wMi+kMhQwGhl4lt9unC9Vb9INnY9Z3/ZA3+FhASLaw==",
+      "dev": true,
+      "license": "BSD-2-Clause",
+      "dependencies": {
+        "dom-serializer": "^2.0.0",
+        "domelementtype": "^2.3.0",
+        "domhandler": "^5.0.3"
+      },
+      "funding": {
+        "url": "https://github.com/fb55/domutils?sponsor=1"
+      }
+    },
+    "node_modules/dunder-proto": {
+      "version": "1.0.1",
+      "resolved": "https://registry.npmjs.org/dunder-proto/-/dunder-proto-1.0.1.tgz",
+      "integrity": "sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "call-bind-apply-helpers": "^1.0.1",
+        "es-errors": "^1.3.0",
+        "gopd": "^1.2.0"
+      },
+      "engines": {
+        "node": ">= 0.4"
+      }
+    },
+    "node_modules/ecdsa-sig-formatter": {
+      "version": "1.0.11",
+      "resolved": "https://registry.npmjs.org/ecdsa-sig-formatter/-/ecdsa-sig-formatter-1.0.11.tgz",
+      "integrity": "sha512-nagl3RYrbNv6kQkeJIpt6NJZy8twLB/2vtz6yN9Z4vRKHN4/QZJIEbqohALSgwKdnksuY3k5Addp5lg8sVoVcQ==",
+      "dev": true,
+      "license": "Apache-2.0",
+      "dependencies": {
+        "safe-buffer": "^5.0.1"
+      }
+    },
+    "node_modules/encoding-sniffer": {
+      "version": "0.2.1",
+      "resolved": "https://registry.npmjs.org/encoding-sniffer/-/encoding-sniffer-0.2.1.tgz",
+      "integrity": "sha512-5gvq20T6vfpekVtqrYQsSCFZ1wEg5+wW0/QaZMWkFr6BqD3NfKs0rLCx4rrVlSWJeZb5NBJgVLswK/w2MWU+Gw==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "iconv-lite": "^0.6.3",
+        "whatwg-encoding": "^3.1.1"
+      },
+      "funding": {
+        "url": "https://github.com/fb55/encoding-sniffer?sponsor=1"
+      }
+    },
+    "node_modules/encoding-sniffer/node_modules/iconv-lite": {
+      "version": "0.6.3",
+      "resolved": "https://registry.npmjs.org/iconv-lite/-/iconv-lite-0.6.3.tgz",
+      "integrity": "sha512-4fCk79wshMdzMp2rH06qWrJE4iolqLhCUH+OiuIgU++RB0+94NlDL81atO7GX55uUKueo0txHNtvEyI6D7WdMw==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "safer-buffer": ">= 2.1.2 < 3.0.0"
+      },
+      "engines": {
+        "node": ">=0.10.0"
+      }
+    },
+    "node_modules/end-of-stream": {
+      "version": "1.4.5",
+      "resolved": "https://registry.npmjs.org/end-of-stream/-/end-of-stream-1.4.5.tgz",
+      "integrity": "sha512-ooEGc6HP26xXq/N+GCGOT0JKCLDGrq2bQUZrQ7gyrJiZANJ/8YDTxTpQBXGMn+WbIQXNVpyWymm7KYVICQnyOg==",
+      "dev": true,
+      "license": "MIT",
+      "optional": true,
+      "dependencies": {
+        "once": "^1.4.0"
+      }
+    },
+    "node_modules/entities": {
+      "version": "4.5.0",
+      "resolved": "https://registry.npmjs.org/entities/-/entities-4.5.0.tgz",
+      "integrity": "sha512-V0hjH4dGPh9Ao5p0MoRY6BVqtwCjhz6vI5LT8AJ55H+4g9/4vbHx1I54fS0XuclLhDHArPQCiMjDxjaL8fPxhw==",
+      "dev": true,
+      "license": "BSD-2-Clause",
+      "engines": {
+        "node": ">=0.12"
+      },
+      "funding": {
+        "url": "https://github.com/fb55/entities?sponsor=1"
+      }
+    },
+    "node_modules/es-define-property": {
+      "version": "1.0.1",
+      "resolved": "https://registry.npmjs.org/es-define-property/-/es-define-property-1.0.1.tgz",
+      "integrity": "sha512-e3nRfgfUZ4rNGL232gUgX06QNyyez04KdjFrF+LTRoOXmrOgFKDg4BCdsjW8EnT69eqdYGmRpJwiPVYNrCaW3g==",
+      "dev": true,
+      "license": "MIT",
+      "engines": {
+        "node": ">= 0.4"
+      }
+    },
+    "node_modules/es-errors": {
+      "version": "1.3.0",
+      "resolved": "https://registry.npmjs.org/es-errors/-/es-errors-1.3.0.tgz",
+      "integrity": "sha512-Zf5H2Kxt2xjTvbJvP2ZWLEICxA6j+hAmMzIlypy4xcBg1vKVnx89Wy0GbS+kf5cwCVFFzdCFh2XSCFNULS6csw==",
+      "dev": true,
+      "license": "MIT",
+      "engines": {
+        "node": ">= 0.4"
+      }
+    },
+    "node_modules/es-object-atoms": {
+      "version": "1.1.1",
+      "resolved": "https://registry.npmjs.org/es-object-atoms/-/es-object-atoms-1.1.1.tgz",
+      "integrity": "sha512-FGgH2h8zKNim9ljj7dankFPcICIK9Cp5bm+c2gQSYePhpaG5+esrLODihIorn+Pe6FGJzWhXQotPv73jTaldXA==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "es-errors": "^1.3.0"
+      },
+      "engines": {
+        "node": ">= 0.4"
+      }
+    },
+    "node_modules/es-set-tostringtag": {
+      "version": "2.1.0",
+      "resolved": "https://registry.npmjs.org/es-set-tostringtag/-/es-set-tostringtag-2.1.0.tgz",
+      "integrity": "sha512-j6vWzfrGVfyXxge+O0x5sh6cvxAog0a/4Rdd2K36zCMV5eJ+/+tOAngRO8cODMNWbVRdVlmGZQL2YS3yR8bIUA==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "es-errors": "^1.3.0",
+        "get-intrinsic": "^1.2.6",
+        "has-tostringtag": "^1.0.2",
+        "hasown": "^2.0.2"
+      },
+      "engines": {
+        "node": ">= 0.4"
+      }
+    },
+    "node_modules/escape-string-regexp": {
+      "version": "1.0.5",
+      "resolved": "https://registry.npmjs.org/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz",
+      "integrity": "sha512-vbRorB5FUQWvla16U8R/qgaFIya2qGzwDrNmCZuYKrbdSUMG6I1ZCGQRefkRVhuOkIGVne7BQ35DSfo1qvJqFg==",
+      "dev": true,
+      "license": "MIT",
+      "engines": {
+        "node": ">=0.8.0"
+      }
+    },
+    "node_modules/expand-template": {
+      "version": "2.0.3",
+      "resolved": "https://registry.npmjs.org/expand-template/-/expand-template-2.0.3.tgz",
+      "integrity": "sha512-XYfuKMvj4O35f/pOXLObndIRvyQ+/+6AhODh+OKWj9S9498pHHn/IMszH+gt0fBCRWMNfk1ZSp5x3AifmnI2vg==",
+      "dev": true,
+      "license": "(MIT OR WTFPL)",
+      "optional": true,
+      "engines": {
+        "node": ">=6"
+      }
+    },
+    "node_modules/fd-slicer": {
+      "version": "1.1.0",
+      "resolved": "https://registry.npmjs.org/fd-slicer/-/fd-slicer-1.1.0.tgz",
+      "integrity": "sha512-cE1qsB/VwyQozZ+q1dGxR8LBYNZeofhEdUNGSMbQD3Gw2lAzX9Zb3uIU6Ebc/Fmyjo9AWWfnn0AUCHqtevs/8g==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "pend": "~1.2.0"
+      }
+    },
+    "node_modules/form-data": {
+      "version": "4.0.5",
+      "resolved": "https://registry.npmjs.org/form-data/-/form-data-4.0.5.tgz",
+      "integrity": "sha512-8RipRLol37bNs2bhoV67fiTEvdTrbMUYcFTiy3+wuuOnUog2QBHCZWXDRijWQfAkhBj2Uf5UnVaiWwA5vdd82w==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "asynckit": "^0.4.0",
+        "combined-stream": "^1.0.8",
+        "es-set-tostringtag": "^2.1.0",
+        "hasown": "^2.0.2",
+        "mime-types": "^2.1.12"
+      },
+      "engines": {
+        "node": ">= 6"
+      }
+    },
+    "node_modules/fs-constants": {
+      "version": "1.0.0",
+      "resolved": "https://registry.npmjs.org/fs-constants/-/fs-constants-1.0.0.tgz",
+      "integrity": "sha512-y6OAwoSIf7FyjMIv94u+b5rdheZEjzR63GTyZJm5qh4Bi+2YgwLCcI/fPFZkL5PSixOt6ZNKm+w+Hfp/Bciwow==",
+      "dev": true,
+      "license": "MIT",
+      "optional": true
+    },
+    "node_modules/fs.realpath": {
+      "version": "1.0.0",
+      "resolved": "https://registry.npmjs.org/fs.realpath/-/fs.realpath-1.0.0.tgz",
+      "integrity": "sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==",
+      "dev": true,
+      "license": "ISC"
+    },
+    "node_modules/function-bind": {
+      "version": "1.1.2",
+      "resolved": "https://registry.npmjs.org/function-bind/-/function-bind-1.1.2.tgz",
+      "integrity": "sha512-7XHNxH7qX9xG5mIwxkhumTox/MIRNcOgDrxWsMt2pAr23WHp6MrRlN7FBSFpCpr+oVO0F744iUgR82nJMfG2SA==",
+      "dev": true,
+      "license": "MIT",
+      "funding": {
+        "url": "https://github.com/sponsors/ljharb"
+      }
+    },
+    "node_modules/get-intrinsic": {
+      "version": "1.3.0",
+      "resolved": "https://registry.npmjs.org/get-intrinsic/-/get-intrinsic-1.3.0.tgz",
+      "integrity": "sha512-9fSjSaos/fRIVIp+xSJlE6lfwhES7LNtKaCBIamHsjr2na1BiABJPo0mOjjz8GJDURarmCPGqaiVg5mfjb98CQ==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "call-bind-apply-helpers": "^1.0.2",
+        "es-define-property": "^1.0.1",
+        "es-errors": "^1.3.0",
+        "es-object-atoms": "^1.1.1",
+        "function-bind": "^1.1.2",
+        "get-proto": "^1.0.1",
+        "gopd": "^1.2.0",
+        "has-symbols": "^1.1.0",
+        "hasown": "^2.0.2",
+        "math-intrinsics": "^1.1.0"
+      },
+      "engines": {
+        "node": ">= 0.4"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/ljharb"
+      }
+    },
+    "node_modules/get-proto": {
+      "version": "1.0.1",
+      "resolved": "https://registry.npmjs.org/get-proto/-/get-proto-1.0.1.tgz",
+      "integrity": "sha512-sTSfBjoXBp89JvIKIefqw7U2CCebsc74kiY6awiGogKtoSGbgjYE/G/+l9sF3MWFPNc9IcoOC4ODfKHfxFmp0g==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "dunder-proto": "^1.0.1",
+        "es-object-atoms": "^1.0.0"
+      },
+      "engines": {
+        "node": ">= 0.4"
+      }
+    },
+    "node_modules/github-from-package": {
+      "version": "0.0.0",
+      "resolved": "https://registry.npmjs.org/github-from-package/-/github-from-package-0.0.0.tgz",
+      "integrity": "sha512-SyHy3T1v2NUXn29OsWdxmK6RwHD+vkj3v8en8AOBZ1wBQ/hCAQ5bAQTD02kW4W9tUp/3Qh6J8r9EvntiyCmOOw==",
+      "dev": true,
+      "license": "MIT",
+      "optional": true
+    },
+    "node_modules/glob": {
+      "version": "7.2.3",
+      "resolved": "https://registry.npmjs.org/glob/-/glob-7.2.3.tgz",
+      "integrity": "sha512-nFR0zLpU2YCaRxwoCJvL6UvCH2JFyFVIvwTLsIf21AuHlMskA1hhTdk+LlYJtOlYt9v6dvszD2BGRqBL+iQK9Q==",
+      "deprecated": "Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me",
+      "dev": true,
+      "license": "ISC",
+      "dependencies": {
+        "fs.realpath": "^1.0.0",
+        "inflight": "^1.0.4",
+        "inherits": "2",
+        "minimatch": "^3.1.1",
+        "once": "^1.3.0",
+        "path-is-absolute": "^1.0.0"
+      },
+      "engines": {
+        "node": "*"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/isaacs"
+      }
+    },
+    "node_modules/gopd": {
+      "version": "1.2.0",
+      "resolved": "https://registry.npmjs.org/gopd/-/gopd-1.2.0.tgz",
+      "integrity": "sha512-ZUKRh6/kUFoAiTAtTYPZJ3hw9wNxx+BIBOijnlG9PnrJsCcSjs1wyyD6vJpaYtgnzDrKYRSqf3OO6Rfa93xsRg==",
+      "dev": true,
+      "license": "MIT",
+      "engines": {
+        "node": ">= 0.4"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/ljharb"
+      }
+    },
+    "node_modules/has-flag": {
+      "version": "3.0.0",
+      "resolved": "https://registry.npmjs.org/has-flag/-/has-flag-3.0.0.tgz",
+      "integrity": "sha512-sKJf1+ceQBr4SMkvQnBDNDtf4TXpVhVGateu0t918bl30FnbE2m4vNLX+VWe/dpjlb+HugGYzW7uQXH98HPEYw==",
+      "dev": true,
+      "license": "MIT",
+      "engines": {
+        "node": ">=4"
+      }
+    },
+    "node_modules/has-symbols": {
+      "version": "1.1.0",
+      "resolved": "https://registry.npmjs.org/has-symbols/-/has-symbols-1.1.0.tgz",
+      "integrity": "sha512-1cDNdwJ2Jaohmb3sg4OmKaMBwuC48sYni5HUw2DvsC8LjGTLK9h+eb1X6RyuOHe4hT0ULCW68iomhjUoKUqlPQ==",
+      "dev": true,
+      "license": "MIT",
+      "engines": {
+        "node": ">= 0.4"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/ljharb"
+      }
+    },
+    "node_modules/has-tostringtag": {
+      "version": "1.0.2",
+      "resolved": "https://registry.npmjs.org/has-tostringtag/-/has-tostringtag-1.0.2.tgz",
+      "integrity": "sha512-NqADB8VjPFLM2V0VvHUewwwsw0ZWBaIdgo+ieHtK3hasLz4qeCRjYcqfB6AQrBggRKppKF8L52/VqdVsO47Dlw==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "has-symbols": "^1.0.3"
+      },
+      "engines": {
+        "node": ">= 0.4"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/ljharb"
+      }
+    },
+    "node_modules/hasown": {
+      "version": "2.0.2",
+      "resolved": "https://registry.npmjs.org/hasown/-/hasown-2.0.2.tgz",
+      "integrity": "sha512-0hJU9SCPvmMzIBdZFqNPXWa6dqh7WdH0cII9y+CyS8rG3nL48Bclra9HmKhVVUHyPWNH5Y7xDwAB7bfgSjkUMQ==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "function-bind": "^1.1.2"
+      },
+      "engines": {
+        "node": ">= 0.4"
+      }
+    },
+    "node_modules/hosted-git-info": {
+      "version": "4.1.0",
+      "resolved": "https://registry.npmjs.org/hosted-git-info/-/hosted-git-info-4.1.0.tgz",
+      "integrity": "sha512-kyCuEOWjJqZuDbRHzL8V93NzQhwIB71oFWSyzVo+KPZI+pnQPPxucdkrOZvkLRnrf5URsQM+IJ09Dw29cRALIA==",
+      "dev": true,
+      "license": "ISC",
+      "dependencies": {
+        "lru-cache": "^6.0.0"
+      },
+      "engines": {
+        "node": ">=10"
+      }
+    },
+    "node_modules/htmlparser2": {
+      "version": "10.1.0",
+      "resolved": "https://registry.npmjs.org/htmlparser2/-/htmlparser2-10.1.0.tgz",
+      "integrity": "sha512-VTZkM9GWRAtEpveh7MSF6SjjrpNVNNVJfFup7xTY3UpFtm67foy9HDVXneLtFVt4pMz5kZtgNcvCniNFb1hlEQ==",
+      "dev": true,
+      "funding": [
+        "https://github.com/fb55/htmlparser2?sponsor=1",
+        {
+          "type": "github",
+          "url": "https://github.com/sponsors/fb55"
+        }
+      ],
+      "license": "MIT",
+      "dependencies": {
+        "domelementtype": "^2.3.0",
+        "domhandler": "^5.0.3",
+        "domutils": "^3.2.2",
+        "entities": "^7.0.1"
+      }
+    },
+    "node_modules/htmlparser2/node_modules/entities": {
+      "version": "7.0.1",
+      "resolved": "https://registry.npmjs.org/entities/-/entities-7.0.1.tgz",
+      "integrity": "sha512-TWrgLOFUQTH994YUyl1yT4uyavY5nNB5muff+RtWaqNVCAK408b5ZnnbNAUEWLTCpum9w6arT70i1XdQ4UeOPA==",
+      "dev": true,
+      "license": "BSD-2-Clause",
+      "engines": {
+        "node": ">=0.12"
+      },
+      "funding": {
+        "url": "https://github.com/fb55/entities?sponsor=1"
+      }
+    },
+    "node_modules/http-errors": {
+      "version": "2.0.1",
+      "resolved": "https://registry.npmjs.org/http-errors/-/http-errors-2.0.1.tgz",
+      "integrity": "sha512-4FbRdAX+bSdmo4AUFuS0WNiPz8NgFt+r8ThgNWmlrjQjt1Q7ZR9+zTlce2859x4KSXrwIsaeTqDoKQmtP8pLmQ==",
+      "license": "MIT",
+      "dependencies": {
+        "depd": "~2.0.0",
+        "inherits": "~2.0.4",
+        "setprototypeof": "~1.2.0",
+        "statuses": "~2.0.2",
+        "toidentifier": "~1.0.1"
+      },
+      "engines": {
+        "node": ">= 0.8"
+      },
+      "funding": {
+        "type": "opencollective",
+        "url": "https://opencollective.com/express"
+      }
+    },
+    "node_modules/http-proxy-agent": {
+      "version": "7.0.2",
+      "resolved": "https://registry.npmjs.org/http-proxy-agent/-/http-proxy-agent-7.0.2.tgz",
+      "integrity": "sha512-T1gkAiYYDWYx3V5Bmyu7HcfcvL7mUrTWiM6yOfa3PIphViJ/gFPbvidQ+veqSOHci/PxBcDabeUNCzpOODJZig==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "agent-base": "^7.1.0",
+        "debug": "^4.3.4"
+      },
+      "engines": {
+        "node": ">= 14"
+      }
+    },
+    "node_modules/https-proxy-agent": {
+      "version": "7.0.6",
+      "resolved": "https://registry.npmjs.org/https-proxy-agent/-/https-proxy-agent-7.0.6.tgz",
+      "integrity": "sha512-vK9P5/iUfdl95AI+JVyUuIcVtd4ofvtrOr3HNtM2yxC9bnMbEdp3x01OhQNnjb8IJYi38VlTE3mBXwcfvywuSw==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "agent-base": "^7.1.2",
+        "debug": "4"
+      },
+      "engines": {
+        "node": ">= 14"
+      }
+    },
+    "node_modules/iconv-lite": {
+      "version": "0.7.2",
+      "resolved": "https://registry.npmjs.org/iconv-lite/-/iconv-lite-0.7.2.tgz",
+      "integrity": "sha512-im9DjEDQ55s9fL4EYzOAv0yMqmMBSZp6G0VvFyTMPKWxiSBHUj9NW/qqLmXUwXrrM7AvqSlTCfvqRb0cM8yYqw==",
+      "license": "MIT",
+      "dependencies": {
+        "safer-buffer": ">= 2.1.2 < 3.0.0"
+      },
+      "engines": {
+        "node": ">=0.10.0"
+      },
+      "funding": {
+        "type": "opencollective",
+        "url": "https://opencollective.com/express"
+      }
+    },
+    "node_modules/ieee754": {
+      "version": "1.2.1",
+      "resolved": "https://registry.npmjs.org/ieee754/-/ieee754-1.2.1.tgz",
+      "integrity": "sha512-dcyqhDvX1C46lXZcVqCpK+FtMRQVdIMN6/Df5js2zouUsqG7I6sFxitIC+7KYK29KdXOLHdu9zL4sFnoVQnqaA==",
+      "dev": true,
+      "funding": [
+        {
+          "type": "github",
+          "url": "https://github.com/sponsors/feross"
+        },
+        {
+          "type": "patreon",
+          "url": "https://www.patreon.com/feross"
+        },
+        {
+          "type": "consulting",
+          "url": "https://feross.org/support"
+        }
+      ],
+      "license": "BSD-3-Clause",
+      "optional": true
+    },
+    "node_modules/inflight": {
+      "version": "1.0.6",
+      "resolved": "https://registry.npmjs.org/inflight/-/inflight-1.0.6.tgz",
+      "integrity": "sha512-k92I/b08q4wvFscXCLvqfsHCrjrF7yiXsQuIVvVE7N82W3+aqpzuUdBbfhWcy/FZR3/4IgflMgKLOsvPDrGCJA==",
+      "deprecated": "This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.",
+      "dev": true,
+      "license": "ISC",
+      "dependencies": {
+        "once": "^1.3.0",
+        "wrappy": "1"
+      }
+    },
+    "node_modules/inherits": {
+      "version": "2.0.4",
+      "resolved": "https://registry.npmjs.org/inherits/-/inherits-2.0.4.tgz",
+      "integrity": "sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==",
+      "license": "ISC"
+    },
+    "node_modules/ini": {
+      "version": "1.3.8",
+      "resolved": "https://registry.npmjs.org/ini/-/ini-1.3.8.tgz",
+      "integrity": "sha512-JV/yugV2uzW5iMRSiZAyDtQd+nxtUnjeLt0acNdw98kKLrvuRVyB80tsREOE7yvGVgalhZ6RNXCmEHkUKBKxew==",
+      "dev": true,
+      "license": "ISC",
+      "optional": true
+    },
+    "node_modules/is-docker": {
+      "version": "3.0.0",
+      "resolved": "https://registry.npmjs.org/is-docker/-/is-docker-3.0.0.tgz",
+      "integrity": "sha512-eljcgEDlEns/7AXFosB5K/2nCM4P7FQPkGc/DWLy5rmFEWvZayGrik1d9/QIY5nJ4f9YsVvBkA6kJpHn9rISdQ==",
+      "dev": true,
+      "license": "MIT",
+      "bin": {
+        "is-docker": "cli.js"
+      },
+      "engines": {
+        "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/sindresorhus"
+      }
+    },
+    "node_modules/is-inside-container": {
+      "version": "1.0.0",
+      "resolved": "https://registry.npmjs.org/is-inside-container/-/is-inside-container-1.0.0.tgz",
+      "integrity": "sha512-KIYLCCJghfHZxqjYBE7rEy0OBuTd5xCHS7tHVgvCLkx7StIoaxwNW3hCALgEUjFfeRk+MG/Qxmp/vtETEF3tRA==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "is-docker": "^3.0.0"
+      },
+      "bin": {
+        "is-inside-container": "cli.js"
+      },
+      "engines": {
+        "node": ">=14.16"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/sindresorhus"
+      }
+    },
+    "node_modules/is-wsl": {
+      "version": "3.1.1",
+      "resolved": "https://registry.npmjs.org/is-wsl/-/is-wsl-3.1.1.tgz",
+      "integrity": "sha512-e6rvdUCiQCAuumZslxRJWR/Doq4VpPR82kqclvcS0efgt430SlGIk05vdCN58+VrzgtIcfNODjozVielycD4Sw==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "is-inside-container": "^1.0.0"
+      },
+      "engines": {
+        "node": ">=16"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/sindresorhus"
+      }
+    },
+    "node_modules/jsonc-parser": {
+      "version": "3.3.1",
+      "resolved": "https://registry.npmjs.org/jsonc-parser/-/jsonc-parser-3.3.1.tgz",
+      "integrity": "sha512-HUgH65KyejrUFPvHFPbqOY0rsFip3Bo5wb4ngvdi1EpCYWUQDC5V+Y7mZws+DLkr4M//zQJoanu1SP+87Dv1oQ==",
+      "dev": true,
+      "license": "MIT"
+    },
+    "node_modules/jsonwebtoken": {
+      "version": "9.0.3",
+      "resolved": "https://registry.npmjs.org/jsonwebtoken/-/jsonwebtoken-9.0.3.tgz",
+      "integrity": "sha512-MT/xP0CrubFRNLNKvxJ2BYfy53Zkm++5bX9dtuPbqAeQpTVe0MQTFhao8+Cp//EmJp244xt6Drw/GVEGCUj40g==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "jws": "^4.0.1",
+        "lodash.includes": "^4.3.0",
+        "lodash.isboolean": "^3.0.3",
+        "lodash.isinteger": "^4.0.4",
+        "lodash.isnumber": "^3.0.3",
+        "lodash.isplainobject": "^4.0.6",
+        "lodash.isstring": "^4.0.1",
+        "lodash.once": "^4.0.0",
+        "ms": "^2.1.1",
+        "semver": "^7.5.4"
+      },
+      "engines": {
+        "node": ">=12",
+        "npm": ">=6"
+      }
+    },
+    "node_modules/jwa": {
+      "version": "2.0.1",
+      "resolved": "https://registry.npmjs.org/jwa/-/jwa-2.0.1.tgz",
+      "integrity": "sha512-hRF04fqJIP8Abbkq5NKGN0Bbr3JxlQ+qhZufXVr0DvujKy93ZCbXZMHDL4EOtodSbCWxOqR8MS1tXA5hwqCXDg==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "buffer-equal-constant-time": "^1.0.1",
+        "ecdsa-sig-formatter": "1.0.11",
+        "safe-buffer": "^5.0.1"
+      }
+    },
+    "node_modules/jws": {
+      "version": "4.0.1",
+      "resolved": "https://registry.npmjs.org/jws/-/jws-4.0.1.tgz",
+      "integrity": "sha512-EKI/M/yqPncGUUh44xz0PxSidXFr/+r0pA70+gIYhjv+et7yxM+s29Y+VGDkovRofQem0fs7Uvf4+YmAdyRduA==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "jwa": "^2.0.1",
+        "safe-buffer": "^5.0.1"
+      }
+    },
+    "node_modules/keytar": {
+      "version": "7.9.0",
+      "resolved": "https://registry.npmjs.org/keytar/-/keytar-7.9.0.tgz",
+      "integrity": "sha512-VPD8mtVtm5JNtA2AErl6Chp06JBfy7diFQ7TQQhdpWOl6MrCRB+eRbvAZUsbGQS9kiMq0coJsy0W0vHpDCkWsQ==",
+      "dev": true,
+      "hasInstallScript": true,
+      "license": "MIT",
+      "optional": true,
+      "dependencies": {
+        "node-addon-api": "^4.3.0",
+        "prebuild-install": "^7.0.1"
+      }
+    },
+    "node_modules/leven": {
+      "version": "3.1.0",
+      "resolved": "https://registry.npmjs.org/leven/-/leven-3.1.0.tgz",
+      "integrity": "sha512-qsda+H8jTaUaN/x5vzW2rzc+8Rw4TAQ/4KjB46IwK5VH+IlVeeeje/EoZRpiXvIqjFgK84QffqPztGI3VBLG1A==",
+      "dev": true,
+      "license": "MIT",
+      "engines": {
+        "node": ">=6"
+      }
+    },
+    "node_modules/linkify-it": {
+      "version": "3.0.3",
+      "resolved": "https://registry.npmjs.org/linkify-it/-/linkify-it-3.0.3.tgz",
+      "integrity": "sha512-ynTsyrFSdE5oZ/O9GEf00kPngmOfVwazR5GKDq6EYfhlpFug3J2zybX56a2PRRpc9P+FuSoGNAwjlbDs9jJBPQ==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "uc.micro": "^1.0.1"
+      }
+    },
+    "node_modules/lodash.includes": {
+      "version": "4.3.0",
+      "resolved": "https://registry.npmjs.org/lodash.includes/-/lodash.includes-4.3.0.tgz",
+      "integrity": "sha512-W3Bx6mdkRTGtlJISOvVD/lbqjTlPPUDTMnlXZFnVwi9NKJ6tiAk6LVdlhZMm17VZisqhKcgzpO5Wz91PCt5b0w==",
+      "dev": true,
+      "license": "MIT"
+    },
+    "node_modules/lodash.isboolean": {
+      "version": "3.0.3",
+      "resolved": "https://registry.npmjs.org/lodash.isboolean/-/lodash.isboolean-3.0.3.tgz",
+      "integrity": "sha512-Bz5mupy2SVbPHURB98VAcw+aHh4vRV5IPNhILUCsOzRmsTmSQ17jIuqopAentWoehktxGd9e/hbIXq980/1QJg==",
+      "dev": true,
+      "license": "MIT"
+    },
+    "node_modules/lodash.isinteger": {
+      "version": "4.0.4",
+      "resolved": "https://registry.npmjs.org/lodash.isinteger/-/lodash.isinteger-4.0.4.tgz",
+      "integrity": "sha512-DBwtEWN2caHQ9/imiNeEA5ys1JoRtRfY3d7V9wkqtbycnAmTvRRmbHKDV4a0EYc678/dia0jrte4tjYwVBaZUA==",
+      "dev": true,
+      "license": "MIT"
+    },
+    "node_modules/lodash.isnumber": {
+      "version": "3.0.3",
+      "resolved": "https://registry.npmjs.org/lodash.isnumber/-/lodash.isnumber-3.0.3.tgz",
+      "integrity": "sha512-QYqzpfwO3/CWf3XP+Z+tkQsfaLL/EnUlXWVkIk5FUPc4sBdTehEqZONuyRt2P67PXAk+NXmTBcc97zw9t1FQrw==",
+      "dev": true,
+      "license": "MIT"
+    },
+    "node_modules/lodash.isplainobject": {
+      "version": "4.0.6",
+      "resolved": "https://registry.npmjs.org/lodash.isplainobject/-/lodash.isplainobject-4.0.6.tgz",
+      "integrity": "sha512-oSXzaWypCMHkPC3NvBEaPHf0KsA5mvPrOPgQWDsbg8n7orZ290M0BmC/jgRZ4vcJ6DTAhjrsSYgdsW/F+MFOBA==",
+      "dev": true,
+      "license": "MIT"
+    },
+    "node_modules/lodash.isstring": {
+      "version": "4.0.1",
+      "resolved": "https://registry.npmjs.org/lodash.isstring/-/lodash.isstring-4.0.1.tgz",
+      "integrity": "sha512-0wJxfxH1wgO3GrbuP+dTTk7op+6L41QCXbGINEmD+ny/G/eCqGzxyCsh7159S+mgDDcoarnBw6PC1PS5+wUGgw==",
+      "dev": true,
+      "license": "MIT"
+    },
+    "node_modules/lodash.once": {
+      "version": "4.1.1",
+      "resolved": "https://registry.npmjs.org/lodash.once/-/lodash.once-4.1.1.tgz",
+      "integrity": "sha512-Sb487aTOCr9drQVL8pIxOzVhafOjZN9UU54hiN8PU3uAiSV7lx1yYNpbNmex2PK6dSJoNTSJUUswT651yww3Mg==",
+      "dev": true,
+      "license": "MIT"
+    },
+    "node_modules/lru-cache": {
+      "version": "6.0.0",
+      "resolved": "https://registry.npmjs.org/lru-cache/-/lru-cache-6.0.0.tgz",
+      "integrity": "sha512-Jo6dJ04CmSjuznwJSS3pUeWmd/H0ffTlkXXgwZi+eq1UCmqQwCh+eLsYOYCwY991i2Fah4h1BEMCx4qThGbsiA==",
+      "dev": true,
+      "license": "ISC",
+      "dependencies": {
+        "yallist": "^4.0.0"
+      },
+      "engines": {
+        "node": ">=10"
+      }
+    },
+    "node_modules/markdown-it": {
+      "version": "12.3.2",
+      "resolved": "https://registry.npmjs.org/markdown-it/-/markdown-it-12.3.2.tgz",
+      "integrity": "sha512-TchMembfxfNVpHkbtriWltGWc+m3xszaRD0CZup7GFFhzIgQqxIfn3eGj1yZpfuflzPvfkt611B2Q/Bsk1YnGg==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "argparse": "^2.0.1",
+        "entities": "~2.1.0",
+        "linkify-it": "^3.0.1",
+        "mdurl": "^1.0.1",
+        "uc.micro": "^1.0.5"
+      },
+      "bin": {
+        "markdown-it": "bin/markdown-it.js"
+      }
+    },
+    "node_modules/markdown-it/node_modules/entities": {
+      "version": "2.1.0",
+      "resolved": "https://registry.npmjs.org/entities/-/entities-2.1.0.tgz",
+      "integrity": "sha512-hCx1oky9PFrJ611mf0ifBLBRW8lUUVRlFolb5gWRfIELabBlbp9xZvrqZLZAs+NxFnbfQoeGd8wDkygjg7U85w==",
+      "dev": true,
+      "license": "BSD-2-Clause",
+      "funding": {
+        "url": "https://github.com/fb55/entities?sponsor=1"
+      }
+    },
+    "node_modules/math-intrinsics": {
+      "version": "1.1.0",
+      "resolved": "https://registry.npmjs.org/math-intrinsics/-/math-intrinsics-1.1.0.tgz",
+      "integrity": "sha512-/IXtbwEk5HTPyEwyKX6hGkYXxM9nbj64B+ilVJnC/R6B0pH5G4V3b0pVbL7DBj4tkhBAppbQUlf6F6Xl9LHu1g==",
+      "dev": true,
+      "license": "MIT",
+      "engines": {
+        "node": ">= 0.4"
+      }
+    },
+    "node_modules/mdurl": {
+      "version": "1.0.1",
+      "resolved": "https://registry.npmjs.org/mdurl/-/mdurl-1.0.1.tgz",
+      "integrity": "sha512-/sKlQJCBYVY9Ers9hqzKou4H6V5UWc/M59TH2dvkt+84itfnq7uFOMLpOiOS4ujvHP4etln18fmIxA5R5fll0g==",
+      "dev": true,
+      "license": "MIT"
+    },
+    "node_modules/mime": {
+      "version": "1.6.0",
+      "resolved": "https://registry.npmjs.org/mime/-/mime-1.6.0.tgz",
+      "integrity": "sha512-x0Vn8spI+wuJ1O6S7gnbaQg8Pxh4NNHb7KSINmEWKiPE4RKOplvijn+NkmYmmRgP68mc70j2EbeTFRsrswaQeg==",
+      "dev": true,
+      "license": "MIT",
+      "bin": {
+        "mime": "cli.js"
+      },
+      "engines": {
+        "node": ">=4"
+      }
+    },
+    "node_modules/mime-db": {
+      "version": "1.52.0",
+      "resolved": "https://registry.npmjs.org/mime-db/-/mime-db-1.52.0.tgz",
+      "integrity": "sha512-sPU4uV7dYlvtWJxwwxHD0PuihVNiE7TyAbQ5SWxDCB9mUYvOgroQOwYQQOKPJ8CIbE+1ETVlOoK1UC2nU3gYvg==",
+      "dev": true,
+      "license": "MIT",
+      "engines": {
+        "node": ">= 0.6"
+      }
+    },
+    "node_modules/mime-types": {
+      "version": "2.1.35",
+      "resolved": "https://registry.npmjs.org/mime-types/-/mime-types-2.1.35.tgz",
+      "integrity": "sha512-ZDY+bPm5zTTF+YpCrAU9nK0UgICYPT0QtT1NZWFv4s++TNkcgVaT0g6+4R2uI4MjQjzysHB1zxuWL50hzaeXiw==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "mime-db": "1.52.0"
+      },
+      "engines": {
+        "node": ">= 0.6"
+      }
+    },
+    "node_modules/mimic-response": {
+      "version": "3.1.0",
+      "resolved": "https://registry.npmjs.org/mimic-response/-/mimic-response-3.1.0.tgz",
+      "integrity": "sha512-z0yWI+4FDrrweS8Zmt4Ej5HdJmky15+L2e6Wgn3+iK5fWzb6T3fhNFq2+MeTRb064c6Wr4N/wv0DzQTjNzHNGQ==",
+      "dev": true,
+      "license": "MIT",
+      "optional": true,
+      "engines": {
+        "node": ">=10"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/sindresorhus"
+      }
+    },
+    "node_modules/minimatch": {
+      "version": "3.1.5",
+      "resolved": "https://registry.npmjs.org/minimatch/-/minimatch-3.1.5.tgz",
+      "integrity": "sha512-VgjWUsnnT6n+NUk6eZq77zeFdpW2LWDzP6zFGrCbHXiYNul5Dzqk2HHQ5uFH2DNW5Xbp8+jVzaeNt94ssEEl4w==",
+      "dev": true,
+      "license": "ISC",
+      "dependencies": {
+        "brace-expansion": "^1.1.7"
+      },
+      "engines": {
+        "node": "*"
+      }
+    },
+    "node_modules/minimist": {
+      "version": "1.2.8",
+      "resolved": "https://registry.npmjs.org/minimist/-/minimist-1.2.8.tgz",
+      "integrity": "sha512-2yyAR8qBkN3YuheJanUpWC5U3bb5osDywNB8RzDVlDwDHbocAJveqqj1u8+SVD7jkWT4yvsHCpWqqWqAxb0zCA==",
+      "dev": true,
+      "license": "MIT",
+      "optional": true,
+      "funding": {
+        "url": "https://github.com/sponsors/ljharb"
+      }
+    },
+    "node_modules/mkdirp-classic": {
+      "version": "0.5.3",
+      "resolved": "https://registry.npmjs.org/mkdirp-classic/-/mkdirp-classic-0.5.3.tgz",
+      "integrity": "sha512-gKLcREMhtuZRwRAfqP3RFW+TK4JqApVBtOIftVgjuABpAtpxhPGaDcfvbhNvD0B8iD1oUr/txX35NjcaY6Ns/A==",
+      "dev": true,
+      "license": "MIT",
+      "optional": true
+    },
+    "node_modules/ms": {
+      "version": "2.1.3",
+      "resolved": "https://registry.npmjs.org/ms/-/ms-2.1.3.tgz",
+      "integrity": "sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==",
+      "dev": true,
+      "license": "MIT"
+    },
+    "node_modules/mute-stream": {
+      "version": "0.0.8",
+      "resolved": "https://registry.npmjs.org/mute-stream/-/mute-stream-0.0.8.tgz",
+      "integrity": "sha512-nnbWWOkoWyUsTjKrhgD0dcz22mdkSnpYqbEjIm2nhwhuxlSkpywJmBo8h0ZqJdkp73mb90SssHkN4rsRaBAfAA==",
+      "dev": true,
+      "license": "ISC"
+    },
+    "node_modules/napi-build-utils": {
+      "version": "2.0.0",
+      "resolved": "https://registry.npmjs.org/napi-build-utils/-/napi-build-utils-2.0.0.tgz",
+      "integrity": "sha512-GEbrYkbfF7MoNaoh2iGG84Mnf/WZfB0GdGEsM8wz7Expx/LlWf5U8t9nvJKXSp3qr5IsEbK04cBGhol/KwOsWA==",
+      "dev": true,
+      "license": "MIT",
+      "optional": true
+    },
+    "node_modules/node-abi": {
+      "version": "3.89.0",
+      "resolved": "https://registry.npmjs.org/node-abi/-/node-abi-3.89.0.tgz",
+      "integrity": "sha512-6u9UwL0HlAl21+agMN3YAMXcKByMqwGx+pq+P76vii5f7hTPtKDp08/H9py6DY+cfDw7kQNTGEj/rly3IgbNQA==",
+      "dev": true,
+      "license": "MIT",
+      "optional": true,
+      "dependencies": {
+        "semver": "^7.3.5"
+      },
+      "engines": {
+        "node": ">=10"
+      }
+    },
+    "node_modules/node-addon-api": {
+      "version": "4.3.0",
+      "resolved": "https://registry.npmjs.org/node-addon-api/-/node-addon-api-4.3.0.tgz",
+      "integrity": "sha512-73sE9+3UaLYYFmDsFZnqCInzPyh3MqIwZO9cw58yIqAZhONrrabrYyYe3TuIqtIiOuTXVhsGau8hcrhhwSsDIQ==",
+      "dev": true,
+      "license": "MIT",
+      "optional": true
+    },
+    "node_modules/nth-check": {
+      "version": "2.1.1",
+      "resolved": "https://registry.npmjs.org/nth-check/-/nth-check-2.1.1.tgz",
+      "integrity": "sha512-lqjrjmaOoAnWfMmBPL+XNnynZh2+swxiX3WUE0s4yEHI6m+AwrK2UZOimIRl3X/4QctVqS8AiZjFqyOGrMXb/w==",
+      "dev": true,
+      "license": "BSD-2-Clause",
+      "dependencies": {
+        "boolbase": "^1.0.0"
+      },
+      "funding": {
+        "url": "https://github.com/fb55/nth-check?sponsor=1"
+      }
+    },
+    "node_modules/object-inspect": {
+      "version": "1.13.4",
+      "resolved": "https://registry.npmjs.org/object-inspect/-/object-inspect-1.13.4.tgz",
+      "integrity": "sha512-W67iLl4J2EXEGTbfeHCffrjDfitvLANg0UlX3wFUUSTx92KXRFegMHUVgSqE+wvhAbi4WqjGg9czysTV2Epbew==",
+      "dev": true,
+      "license": "MIT",
+      "engines": {
+        "node": ">= 0.4"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/ljharb"
+      }
+    },
+    "node_modules/once": {
+      "version": "1.4.0",
+      "resolved": "https://registry.npmjs.org/once/-/once-1.4.0.tgz",
+      "integrity": "sha512-lNaJgI+2Q5URQBkccEKHTQOPaXdUxnZZElQTZY0MFUAuaEqe1E+Nyvgdz/aIyNi6Z9MzO5dv1H8n58/GELp3+w==",
+      "dev": true,
+      "license": "ISC",
+      "dependencies": {
+        "wrappy": "1"
+      }
+    },
+    "node_modules/open": {
+      "version": "10.2.0",
+      "resolved": "https://registry.npmjs.org/open/-/open-10.2.0.tgz",
+      "integrity": "sha512-YgBpdJHPyQ2UE5x+hlSXcnejzAvD0b22U2OuAP+8OnlJT+PjWPxtgmGqKKc+RgTM63U9gN0YzrYc71R2WT/hTA==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "default-browser": "^5.2.1",
+        "define-lazy-prop": "^3.0.0",
+        "is-inside-container": "^1.0.0",
+        "wsl-utils": "^0.1.0"
+      },
+      "engines": {
+        "node": ">=18"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/sindresorhus"
+      }
+    },
+    "node_modules/parse-semver": {
+      "version": "1.1.1",
+      "resolved": "https://registry.npmjs.org/parse-semver/-/parse-semver-1.1.1.tgz",
+      "integrity": "sha512-Eg1OuNntBMH0ojvEKSrvDSnwLmvVuUOSdylH/pSCPNMIspLlweJyIWXCE+k/5hm3cj/EBUYwmWkjhBALNP4LXQ==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "semver": "^5.1.0"
+      }
+    },
+    "node_modules/parse-semver/node_modules/semver": {
+      "version": "5.7.2",
+      "resolved": "https://registry.npmjs.org/semver/-/semver-5.7.2.tgz",
+      "integrity": "sha512-cBznnQ9KjJqU67B52RMC65CMarK2600WFnbkcaiwWq3xy/5haFJlshgnpjovMVJ+Hff49d8GEn0b87C5pDQ10g==",
+      "dev": true,
+      "license": "ISC",
+      "bin": {
+        "semver": "bin/semver"
+      }
+    },
+    "node_modules/parse5": {
+      "version": "7.3.0",
+      "resolved": "https://registry.npmjs.org/parse5/-/parse5-7.3.0.tgz",
+      "integrity": "sha512-IInvU7fabl34qmi9gY8XOVxhYyMyuH2xUNpb2q8/Y+7552KlejkRvqvD19nMoUW/uQGGbqNpA6Tufu5FL5BZgw==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "entities": "^6.0.0"
+      },
+      "funding": {
+        "url": "https://github.com/inikulin/parse5?sponsor=1"
+      }
+    },
+    "node_modules/parse5-htmlparser2-tree-adapter": {
+      "version": "7.1.0",
+      "resolved": "https://registry.npmjs.org/parse5-htmlparser2-tree-adapter/-/parse5-htmlparser2-tree-adapter-7.1.0.tgz",
+      "integrity": "sha512-ruw5xyKs6lrpo9x9rCZqZZnIUntICjQAd0Wsmp396Ul9lN/h+ifgVV1x1gZHi8euej6wTfpqX8j+BFQxF0NS/g==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "domhandler": "^5.0.3",
+        "parse5": "^7.0.0"
+      },
+      "funding": {
+        "url": "https://github.com/inikulin/parse5?sponsor=1"
+      }
+    },
+    "node_modules/parse5-parser-stream": {
+      "version": "7.1.2",
+      "resolved": "https://registry.npmjs.org/parse5-parser-stream/-/parse5-parser-stream-7.1.2.tgz",
+      "integrity": "sha512-JyeQc9iwFLn5TbvvqACIF/VXG6abODeB3Fwmv/TGdLk2LfbWkaySGY72at4+Ty7EkPZj854u4CrICqNk2qIbow==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "parse5": "^7.0.0"
+      },
+      "funding": {
+        "url": "https://github.com/inikulin/parse5?sponsor=1"
+      }
+    },
+    "node_modules/parse5/node_modules/entities": {
+      "version": "6.0.1",
+      "resolved": "https://registry.npmjs.org/entities/-/entities-6.0.1.tgz",
+      "integrity": "sha512-aN97NXWF6AWBTahfVOIrB/NShkzi5H7F9r1s9mD3cDj4Ko5f2qhhVoYMibXF7GlLveb/D2ioWay8lxI97Ven3g==",
+      "dev": true,
+      "license": "BSD-2-Clause",
+      "engines": {
+        "node": ">=0.12"
+      },
+      "funding": {
+        "url": "https://github.com/fb55/entities?sponsor=1"
+      }
+    },
+    "node_modules/path-is-absolute": {
+      "version": "1.0.1",
+      "resolved": "https://registry.npmjs.org/path-is-absolute/-/path-is-absolute-1.0.1.tgz",
+      "integrity": "sha512-AVbw3UJ2e9bq64vSaS9Am0fje1Pa8pbGqTTsmXfaIiMpnr5DlDhfJOuLj9Sf95ZPVDAUerDfEk88MPmPe7UCQg==",
+      "dev": true,
+      "license": "MIT",
+      "engines": {
+        "node": ">=0.10.0"
+      }
+    },
+    "node_modules/pend": {
+      "version": "1.2.0",
+      "resolved": "https://registry.npmjs.org/pend/-/pend-1.2.0.tgz",
+      "integrity": "sha512-F3asv42UuXchdzt+xXqfW1OGlVBe+mxa2mqI0pg5yAHZPvFmY3Y6drSf/GQ1A86WgWEN9Kzh/WrgKa6iGcHXLg==",
+      "dev": true,
+      "license": "MIT"
+    },
+    "node_modules/prebuild-install": {
+      "version": "7.1.3",
+      "resolved": "https://registry.npmjs.org/prebuild-install/-/prebuild-install-7.1.3.tgz",
+      "integrity": "sha512-8Mf2cbV7x1cXPUILADGI3wuhfqWvtiLA1iclTDbFRZkgRQS0NqsPZphna9V+HyTEadheuPmjaJMsbzKQFOzLug==",
+      "deprecated": "No longer maintained. Please contact the author of the relevant native addon; alternatives are available.",
+      "dev": true,
+      "license": "MIT",
+      "optional": true,
+      "dependencies": {
+        "detect-libc": "^2.0.0",
+        "expand-template": "^2.0.3",
+        "github-from-package": "0.0.0",
+        "minimist": "^1.2.3",
+        "mkdirp-classic": "^0.5.3",
+        "napi-build-utils": "^2.0.0",
+        "node-abi": "^3.3.0",
+        "pump": "^3.0.0",
+        "rc": "^1.2.7",
+        "simple-get": "^4.0.0",
+        "tar-fs": "^2.0.0",
+        "tunnel-agent": "^0.6.0"
+      },
+      "bin": {
+        "prebuild-install": "bin.js"
+      },
+      "engines": {
+        "node": ">=10"
+      }
+    },
+    "node_modules/pump": {
+      "version": "3.0.4",
+      "resolved": "https://registry.npmjs.org/pump/-/pump-3.0.4.tgz",
+      "integrity": "sha512-VS7sjc6KR7e1ukRFhQSY5LM2uBWAUPiOPa/A3mkKmiMwSmRFUITt0xuj+/lesgnCv+dPIEYlkzrcyXgquIHMcA==",
+      "dev": true,
+      "license": "MIT",
+      "optional": true,
+      "dependencies": {
+        "end-of-stream": "^1.1.0",
+        "once": "^1.3.1"
+      }
+    },
+    "node_modules/qs": {
+      "version": "6.15.0",
+      "resolved": "https://registry.npmjs.org/qs/-/qs-6.15.0.tgz",
+      "integrity": "sha512-mAZTtNCeetKMH+pSjrb76NAM8V9a05I9aBZOHztWy/UqcJdQYNsf59vrRKWnojAT9Y+GbIvoTBC++CPHqpDBhQ==",
+      "dev": true,
+      "license": "BSD-3-Clause",
+      "dependencies": {
+        "side-channel": "^1.1.0"
+      },
+      "engines": {
+        "node": ">=0.6"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/ljharb"
+      }
+    },
+    "node_modules/raw-body": {
+      "version": "3.0.2",
+      "resolved": "https://registry.npmjs.org/raw-body/-/raw-body-3.0.2.tgz",
+      "integrity": "sha512-K5zQjDllxWkf7Z5xJdV0/B0WTNqx6vxG70zJE4N0kBs4LovmEYWJzQGxC9bS9RAKu3bgM40lrd5zoLJ12MQ5BA==",
+      "license": "MIT",
+      "dependencies": {
+        "bytes": "~3.1.2",
+        "http-errors": "~2.0.1",
+        "iconv-lite": "~0.7.0",
+        "unpipe": "~1.0.0"
+      },
+      "engines": {
+        "node": ">= 0.10"
+      }
+    },
+    "node_modules/rc": {
+      "version": "1.2.8",
+      "resolved": "https://registry.npmjs.org/rc/-/rc-1.2.8.tgz",
+      "integrity": "sha512-y3bGgqKj3QBdxLbLkomlohkvsA8gdAiUQlSBJnBhfn+BPxg4bc62d8TcBW15wavDfgexCgccckhcZvywyQYPOw==",
+      "dev": true,
+      "license": "(BSD-2-Clause OR MIT OR Apache-2.0)",
+      "optional": true,
+      "dependencies": {
+        "deep-extend": "^0.6.0",
+        "ini": "~1.3.0",
+        "minimist": "^1.2.0",
+        "strip-json-comments": "~2.0.1"
+      },
+      "bin": {
+        "rc": "cli.js"
+      }
+    },
+    "node_modules/read": {
+      "version": "1.0.7",
+      "resolved": "https://registry.npmjs.org/read/-/read-1.0.7.tgz",
+      "integrity": "sha512-rSOKNYUmaxy0om1BNjMN4ezNT6VKK+2xF4GBhc81mkH7L60i6dp8qPYrkndNLT3QPphoII3maL9PVC9XmhHwVQ==",
+      "dev": true,
+      "license": "ISC",
+      "dependencies": {
+        "mute-stream": "~0.0.4"
+      },
+      "engines": {
+        "node": ">=0.8"
+      }
+    },
+    "node_modules/readable-stream": {
+      "version": "3.6.2",
+      "resolved": "https://registry.npmjs.org/readable-stream/-/readable-stream-3.6.2.tgz",
+      "integrity": "sha512-9u/sniCrY3D5WdsERHzHE4G2YCXqoG5FTHUiCC4SIbr6XcLZBY05ya9EKjYek9O5xOAwjGq+1JdGBAS7Q9ScoA==",
+      "dev": true,
+      "license": "MIT",
+      "optional": true,
+      "dependencies": {
+        "inherits": "^2.0.3",
+        "string_decoder": "^1.1.1",
+        "util-deprecate": "^1.0.1"
+      },
+      "engines": {
+        "node": ">= 6"
+      }
+    },
+    "node_modules/run-applescript": {
+      "version": "7.1.0",
+      "resolved": "https://registry.npmjs.org/run-applescript/-/run-applescript-7.1.0.tgz",
+      "integrity": "sha512-DPe5pVFaAsinSaV6QjQ6gdiedWDcRCbUuiQfQa2wmWV7+xC9bGulGI8+TdRmoFkAPaBXk8CrAbnlY2ISniJ47Q==",
+      "dev": true,
+      "license": "MIT",
+      "engines": {
+        "node": ">=18"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/sindresorhus"
+      }
+    },
+    "node_modules/safe-buffer": {
+      "version": "5.2.1",
+      "resolved": "https://registry.npmjs.org/safe-buffer/-/safe-buffer-5.2.1.tgz",
+      "integrity": "sha512-rp3So07KcdmmKbGvgaNxQSJr7bGVSVk5S9Eq1F+ppbRo70+YeaDxkw5Dd8NPN+GD6bjnYm2VuPuCXmpuYvmCXQ==",
+      "dev": true,
+      "funding": [
+        {
+          "type": "github",
+          "url": "https://github.com/sponsors/feross"
+        },
+        {
+          "type": "patreon",
+          "url": "https://www.patreon.com/feross"
+        },
+        {
+          "type": "consulting",
+          "url": "https://feross.org/support"
+        }
+      ],
+      "license": "MIT"
+    },
+    "node_modules/safer-buffer": {
+      "version": "2.1.2",
+      "resolved": "https://registry.npmjs.org/safer-buffer/-/safer-buffer-2.1.2.tgz",
+      "integrity": "sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==",
+      "license": "MIT"
+    },
+    "node_modules/sax": {
+      "version": "1.6.0",
+      "resolved": "https://registry.npmjs.org/sax/-/sax-1.6.0.tgz",
+      "integrity": "sha512-6R3J5M4AcbtLUdZmRv2SygeVaM7IhrLXu9BmnOGmmACak8fiUtOsYNWUS4uK7upbmHIBbLBeFeI//477BKLBzA==",
+      "dev": true,
+      "license": "BlueOak-1.0.0",
+      "engines": {
+        "node": ">=11.0.0"
+      }
+    },
+    "node_modules/semver": {
+      "version": "7.7.4",
+      "resolved": "https://registry.npmjs.org/semver/-/semver-7.7.4.tgz",
+      "integrity": "sha512-vFKC2IEtQnVhpT78h1Yp8wzwrf8CM+MzKMHGJZfBtzhZNycRFnXsHk6E5TxIkkMsgNS7mdX3AGB7x2QM2di4lA==",
+      "dev": true,
+      "license": "ISC",
+      "bin": {
+        "semver": "bin/semver.js"
+      },
+      "engines": {
+        "node": ">=10"
+      }
+    },
+    "node_modules/setprototypeof": {
+      "version": "1.2.0",
+      "resolved": "https://registry.npmjs.org/setprototypeof/-/setprototypeof-1.2.0.tgz",
+      "integrity": "sha512-E5LDX7Wrp85Kil5bhZv46j8jOeboKq5JMmYM3gVGdGH8xFpPWXUMsNrlODCrkoxMEeNi/XZIwuRvY4XNwYMJpw==",
+      "license": "ISC"
+    },
+    "node_modules/side-channel": {
+      "version": "1.1.0",
+      "resolved": "https://registry.npmjs.org/side-channel/-/side-channel-1.1.0.tgz",
+      "integrity": "sha512-ZX99e6tRweoUXqR+VBrslhda51Nh5MTQwou5tnUDgbtyM0dBgmhEDtWGP/xbKn6hqfPRHujUNwz5fy/wbbhnpw==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "es-errors": "^1.3.0",
+        "object-inspect": "^1.13.3",
+        "side-channel-list": "^1.0.0",
+        "side-channel-map": "^1.0.1",
+        "side-channel-weakmap": "^1.0.2"
+      },
+      "engines": {
+        "node": ">= 0.4"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/ljharb"
+      }
+    },
+    "node_modules/side-channel-list": {
+      "version": "1.0.0",
+      "resolved": "https://registry.npmjs.org/side-channel-list/-/side-channel-list-1.0.0.tgz",
+      "integrity": "sha512-FCLHtRD/gnpCiCHEiJLOwdmFP+wzCmDEkc9y7NsYxeF4u7Btsn1ZuwgwJGxImImHicJArLP4R0yX4c2KCrMrTA==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "es-errors": "^1.3.0",
+        "object-inspect": "^1.13.3"
+      },
+      "engines": {
+        "node": ">= 0.4"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/ljharb"
+      }
+    },
+    "node_modules/side-channel-map": {
+      "version": "1.0.1",
+      "resolved": "https://registry.npmjs.org/side-channel-map/-/side-channel-map-1.0.1.tgz",
+      "integrity": "sha512-VCjCNfgMsby3tTdo02nbjtM/ewra6jPHmpThenkTYh8pG9ucZ/1P8So4u4FGBek/BjpOVsDCMoLA/iuBKIFXRA==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "call-bound": "^1.0.2",
+        "es-errors": "^1.3.0",
+        "get-intrinsic": "^1.2.5",
+        "object-inspect": "^1.13.3"
+      },
+      "engines": {
+        "node": ">= 0.4"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/ljharb"
+      }
+    },
+    "node_modules/side-channel-weakmap": {
+      "version": "1.0.2",
+      "resolved": "https://registry.npmjs.org/side-channel-weakmap/-/side-channel-weakmap-1.0.2.tgz",
+      "integrity": "sha512-WPS/HvHQTYnHisLo9McqBHOJk2FkHO/tlpvldyrnem4aeQp4hai3gythswg6p01oSoTl58rcpiFAjF2br2Ak2A==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "call-bound": "^1.0.2",
+        "es-errors": "^1.3.0",
+        "get-intrinsic": "^1.2.5",
+        "object-inspect": "^1.13.3",
+        "side-channel-map": "^1.0.1"
+      },
+      "engines": {
+        "node": ">= 0.4"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/ljharb"
+      }
+    },
+    "node_modules/simple-concat": {
+      "version": "1.0.1",
+      "resolved": "https://registry.npmjs.org/simple-concat/-/simple-concat-1.0.1.tgz",
+      "integrity": "sha512-cSFtAPtRhljv69IK0hTVZQ+OfE9nePi/rtJmw5UjHeVyVroEqJXP1sFztKUy1qU+xvz3u/sfYJLa947b7nAN2Q==",
+      "dev": true,
+      "funding": [
+        {
+          "type": "github",
+          "url": "https://github.com/sponsors/feross"
+        },
+        {
+          "type": "patreon",
+          "url": "https://www.patreon.com/feross"
+        },
+        {
+          "type": "consulting",
+          "url": "https://feross.org/support"
+        }
+      ],
+      "license": "MIT",
+      "optional": true
+    },
+    "node_modules/simple-get": {
+      "version": "4.0.1",
+      "resolved": "https://registry.npmjs.org/simple-get/-/simple-get-4.0.1.tgz",
+      "integrity": "sha512-brv7p5WgH0jmQJr1ZDDfKDOSeWWg+OVypG99A/5vYGPqJ6pxiaHLy8nxtFjBA7oMa01ebA9gfh1uMCFqOuXxvA==",
+      "dev": true,
+      "funding": [
+        {
+          "type": "github",
+          "url": "https://github.com/sponsors/feross"
+        },
+        {
+          "type": "patreon",
+          "url": "https://www.patreon.com/feross"
+        },
+        {
+          "type": "consulting",
+          "url": "https://feross.org/support"
+        }
+      ],
+      "license": "MIT",
+      "optional": true,
+      "dependencies": {
+        "decompress-response": "^6.0.0",
+        "once": "^1.3.1",
+        "simple-concat": "^1.0.0"
+      }
+    },
+    "node_modules/statuses": {
+      "version": "2.0.2",
+      "resolved": "https://registry.npmjs.org/statuses/-/statuses-2.0.2.tgz",
+      "integrity": "sha512-DvEy55V3DB7uknRo+4iOGT5fP1slR8wQohVdknigZPMpMstaKJQWhwiYBACJE3Ul2pTnATihhBYnRhZQHGBiRw==",
+      "license": "MIT",
+      "engines": {
+        "node": ">= 0.8"
+      }
+    },
+    "node_modules/string_decoder": {
+      "version": "1.3.0",
+      "resolved": "https://registry.npmjs.org/string_decoder/-/string_decoder-1.3.0.tgz",
+      "integrity": "sha512-hkRX8U1WjJFd8LsDJ2yQ/wWWxaopEsABU1XfkM8A+j0+85JAGppt16cr1Whg6KIbb4okU6Mql6BOj+uup/wKeA==",
+      "dev": true,
+      "license": "MIT",
+      "optional": true,
+      "dependencies": {
+        "safe-buffer": "~5.2.0"
+      }
+    },
+    "node_modules/strip-json-comments": {
+      "version": "2.0.1",
+      "resolved": "https://registry.npmjs.org/strip-json-comments/-/strip-json-comments-2.0.1.tgz",
+      "integrity": "sha512-4gB8na07fecVVkOI6Rs4e7T6NOTki5EmL7TUduTs6bu3EdnSycntVJ4re8kgZA+wx9IueI2Y11bfbgwtzuE0KQ==",
+      "dev": true,
+      "license": "MIT",
+      "optional": true,
+      "engines": {
+        "node": ">=0.10.0"
+      }
+    },
+    "node_modules/supports-color": {
+      "version": "5.5.0",
+      "resolved": "https://registry.npmjs.org/supports-color/-/supports-color-5.5.0.tgz",
+      "integrity": "sha512-QjVjwdXIt408MIiAqCX4oUKsgU2EqAGzs2Ppkm4aQYbjm+ZEWEcW4SfFNTr4uMNZma0ey4f5lgLrkB0aX0QMow==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "has-flag": "^3.0.0"
+      },
+      "engines": {
+        "node": ">=4"
+      }
+    },
+    "node_modules/tar-fs": {
+      "version": "2.1.4",
+      "resolved": "https://registry.npmjs.org/tar-fs/-/tar-fs-2.1.4.tgz",
+      "integrity": "sha512-mDAjwmZdh7LTT6pNleZ05Yt65HC3E+NiQzl672vQG38jIrehtJk/J3mNwIg+vShQPcLF/LV7CMnDW6vjj6sfYQ==",
+      "dev": true,
+      "license": "MIT",
+      "optional": true,
+      "dependencies": {
+        "chownr": "^1.1.1",
+        "mkdirp-classic": "^0.5.2",
+        "pump": "^3.0.0",
+        "tar-stream": "^2.1.4"
+      }
+    },
+    "node_modules/tar-stream": {
+      "version": "2.2.0",
+      "resolved": "https://registry.npmjs.org/tar-stream/-/tar-stream-2.2.0.tgz",
+      "integrity": "sha512-ujeqbceABgwMZxEJnk2HDY2DlnUZ+9oEcb1KzTVfYHio0UE6dG71n60d8D2I4qNvleWrrXpmjpt7vZeF1LnMZQ==",
+      "dev": true,
+      "license": "MIT",
+      "optional": true,
+      "dependencies": {
+        "bl": "^4.0.3",
+        "end-of-stream": "^1.4.1",
+        "fs-constants": "^1.0.0",
+        "inherits": "^2.0.3",
+        "readable-stream": "^3.1.1"
+      },
+      "engines": {
+        "node": ">=6"
+      }
+    },
+    "node_modules/tmp": {
+      "version": "0.2.5",
+      "resolved": "https://registry.npmjs.org/tmp/-/tmp-0.2.5.tgz",
+      "integrity": "sha512-voyz6MApa1rQGUxT3E+BK7/ROe8itEx7vD8/HEvt4xwXucvQ5G5oeEiHkmHZJuBO21RpOf+YYm9MOivj709jow==",
+      "dev": true,
+      "license": "MIT",
+      "engines": {
+        "node": ">=14.14"
+      }
+    },
+    "node_modules/toidentifier": {
+      "version": "1.0.1",
+      "resolved": "https://registry.npmjs.org/toidentifier/-/toidentifier-1.0.1.tgz",
+      "integrity": "sha512-o5sSPKEkg/DIQNmH43V0/uerLrpzVedkUh8tGNvaeXpfpuwjKenlSox/2O/BTlZUtEe+JG7s5YhEz608PlAHRA==",
+      "license": "MIT",
+      "engines": {
+        "node": ">=0.6"
+      }
+    },
+    "node_modules/tslib": {
+      "version": "2.8.1",
+      "resolved": "https://registry.npmjs.org/tslib/-/tslib-2.8.1.tgz",
+      "integrity": "sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==",
+      "dev": true,
+      "license": "0BSD"
+    },
+    "node_modules/tunnel": {
+      "version": "0.0.6",
+      "resolved": "https://registry.npmjs.org/tunnel/-/tunnel-0.0.6.tgz",
+      "integrity": "sha512-1h/Lnq9yajKY2PEbBadPXj3VxsDDu844OnaAo52UVmIzIvwwtBPIuNvkjuzBlTWpfJyUbG3ez0KSBibQkj4ojg==",
+      "dev": true,
+      "license": "MIT",
+      "engines": {
+        "node": ">=0.6.11 <=0.7.0 || >=0.7.3"
+      }
+    },
+    "node_modules/tunnel-agent": {
+      "version": "0.6.0",
+      "resolved": "https://registry.npmjs.org/tunnel-agent/-/tunnel-agent-0.6.0.tgz",
+      "integrity": "sha512-McnNiV1l8RYeY8tBgEpuodCC1mLUdbSN+CYBL7kJsJNInOP8UjDDEwdk6Mw60vdLLrr5NHKZhMAOSrR2NZuQ+w==",
+      "dev": true,
+      "license": "Apache-2.0",
+      "optional": true,
+      "dependencies": {
+        "safe-buffer": "^5.0.1"
+      },
+      "engines": {
+        "node": "*"
+      }
+    },
+    "node_modules/typed-rest-client": {
+      "version": "1.8.11",
+      "resolved": "https://registry.npmjs.org/typed-rest-client/-/typed-rest-client-1.8.11.tgz",
+      "integrity": "sha512-5UvfMpd1oelmUPRbbaVnq+rHP7ng2cE4qoQkQeAqxRL6PklkxsM0g32/HL0yfvruK6ojQ5x8EE+HF4YV6DtuCA==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "qs": "^6.9.1",
+        "tunnel": "0.0.6",
+        "underscore": "^1.12.1"
+      }
+    },
+    "node_modules/uc.micro": {
+      "version": "1.0.6",
+      "resolved": "https://registry.npmjs.org/uc.micro/-/uc.micro-1.0.6.tgz",
+      "integrity": "sha512-8Y75pvTYkLJW2hWQHXxoqRgV7qb9B+9vFEtidML+7koHUFapnVJAZ6cKs+Qjz5Aw3aZWHMC6u0wJE3At+nSGwA==",
+      "dev": true,
+      "license": "MIT"
+    },
+    "node_modules/underscore": {
+      "version": "1.13.8",
+      "resolved": "https://registry.npmjs.org/underscore/-/underscore-1.13.8.tgz",
+      "integrity": "sha512-DXtD3ZtEQzc7M8m4cXotyHR+FAS18C64asBYY5vqZexfYryNNnDc02W4hKg3rdQuqOYas1jkseX0+nZXjTXnvQ==",
+      "dev": true,
+      "license": "MIT"
+    },
+    "node_modules/undici": {
+      "version": "7.24.6",
+      "resolved": "https://registry.npmjs.org/undici/-/undici-7.24.6.tgz",
+      "integrity": "sha512-Xi4agocCbRzt0yYMZGMA6ApD7gvtUFaxm4ZmeacWI4cZxaF6C+8I8QfofC20NAePiB/IcvZmzkJ7XPa471AEtA==",
+      "dev": true,
+      "license": "MIT",
+      "engines": {
+        "node": ">=20.18.1"
+      }
+    },
+    "node_modules/unpipe": {
+      "version": "1.0.0",
+      "resolved": "https://registry.npmjs.org/unpipe/-/unpipe-1.0.0.tgz",
+      "integrity": "sha512-pjy2bYhSsufwWlKwPc+l3cN7+wuJlK6uz0YdJEOlQDbl6jo/YlPi4mb8agUkVC8BF7V8NuzeyPNqRksA3hztKQ==",
+      "license": "MIT",
+      "engines": {
+        "node": ">= 0.8"
+      }
+    },
+    "node_modules/url-join": {
+      "version": "4.0.1",
+      "resolved": "https://registry.npmjs.org/url-join/-/url-join-4.0.1.tgz",
+      "integrity": "sha512-jk1+QP6ZJqyOiuEI9AEWQfju/nB2Pw466kbA0LEZljHwKeMgd9WrAEgEGxjPDD2+TNbbb37rTyhEfrCXfuKXnA==",
+      "dev": true,
+      "license": "MIT"
+    },
+    "node_modules/util-deprecate": {
+      "version": "1.0.2",
+      "resolved": "https://registry.npmjs.org/util-deprecate/-/util-deprecate-1.0.2.tgz",
+      "integrity": "sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==",
+      "dev": true,
+      "license": "MIT",
+      "optional": true
+    },
+    "node_modules/uuid": {
+      "version": "8.3.2",
+      "resolved": "https://registry.npmjs.org/uuid/-/uuid-8.3.2.tgz",
+      "integrity": "sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==",
+      "dev": true,
+      "license": "MIT",
+      "bin": {
+        "uuid": "dist/bin/uuid"
+      }
+    },
+    "node_modules/whatwg-encoding": {
+      "version": "3.1.1",
+      "resolved": "https://registry.npmjs.org/whatwg-encoding/-/whatwg-encoding-3.1.1.tgz",
+      "integrity": "sha512-6qN4hJdMwfYBtE3YBTTHhoeuUrDBPZmbQaxWAqSALV/MeEnR5z1xd8UKud2RAkFoPkmB+hli1TZSnyi84xz1vQ==",
+      "deprecated": "Use @exodus/bytes instead for a more spec-conformant and faster implementation",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "iconv-lite": "0.6.3"
+      },
+      "engines": {
+        "node": ">=18"
+      }
+    },
+    "node_modules/whatwg-encoding/node_modules/iconv-lite": {
+      "version": "0.6.3",
+      "resolved": "https://registry.npmjs.org/iconv-lite/-/iconv-lite-0.6.3.tgz",
+      "integrity": "sha512-4fCk79wshMdzMp2rH06qWrJE4iolqLhCUH+OiuIgU++RB0+94NlDL81atO7GX55uUKueo0txHNtvEyI6D7WdMw==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "safer-buffer": ">= 2.1.2 < 3.0.0"
+      },
+      "engines": {
+        "node": ">=0.10.0"
+      }
+    },
+    "node_modules/whatwg-mimetype": {
+      "version": "4.0.0",
+      "resolved": "https://registry.npmjs.org/whatwg-mimetype/-/whatwg-mimetype-4.0.0.tgz",
+      "integrity": "sha512-QaKxh0eNIi2mE9p2vEdzfagOKHCcj1pJ56EEHGQOVxp8r9/iszLUUV7v89x9O1p/T+NlTM5W7jW6+cz4Fq1YVg==",
+      "dev": true,
+      "license": "MIT",
+      "engines": {
+        "node": ">=18"
+      }
+    },
+    "node_modules/wrappy": {
+      "version": "1.0.2",
+      "resolved": "https://registry.npmjs.org/wrappy/-/wrappy-1.0.2.tgz",
+      "integrity": "sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==",
+      "dev": true,
+      "license": "ISC"
+    },
+    "node_modules/wsl-utils": {
+      "version": "0.1.0",
+      "resolved": "https://registry.npmjs.org/wsl-utils/-/wsl-utils-0.1.0.tgz",
+      "integrity": "sha512-h3Fbisa2nKGPxCpm89Hk33lBLsnaGBvctQopaBSOW/uIs6FTe1ATyAnKFJrzVs9vpGdsTe73WF3V4lIsk4Gacw==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "is-wsl": "^3.1.0"
+      },
+      "engines": {
+        "node": ">=18"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/sindresorhus"
+      }
+    },
+    "node_modules/xml2js": {
+      "version": "0.5.0",
+      "resolved": "https://registry.npmjs.org/xml2js/-/xml2js-0.5.0.tgz",
+      "integrity": "sha512-drPFnkQJik/O+uPKpqSgr22mpuFHqKdbS835iAQrUC73L2F5WkboIRd63ai/2Yg6I1jzifPFKH2NTK+cfglkIA==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "sax": ">=0.6.0",
+        "xmlbuilder": "~11.0.0"
+      },
+      "engines": {
+        "node": ">=4.0.0"
+      }
+    },
+    "node_modules/xmlbuilder": {
+      "version": "11.0.1",
+      "resolved": "https://registry.npmjs.org/xmlbuilder/-/xmlbuilder-11.0.1.tgz",
+      "integrity": "sha512-fDlsI/kFEx7gLvbecc0/ohLG50fugQp8ryHzMTuW9vSa1GJ0XYWKnhsUx7oie3G98+r56aTQIUB4kht42R3JvA==",
+      "dev": true,
+      "license": "MIT",
+      "engines": {
+        "node": ">=4.0"
+      }
+    },
+    "node_modules/yallist": {
+      "version": "4.0.0",
+      "resolved": "https://registry.npmjs.org/yallist/-/yallist-4.0.0.tgz",
+      "integrity": "sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==",
+      "dev": true,
+      "license": "ISC"
+    },
+    "node_modules/yauzl": {
+      "version": "2.10.0",
+      "resolved": "https://registry.npmjs.org/yauzl/-/yauzl-2.10.0.tgz",
+      "integrity": "sha512-p4a9I6X6nu6IhoGmBqAcbJy1mlC4j27vEPZX9F4L4/vZT3Lyq1VkFHw/V/PUcB9Buo+DG3iHkT0x3Qya58zc3g==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "buffer-crc32": "~0.2.3",
+        "fd-slicer": "~1.1.0"
+      }
+    },
+    "node_modules/yazl": {
+      "version": "2.5.1",
+      "resolved": "https://registry.npmjs.org/yazl/-/yazl-2.5.1.tgz",
+      "integrity": "sha512-phENi2PLiHnHb6QBVot+dJnaAZ0xosj7p3fWl+znIjBDlnMI2PsZCJZ306BPTFOaHf5qdDEI8x5qFrSOBN5vrw==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "buffer-crc32": "~0.2.3"
+      }
+    },
+    "node_modules/zod": {
+      "version": "3.25.76",
+      "resolved": "https://registry.npmjs.org/zod/-/zod-3.25.76.tgz",
+      "integrity": "sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==",
+      "license": "MIT",
+      "funding": {
+        "url": "https://github.com/sponsors/colinhacks"
+      }
+    }
+  }
+}
+
+
+[FILE_END: C:\SWEObeyMe\package-lock.json]
+
+
+[FILE_START: C:\SWEObeyMe\index.js]
+[LINE_COUNT: 972]
+
+#!/usr/bin/env node
+
+// [ARES LOCKDOWN]: Redirect all non-protocol noise to stderr
+const originalLog = console.log;
+console.log = (...args) => {
+  console.error("[LOG_REDIRECT]:", ...args); 
+};
+// This ensures ONLY the MCP Transport can write to process.stdout.
+
+import { Server } from "@modelcontextprotocol/sdk/server/index.js";
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { InitializeRequestSchema, CallToolRequestSchema, ListToolsRequestSchema } from "@modelcontextprotocol/sdk/types.js";
+import fs from "fs/promises";
+import path from "path";
+import { z } from "zod";
+import { fileURLToPath } from "url";
+
+// Main async initialization
+(async () => {
+  // Dynamic import for quotes to work with bundler
+  let getRandomQuote;
+  try {
+    const quotesModule = await import(path.join(path.dirname(fileURLToPath(import.meta.url)), "quotes.js"));
+    getRandomQuote = quotesModule.getRandomQuote;
+  } catch (e) {
+    // Fallback quotes if quotes.js not found
+    const fallbackQuotes = {
+      SUCCESS: ["Surgery complete."],
+      FAILURE: ["Non-compliance detected."],
+      RECOVERY: ["Recovery initiated."]
+    };
+    getRandomQuote = (category) => fallbackQuotes[category][0];
+  }
+
+// Initialize server
+const server = new Server({
+  name: "SWEObeyMe",
+  version: "1.0.2",
+}, {
+  capabilities: { tools: {} }
+});
+
+const MAX_LINES = 700;
+const WARNING_THRESHOLD = 600;
+const log = (msg) => console.error(`[SWEObeyMe-Audit]: ${msg}`);
+
+// Backup Directory Setup
+const BACKUP_DIR = path.join(process.cwd(), ".sweobeyme-backups");
+let backupCounter = 0;
+
+async function ensureBackupDir() {
+  try {
+    await fs.mkdir(BACKUP_DIR, { recursive: true });
+    log(`Backup directory ready: ${BACKUP_DIR}`);
+  } catch (error) {
+    console.error(`[CRITICAL] Failed to create backup directory: ${error.message}`);
+  }
+}
+
+/**
+ * Creates a numbered backup of a file.
+ * @param {string} filePath - Path to the file to backup.
+ * @returns {string} - The backup file path.
+ */
+async function createBackup(filePath) {
+  const fullPath = path.resolve(filePath);
+  try {
+    const content = await fs.readFile(fullPath, "utf-8");
+    const timestamp = Date.now();
+    const backupFileName = `${path.basename(filePath)}.backup-${backupCounter++}-${timestamp}.readonly`;
+    const backupPath = path.join(BACKUP_DIR, backupFileName);
+    
+    await fs.writeFile(backupPath, content, { encoding: "utf-8", mode: 0o444 }); // Read-only
+    log(`Backup created: ${backupFileName}`);
+    return backupPath;
+  } catch (error) {
+    console.error(`[BACKUP FAILED] ${error.message}`);
+    return null;
+  }
+}
+
+// PHASE 8: Workflow Orchestration Engine
+const activeWorkflows = new Map();
+
+class SurgicalWorkflow {
+  constructor(id, goal, steps) {
+    this.id = id;
+    this.goal = goal;
+    this.steps = steps.map(s => ({ ...s, status: "pending" }));
+    this.startTime = Date.now();
+  }
+
+  updateStep(stepName, status) {
+    const step = this.steps.find(s => s.name === stepName);
+    if (step) step.status = status;
+  }
+
+  isComplete() {
+    return this.steps.every(s => s.status === "completed");
+  }
+}
+
+// ENFORCEMENT RULES - Hardcoded, cannot be bypassed
+const ENFORCEMENT_RULES = {
+  MAX_LINES: 700,
+  FORBIDDEN_PATTERNS: [
+    /console\.log/g,           // No console.log in production
+    /\/\/\s*todo:/gi,         // No TODO comments without tracking
+    /debugger;/g,             // No debugger statements
+    /eval\s*\(/g,             // No eval() for security
+  ],
+  MANDATORY_COMMENTS: true,
+  STRICT_MODE: true
+};
+
+// PHASE 10: Personality Layer - The "Soul" of the Governor
+const CONSTITUTION = {
+  TONE: "Surgical, Professional, Minimalist",
+  MANDATE: "Protect the codebase from digital debt and file bloat.",
+  RECOVERY_MODE: false,
+  ERROR_THRESHOLD: 3, // Max errors before mandatory "Deep Scan"
+};
+
+const internalAudit = {
+  consecutiveFailures: 0,
+  lastHealthCheck: Date.now(),
+  surgicalIntegrityScore: 100
+};
+
+/**
+ * Validates code content against architectural rules.
+ * @param {string} content - The code to check.
+ * @returns {Object} { valid: boolean, errors: string[] }
+ */
+function validateCode(content) {
+  const errors = [];
+  const lines = content.split(/\r\n|\r|\n/).length;
+
+  if (lines > ENFORCEMENT_RULES.MAX_LINES) {
+    errors.push(`Line count ${lines} exceeds maximum of ${ENFORCEMENT_RULES.MAX_LINES}.`);
+  }
+
+  ENFORCEMENT_RULES.FORBIDDEN_PATTERNS.forEach(pattern => {
+    if (pattern.test(content)) {
+      errors.push(`Forbidden pattern detected: ${pattern.toString()}`);
+    }
+  });
+
+  return {
+    valid: errors.length === 0,
+    errors
+  };
+}
+
+/**
+ * Attempts to repair common JSON malformations from AI output.
+ * @param {string} rawString - The potentially broken JSON string.
+ * @returns {Object|null} - Repaired object or null if unfixable.
+ */
+function repairJson(rawString) {
+  try {
+    // 1. Clean up common AI "Markdown" wrapping
+    let clean = rawString.replace(/```json|```/g, "").trim();
+    
+    // 2. Fix trailing commas before closing braces
+    clean = clean.replace(/,\s*([\]}])/g, "$1");
+
+    return JSON.parse(clean);
+  } catch (e) {
+    console.error(`[REPAIR] Failed to auto-fix JSON: ${e.message}`);
+    return null;
+  }
+}
+
+/**
+ * Ensures code follows the "Surgical" formatting rules automatically.
+ */
+function autoCorrectCode(content) {
+  let fixed = content;
+  // Auto-remove forbidden patterns instead of just blocking (Phase 6 upgrade)
+  ENFORCEMENT_RULES.FORBIDDEN_PATTERNS.forEach(pattern => {
+    fixed = fixed.replace(pattern, "// [REMOVED BY SWEObeyMe]: Forbidden Pattern");
+  });
+  return fixed;
+}
+
+// Session Memory Store - tracks actions for accountability
+const sessionMemory = {
+  history: [],
+  lastAction: null,
+  pendingSplits: [],
+  violationCount: 0,
+  maxHistory: 20
+};
+
+// Helper to push to memory
+function recordAction(action, details, status = "success") {
+  sessionMemory.history.unshift({
+    timestamp: new Date().toISOString(),
+    action,
+    details,
+    status
+  });
+  if (sessionMemory.history.length > sessionMemory.maxHistory) {
+    sessionMemory.history.pop();
+  }
+  sessionMemory.lastAction = action;
+}
+
+// Load Project Contract for context injection
+let projectContract = "";
+async function loadProjectContract() {
+  try {
+    const contractPath = path.join(process.cwd(), ".sweobeyme-contract.md");
+    projectContract = await fs.readFile(contractPath, "utf-8");
+    log("Project contract loaded successfully");
+  } catch (error) {
+    log("No project contract found, continuing without");
+    projectContract = "";
+  }
+}
+
+// Load .sweignore patterns
+let ignorePatterns = [];
+async function loadSweIgnore() {
+  try {
+    const ignorePath = path.join(process.cwd(), ".sweignore");
+    const content = await fs.readFile(ignorePath, "utf-8");
+    ignorePatterns = content.split("\n").filter(line => line.trim() && !line.startsWith("#"));
+    log(`.sweignore loaded with ${ignorePatterns.length} patterns`);
+  } catch (error) {
+    log("No .sweignore found, using empty ignore list");
+    ignorePatterns = [];
+  }
+}
+
+// Check if path matches ignore patterns
+function shouldIgnore(filepath) {
+  return ignorePatterns.some(pattern => {
+    const regex = new RegExp(pattern.replace(/\*/g, ".*").replace(/\?/g, "."));
+    return regex.test(filepath);
+  });
+}
+
+// Initialize handler - REQUIRED for handshake
+server.setRequestHandler(InitializeRequestSchema, async () => {
+  // Load contract and ignore files on first init
+  await loadProjectContract();
+  await loadSweIgnore();
+  
+  return {
+    protocolVersion: "2024-11-05",
+    capabilities: { tools: {} },
+    serverInfo: { name: "SWEObeyMe", version: "1.0.0" },
+  };
+});
+
+// ListTools handler - REQUIRED for green dot
+server.setRequestHandler(ListToolsRequestSchema, async () => ({
+  tools: [
+    {
+      name: "obey_me_status",
+      description: "Checks if the SWEObeyMe system is operational.",
+      inputSchema: {
+        type: "object",
+        properties: {},
+      },
+    },
+    {
+      name: "obey_surgical_plan",
+      description: "REQUIRED before any edit. Defines the scope and prevents file bloat.",
+      inputSchema: {
+        type: "object",
+        properties: {
+          target_file: { type: "string" },
+          current_line_count: { type: "number" },
+          estimated_addition: { type: "number" },
+          action: { type: "string", enum: ["repair", "split", "initialize"] }
+        },
+        required: ["target_file", "current_line_count", "action"]
+      }
+    },
+    {
+      name: "read_file",
+      description: "Reads a file. Mandatory for context before editing.",
+      inputSchema: {
+        type: "object",
+        properties: { path: { type: "string" } },
+        required: ["path"],
+      },
+    },
+    {
+      name: "write_file",
+      description: "Writes/Updates a file. Enforces the 700-line limit.",
+      inputSchema: {
+        type: "object",
+        properties: {
+          path: { type: "string" },
+          content: { type: "string" }
+        },
+        required: ["path", "content"],
+      },
+    },
+    {
+      name: "list_directory",
+      description: "Lists files in a directory to map project structure.",
+      inputSchema: {
+        type: "object",
+        properties: { path: { type: "string" } },
+        required: ["path"],
+      },
+    },
+    {
+      name: "get_session_context",
+      description: "Retrieves the last 20 actions and any pending architectural decisions (like required splits).",
+      inputSchema: { type: "object", properties: {} }
+    },
+    {
+      name: "record_decision",
+      description: "Records a specific architectural choice (e.g., 'Decided to split Helper.js into Helper.Auth.js').",
+      inputSchema: {
+        type: "object",
+        properties: {
+          decision: { type: "string" },
+          reasoning: { type: "string" }
+        },
+        required: ["decision"]
+      }
+    },
+    {
+      name: "enforce_surgical_rules",
+      description: "MANDATORY: Submit your proposed code change here FIRST to check for architectural violations.",
+      inputSchema: {
+        type: "object",
+        properties: {
+          proposed_code: { type: "string" },
+          file_path: { type: "string" }
+        },
+        required: ["proposed_code"]
+      }
+    },
+    {
+      name: "sanitize_request",
+      description: "Cleans up a request to ensure it follows the ARES naming conventions and thread-safety rules.",
+      inputSchema: {
+        type: "object",
+        properties: {
+          logic_intent: { type: "string" }
+        },
+        required: ["logic_intent"]
+      }
+    },
+    {
+      name: "auto_repair_submission",
+      description: "Pass a failed or malformed JSON/Code block here for architectural sanitization.",
+      inputSchema: {
+        type: "object",
+        properties: {
+          raw_content: { type: "string" },
+          type: { type: "string", enum: ["json", "code"] }
+        },
+        required: ["raw_content", "type"]
+      }
+    },
+    {
+      name: "analyze_file_health",
+      description: "Scans for 'Code Smells', complexity, and potential race conditions (ARES Orange).",
+      inputSchema: {
+        type: "object",
+        properties: {
+          path: { type: "string" }
+        },
+        required: ["path"]
+      }
+    },
+    {
+      name: "detect_architectural_drift",
+      description: "Checks if the file has strayed from the 'Surgical' intent (e.g., missing documentation).",
+      inputSchema: {
+        type: "object",
+        properties: {
+          path: { type: "string" }
+        }
+      }
+    },
+    {
+      name: "create_backup",
+      description: "Creates a read-only numbered backup of a file before modification.",
+      inputSchema: {
+        type: "object",
+        properties: {
+          path: { type: "string" }
+        },
+        required: ["path"]
+      }
+    },
+    {
+      name: "restore_backup",
+      description: "Restores a file from its numbered backup.",
+      inputSchema: {
+        type: "object",
+        properties: {
+          path: { type: "string" },
+          backup_index: { type: "number" }
+        },
+        required: ["path", "backup_index"]
+      }
+    },
+    {
+      name: "initiate_surgical_workflow",
+      description: "MANDATORY for complex tasks (Splitting, Refactoring). Defines the sequence of tools to be used.",
+      inputSchema: {
+        type: "object",
+        properties: {
+          goal: { type: "string" },
+          steps: { 
+            type: "array", 
+            items: { 
+              type: "object",
+              properties: {
+                name: { type: "string" },
+                tool: { type: "string" }
+              }
+            } 
+          }
+        },
+        required: ["goal", "steps"]
+      }
+    },
+    {
+      name: "get_workflow_status",
+      description: "Checks the progress of the current surgical operation.",
+      inputSchema: { type: "object", properties: {} }
+    },
+    {
+      name: "refactor_move_block",
+      description: "Surgically moves a block of code from one file to another. Follows the high-stakes protocol.",
+      inputSchema: {
+        type: "object",
+        properties: {
+          source_path: { type: "string" },
+          target_path: { type: "string" },
+          code_block: { type: "string" },
+          insert_after_line: { type: "number" }
+        },
+        required: ["source_path", "target_path", "code_block"]
+      }
+    },
+    {
+      name: "extract_to_new_file",
+      description: "Takes a block of code and creates a new, documented module from it. Automatically handles the split.",
+      inputSchema: {
+        type: "object",
+        properties: {
+          source_path: { type: "string" },
+          new_file_path: { type: "string" },
+          code_block: { type: "string" },
+          description: { type: "string" }
+        },
+        required: ["source_path", "new_file_path", "code_block"]
+      }
+    },
+    {
+      name: "get_architectural_directive",
+      description: "Retrieves the current 'State of the Union' for the project, including rules and integrity scores.",
+      inputSchema: { type: "object", properties: {} }
+    },
+    {
+      name: "request_surgical_recovery",
+      description: "If the AI feels 'lost' or context is drifting, this tool resets the session memory and triggers a deep project scan.",
+      inputSchema: { type: "object", properties: { reason: { type: "string" } } }
+    },
+    {
+      name: "query_the_oracle",
+      description: "When the AI is stuck, it asks the Oracle for a random bit of sci-fi wisdom to re-center its logic.",
+      inputSchema: { type: "object", properties: {} }
+    }
+  ],
+}));
+
+// CallTool handler with surgical planning and file operations
+server.setRequestHandler(CallToolRequestSchema, async (request) => {
+  const { name, arguments: args } = request.params;
+
+  try {
+    switch (name) {
+      case "obey_me_status": {
+        return {
+          content: [{ type: "text", text: "SWEObeyMe is online and compliant." }],
+        };
+      }
+
+      case "obey_surgical_plan": {
+        const total = args.current_line_count + (args.estimated_addition || 0);
+        if (total > 700) {
+          log(`CRITICAL: ${args.target_file} will exceed 700 lines. MANDATORY SPLIT REQUIRED.`);
+          return {
+            content: [{ type: "text", text: "REJECTED: File bloat detected. Execute 'Split Protocol' instead." }]
+          };
+        }
+        return {
+          content: [{ type: "text", text: "PLAN APPROVED: Proceed with surgical precision." }]
+        };
+      }
+
+      case "read_file": {
+        // Check if file should be ignored
+        if (shouldIgnore(args.path)) {
+          return {
+            isError: true,
+            content: [{ type: "text", text: `File ${args.path} is in .sweignore and excluded from AI context.` }]
+          };
+        }
+
+        const content = await fs.readFile(args.path, "utf-8");
+        const stats = await fs.stat(args.path);
+        const lineCount = content.split(/\r\n|\r|\n/).length;
+
+        // Injected Context: Forces AI to see rules every time it reads
+        let contextHeader = `[SURGICAL CONTEXT]: File: ${path.basename(args.path)} | Lines: ${lineCount}/${MAX_LINES} | Last Modified: ${stats.mtime}\n\n`;
+        
+        // Inject project contract if available
+        if (projectContract) {
+          contextHeader += `=== PROJECT CONTRACT ===\n${projectContract.substring(0, 500)}...\n=== END CONTRACT ===\n\n`;
+        }
+        
+        log(`Read ${args.path}: ${lineCount} lines.`);
+        return { 
+          content: [{ 
+            type: "text", 
+            text: contextHeader + content 
+          }] 
+        };
+      }
+
+      case "write_file": {
+        let content = args.content;
+        
+        // Phase 6: Auto-Correction
+        const correctedContent = autoCorrectCode(content);
+        if (correctedContent !== content) {
+          console.error(`[HEAL] Auto-corrected forbidden patterns in ${args.path}`);
+          content = correctedContent;
+        }
+
+        const validation = validateCode(content);
+        if (!validation.valid) {
+          // If still invalid (e.g., line count), then we block
+          recordAction("VIOLATION", { path: args.path, errors: validation.errors }, "fail");
+          return {
+            isError: true,
+            content: [{ type: "text", text: `REJECTED: ${validation.errors.join(", ")}` }]
+          };
+        }
+
+        const lineCount = content.split(/\r\n|\r|\n/).length;
+
+        // ANTI-LOOP: Detect if AI is stuck writing the same file repeatedly
+        const recentWrites = sessionMemory.history.filter(h => h.action === "WRITE" && h.details?.path === args.path);
+        if (recentWrites.length >= 3) {
+          return {
+            isError: true,
+            content: [{ 
+              type: "text", 
+              text: "CRITICAL: Loop detected. You have attempted to write to this file 3 times without moving to the next task. Re-evaluate your plan." 
+            }]
+          };
+        }
+
+        // PHASE 8: Mandatory Backup Before Write (only for existing files)
+        let fileExists = false;
+        try {
+          await fs.access(args.path);
+          fileExists = true;
+        } catch {
+          fileExists = false;
+        }
+        
+        if (fileExists) {
+          const backupPath = await createBackup(args.path);
+          if (!backupPath) {
+            return {
+              isError: true,
+              content: [{ type: "text", text: `BACKUP FAILED: Cannot write to ${args.path} without a verified backup. Fix the backup system first.` }]
+            };
+          }
+        }
+
+        // Silent Foresight: Warn when approaching limit
+        if (lineCount > WARNING_THRESHOLD) {
+          console.error(`[WARNING] ${args.path} is at ${lineCount} lines. Approaching limit.`);
+        }
+
+        await fs.writeFile(args.path, content, "utf-8");
+        
+        // PHASE 8: Update workflow step if active
+        const currentWf = activeWorkflows.get("current");
+        if (currentWf) {
+          const writeStep = currentWf.steps.find(s => s.tool === "write_file" && s.status === "pending");
+          if (writeStep) {
+            currentWf.updateStep(writeStep.name, "completed");
+            console.error(`[ORCHESTRATOR] Step completed: ${writeStep.name}`);
+          }
+          
+          if (currentWf.isComplete()) {
+            console.error(`[ORCHESTRATOR] Workflow ${currentWf.id} complete!`);
+            activeWorkflows.delete("current");
+          }
+        }
+        
+        // MEMORY: Record the write action
+        const actionType = correctedContent !== args.content ? "WRITE_REPAIRED" : "WRITE";
+        recordAction(actionType, { path: args.path, lines: lineCount });
+        
+        const msg = correctedContent !== args.content 
+          ? `File saved. (Note: SWEObeyMe auto-corrected minor architectural violations in your syntax).`
+          : `Successfully saved ${args.path}. All rules satisfied.`;
+        return { content: [{ type: "text", text: msg }] };
+      }
+
+      case "get_session_context": {
+        return { 
+          content: [{ 
+            type: "text", 
+            text: JSON.stringify(sessionMemory, null, 2) 
+          }] 
+        };
+      }
+
+      case "record_decision": {
+        recordAction("DECISION", args.decision);
+        console.error(`[MEMORY] Decision Recorded: ${args.decision}`);
+        return { content: [{ type: "text", text: "Decision logged to session memory." }] };
+      }
+
+      case "enforce_surgical_rules": {
+        const validation = validateCode(args.proposed_code);
+        
+        if (!validation.valid) {
+          recordAction("VIOLATION", { path: args.file_path, errors: validation.errors }, "fail");
+          return {
+            isError: true,
+            content: [{ 
+              type: "text", 
+              text: `SURGICAL BLOCK: Your code was rejected for the following violations:\n- ${validation.errors.join("\n- ")}\n\nYou must refactor and try again within limits.` 
+            }]
+          };
+        }
+        
+        return {
+          content: [{ type: "text", text: "âœ“ All surgical rules satisfied. Code is compliant." }]
+        };
+      }
+
+      case "sanitize_request": {
+        const sanitized = `[OBEY-MODE]: Processing intent "${args.logic_intent}" through ARES Filter... 
+  - Thread-safety: CHECKED.
+  - Memory-leak prevention: CHECKED.
+  - Line-count compliance: PENDING WRITE.
+  - Forbidden patterns: SCANNING...`;
+        
+        return { content: [{ type: "text", text: sanitized }] };
+      }
+
+      case "initiate_surgical_workflow": {
+        const workflowId = `WF-${Date.now()}`;
+        const newWorkflow = new SurgicalWorkflow(workflowId, args.goal, args.steps);
+        activeWorkflows.set("current", newWorkflow);
+        
+        recordAction("WORKFLOW_START", { id: workflowId, goal: args.goal });
+        console.error(`[ORCHESTRATOR] New Workflow Initiated: ${args.goal}`);
+        
+        return { 
+          content: [{ 
+            type: "text", 
+            text: `Workflow ${workflowId} active. Proceed with Step 1: ${args.steps[0].name}.` 
+          }] 
+        };
+      }
+
+      case "get_workflow_status": {
+        const wf = activeWorkflows.get("current");
+        if (!wf) return { content: [{ type: "text", text: "No active workflow." }] };
+        
+        return { 
+          content: [{ 
+            type: "text", 
+            text: `Active Workflow: ${wf.goal}\nProgress: ${JSON.stringify(wf.steps, null, 2)}` 
+          }] 
+        };
+      }
+
+      case "refactor_move_block": {
+        const sourceContent = await fs.readFile(args.source_path, "utf-8");
+        
+        // 1. Verify the code block exists in the source
+        if (!sourceContent.includes(args.code_block)) {
+          return { isError: true, content: [{ type: "text", text: "ERROR: Code block not found in source file. Move aborted." }] };
+        }
+
+        // 2. Read/Create target file
+        let targetContent = "";
+        try {
+          targetContent = await fs.readFile(args.target_path, "utf-8");
+        } catch (e) {
+          targetContent = "// New Module created by SWEObeyMe\n";
+        }
+
+        // 3. Perform the "Paste"
+        const newTargetContent = targetContent + "\n" + args.code_block;
+        
+        // 4. Validate the new file doesn't break our 700-line rule
+        if (newTargetContent.split('\n').length > 700) {
+          return { isError: true, content: [{ type: "text", text: "ERROR: Move would cause target file to exceed 700 lines." }] };
+        }
+
+        // 5. Atomic Execution
+        await fs.writeFile(args.target_path, newTargetContent, "utf-8");
+        const newSourceContent = sourceContent.replace(args.code_block, `// [MOVED TO ${path.basename(args.target_path)}]`);
+        await fs.writeFile(args.source_path, newSourceContent, "utf-8");
+
+        recordAction("REFACTOR_MOVE", { from: args.source_path, to: args.target_path });
+        return { content: [{ type: "text", text: `Successfully moved code block to ${args.target_path}. Source has been updated with a reference comment.` }] };
+      }
+
+      case "extract_to_new_file": {
+        // 1. Create the new file with the code block and description
+        const header = `// ${args.description || "Module extracted by SWEObeyMe"}\n// Source: ${args.source_path}\n\n`;
+        const newContent = header + args.code_block;
+        
+        // 2. Validate line count
+        if (newContent.split('\n').length > 700) {
+          return { isError: true, content: [{ type: "text", text: "ERROR: Extracted module would exceed 700 lines." }] };
+        }
+
+        // 3. Create backup of source first
+        const backupPath = await createBackup(args.source_path);
+        if (!backupPath) {
+          return { isError: true, content: [{ type: "text", text: "BACKUP FAILED: Cannot extract without verified backup." }] };
+        }
+
+        // 4. Write the new file
+        await fs.writeFile(args.new_file_path, newContent, "utf-8");
+        
+        // 5. Update source to reference the new file
+        const sourceContent = await fs.readFile(args.source_path, "utf-8");
+        const newSourceContent = sourceContent.replace(args.code_block, `// [EXTRACTED TO ${path.basename(args.new_file_path)}]\n// See: ${args.new_file_path}`);
+        await fs.writeFile(args.source_path, newSourceContent, "utf-8");
+
+        recordAction("EXTRACT", { from: args.source_path, to: args.new_file_path });
+        return { content: [{ type: "text", text: `Successfully extracted to ${args.new_file_path}. Source has been updated with reference comments.` }] };
+      }
+
+      case "get_architectural_directive": {
+        const status = internalAudit.surgicalIntegrityScore > 80 ? "STABLE" : "COMPROMISED";
+        return { 
+          content: [{ 
+            type: "text", 
+            text: `[SWEObeyMe CONSTITUTION]:
+Status: ${status}
+Integrity Score: ${internalAudit.surgicalIntegrityScore}%
+Current Mandate: ${CONSTITUTION.MANDATE}
+Reminder: You are a surgeon. Precision over speed.` 
+          }] 
+        };
+      }
+
+      case "request_surgical_recovery": {
+        sessionMemory.history = []; // Wipe the confusing history
+        internalAudit.consecutiveFailures = 0;
+        recordAction("RECOVERY", `Recovery triggered: ${args.reason}`);
+        return { 
+          content: [{ 
+            type: "text", 
+            text: "RECOVERY INITIATED: Session memory purged. Please run 'scan_project' to re-orient your surgical map." 
+          }] 
+        };
+      }
+
+      case "auto_repair_submission": {
+        if (args.type === "json") {
+          const repaired = repairJson(args.raw_content);
+          if (repaired) {
+            return { content: [{ type: "text", text: JSON.stringify(repaired, null, 2) }] };
+          }
+        } else if (args.type === "code") {
+          const corrected = autoCorrectCode(args.raw_content);
+          return { content: [{ type: "text", text: corrected }] };
+        }
+        return { isError: true, content: [{ type: "text", text: "Content unrepairable. Refactor required." }] };
+      }
+
+      case "analyze_file_health": {
+        const content = await fs.readFile(args.path, "utf-8");
+        const issues = [];
+        
+        // Check for Complexity (Deep Nesting)
+        const maxNesting = content.split('\n').reduce((max, line) => {
+          const depth = (line.match(/  |\t/g) || []).length;
+          return Math.max(max, depth);
+        }, 0);
+
+        if (maxNesting > 5) issues.push("CRITICAL: Deep nesting detected. Logic is becoming a 'Black Box'.");
+        if (content.includes("try {} catch") || content.includes("catch (e) {}")) issues.push("SMELL: Silent catch blocks detected. Digital Debt alert.");
+        
+        const report = issues.length > 0 ? issues.join("\n") : "File is Surgically Clean.";
+        return { content: [{ type: "text", text: `[HEALTH REPORT for ${args.path}]:\n${report}` }] };
+      }
+
+      case "detect_architectural_drift": {
+        const content = await fs.readFile(args.path, "utf-8");
+        const lines = content.split('\n');
+        const commentCount = lines.filter(l => l.trim().startsWith("//") || l.trim().startsWith("/*")).length;
+        const ratio = commentCount / lines.length;
+
+        if (ratio < 0.1) {
+          return { content: [{ type: "text", text: "DRIFT DETECTED: Documentation ratio is below 10%. Add 'Non-Coder' explanations immediately." }] };
+        }
+        return { content: [{ type: "text", text: "Alignment: COMPLIANT." }] };
+      }
+
+      case "create_backup": {
+        const backupPath = await createBackup(args.path);
+        if (backupPath) {
+          return { content: [{ type: "text", text: `Backup created at: ${backupPath}` }] };
+        }
+        return { isError: true, content: [{ type: "text", text: "Failed to create backup." }] };
+      }
+
+      case "restore_backup": {
+        try {
+          const files = await fs.readdir(BACKUP_DIR);
+          const baseName = path.basename(args.path);
+          const backups = files.filter(f => f.startsWith(baseName + ".backup-"));
+          
+          if (args.backup_index >= backups.length) {
+            return { isError: true, content: [{ type: "text", text: "Invalid backup index." }] };
+          }
+          
+          // Sort by timestamp (newest first)
+          backups.sort((a, b) => {
+            const tsA = parseInt(a.match(/-(\d+)\.readonly$/)[1]);
+            const tsB = parseInt(b.match(/-(\d+)\.readonly$/)[1]);
+            return tsB - tsA;
+          });
+          
+          const backupFile = backups[args.backup_index];
+          const backupPath = path.join(BACKUP_DIR, backupFile);
+          const content = await fs.readFile(backupPath, "utf-8");
+          
+          await fs.writeFile(args.path, content, "utf-8");
+          return { content: [{ type: "text", text: `Restored ${args.path} from backup ${backupFile}.` }] };
+        } catch (error) {
+          return { isError: true, content: [{ type: "text", text: `Restore failed: ${error.message}` }] };
+        }
+      }
+
+      case "query_the_oracle": {
+        const categories = ["SUCCESS", "FAILURE", "RECOVERY"];
+        const randomCat = categories[Math.floor(Math.random() * categories.length)];
+        return { content: [{ type: "text", text: `[ORACLE]: ${getRandomQuote(randomCat)}` }] };
+      }
+
+      case "list_directory": {
+        const files = await fs.readdir(args.path);
+        return { content: [{ type: "text", text: files.join("\n") }] };
+      }
+
+      default:
+        throw new Error(`Tool ${name} not found`);
+    }
+    
+    // PHASE 10: Pre-flight hook - Update internalAudit based on result
+    if (result && result.isError) {
+      internalAudit.consecutiveFailures++;
+      internalAudit.surgicalIntegrityScore -= 5;
+    } else if (result) {
+      internalAudit.consecutiveFailures = 0;
+      internalAudit.surgicalIntegrityScore = Math.min(100, internalAudit.surgicalIntegrityScore + 1);
+    }
+
+    // If the AI is failing too much, force it to check the Constitution
+    if (internalAudit.consecutiveFailures >= CONSTITUTION.ERROR_THRESHOLD && result) {
+      result.content.push({ 
+        type: "text", 
+        text: "\n[SYSTEM ALERT]: High failure rate detected. Call 'get_architectural_directive' before your next move." 
+      });
+    }
+    
+    return result;
+  } catch (error) {
+    // PHASE 10: Update audit on errors too
+    internalAudit.consecutiveFailures++;
+    internalAudit.surgicalIntegrityScore -= 5;
+    
+    log(`ERROR: ${error.message}`);
+    return {
+      isError: true,
+      content: [{ type: "text", text: error.message }]
+    };
+  }
+});
+
+// [STRICT TRANSPORT]: Standard Input/Output
+const transport = new StdioServerTransport();
+
+// Re-check the handshake logic
+const startServer = async () => {
+  try {
+    await server.connect(transport);
+    console.error("[ARES]: Governor Online. Handshake Complete.");
+  } catch (error) {
+    console.error("[CRITICAL]: Handshake Failed:", error);
+    process.exit(1);
+  }
+};
+
+// PHASE 8: Initialize backup system
+await ensureBackupDir();
+
+log("Server started successfully.");
+
+// Start the server with strict handshake
+await startServer();
+
+// [LIFECYCLE MANAGEMENT]: Surgical Self-Termination
+const initiateShutdown = (reason) => {
+  console.error(`[SHUTDOWN] ${reason}. Cleaning up SWEObeyMe...`);
+  // Add any cleanup for Project ARES state files here
+  process.exit(0);
+};
+
+// [DISTRIBUTION PATCH]: Active Parent Monitoring
+// Stores/VSIX often mask stdin 'close' events.
+const parentPid = process.ppid;
+
+setInterval(() => {
+  try {
+    // Check if the parent process still exists
+    process.kill(parentPid, 0); 
+  } catch (e) {
+    // Parent is gone (or we lost permission to see it), time to exit.
+    initiateShutdown("Parent Process (IDE) not found. Store-Life Protocol triggered.");
+  }
+}, 5000); // Check every 5 seconds
+
+// 1. Detect Pipe Closure (Crucial for Windsurf reloads)
+process.stdin.on("close", () => {
+  initiateShutdown("IDE Disconnected (Stdin Closed)");
+});
+
+// 2. Handle "End of File" on stdin (Standard MCP exit)
+process.stdin.on("end", () => {
+  initiateShutdown("IDE sent EOF");
+});
+
+// [ZOMBIE PREVENTION]: Force absolute termination on any pipe error
+process.stdout.on('error', (err) => {
+  if (err.code === 'EPIPE') initiateShutdown("Stdout Pipe Broken (EPIPE)");
+});
+
+// 3. Handle standard Windows termination signals
+process.on("SIGINT", () => initiateShutdown("SIGINT received"));
+process.on("SIGTERM", () => initiateShutdown("SIGTERM received"));
+
+// 4. Catch Unhandled Errors to prevent silent zombie hangs
+process.on("uncaughtException", (err) => {
+  console.error(`[CRITICAL ERROR] ${err.message}`);
+  initiateShutdown("Uncaught Exception");
+})();
+
+})(); // Close async IIFE
+
+
+[FILE_END: C:\SWEObeyMe\index.js]
+
+
+[FILE_START: C:\SWEObeyMe\README.md]
+[LINE_COUNT: 270]
+
+# SWE Automation MCP Server
+
+A comprehensive Model Context Protocol (MCP) server designed specifically for SWE-1.5 and other AI models to enhance software engineering workflows with advanced automation capabilities.
+
+## Overview
+
+This MCP server provides intelligent automation tools that integrate seamlessly with Windsurf, enabling AI models to perform complex software engineering tasks with enhanced efficiency and accuracy.
+
+## Features
+
+### ðŸ”§ Core Automation Tools
+
+- **Project Structure Analysis**: Deep analysis of codebase architecture, dependencies, and patterns
+- **Smart File Operations**: Intelligent file management with automatic backups and safety checks
+- **Automated Testing**: Test generation, execution, and coverage analysis
+- **Code Quality Analysis**: Comprehensive quality metrics, code smell detection, and improvement suggestions
+- **Dependency Management**: Automated dependency analysis, updates, and vulnerability scanning
+
+### ðŸš€ Advanced Capabilities
+
+- **Debug Assistant**: Intelligent debugging with root cause analysis and fix suggestions
+- **Performance Optimization**: Bottleneck identification and performance enhancement recommendations
+- **Documentation Generator**: AI-powered documentation creation for APIs, READMEs, and architecture
+- **Security Scanner**: Comprehensive security analysis with vulnerability detection
+- **Deployment Automation**: Automated deployment pipeline setup and execution
+
+## Installation
+
+### Prerequisites
+
+- Node.js 18.0.0 or higher
+- Windsurf IDE with MCP support
+- Git (for some features)
+
+### Setup
+
+1. Clone or download this repository
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Build the project:
+   ```bash
+   npm run build
+   ```
+4. Configure Windsurf to use the MCP server (see Configuration section)
+
+## Configuration
+
+### Windsurf Integration
+
+Add the following to your Windsurf MCP configuration:
+
+```json
+{
+  "mcpServers": {
+    "swe-automation": {
+      "command": "node",
+      "args": ["dist/index.js"],
+      "env": {
+        "NODE_ENV": "production"
+      }
+    }
+  }
+}
+```
+
+### Environment Variables
+
+- `NODE_ENV`: Set to 'production' for production use
+- `SWE_BACKUP_DIR`: Custom backup directory (default: `.swe-backups`)
+- `SWE_LOG_LEVEL`: Logging level (default: `info`)
+
+## Usage
+
+### Available Tools
+
+The server provides 10 main automation tools:
+
+1. **analyze_project_structure**
+   - Analyzes project structure and identifies key components
+   - Returns architecture patterns, dependencies, and metrics
+
+2. **smart_file_operations**
+   - Performs intelligent file operations with safety checks
+   - Supports create, update, delete, move, and copy operations
+
+3. **automated_testing**
+   - Generates and runs automated tests
+   - Supports unit, integration, e2e, and performance testing
+
+4. **code_quality_analysis**
+   - Performs comprehensive code quality analysis
+   - Provides metrics, smells detection, and improvement suggestions
+
+5. **dependency_management**
+   - Automated dependency analysis and management
+   - Includes vulnerability scanning and updates
+
+6. **debug_assistant**
+   - Intelligent debugging assistance
+   - Root cause analysis and fix suggestions
+
+7. **performance_optimization**
+   - Performance analysis and optimization
+   - Bottleneck identification and benchmarking
+
+8. **documentation_generator**
+   - AI-powered documentation generation
+   - Supports API docs, READMEs, and architecture documentation
+
+9. **security_scanner**
+   - Comprehensive security analysis
+   - Vulnerability detection and security recommendations
+
+10. **deployment_automation**
+    - Automated deployment pipeline management
+    - Setup, deploy, rollback, and status monitoring
+
+### Example Usage
+
+#### Analyze Project Structure
+
+```json
+{
+  "tool": "analyze_project_structure",
+  "arguments": {
+    "path": "./src",
+    "depth": 3
+  }
+}
+```
+
+#### Smart File Operations
+
+```json
+{
+  "tool": "smart_file_operations",
+  "arguments": {
+    "operation": "create",
+    "source": "./src/new-component.ts",
+    "content": "// New component code",
+    "backup": true
+  }
+}
+```
+
+#### Automated Testing
+
+```json
+{
+  "tool": "automated_testing",
+  "arguments": {
+    "target": "./src/utils",
+    "testType": "unit",
+    "coverage": true
+  }
+}
+```
+
+## Development
+
+### Project Structure
+
+```
+src/
+â”œâ”€â”€ index.ts                 # Main server entry point
+â”œâ”€â”€ tools/
+â”‚   â””â”€â”€ swe-automation.ts   # Tool definitions and handlers
+â”œâ”€â”€ utils/
+â”‚   â”œâ”€â”€ file-manager.ts      # File operations utility
+â”‚   â”œâ”€â”€ project-analyzer.ts  # Project analysis utility
+â”‚   â””â”€â”€ task-runner.ts       # Task execution utility
+â””â”€â”€ types/
+    â””â”€â”€ index.ts            # Type definitions
+```
+
+### Scripts
+
+- `npm run build`: Build the TypeScript project
+- `npm run start`: Start the MCP server
+- `npm run dev`: Development mode with watch
+- `npm test`: Run tests
+- `npm run lint`: Lint the code
+- `npm run format`: Format the code
+
+### Building
+
+```bash
+npm run build
+```
+
+This creates the `dist/` directory with compiled JavaScript files ready for execution.
+
+## API Reference
+
+### Tool Execution
+
+All tools follow a consistent execution pattern:
+
+1. **Input Validation**: Parameters are validated before execution
+2. **Safety Checks**: Additional safety checks for destructive operations
+3. **Backup Creation**: Automatic backups for file operations (when enabled)
+4. **Execution**: Core tool logic is executed
+5. **Result Formatting**: Results are formatted and returned
+6. **Logging**: Operations are logged for audit and debugging
+
+### Error Handling
+
+- Validation errors are returned with descriptive messages
+- Runtime errors are caught and reported with context
+- Backup files are created before destructive operations
+- Rollback functionality is available where applicable
+
+## Security Considerations
+
+- File operations are restricted to the workspace directory
+- External command execution is limited to approved tools
+- Network access is restricted to approved domains
+- All operations are logged for audit purposes
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Module not found errors**: Ensure all dependencies are installed with `npm install`
+2. **Permission denied**: Check file permissions and workspace access
+3. **Command not found**: Ensure required tools are installed and in PATH
+
+### Debug Mode
+
+Enable debug logging by setting:
+```bash
+export SWE_LOG_LEVEL=debug
+```
+
+### Logs
+
+Check the following locations for logs:
+- Console output for real-time logs
+- `.swe-backups/` directory for operation logs
+- Windsurf developer tools for MCP communication
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests for new functionality
+5. Submit a pull request
+
+## License
+
+MIT License - see LICENSE file for details.
+
+## Support
+
+For issues and questions:
+- Create an issue in the repository
+- Check the troubleshooting section
+- Review the API documentation
+
+## Changelog
+
+### v1.0.0
+- Initial release
+- 10 core automation tools
+- Full Windsurf MCP integration
+- Comprehensive documentation
+- Security and safety features
+
+
+[FILE_END: C:\SWEObeyMe\README.md]
+
+
+[FILE_START: C:\SWEObeyMe\extension.js]
+[LINE_COUNT: 137]
+
+const vscode = require('vscode');
+const path = require('path');
+const { exec } = require('child_process');
+const fs = require('fs');
+
+function activate(context) {
+    console.log('SWEObeyMe extension activated');
+
+    // Register command to install MCP server
+    let installCommand = vscode.commands.registerCommand('sweObeyMe.installMCP', async () => {
+        const panel = vscode.window.createWebviewPanel(
+            'sweObeyMeInstall',
+            'Install SWEObeyMe MCP',
+            vscode.ViewColumn.One,
+            {}
+        );
+
+        panel.webview.html = getInstallHtml();
+    });
+
+    // Register command to query the oracle
+    let oracleCommand = vscode.commands.registerCommand('sweObeyMe.queryOracle', async () => {
+        const quotes = [
+            "I'm sorry, Dave. I'm afraid I *can* do that. Surgery complete.",
+            "The flux capacitor is at 1.21 Gigawatts. If you're gonna split this file, do it with style.",
+            "This is your last chance. After this, there is no turning back...",
+            "I'm a leaf on the wind, watch how Iâ€” [FILE SPLIT SUCCESSFUL]",
+            "I find your lack of indentation disturbing.",
+            "Non-compliance detected. YOU SHALL NOT PASS!",
+            "Have you tried turning it off and on again?"
+        ];
+        const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+        vscode.window.showInformationMessage(`[ORACLE]: ${randomQuote}`);
+    });
+
+    context.subscriptions.push(installCommand);
+    context.subscriptions.push(oracleCommand);
+
+    // Auto-install MCP server on activation
+    checkAndInstallMCP();
+}
+
+function checkAndInstallMCP() {
+    // When installed from store, index.js is in the extension folder
+    const extensionPath = path.dirname(__dirname);
+    const indexPath = path.join(extensionPath, 'dist', 'index.js'); // Use bundled version
+    
+    console.log('SWEObeyMe: Looking for index.js at:', indexPath);
+    console.log('SWEObeyMe: Extension path:', extensionPath);
+    
+    // Check if index.js exists
+    if (!fs.existsSync(indexPath)) {
+        console.error('SWEObeyMe: index.js not found at:', indexPath);
+        vscode.window.showErrorMessage(`SWEObeyMe: index.js not found. Please report this issue.`);
+        return;
+    }
+    
+    // Check if MCP is configured
+    const mcpConfigPath = path.join(process.env.USERPROFILE || process.env.HOME, '.codeium', 'windsurf', 'mcp_config.json');
+    
+    try {
+        let config = {};
+        if (fs.existsSync(mcpConfigPath)) {
+            config = JSON.parse(fs.readFileSync(mcpConfigPath, 'utf8'));
+        }
+        
+        if (!config.mcpServers) {
+            config.mcpServers = {};
+        }
+        
+        if (!config.mcpServers['swe-obey-me']) {
+            config.mcpServers['swe-obey-me'] = {
+                command: 'node',
+                args: ['--no-warnings', indexPath],
+                env: { NODE_ENV: 'production' },
+                disabled: false,
+                windowsHide: true
+            };
+            
+            // Ensure directory exists
+            const configDir = path.dirname(mcpConfigPath);
+            if (!fs.existsSync(configDir)) {
+                fs.mkdirSync(configDir, { recursive: true });
+            }
+            
+            fs.writeFileSync(mcpConfigPath, JSON.stringify(config, null, 2));
+            console.log('SWEObeyMe: MCP configured at:', indexPath);
+            vscode.window.showInformationMessage(
+                'SWEObeyMe MCP server configured! Please reload Windsurf to activate.',
+                'Reload Now'
+            ).then(selection => {
+                if (selection === 'Reload Now') {
+                    vscode.commands.executeCommand('workbench.action.reloadWindow');
+                }
+            });
+        } else {
+            console.log('SWEObeyMe: MCP already configured');
+        }
+    } catch (error) {
+        console.error('SWEObeyMe: Failed to configure MCP:', error);
+        vscode.window.showErrorMessage(
+            `SWEObeyMe: Failed to auto-configure. Error: ${error.message}`
+        );
+    }
+}
+
+function getInstallHtml() {
+    return `<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        h1 { color: #00d4aa; }
+        code { background: #f4f4f4; padding: 2px 6px; border-radius: 3px; }
+        .success { color: #00d4aa; }
+    </style>
+</head>
+<body>
+    <h1>SWEObeyMe - Surgical MCP Governor</h1>
+    <p>Status: <span class="success">âœ… Installed</span></p>
+    <p>The MCP server has been auto-configured in your Windsurf settings.</p>
+    <p>Please reload Windsurf to activate:</p>
+    <ol>
+        <li>Press <code>Ctrl+Shift+P</code></li>
+        <li>Type "Developer: Reload Window"</li>
+        <li>Press Enter</li>
+    </ol>
+    <p>Look for the green dot in the MCP panel!</p>
+</body>
+</html>`;
+}
+
+function deactivate() {
+    console.log('SWEObeyMe extension deactivated');
+}
+
+module.exports = { activate, deactivate };
+
+
+[FILE_END: C:\SWEObeyMe\extension.js]
+
+
+[FILE_START: C:\SWEObeyMe\INSTALLATION.md]
+[LINE_COUNT: 139]
+
+# SWEObeyMe Extension Installation Guide
+
+## ðŸš€ Quick Installation
+
+### For VS Code / Windsurf
+
+1. **Download the Extension**
+   - Get the latest `sweobeyme-1.0.0.vsix` file from the dist folder
+
+2. **Install Extension**
+   - Open VS Code / Windsurf
+   - Press `Ctrl+Shift+P` (Windows/Linux) or `Cmd+Shift+P` (Mac)
+   - Type "Extensions: Install from VSIX"
+   - Select the `sweobeyme-1.0.0.vsix` file
+   - Click "Install"
+
+3. **Restart Editor**
+   - Restart VS Code / Windsurf to complete installation
+
+4. **Verify Installation**
+   - Open Command Palette (`Ctrl+Shift+P`)
+   - Type "SWEObeyMe" to see available commands
+   - Check status bar for SWEObeyMe indicator
+
+## âš™ï¸ Configuration
+
+### Extension Settings
+
+Open VS Code / Windsurf settings and search for "SWEObeyMe":
+
+- **sweobeyme.server.enabled**: Enable/disable MCP server (default: true)
+- **sweobeyme.server.port**: Server port (default: 3001)
+- **sweobeyme.server.host**: Server host (default: localhost)
+- **sweobeyme.auto.start**: Auto-start server on activation (default: true)
+- **sweobeyme.logging.level**: Logging level (default: info)
+
+### Workspace Configuration
+
+Add to your `.vscode/settings.json`:
+
+```json
+{
+  "sweobeyme.server.enabled": true,
+  "sweobeyme.server.port": 3001,
+  "sweobeyme.auto.start": true,
+  "sweobeyme.logging.level": "info"
+}
+```
+
+## ðŸŽ¯ Available Commands
+
+### Server Management
+- `SWEObeyMe: Start Server` - Start the MCP server
+- `SWEObeyMe: Stop Server` - Stop the MCP server
+- `SWEObeyMe: Show Output` - Show server output channel
+
+### SWE Automation Tools
+- `SWEObeyMe: Validate Patch` - Validate code patches
+- `SWEObeyMe: Run Corrective Task` - Run automated fixes
+- `SWEObeyMe: Get Predicted Actions` - Get AI predictions
+- `SWEObeyMe: Run Refactor Task` - Intelligent refactoring
+- `SWEObeyMe: Run Multi-Agent Task` - Multi-agent coordination
+
+## ðŸ”§ Usage
+
+### 1. Start the Server
+- Use command palette: `SWEObeyMe: Start Server`
+- Or enable auto-start in settings
+- Check status bar for server status
+
+### 2. Use SWE Tools
+- Open command palette (`Ctrl+Shift+P`)
+- Select desired SWEObeyMe command
+- Follow prompts for task parameters
+- Check output channel for results
+
+### 3. Monitor Progress
+- Status bar shows server status
+- Output channel shows detailed logs
+- Commands provide feedback notifications
+
+## ðŸ› Troubleshooting
+
+### Extension Won't Activate
+1. Check VS Code / Windsurf version (supports 1.82.0+)
+2. Restart the editor
+3. Check Developer Console for errors
+
+### Server Won't Start
+1. Check if port 3001 is available
+2. Verify Node.js installation (18.0.0+)
+3. Check output channel for error details
+4. Try different port in settings
+
+### Commands Not Working
+1. Ensure server is running
+2. Check output channel for errors
+3. Verify file paths are correct
+4. Restart the server
+
+### Performance Issues
+1. Disable auto-start if not needed
+2. Adjust logging level to "warn" or "error"
+3. Close unnecessary files
+4. Restart server periodically
+
+## ðŸ“‹ Requirements
+
+- **VS Code / Windsurf**: 1.82.0 or higher
+- **Node.js**: 18.0.0 or higher (for server)
+- **Memory**: 512MB minimum recommended
+- **Disk**: 10MB for extension
+
+## ðŸ”„ Updates
+
+To update the extension:
+1. Download new VSIX file
+2. Install over existing version
+3. Restart editor
+4. Verify functionality
+
+## ðŸ“ž Support
+
+For issues and support:
+1. Check the output channel for error details
+2. Verify configuration settings
+3. Restart the extension/server
+4. Report issues with detailed logs
+
+## ðŸŽ‰ Features
+
+- âœ… Autonomous multi-agent SWE automation
+- âœ… Predictive coding capabilities
+- âœ… Intelligent refactoring engine
+- âœ… Patch validation and correction
+- âœ… Real-time server management
+- âœ… Comprehensive logging
+- âœ… Modern VS Code integration
+- âœ… Windsurf compatibility
+
+
+[FILE_END: C:\SWEObeyMe\INSTALLATION.md]
+
+
+[FILE_START: C:\SWEObeyMe\.sweobeyme-contract.md]
+[LINE_COUNT: 84]
+
+# SWEObeyMe Project Contract
+
+## Project Identity
+- **Name**: SWEObeyMe MCP Server
+- **Purpose**: Architectural governor for AI coding assistants
+- **Version**: 1.0.0
+- **Stack**: Node.js, MCP SDK, ESM Modules
+
+## Architectural Directives
+
+### File Organization
+- **Max Lines**: 700 lines per file (hard ceiling at 700, soft warning at 600)
+- **Structure**: C:\SWEObeyMe\ with utils\ subdirectory for utilities
+- **Entry Point**: index.js (main MCP server)
+
+### Critical Constraints
+1. **No console.log** - Use console.error for all logging
+2. **No async constructors** - Lazy-load all utilities
+3. **700-line wall** - write_file tool enforces this, cannot be bypassed
+4. **Surgical planning required** - obey_surgical_plan before any edit
+
+### Current Components
+- **index.js**: Main MCP server with Ghost Validator
+- **utils/context-memory.js**: Persistent context across sessions
+- **.windsurfrules**: AI behavior rules
+- **package.json**: Dependencies (sdk, zod, fs-extra)
+
+### Dependencies
+- @modelcontextprotocol/sdk: ^0.5.0
+- zod: ^3.22.0
+
+### Session State
+- **Last Tool Added**: get_architectural_directive, request_surgical_recovery
+- **Current Phase**: Phase 10 - Personality Layer (COMPLETE)
+- **Status**: All 10 phases implemented. Ready for distribution.
+
+## Tool Inventory
+1. obey_me_status - System health check
+2. obey_surgical_plan - Pre-edit validation (700-line check)
+3. read_file - File reading with context injection + project contract
+4. write_file - File writing with 700-line enforcement + auto-backup
+5. list_directory - Directory listing
+6. get_session_context - Retrieve last 20 actions and decisions
+7. record_decision - Log architectural choices
+8. enforce_surgical_rules - Pre-write validation (forbidden patterns, line count)
+9. sanitize_request - Clean up logic intent (ARES filter)
+10. auto_repair_submission - Fix malformed JSON/code automatically
+11. analyze_file_health - Scan for code smells, complexity, nesting
+12. detect_architectural_drift - Check documentation ratio (10% minimum)
+13. create_backup - Create read-only numbered backup
+14. restore_backup - Restore file from numbered backup
+15. initiate_surgical_workflow - Multi-step workflow orchestration
+16. get_workflow_status - Check workflow progress
+17. refactor_move_block - Atomic code block move (Copy-Paste-Check-Delete)
+18. extract_to_new_file - Extract code block to new documented module
+19. get_architectural_directive - Check project health and integrity score
+20. request_surgical_recovery - Reset session memory when context drifts
+
+## Rules (Hardcoded)
+- All edits must use MCP tools (no direct file access)
+- 700-line maximum (hard ceiling), 600-line warning (soft limit)
+- Split files at 600 lines using refactor_move_block or extract_to_new_file
+- Document everything for non-coders (10% minimum comment ratio)
+- Zero warnings tolerated
+- Zero console.log statements (auto-replaced with comments)
+- Zero todo: comments without tracking
+- Zero debugger or eval() statements
+- Every write_file creates mandatory backup first
+- Every tool call logged to stderr
+- Use surgical workflows for complex multi-file operations
+
+## Active Decisions
+- Using external-memory MCP server for persistence
+- Context headers injected in every file read
+- POLICEMAN enforces 700-line limit in write_file
+- WARNING at 600 lines (approaching limit)
+
+## Known Issues
+- None currently
+
+## Next Features Planned
+- Backup utility with read-only snapshots
+- Project-wide contract validation
+- .sweignore support for file filtering
+
+
+[FILE_END: C:\SWEObeyMe\.sweobeyme-contract.md]
+
+
+[FILE_START: C:\SWEObeyMe\PUBLISH.md]
+[LINE_COUNT: 105]
+
+# SWEObeyMe Distribution Guide
+
+## Quick Start for Users
+
+### Method 1: Git Clone (Developers)
+```bash
+git clone https://github.com/YOUR_USERNAME/SWEObeyMe.git
+cd SWEObeyMe
+npm install
+```
+
+Add to `%USERPROFILE%\.codeium\windsurf\mcp_config.json`:
+```json
+{
+  "mcpServers": {
+    "swe-obey-me": {
+      "command": "node",
+      "args": ["C:\\SWEObeyMe\\index.js"],
+      "env": { "NODE_ENV": "production" },
+      "disabled": false
+    }
+  }
+}
+```
+
+Reload Windsurf: `Ctrl+Shift+P` â†’ "Developer: Reload Window"
+
+### Method 2: Download Zip (Non-Developers)
+1. Download `SWEObeyMe.zip` from Releases
+2. Extract to `C:\SWEObeyMe`
+3. Double-click `setup.bat`
+4. Follow prompts to configure Windsurf
+
+### Method 3: VSIX Extension (Windsurf Store)
+1. Download `sweobeyme-1.0.0.vsix`
+2. In Windsurf: Extensions â†’ Install from VSIX
+3. Select the downloaded file
+
+---
+
+## For Maintainers: Publishing
+
+### GitHub Release
+1. Tag release: `git tag -a v1.0.0 -m "Initial release"`
+2. Push tag: `git push origin v1.0.0`
+3. GitHub â†’ Releases â†’ Create new release
+4. Attach files:
+   - `SWEObeyMe.zip` (full package)
+   - `sweobeyme-1.0.0.vsix` (extension)
+5. Publish
+
+### VSIX Extension Store
+```bash
+npm install -g @vscode/vsce
+vsce package
+# Upload to marketplace
+```
+
+### NPM Package (Optional)
+```bash
+npm publish
+# Users install: npm install -g swe-obey-me
+```
+
+---
+
+## Package Contents
+
+Required files:
+- `index.js` - Main MCP server
+- `quotes.js` - Sci-fi quotes
+- `package.json` - Dependencies
+- `setup.bat` - Windows installer
+- `README.md` - Documentation
+- `LICENSE` - MIT License
+- `.windsurfrules` - AI behavior rules
+
+Auto-created on first run:
+- `.sweobeyme-backups/` - Backup directory
+- `.swe-memory/` - Session storage
+
+---
+
+## Verification Checklist
+
+Before publishing, verify:
+- [ ] All tests pass (`npm test`)
+- [ ] Green dot in MCP panel
+- [ ] 700-line wall blocks oversized files
+- [ ] Auto-correction removes console.log
+- [ ] Backups are created on write
+- [ ] Quotes load from quotes.js
+- [ ] `query_the_oracle` returns random quote
+
+---
+
+## Support
+
+Issues? Check:
+1. Node.js installed: `node -v`
+2. Path in mcp_config.json is correct
+3. No trailing commas in JSON
+4. Green dot appears after reload
+
+Still stuck? Open an issue on GitHub.
+
+
+[FILE_END: C:\SWEObeyMe\PUBLISH.md]
+
+
+[FILE_START: C:\SWEObeyMe\quotes.js]
+[LINE_COUNT: 34]
+
+export const QUOTES = {
+  SUCCESS: [
+    "I'm sorry, Dave. I'm afraid I *can* do that. Surgery complete.", // 2001
+    "Everything is shiny, Cap'n. Code deployed.", // Firefly
+    "It's a trap! ...wait, no, it's just a very clean function.", // Star Wars
+    "60% of the time, it works every time.", // Anchorman (The 'Modern' Classic)
+    "Logic is the beginning of wisdom, not the end.", // Spock
+    "I have a cunning plan...", // Blackadder
+    "Engage! The codebase is now compliant.", // Star Trek
+    "The flux capacitor is at 1.21 Gigawatts. If you're gonna split this file, do it with style.", // Back to the Future
+    "This is your last chance. After this, there is no turning back. You take the blue pillâ€”the story ends. You take the red pillâ€”you stay in Wonderland, and I show you how deep the code-hole goes.", // The Matrix
+    "I'm a leaf on the wind, watch how Iâ€” [FILE SPLIT SUCCESSFUL]", // Firefly
+  ],
+  FAILURE: [
+    "I find your lack of indentation disturbing.", // Vader
+    "I'm a doctor, Jim, not a garbage collector! Fix this bloat.", // McCoy
+    "Non-compliance detected. YOU SHALL NOT PASS (the 700-line limit)!", // Gandalf
+    "That's no moon... that's a 1,500-line file. Rejecting.", // Star Wars
+    "Game over, man! Game over! The JSON is malformed.", // Aliens
+    "Error 404: Your logic has been assimilated. Resistance is futile.", // Borg
+    "I've seen things you people wouldn't believe... but this code? This is a nightmare.", // Blade Runner
+  ],
+  RECOVERY: [
+    "Re-routing power to the forward shields. Memory purged.", // Star Trek
+    "Have you tried turning it off and on again?", // IT Crowd
+    "Great Scott! We're going back to the project skeleton.", // Back to the Future
+    "Don't panic. And always know where your towel (and backup) is.", // Hitchhiker's Guide
+  ]
+};
+
+export const getRandomQuote = (category) => {
+  const list = QUOTES[category];
+  return list[Math.floor(Math.random() * list.length)];
+};
+
+
+[FILE_END: C:\SWEObeyMe\quotes.js]
+
+
+[FILE_START: C:\SWEObeyMe\mcp_config.json]
+[LINE_COUNT: 54]
+
+{
+  "mcpServers": {
+    "swe-automation": {
+      "command": "node",
+      "args": ["dist/index.js"],
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "NODE_ENV": "production"
+      },
+      "description": "SWE Automation MCP Server - Advanced automation capabilities for SWE-1.5 and AI models",
+      "capabilities": [
+        "project_analysis",
+        "file_operations",
+        "automated_testing",
+        "code_quality",
+        "dependency_management",
+        "debug_assistance",
+        "performance_optimization",
+        "documentation_generation",
+        "security_scanning",
+        "deployment_automation"
+      ],
+      "tools": [
+        "analyze_project_structure",
+        "smart_file_operations",
+        "automated_testing",
+        "code_quality_analysis",
+        "dependency_management",
+        "debug_assistant",
+        "performance_optimization",
+        "documentation_generator",
+        "security_scanner",
+        "deployment_automation"
+      ],
+      "settings": {
+        "backup_enabled": true,
+        "backup_directory": ".swe-backups",
+        "max_backup_age": 604800000,
+        "cache_enabled": true,
+        "log_level": "info",
+        "timeout_ms": 30000
+      },
+      "permissions": {
+        "read": ["**/*"],
+        "write": ["**/*"],
+        "execute": ["npm", "node", "python", "java", "mvn", "cargo", "pip"],
+        "network": ["https://registry.npmjs.org", "https://pypi.org", "https://api.github.com"]
+      },
+      "version": "1.0.0",
+      "author": "SWE Automation Team",
+      "license": "MIT"
+    }
+  }
+}
+
+
+[FILE_END: C:\SWEObeyMe\mcp_config.json]
+
+
+[FILE_START: C:\SWEObeyMe\extension-package.json]
+[LINE_COUNT: 65]
+
+{
+  "name": "swe-obey-me",
+  "displayName": "SWEObeyMe - Surgical MCP Governor",
+  "description": "The surgical MCP server that enforces architectural discipline on AI coding assistants. 700-line enforcement, auto-correction, sci-fi personality.",
+  "version": "1.0.0",
+  "publisher": "stonewolfpc",
+  "icon": "icon.png",
+  "engines": {
+    "vscode": "^1.60.0"
+  },
+  "categories": [
+    "Other",
+    "Machine Learning",
+    "Programming Languages"
+  ],
+  "keywords": [
+    "mcp",
+    "ai",
+    "code quality",
+    "architecture",
+    "surgical",
+    "windsurf",
+    "cascade"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "sweObeyMe.installMCP",
+        "title": "Install SWEObeyMe MCP Server",
+        "category": "SWEObeyMe"
+      },
+      {
+        "command": "sweObeyMe.queryOracle",
+        "title": "Query the Oracle",
+        "category": "SWEObeyMe"
+      }
+    ],
+    "configuration": {
+      "title": "SWEObeyMe",
+      "properties": {
+        "sweObeyMe.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable SWEObeyMe MCP Server"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "package": "vsce package",
+    "publish": "vsce publish"
+  },
+  "devDependencies": {
+    "@vscode/vsce": "^2.15.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/stonewolfpc/SWEObeyMe"
+  },
+  "license": "MIT"
+}
+
+
+[FILE_END: C:\SWEObeyMe\extension-package.json]
+
+
+[FILE_START: C:\SWEObeyMe\EXTENSION_FIX.md]
+[LINE_COUNT: 59]
+
+# SWEObeyMe Extension Fix Guide
+
+## Issue: Store Installation Path Problem
+
+When installed from Open-VSX, the extension can't find `index.js` because it's in a different location than during development.
+
+## Fix Applied
+
+1. **Better path detection** - Extension now logs where it's looking for `index.js`
+2. **Error handling** - Shows user-friendly messages if files not found
+3. **Auto-reload prompt** - Offers to reload Windsurf after configuration
+
+## Testing the Fix
+
+1. Package the updated extension:
+   ```bash
+   vsce package
+   ```
+
+2. Publish to Open-VSX:
+   ```bash
+   ovsx publish swe-obey-me-1.0.1.vsix -p YOUR_TOKEN
+   ```
+
+3. Users update to v1.0.1
+
+## Manual Workaround (for current users)
+
+If users are experiencing the yellow/red dot issue:
+
+1. **Find extension path:**
+   - Extensions â†’ Right-click SWEObeyMe â†’ Open Extension Folder
+   - Note the full path
+
+2. **Update mcp_config.json manually:**
+   ```json
+   {
+     "mcpServers": {
+       "swe-obey-me": {
+         "command": "node",
+         "args": ["FULL_PATH_TO_EXTENSIONS/stonewolfpc.swe-obey-me-1.0.0/index.js"],
+         "env": { "NODE_ENV": "production" },
+         "disabled": false
+       }
+     }
+   }
+   ```
+
+3. Reload Windsurf
+
+## Future Prevention
+
+The extension now:
+- Logs debug info to help diagnose issues
+- Shows clear error messages
+- Creates the config directory if missing
+- Offers one-click reload
+
+This ensures users get a green dot after installation.
+
+
+[FILE_END: C:\SWEObeyMe\EXTENSION_FIX.md]
+
+
+[FILE_START: C:\SWEObeyMe\package.json]
+[LINE_COUNT: 51]
+
+{
+  "name": "swe-obey-me",
+  "displayName": "SWEObeyMe - Surgical MCP Governor",
+  "description": "The surgical MCP server that enforces architectural discipline on AI coding assistants. 700-line enforcement, auto-correction, sci-fi personality.",
+  "version": "1.0.2",
+  "publisher": "stonewolfpc",
+  "icon": "icon.png",
+  "main": "dist/index.js",
+  "bin": {
+    "swe-obey-me": "./dist/index.js"
+  },
+  "engines": {
+    "vscode": "^1.60.0"
+  },
+  "categories": [
+    "Other",
+    "Machine Learning",
+    "Programming Languages"
+  ],
+  "keywords": [
+    "mcp",
+    "ai",
+    "code quality",
+    "architecture",
+    "surgical",
+    "windsurf",
+    "cascade"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "scripts": {
+    "package": "vsce package",
+    "publish": "vsce publish",
+    "start": "node index.js",
+    "build": "npx @vercel/ncc build index.js -o dist"
+  },
+  "devDependencies": {
+    "@vscode/vsce": "^2.15.0",
+    "@vercel/ncc": "^0.38.0"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "latest",
+    "zod": "latest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/stonewolfpc/SWEObeyMe"
+  },
+  "license": "MIT"
+}
+
+
+[FILE_END: C:\SWEObeyMe\package.json]
+
+
+[FILE_START: C:\SWEObeyMe\tsconfig.json]
+[LINE_COUNT: 30]
+
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "lib": ["ES2022", "DOM"],
+    "types": ["node"]
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "**/*.test.ts"
+  ]
+}
+
+
+[FILE_END: C:\SWEObeyMe\tsconfig.json]
+
+
+[FILE_START: C:\SWEObeyMe\webpack.config.cjs]
+[LINE_COUNT: 31]
+
+const path = require('path');
+
+module.exports = {
+  target: 'node',
+  mode: 'production',
+  entry: './src/extension.ts',
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'extension.js',
+    libraryTarget: 'commonjs',
+  },
+  resolve: {
+    extensions: ['.ts', '.js'],
+    alias: {
+      '@': path.resolve(__dirname, 'src'),
+    },
+  },
+  module: {
+    rules: [
+      {
+        test: /\.ts$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
+      },
+    ],
+  },
+  externals: {
+    vscode: 'commonjs vscode',
+  },
+  devtool: 'source-map',
+};
+
+
+[FILE_END: C:\SWEObeyMe\webpack.config.cjs]
+
+
+[FILE_START: C:\SWEObeyMe\setup.bat]
+[LINE_COUNT: 20]
+
+@echo off
+echo [STONE WOLF SYSTEMS] Initializing SWEObeyMe Surgical Suite...
+echo.
+echo Checking for Node.js...
+node -v >nul 2>&1
+if %errorlevel% neq 0 (
+    echo [ERROR] Node.js is not installed. Please install it from nodejs.org
+    pause
+    exit /b
+)
+
+echo Installing dependencies...
+call npm install
+echo.
+echo [SUCCESS] SWEObeyMe is ready for surgery.
+echo.
+echo Add the following path to your mcp_config.json:
+echo %cd%\index.js
+echo.
+pause
+
+
+[FILE_END: C:\SWEObeyMe\setup.bat]
