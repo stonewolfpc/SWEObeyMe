@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Build outputs
+dist/
+build/
+
+# Backup directories (auto-created)
+.sweobeyme-backups/
+.swe-memory/
+
+# Test files
+test-*.js
+final-test.js
+simple-test.js
+test-with-content.js
+
+# VSIX (we release this separately)
+*.vsix
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log

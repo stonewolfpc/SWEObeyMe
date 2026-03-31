@@ -5,8 +5,26 @@ import { InitializeRequestSchema, CallToolRequestSchema, ListToolsRequestSchema 
 import fs from "fs/promises";
 import path from "path";
 import { z } from "zod";
-import { getRandomQuote } from "./quotes.js";
+import { fileURLToPath } from "url";
 
+// Main async initialization
+(async () => {
+  // Dynamic import for quotes to work with bundler
+  let getRandomQuote;
+  try {
+    const quotesModule = await import(path.join(path.dirname(fileURLToPath(import.meta.url)), "quotes.js"));
+    getRandomQuote = quotesModule.getRandomQuote;
+  } catch (e) {
+    // Fallback quotes if quotes.js not found
+    const fallbackQuotes = {
+      SUCCESS: ["Surgery complete."],
+      FAILURE: ["Non-compliance detected."],
+      RECOVERY: ["Recovery initiated."]
+    };
+    getRandomQuote = (category) => fallbackQuotes[category][0];
+  }
+
+// Initialize server
 const server = new Server({
   name: "SWEObeyMe",
   version: "1.0.0",
@@ -890,6 +908,20 @@ const initiateShutdown = (reason) => {
   process.exit(0);
 };
 
+// [DISTRIBUTION PATCH]: Active Parent Monitoring
+// Stores/VSIX often mask stdin 'close' events.
+const parentPid = process.ppid;
+
+setInterval(() => {
+  try {
+    // Check if the parent process still exists
+    process.kill(parentPid, 0); 
+  } catch (e) {
+    // Parent is gone (or we lost permission to see it), time to exit.
+    initiateShutdown("Parent Process (IDE) not found. Store-Life Protocol triggered.");
+  }
+}, 5000); // Check every 5 seconds
+
 // 1. Detect Pipe Closure (Crucial for Windsurf reloads)
 process.stdin.on("close", () => {
   initiateShutdown("IDE Disconnected (Stdin Closed)");
@@ -900,6 +932,11 @@ process.stdin.on("end", () => {
   initiateShutdown("IDE sent EOF");
 });
 
+// [ZOMBIE PREVENTION]: Force absolute termination on any pipe error
+process.stdout.on('error', (err) => {
+  if (err.code === 'EPIPE') initiateShutdown("Stdout Pipe Broken (EPIPE)");
+});
+
 // 3. Handle standard Windows termination signals
 process.on("SIGINT", () => initiateShutdown("SIGINT received"));
 process.on("SIGTERM", () => initiateShutdown("SIGTERM received"));
@@ -908,4 +945,6 @@ process.on("SIGTERM", () => initiateShutdown("SIGTERM received"));
 process.on("uncaughtException", (err) => {
   console.error(`[CRITICAL ERROR] ${err.message}`);
   initiateShutdown("Uncaught Exception");
-});
+})();
+
+})(); // Close async IIFE
