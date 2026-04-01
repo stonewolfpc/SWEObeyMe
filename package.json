@@ -2,7 +2,7 @@
   "name": "swe-obey-me",
   "displayName": "SWEObeyMe - Surgical MCP Governor",
   "description": "The surgical MCP server that enforces architectural discipline on AI coding assistants. 700-line enforcement, auto-correction, sci-fi personality.",
-  "version": "1.0.3",
+  "version": "1.0.7",
   "publisher": "stonewolfpc",
   "icon": "icon.png",
   "main": "dist/index.js",
@@ -27,7 +27,9 @@
     "cascade"
   ],
   "activationEvents": [
-    "onStartupFinished"
+    "onStartupFinished",
+    "onLanguage:javascript",
+    "onLanguage:typescript"
   ],
   "scripts": {
     "package": "vsce package",
@@ -47,5 +49,13 @@
     "type": "git",
     "url": "https://github.com/stonewolfpc/SWEObeyMe"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "windsurf": {
+    "mcpManifest": "./windsurf-mcp.json",
+    "activationEvents": [
+      "onStartupFinished",
+      "onLanguage:javascript",
+      "onLanguage:typescript"
+    ]
+  }
 }

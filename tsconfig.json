@@ -3,24 +3,25 @@
     "target": "ES2022",
     "module": "ESNext",
     "moduleResolution": "node",
-    "outDir": "./dist",
-    "rootDir": "./src",
+    "rootDir": ".",
+    "noEmit": true,
+    "allowJs": true,
+    "checkJs": false,
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "lib": ["ES2022", "DOM"],
-    "types": ["node"]
+    "types": []
   },
   "include": [
-    "src/**/*"
+    "index.js",
+    "extension.js",
+    "publish-ext/extension.js"
   ],
   "exclude": [
     "node_modules",

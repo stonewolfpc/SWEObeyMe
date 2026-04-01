@@ -103,3 +103,19 @@ temp/
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# SWEObeyMe specific exclusions
+.git/
+.sweignore
+.sweobeyme-contract.md
+SWEObeyMe_Project_Dump*.txt
+create_project_dump.ps1
+DumpCode.ps1
+SWEObeyMe-v1.0.0.zip
+mcp_config.json
+stdout.txt
+stderr.txt
+EXTENSION_FIX.md
+INSTALLATION.md
+PUBLISH.md
+publish-ext/

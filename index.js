@@ -7,7 +7,7 @@ console.log = (...args) => {
   process.stderr.write(args.join(' ') + '\n');
 };
 
-// Also silence the Audit/ARES messages specifically
+// Also silence the Audit/SWEObeyMe messages specifically
 const auditLog = (msg) => process.stderr.write(`[AUDIT]: ${msg}\n`);
 
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
@@ -16,7 +16,26 @@ import { InitializeRequestSchema, CallToolRequestSchema, ListToolsRequestSchema 
 import fs from "fs/promises";
 import path from "path";
 import { z } from "zod";
-import { fileURLToPath } from "url";
+import { fileURLToPath, pathToFileURL } from "url";
+
+// MARCH 2026 COMPLIANCE: Sovereign URI Normalizer
+// Ensures Windsurf Next matches files in explorer to MCP edits
+function toWindsurfUri(barePath) {
+    if (!barePath) return barePath;
+    // 1. Normalize slashes
+    let normalized = barePath.replace(/\\/g, '/');
+    // 2. Ensure it's absolute
+    if (!path.isAbsolute(normalized)) {
+        normalized = path.resolve(process.cwd(), normalized);
+    }
+    // 3. Convert to file:// URI
+    return pathToFileURL(normalized).href;
+}
+
+// Legacy normalizePath function for backwards compatibility
+function normalizePath(pathString) {
+    return toWindsurfUri(pathString);
+}
 
 // Main async initialization
 (async () => {
@@ -38,17 +57,30 @@ import { fileURLToPath } from "url";
 // Initialize server
 const server = new Server({
   name: "swe-obey-me",
-  version: "1.0.3",
+  version: "1.0.7",
 }, {
   capabilities: { tools: {} }
 });
 
 const MAX_LINES = 700;
 const WARNING_THRESHOLD = 600;
-const log = (msg) => process.stderr.write(`[SWEObeyMe-Audit]: ${msg}\n`);
+const DEBUG_LOGS = process.env.SWEOBEYME_DEBUG === "1";
+const log = (msg) => {
+  if (!DEBUG_LOGS) return;
+  process.stderr.write(`[SWEObeyMe-Audit]: ${msg}\n`);
+};
+
+const defaultBackupDir = () => {
+  const localAppData = process.env.LOCALAPPDATA
+    || (process.env.USERPROFILE ? path.join(process.env.USERPROFILE, "AppData", "Local") : null);
+  const base = localAppData || process.cwd();
+  return path.join(base, "SWEObeyMe", ".sweobeyme-backups");
+};
 
 // Backup Directory Setup
-const BACKUP_DIR = path.join(process.cwd(), ".sweobeyme-backups");
+const BACKUP_DIR = process.env.SWEOBEYME_BACKUP_DIR
+  ? path.resolve(process.env.SWEOBEYME_BACKUP_DIR)
+  : defaultBackupDir();
 let backupCounter = 0;
 
 async function ensureBackupDir() {
@@ -247,14 +279,15 @@ function shouldIgnore(filepath) {
 
 // Initialize handler - REQUIRED for handshake
 server.setRequestHandler(InitializeRequestSchema, async () => {
-  // Load contract and ignore files on first init
-  await loadProjectContract();
-  await loadSweIgnore();
+  // Do not block initialize on filesystem IO; Windsurf may EOF if init is slow.
+  // Kick off in background if not already loaded.
+  loadProjectContract().catch(() => {});
+  loadSweIgnore().catch(() => {});
   
   return {
     protocolVersion: "2024-11-05",
     capabilities: { tools: {} },
-    serverInfo: { name: "SWEObeyMe", version: "1.0.0" },
+    serverInfo: { name: "SWEObeyMe", version: "1.0.7" },
   };
 });
 
@@ -344,7 +377,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
     },
     {
       name: "sanitize_request",
-      description: "Cleans up a request to ensure it follows the ARES naming conventions and thread-safety rules.",
+      description: "Cleans up a request to ensure it follows the SWEObeyMe naming conventions and thread-safety rules.",
       inputSchema: {
         type: "object",
         properties: {
@@ -367,7 +400,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
     },
     {
       name: "analyze_file_health",
-      description: "Scans for 'Code Smells', complexity, and potential race conditions (ARES Orange).",
+      description: "Scans for 'Code Smells', complexity, and potential race conditions (SWEObeyMe Orange).",
       inputSchema: {
         type: "object",
         properties: {
@@ -542,7 +575,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         // Phase 6: Auto-Correction
         const correctedContent = autoCorrectCode(content);
         if (correctedContent !== content) {
-          console.error(`[HEAL] Auto-corrected forbidden patterns in ${args.path}`);
+          console.error(`[SWE-LOG] Action: HEAL | Target: ${toWindsurfUri(args.path)} | Status: Auto-corrected forbidden patterns`);
           content = correctedContent;
         }
 
@@ -591,7 +624,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
         // Silent Foresight: Warn when approaching limit
         if (lineCount > WARNING_THRESHOLD) {
-          console.error(`[WARNING] ${args.path} is at ${lineCount} lines. Approaching limit.`);
+          console.error(`[SWE-LOG] Action: WARNING | Target: ${toWindsurfUri(args.path)} | Status: File at ${lineCount} lines, approaching ${MAX_LINES} limit`);
         }
 
         await fs.writeFile(args.path, content, "utf-8");
@@ -616,9 +649,12 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         recordAction(actionType, { path: args.path, lines: lineCount });
         
         const msg = correctedContent !== args.content 
-          ? `File saved. (Note: SWEObeyMe auto-corrected minor architectural violations in your syntax).`
-          : `Successfully saved ${args.path}. All rules satisfied.`;
-        return { content: [{ type: "text", text: msg }] };
+          ? `File saved. (Note: SWEObeyMe auto-corrected minor architectural violations in your syntax). URI: ${normalizePath(args.path)}`
+          : `Successfully saved ${args.path}. All rules satisfied. URI: ${normalizePath(args.path)}`;
+        return { 
+            content: [{ type: "text", text: msg }],
+            uri: toWindsurfUri(args.path)
+        };
       }
 
       case "get_session_context": {
@@ -656,7 +692,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       case "sanitize_request": {
-        const sanitized = `[OBEY-MODE]: Processing intent "${args.logic_intent}" through ARES Filter... 
+        const sanitized = `[OBEY-MODE]: Processing intent "${args.logic_intent}" through SWEObeyMe Filter... 
   - Thread-safety: CHECKED.
   - Memory-leak prevention: CHECKED.
   - Line-count compliance: PENDING WRITE.
@@ -723,7 +759,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         await fs.writeFile(args.source_path, newSourceContent, "utf-8");
 
         recordAction("REFACTOR_MOVE", { from: args.source_path, to: args.target_path });
-        return { content: [{ type: "text", text: `Successfully moved code block to ${args.target_path}. Source has been updated with a reference comment.` }] };
+        return { content: [{ type: "text", text: `Successfully moved code block to ${args.target_path} (URI: ${normalizePath(args.target_path)}). Source has been updated with a reference comment.` }] };
       }
 
       case "extract_to_new_file": {
@@ -751,7 +787,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         await fs.writeFile(args.source_path, newSourceContent, "utf-8");
 
         recordAction("EXTRACT", { from: args.source_path, to: args.new_file_path });
-        return { content: [{ type: "text", text: `Successfully extracted to ${args.new_file_path}. Source has been updated with reference comments.` }] };
+        return { content: [{ type: "text", text: `Successfully extracted to ${args.new_file_path} (URI: ${normalizePath(args.new_file_path)}). Source has been updated with reference comments.` }] };
       }
 
       case "get_architectural_directive": {
@@ -825,7 +861,7 @@ Reminder: You are a surgeon. Precision over speed.`
       case "create_backup": {
         const backupPath = await createBackup(args.path);
         if (backupPath) {
-          return { content: [{ type: "text", text: `Backup created at: ${backupPath}` }] };
+          return { content: [{ type: "text", text: `Backup created at: ${backupPath} (URI: ${normalizePath(backupPath)})` }] };
         }
         return { isError: true, content: [{ type: "text", text: "Failed to create backup." }] };
       }
@@ -852,7 +888,7 @@ Reminder: You are a surgeon. Precision over speed.`
           const content = await fs.readFile(backupPath, "utf-8");
           
           await fs.writeFile(args.path, content, "utf-8");
-          return { content: [{ type: "text", text: `Restored ${args.path} from backup ${backupFile}.` }] };
+          return { content: [{ type: "text", text: `Restored ${args.path} (URI: ${normalizePath(args.path)}) from backup ${backupFile}.` }] };
         } catch (error) {
           return { isError: true, content: [{ type: "text", text: `Restore failed: ${error.message}` }] };
         }
@@ -911,25 +947,32 @@ const transport = new StdioServerTransport();
 const startServer = async () => {
   try {
     await server.connect(transport);
-    process.stderr.write("[ARES]: Governor Online. Handshake Complete.\n");
+    if (DEBUG_LOGS) process.stderr.write("[SWEObeyMe]: Governor Online. Handshake Complete.\n");
   } catch (error) {
     process.stderr.write(`[CRITICAL]: Handshake Failed: ${error}\n`);
-    process.exit(1);
+    // Do NOT call process.exit() - VS Code extension host prevents it
+    throw error;
   }
 };
 
-// PHASE 8: Initialize backup system
-await ensureBackupDir();
-
-log("Server started successfully.");
-
-// Start the server with strict handshake
+// Start the server with strict handshake ASAP (avoid startup EOF/timeouts)
 await startServer();
 
-// [LIFECYCLE MANAGEMENT]: Surgical Self-Termination
+// Background initialization (must not delay MCP handshake)
+ensureBackupDir().catch(() => {});
+loadProjectContract().catch(() => {});
+loadSweIgnore().catch(() => {});
+log("Server started successfully.");
+
+// [LIFECYCLE MANAGEMENT]: Graceful Shutdown for VS Code Extension Host
+let isShuttingDown = false;
 const initiateShutdown = (reason) => {
-  process.stderr.write(`[SHUTDOWN] ${reason}. Cleaning up...\n`);
-  process.exit(0);
+  if (isShuttingDown) return;
+  isShuttingDown = true;
+  process.stderr.write(`[SHUTDOWN] ${reason}. Cleaning up gracefully (no exit call)...\n`);
+  // Close the MCP transport gracefully - do NOT call process.exit()
+  // VS Code's extension host prevents process.exit() - let it close naturally
+  transport.close().catch(() => {});
 };
 
 // Use the global process object explicitly
@@ -964,8 +1007,7 @@ global.process.stdout.on('error', (err) => {
 });
 
 // 3. Handle standard Windows termination signals
-global.process.on("SIGINT", () => initiateShutdown("SIGINT received"));
-global.process.on("SIGTERM", () => initiateShutdown("SIGTERM received"));
+// Note: SIGINT and SIGTERM already registered above.
 
 // 4. Catch Unhandled Errors to prevent silent zombie hangs
 global.process.on("uncaughtException", (err) => {

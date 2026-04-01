@@ -1,5 +1,7 @@
 # SWE Automation MCP Server
 
+> **Note from the Developer (April 2026):** Oops! I should have read the documentation for the updated methods more carefully before releasing v1.0.4. The Windsurf Next March 2026 update introduced strict URI normalization and Trusted Types requirements that I initially missed. I've now updated the extension to properly handle `file:///` URIs and removed all `process.exit()` calls that were causing issues with the VS Code extension host. Sorry about the trouble, folks! I hope this works better for you now. - stonewolfpc
+
 A comprehensive Model Context Protocol (MCP) server designed specifically for SWE-1.5 and other AI models to enhance software engineering workflows with advanced automation capabilities.
 
 ## Overview

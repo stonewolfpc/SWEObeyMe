@@ -29,3 +29,22 @@ Thumbs.db
 
 # Logs
 *.log
+stdout.txt
+stderr.txt
+
+# Project dump files (development artifacts)
+SWEObeyMe_Project_Dump*.txt
+create_project_dump.ps1
+DumpCode.ps1
+
+# Old release artifacts
+SWEObeyMe-v1.0.0.zip
+*.vsix
+
+# Local config
+mcp_config.json
+
+# Development docs (not for release)
+EXTENSION_FIX.md
+INSTALLATION.md
+.sweobeyme-contract.md

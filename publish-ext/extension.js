@@ -12,7 +12,7 @@ function activate(context) {
             'sweObeyMeInstall',
             'Install SWEObeyMe MCP',
             vscode.ViewColumn.One,
-            {}
+            { enableScripts: false }  // Disable scripts for Trusted Types compliance
         );
 
         panel.webview.html = getInstallHtml();
@@ -54,6 +54,12 @@ function checkAndInstallMCP() {
         vscode.window.showErrorMessage(`SWEObeyMe: index.js not found. Please report this issue.`);
         return;
     }
+
+    const indexUri = 'file:///' + indexPath.replace(/\\/g, '/');
+
+    const localAppData = process.env.LOCALAPPDATA
+        || (process.env.USERPROFILE ? path.join(process.env.USERPROFILE, 'AppData', 'Local') : null);
+    const defaultBackupDir = path.join(localAppData || extensionPath, 'SWEObeyMe', '.sweobeyme-backups');
     
     // Check if MCP is configured
     const mcpConfigPath = path.join(process.env.USERPROFILE || process.env.HOME, '.codeium', 'windsurf', 'mcp_config.json');
@@ -68,21 +74,39 @@ function checkAndInstallMCP() {
             config.mcpServers = {};
         }
         
-        if (!config.mcpServers['swe-obey-me']) {
+        const desiredServer = {
+            command: 'node',
+            args: ['--no-warnings', indexUri],
+            env: {
+                NODE_ENV: 'production',
+                SWEOBEYME_BACKUP_DIR: defaultBackupDir,
+                SWEOBEYME_DEBUG: '0'
+            },
+            disabled: false,
+            windowsHide: true
+        };
+
+        const existing = config.mcpServers['swe-obey-me'];
+        const existingArgs = existing?.args || [];
+        const existingUri = existingArgs[existingArgs.length - 1];
+        const uriMatches = existingUri === indexUri;
+        const backupMatches = existing?.env?.SWEOBEYME_BACKUP_DIR === defaultBackupDir;
+
+        if (!existing || !uriMatches || !backupMatches) {
             config.mcpServers['swe-obey-me'] = {
-                command: 'node',
-                args: ['--no-warnings', indexPath],
-                env: { NODE_ENV: 'production' },
-                disabled: false,
-                windowsHide: true
+                ...existing,
+                ...desiredServer,
+                env: {
+                    ...(existing?.env || {}),
+                    ...(desiredServer.env || {})
+                }
             };
-            
-            // Ensure directory exists
+
             const configDir = path.dirname(mcpConfigPath);
             if (!fs.existsSync(configDir)) {
                 fs.mkdirSync(configDir, { recursive: true });
             }
-            
+
             fs.writeFileSync(mcpConfigPath, JSON.stringify(config, null, 2));
             console.log('SWEObeyMe: MCP configured at:', indexPath);
             vscode.window.showInformationMessage(
@@ -108,6 +132,7 @@ function getInstallHtml() {
     return `<!DOCTYPE html>
 <html>
 <head>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline';">
     <style>
         body { font-family: sans-serif; padding: 20px; }
         h1 { color: #00d4aa; }
