@@ -2,13 +2,10 @@
   "name": "swe-obey-me",
   "displayName": "SWEObeyMe - Surgical MCP Governor",
   "description": "The surgical MCP server that enforces architectural discipline on AI coding assistants. 700-line enforcement, auto-correction, sci-fi personality.",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "publisher": "stonewolfpc",
   "icon": "icon.png",
-  "main": "dist/index.js",
-  "bin": {
-    "swe-obey-me": "./dist/index.js"
-  },
+  "main": "./extension.js",
   "engines": {
     "vscode": "^1.60.0"
   },
@@ -27,10 +24,32 @@
     "cascade"
   ],
   "activationEvents": [
-    "onStartupFinished",
-    "onLanguage:javascript",
-    "onLanguage:typescript"
+    "onStartupFinished"
   ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "sweObeyMe.installMCP",
+        "title": "Install SWEObeyMe MCP Server",
+        "category": "SWEObeyMe"
+      },
+      {
+        "command": "sweObeyMe.queryOracle",
+        "title": "Query the Oracle",
+        "category": "SWEObeyMe"
+      }
+    ],
+    "configuration": {
+      "title": "SWEObeyMe",
+      "properties": {
+        "sweObeyMe.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable SWEObeyMe MCP Server"
+        }
+      }
+    }
+  },
   "scripts": {
     "package": "vsce package",
     "publish": "vsce publish",

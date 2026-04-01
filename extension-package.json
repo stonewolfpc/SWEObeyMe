@@ -2,7 +2,7 @@
   "name": "swe-obey-me",
   "displayName": "SWEObeyMe - Surgical MCP Governor",
   "description": "The surgical MCP server that enforces architectural discipline on AI coding assistants. 700-line enforcement, auto-correction, sci-fi personality.",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "publisher": "stonewolfpc",
   "icon": "icon.png",
   "engines": {

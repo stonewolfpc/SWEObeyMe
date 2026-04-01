@@ -53,7 +53,7 @@ function checkAndInstallMCP() {
     
     // Extension path for bundled server - look in extension folder itself
     const extensionPath = __dirname;
-    const indexPath = path.join(extensionPath, 'index.js');
+    const indexPath = path.join(extensionPath, 'dist', 'index.js');
     
     console.log('SWEObeyMe: Looking for index.js at:', indexPath);
     
@@ -77,7 +77,7 @@ function checkAndInstallMCP() {
                 "command": "node",
                 "args": [indexUri],
                 "name": "SWEObeyMe",
-                "version": "1.0.7",
+                "version": "1.0.8",
                 "env": {
                     "SWEOBEYME_MODE": "Sovereign",
                     "SWEOBEYME_BACKUP_DIR": defaultBackupDir,
