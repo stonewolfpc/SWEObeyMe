@@ -122,8 +122,9 @@ function checkAndInstallMCP() {
     }
 
     // Use absolute Windows path for Windsurf Next compatibility
-    // file:// URIs don't work properly - Windsurf resolves them as relative paths
-    const indexUri = indexPath;
+    // Windsurf Next requires file:// URIs for MCP server paths
+    const { pathToFileURL } = require('url');
+    const indexUri = pathToFileURL(indexPath).href;
 
     const localAppData = process.env.LOCALAPPDATA
         || (process.env.USERPROFILE ? path.join(process.env.USERPROFILE, 'AppData', 'Local') : null);
