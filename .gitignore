@@ -1,6 +1,5 @@
 # Dependencies
 node_modules/
-package-lock.json
 
 # Build outputs
 dist/
@@ -39,7 +38,6 @@ DumpCode.ps1
 
 # Old release artifacts
 SWEObeyMe-v1.0.12.zip
-*.vsix
 
 # Local config
 mcp_config.json
@@ -48,3 +46,6 @@ mcp_config.json
 EXTENSION_FIX.md
 INSTALLATION.md
 .sweobeyme-contract.md
+
+# Coverage
+coverage/
