@@ -2,9 +2,24 @@ const vscode = require('vscode');
 const path = require('path');
 const { exec } = require('child_process');
 const fs = require('fs');
+const os = require('os');
+
+// MCP server state management
+let mcpServerRunning = false;
+let mcpServerProcess = null;
+const MCP_SERVER_ID = 'swe-obeyme-mcp-server';
+const PID_FILE_PATH = path.join(os.tmpdir(), 'swe-obeyme-mcp-server.pid');
 
 function activate(context) {
     console.log('SWEObeyMe extension activated');
+
+    // Check for existing MCP server instance
+    if (checkForExistingServer()) {
+        console.log('SWEObeyMe: Existing MCP server detected, skipping duplicate startup');
+    }
+
+    // Cleanup stale instances from previous extension loads
+    cleanupStaleInstances();
 
     // Register command to install MCP server
     let installCommand = vscode.commands.registerCommand('sweObeyMe.installMCP', async () => {
@@ -16,6 +31,12 @@ function activate(context) {
         );
 
         panel.webview.html = getInstallHtml();
+    });
+
+    // Register command to restart MCP server
+    let restartCommand = vscode.commands.registerCommand('sweObeyMe.restartMCP', async () => {
+        await restartMcpServer();
+        vscode.window.showInformationMessage('SWEObeyMe MCP server restarted');
     });
 
     // Register command to query the oracle
@@ -34,10 +55,27 @@ function activate(context) {
     });
 
     context.subscriptions.push(installCommand);
+    context.subscriptions.push(restartCommand);
     context.subscriptions.push(oracleCommand);
+
+    // Watch for configuration changes
+    context.subscriptions.push(
+        vscode.workspace.onDidChangeConfiguration((e) => {
+            if (e.affectsConfiguration('sweObeyMe')) {
+                console.log('SWEObeyMe: Configuration changed, restarting MCP server');
+                restartMcpServer();
+            }
+        })
+    );
+
+    // Store extension state
+    context.globalState.update('mcpServerStartTime', Date.now());
 
     // Auto-install MCP server on activation
     checkAndInstallMCP();
+
+    // Write PID file to track this instance
+    writePidFile();
 }
 
 function readJsonFileSafe(filePath) {
@@ -103,13 +141,16 @@ function updateUserMcpConfig(desiredServer) {
             }
 
             // Clean up any old workspace-based windsurf-mcp.json references
-            const workspaceMcpPath = path.join(workspaceFolders?.[0]?.uri.fsPath || '', 'windsurf-mcp.json');
-            if (workspaceFolders && workspaceFolders.length > 0 && fs.existsSync(workspaceMcpPath)) {
-                try {
-                    fs.unlinkSync(workspaceMcpPath);
-                    console.log('SWEObeyMe: Removed old workspace manifest:', workspaceMcpPath);
-                } catch (error) {
-                    console.error('SWEObeyMe: Failed to remove old manifest:', error);
+            const wsFolders = vscode.workspace.workspaceFolders;
+            if (wsFolders && wsFolders.length > 0) {
+                const workspaceMcpPath = path.join(wsFolders[0].uri.fsPath, 'windsurf-mcp.json');
+                if (fs.existsSync(workspaceMcpPath)) {
+                    try {
+                        fs.unlinkSync(workspaceMcpPath);
+                        console.log('SWEObeyMe: Removed old workspace manifest:', workspaceMcpPath);
+                    } catch (error) {
+                        console.error('SWEObeyMe: Failed to remove old manifest:', error);
+                    }
                 }
             }
         } catch (error) {
@@ -197,8 +238,199 @@ function getInstallHtml() {
 </html>`;
 }
 
+/**
+ * Write PID file to track this extension instance
+ */
+function writePidFile() {
+    try {
+        fs.writeFileSync(PID_FILE_PATH, process.pid.toString());
+        console.log('SWEObeyMe: PID file written', PID_FILE_PATH);
+    } catch (error) {
+        console.error('SWEObeyMe: Failed to write PID file:', error);
+    }
+}
+
+/**
+ * Remove PID file
+ */
+function removePidFile() {
+    try {
+        if (fs.existsSync(PID_FILE_PATH)) {
+            fs.unlinkSync(PID_FILE_PATH);
+            console.log('SWEObeyMe: PID file removed');
+        }
+    } catch (error) {
+        console.error('SWEObeyMe: Failed to remove PID file:', error);
+    }
+}
+
+/**
+ * Check for existing MCP server instance
+ */
+function checkForExistingServer() {
+    try {
+        if (!fs.existsSync(PID_FILE_PATH)) {
+            return false;
+        }
+
+        const pid = parseInt(fs.readFileSync(PID_FILE_PATH, 'utf-8'));
+        
+        // Check if process is still running
+        try {
+            process.kill(pid, 0);
+            console.log(`SWEObeyMe: Existing MCP server found with PID ${pid}`);
+            return true;
+        } catch (e) {
+            // Process not running, cleanup stale PID file
+            console.log('SWEObeyMe: Stale PID file found, cleaning up');
+            removePidFile();
+            return false;
+        }
+    } catch (error) {
+        console.error('SWEObeyMe: Error checking for existing server:', error);
+        return false;
+    }
+}
+
+/**
+ * Cleanup stale instances from previous extension loads
+ */
+function cleanupStaleInstances() {
+    try {
+        const tmpdir = os.tmpdir();
+        const files = fs.readdirSync(tmpdir);
+        
+        files
+            .filter(f => f.startsWith('swe-obeyme-') && f.endsWith('.pid'))
+            .forEach(f => {
+                const pidPath = path.join(tmpdir, f);
+                try {
+                    const pid = parseInt(fs.readFileSync(pidPath, 'utf-8'));
+                    
+                    // Check if process is running
+                    try {
+                        process.kill(pid, 0);
+                        // Process is running, kill it gracefully
+                        console.log(`SWEObeyMe: Killing stale MCP server with PID ${pid}`);
+                        process.kill(pid, 'SIGTERM');
+                        
+                        // Force kill after 2 seconds
+                        setTimeout(() => {
+                            try {
+                                process.kill(pid, 0);
+                                process.kill(pid, 'SIGKILL');
+                            } catch (e) {
+                                // Already dead
+                            }
+                        }, 2000);
+                    } catch (e) {
+                        // Process not running, just cleanup
+                    }
+                    
+                    fs.unlinkSync(pidPath);
+                    console.log(`SWEObeyMe: Cleaned up stale PID file: ${f}`);
+                } catch (error) {
+                    console.error(`SWEObeyMe: Error cleaning up ${f}:`, error);
+                }
+            });
+    } catch (error) {
+        console.error('SWEObeyMe: Error cleaning up stale instances:', error);
+    }
+}
+
+/**
+ * Restart MCP server
+ */
+async function restartMcpServer() {
+    console.log('SWEObeyMe: Restarting MCP server...');
+    
+    // Cleanup stale instances
+    cleanupStaleInstances();
+    
+    // Wait for cleanup
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    // Reinstall MCP config
+    await checkAndInstallMCP();
+    
+    console.log('SWEObeyMe: MCP server restart complete');
+}
+
 function deactivate() {
-    console.log('SWEObeyMe extension deactivated');
+    console.log('SWEObeyMe: Starting deactivation cleanup...');
+    
+    // Remove PID file
+    removePidFile();
+    
+    // Clear extension state
+    // Note: We DON'T remove MCP config on deactivate to allow extension reload
+    // Users can manually uninstall if they want to remove the config
+    
+    console.log('SWEObeyMe: Deactivation complete - MCP config preserved for extension reload');
+}
+
+/**
+ * Remove MCP server configuration from user settings
+ */
+function removeMcpConfig() {
+    const homeDir = process.env.USERPROFILE || process.env.HOME;
+    if (!homeDir) {
+        console.log('SWEObeyMe: No home directory detected; cannot remove mcp_config.json');
+        return;
+    }
+
+    const mcpConfigPath = path.join(homeDir, '.codeium', 'windsurf-next', 'mcp_config.json');
+
+    try {
+        if (!fs.existsSync(mcpConfigPath)) {
+            console.log('SWEObeyMe: MCP config does not exist, nothing to remove');
+            return;
+        }
+
+        const config = readJsonFileSafe(mcpConfigPath) || {};
+        if (!config.mcpServers || !config.mcpServers['swe-obey-me']) {
+            console.log('SWEObeyMe: MCP server not configured, nothing to remove');
+            return;
+        }
+
+        // Remove the SWEObeyMe MCP server entry
+        delete config.mcpServers['swe-obey-me'];
+
+        // Write back the updated config
+        writeJsonFileSafe(mcpConfigPath, config);
+        console.log('SWEObeyMe: Removed MCP server config from:', mcpConfigPath);
+
+        // Clean up backup directory
+        const localAppData = process.env.LOCALAPPDATA
+            || (process.env.USERPROFILE ? path.join(process.env.USERPROFILE, 'AppData', 'Local') : null);
+        const backupDir = path.join(localAppData || homeDir, 'SWEObeyMe', '.sweobeyme-backups');
+
+        if (fs.existsSync(backupDir)) {
+            try {
+                fs.rmSync(backupDir, { recursive: true, force: true });
+                console.log('SWEObeyMe: Removed backup directory:', backupDir);
+            } catch (error) {
+                console.error('SWEObeyMe: Failed to remove backup directory:', error);
+            }
+        }
+
+        // Clean up any workspace manifests
+        const wsFolders = vscode.workspace.workspaceFolders;
+        if (wsFolders && wsFolders.length > 0) {
+            const workspaceMcpPath = path.join(wsFolders[0].uri.fsPath, 'windsurf-mcp.json');
+            if (fs.existsSync(workspaceMcpPath)) {
+                try {
+                    fs.unlinkSync(workspaceMcpPath);
+                    console.log('SWEObeyMe: Removed workspace manifest:', workspaceMcpPath);
+                } catch (error) {
+                    console.error('SWEObeyMe: Failed to remove workspace manifest:', error);
+                }
+            }
+        }
+
+    } catch (error) {
+        console.error('SWEObeyMe: Error during MCP config removal:', error);
+    }
 }
 
 module.exports = { activate, deactivate };

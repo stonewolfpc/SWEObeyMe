@@ -241,6 +241,219 @@ async function runTests() {
       console.error('? Query the oracle failed:', error.message);
       testsFailed++;
     }
+
+    // Test 11: Check file exists (project integrity)
+    console.log('\nTest 11: Check file exists (project integrity)...');
+    try {
+      const result = await sendRequest('tools/call', {
+        name: 'check_file_exists',
+        arguments: {
+          file_path: 'package.json'
+        }
+      });
+      console.log('? Check file exists successful');
+      console.log('   File exists:', result.exists);
+      testsPassed++;
+    } catch (error) {
+      console.error('? Check file exists failed:', error.message);
+      testsFailed++;
+    }
+
+    // Test 12: Check file duplicates (project integrity)
+    console.log('\nTest 12: Check file duplicates (project integrity)...');
+    try {
+      const result = await sendRequest('tools/call', {
+        name: 'check_file_duplicates',
+        arguments: {
+          file_path: 'unique-test-file.js',
+          content: 'console.log("unique content");'
+        }
+      });
+      console.log('? Check file duplicates successful');
+      console.log('   Has critical issues:', result.hasCriticalIssues);
+      testsPassed++;
+    } catch (error) {
+      console.error('? Check file duplicates failed:', error.message);
+      testsFailed++;
+    }
+
+    // Test 13: Validate file references (project integrity)
+    console.log('\nTest 13: Validate file references (project integrity)...');
+    try {
+      const result = await sendRequest('tools/call', {
+        name: 'validate_file_references',
+        arguments: {
+          file_path: 'test.js',
+          content: 'import fs from "fs";\nconst x = 1;',
+          language: 'javascript'
+        }
+      });
+      console.log('? Validate file references successful');
+      console.log('   Valid:', result.valid);
+      testsPassed++;
+    } catch (error) {
+      console.error('? Validate file references failed:', error.message);
+      testsFailed++;
+    }
+
+    // Test 14: Check recent operations (project integrity)
+    console.log('\nTest 14: Check recent operations (project integrity)...');
+    try {
+      const result = await sendRequest('tools/call', {
+        name: 'check_recent_operations',
+        arguments: {
+          file_path: 'test.js',
+          time_window: 30000
+        }
+      });
+      console.log('? Check recent operations successful');
+      console.log('   Has recent operation:', result.hasRecentOperation);
+      testsPassed++;
+    } catch (error) {
+      console.error('? Check recent operations failed:', error.message);
+      testsFailed++;
+    }
+
+    // Test 15: Get registry stats (project integrity)
+    console.log('\nTest 15: Get registry stats (project integrity)...');
+    try {
+      const result = await sendRequest('tools/call', {
+        name: 'get_registry_stats',
+        arguments: {}
+      });
+      console.log('? Get registry stats successful');
+      console.log('   Response includes statistics');
+      testsPassed++;
+    } catch (error) {
+      console.error('? Get registry stats failed:', error.message);
+      testsFailed++;
+    }
+
+    // Test 16: Generate audit report (project integrity)
+    console.log('\nTest 16: Generate audit report (project integrity)...');
+    try {
+      const result = await sendRequest('tools/call', {
+        name: 'generate_audit_report',
+        arguments: {}
+      });
+      console.log('? Generate audit report successful');
+      console.log('   Report generated');
+      testsPassed++;
+    } catch (error) {
+      console.error('? Generate audit report failed:', error.message);
+      testsFailed++;
+    }
+
+    // Test 17: Validate C# code (C# handlers)
+    console.log('\nTest 17: Validate C# code (C# handlers)...');
+    try {
+      // Create test file first
+      await sendRequest('tools/call', {
+        name: 'write_file',
+        arguments: {
+          path: 'test.cs',
+          content: 'namespace Test { class Program { void Main() { } } }'
+        }
+      });
+
+      const result = await sendRequest('tools/call', {
+        name: 'validate_csharp_code',
+        arguments: {
+          path: 'test.cs'
+        }
+      });
+      console.log('? Validate C# code successful');
+      console.log('   Valid:', result.content[0].text.includes('VALID: YES'));
+      testsPassed++;
+    } catch (error) {
+      console.error('? Validate C# code failed:', error.message);
+      testsFailed++;
+    }
+
+    // Test 18: Validate C# brackets (C# handlers)
+    console.log('\nTest 18: Validate C# brackets (C# handlers)...');
+    try {
+      const result = await sendRequest('tools/call', {
+        name: 'validate_csharp_brackets',
+        arguments: {
+          path: 'test.cs'
+        }
+      });
+      console.log('? Validate C# brackets successful');
+      console.log('   Brackets valid:', result.content[0].text.includes('YES'));
+      testsPassed++;
+    } catch (error) {
+      console.error('? Validate C# brackets failed:', error.message);
+      testsFailed++;
+    }
+
+    // Test 19: Analyze C# complexity (C# handlers)
+    console.log('\nTest 19: Analyze C# complexity (C# handlers)...');
+    try {
+      const result = await sendRequest('tools/call', {
+        name: 'analyze_csharp_complexity',
+        arguments: {
+          path: 'test.cs'
+        }
+      });
+      console.log('? Analyze C# complexity successful');
+      console.log('   Complexity analysis completed');
+      testsPassed++;
+    } catch (error) {
+      console.error('? Analyze C# complexity failed:', error.message);
+      testsFailed++;
+    }
+
+    // Test 20: Validate math safety (C# handlers)
+    console.log('\nTest 20: Validate math safety (C# handlers)...');
+    try {
+      const result = await sendRequest('tools/call', {
+        name: 'validate_math_safety',
+        arguments: {
+          path: 'test.cs'
+        }
+      });
+      console.log('? Validate math safety successful');
+      console.log('   Math safety validation completed');
+      testsPassed++;
+    } catch (error) {
+      console.error('? Validate math safety failed:', error.message);
+      testsFailed++;
+    }
+
+    // Test 21: C# health check (C# handlers)
+    console.log('\nTest 21: C# health check (C# handlers)...');
+    try {
+      const result = await sendRequest('tools/call', {
+        name: 'csharp_health_check',
+        arguments: {
+          path: 'test.cs'
+        }
+      });
+      console.log('? C# health check successful');
+      console.log('   Health check completed');
+      testsPassed++;
+    } catch (error) {
+      console.error('? C# health check failed:', error.message);
+      testsFailed++;
+    }
+
+    // Test 22: Search files (project integrity)
+    console.log('\nTest 22: Search files (project integrity)...');
+    try {
+      const result = await sendRequest('tools/call', {
+        name: 'search_files',
+        arguments: {
+          pattern: 'package'
+        }
+      });
+      console.log('? Search files successful');
+      console.log('   Search completed');
+      testsPassed++;
+    } catch (error) {
+      console.error('? Search files failed:', error.message);
+      testsFailed++;
+    }
     
     // Summary
     console.log('\n' + '='.repeat(50));

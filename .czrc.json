@@ -1,0 +1,9 @@
+{
+  "name": "swe-obey-me",
+  "version": "1.0.12",
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}

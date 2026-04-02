@@ -32,7 +32,7 @@ Reload Windsurf: `Ctrl+Shift+P` → "Developer: Reload Window"
 4. Follow prompts to configure Windsurf
 
 ### Method 3: VSIX Extension (Windsurf Store)
-1. Download `sweobeyme-1.0.12.vsix`
+1. Download `sweobeyme-1.0.13.vsix`
 2. In Windsurf: Extensions → Install from VSIX
 3. Select the downloaded file
 
@@ -41,12 +41,12 @@ Reload Windsurf: `Ctrl+Shift+P` → "Developer: Reload Window"
 ## For Maintainers: Publishing
 
 ### GitHub Release
-1. Tag release: `git tag -a v1.0.12 -m "Version 1.0.12 release"`
-2. Push tag: `git push origin v1.0.12`
+1. Tag release: `git tag -a v1.0.13 -m "Version 1.0.13 release"`
+2. Push tag: `git push origin v1.0.13`
 3. GitHub → Releases → Create new release
 4. Attach files:
    - `SWEObeyMe.zip` (full package)
-   - `sweobeyme-1.0.12.vsix` (extension)
+   - `sweobeyme-1.0.13.vsix` (extension)
 5. Publish
 
 ### VSIX Extension Store
@@ -85,12 +85,25 @@ Auto-created on first run:
 
 Before publishing, verify:
 - [ ] All tests pass (`npm test`)
+- [ ] All MCP protocol compliance tests pass (`node test-mcp-protocol-compliance.js`)
 - [ ] Green dot in MCP panel
 - [ ] 700-line wall blocks oversized files
 - [ ] Auto-correction removes console.log
 - [ ] Backups are created on write
 - [ ] Quotes load from quotes.js
 - [ ] `query_the_oracle` returns random quote
+
+### v1.0.13 Specific Verification (C# & File Management)
+- [ ] C# validation tools work correctly
+- [ ] Bracket validation detects mismatches
+- [ ] Complexity analysis provides metrics
+- [ ] Math safety validation catches overflow risks
+- [ ] File registry indexes project files
+- [ ] Duplicate file detection prevents duplicates
+- [ ] Operation audit tracks all operations
+- [ ] Reference validation checks imports
+- [ ] write_file prevents duplicate writes
+- [ ] Total 65 tools available
 
 ---
 
