@@ -40,109 +40,121 @@ function activate(context) {
     checkAndInstallMCP();
 }
 
-function checkAndInstallMCP() {
-    // Get workspace folder for manifest-based registration
-    const workspaceFolders = vscode.workspace.workspaceFolders;
-    if (!workspaceFolders || workspaceFolders.length === 0) {
-        console.log('SWEObeyMe: No workspace open, skipping manifest creation');
-        return;
+function readJsonFileSafe(filePath) {
+    try {
+        if (!fs.existsSync(filePath)) return null;
+        const raw = fs.readFileSync(filePath, 'utf-8');
+        if (!raw || !raw.trim()) return {};
+        return JSON.parse(raw);
+    } catch (error) {
+        console.error('SWEObeyMe: Failed to read JSON file, treating as empty:', filePath, error);
+        return {};
     }
-    
-    const workspaceRoot = workspaceFolders[0].uri.fsPath;
-    const manifestPath = path.join(workspaceRoot, 'windsurf-mcp.json');
-    
+}
+
+function writeJsonFileSafe(filePath, obj) {
+    const dir = path.dirname(filePath);
+    if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
+    }
+    fs.writeFileSync(filePath, JSON.stringify(obj, null, 2));
+}
+
+function updateUserMcpConfig(desiredServer) {
+    const homeDir = process.env.USERPROFILE || process.env.HOME;
+    if (!homeDir) {
+        console.log('SWEObeyMe: No home directory detected; cannot update user mcp_config.json');
+        return false;
+    }
+
+    const candidatePaths = [
+        path.join(homeDir, '.codeium', 'windsurf-next', 'mcp_config.json')
+    ];
+
+    let updatedAny = false;
+
+    for (const mcpConfigPath of candidatePaths) {
+        try {
+            const config = readJsonFileSafe(mcpConfigPath) || {};
+            if (!config.mcpServers) config.mcpServers = {};
+
+            const existing = config.mcpServers['swe-obey-me'];
+            const existingArgs = existing?.args || [];
+            const existingUri = existingArgs[existingArgs.length - 1];
+
+            const desiredArgs = desiredServer.args || [];
+            const desiredUri = desiredArgs[desiredArgs.length - 1];
+
+            const uriMatches = existingUri === desiredUri;
+            const backupMatches = existing?.env?.SWEOBEYME_BACKUP_DIR === desiredServer?.env?.SWEOBEYME_BACKUP_DIR;
+
+            if (!existing || !uriMatches || !backupMatches) {
+                config.mcpServers['swe-obey-me'] = {
+                    ...existing,
+                    ...desiredServer,
+                    env: {
+                        ...(existing?.env || {}),
+                        ...(desiredServer.env || {})
+                    }
+                };
+                writeJsonFileSafe(mcpConfigPath, config);
+                console.log('SWEObeyMe: Updated user mcp_config.json at:', mcpConfigPath);
+                updatedAny = true;
+            }
+        } catch (error) {
+            console.error('SWEObeyMe: Failed to update user mcp_config.json at:', mcpConfigPath, error);
+        }
+    }
+
+    return updatedAny;
+}
+
+function checkAndInstallMCP() {
     // Extension path for bundled server - look in extension folder itself
     const extensionPath = __dirname;
-    const indexPath = path.join(extensionPath, 'dist', 'index.js');
-    
+    const indexPath = path.join(extensionPath, 'index.js');
+
     console.log('SWEObeyMe: Looking for index.js at:', indexPath);
-    
+
     if (!fs.existsSync(indexPath)) {
         console.error('SWEObeyMe: index.js not found at:', indexPath);
         return;
     }
-    
-    // Convert indexPath to file:// URI for Windsurf Next compatibility
-    const { pathToFileURL } = require('url');
-    const indexUri = pathToFileURL(indexPath).href;
+
+    // Use absolute Windows path for Windsurf Next compatibility
+    // file:// URIs don't work properly - Windsurf resolves them as relative paths
+    const indexUri = indexPath;
 
     const localAppData = process.env.LOCALAPPDATA
         || (process.env.USERPROFILE ? path.join(process.env.USERPROFILE, 'AppData', 'Local') : null);
-    const defaultBackupDir = path.join(localAppData || workspaceRoot, 'SWEObeyMe', '.sweobeyme-backups');
-    
-    // Create the manifest for auto-registration
-    const manifest = {
-        "mcpServers": {
-            "swe-obey-me": {
-                "command": "node",
-                "args": [indexUri],
-                "name": "SWEObeyMe",
-                "version": "1.0.8",
-                "env": {
-                    "SWEOBEYME_MODE": "Sovereign",
-                    "SWEOBEYME_BACKUP_DIR": defaultBackupDir,
-                    "NODE_OPTIONS": "--no-warnings"
-                },
-                "capabilities": {
-                    "prompts": {},
-                    "resources": {},
-                    "tools": {
-                        "supported_methods": [
-                            "surgical_write",
-                            "audit_manifest",
-                            "velocity_guard"
-                        ]
-                    },
-                    "experimental": {
-                        "cascade_hooks_v2": true
-                    }
-                }
-            }
-        }
+    const defaultBackupDir = path.join(localAppData || extensionPath, 'SWEObeyMe', '.sweobeyme-backups');
+
+    // Windsurf Next (March 2026+): use user-level MCP registration only.
+    // Workspace manifests are deprecated and cause path normalization issues.
+    const desiredUserServer = {
+        command: 'node',
+        args: ['--no-warnings', indexUri],
+        env: {
+            NODE_ENV: 'production',
+            SWEOBEYME_BACKUP_DIR: defaultBackupDir,
+            SWEOBEYME_DEBUG: '0'
+        },
+        disabled: false
     };
 
-    const manifestServer = manifest.mcpServers["swe-obey-me"];
+    const userUpdated = updateUserMcpConfig(desiredUserServer);
 
-    const writeManifest = () => {
-        fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
-        console.log('SWEObeyMe: Wrote windsurf-mcp.json at:', manifestPath);
+    if (userUpdated) {
         vscode.window.showInformationMessage(
-            'SWEObeyMe MCP manifest updated! Reload Windsurf to auto-register.',
+            'SWEObeyMe MCP configured in user settings! Reload Windsurf to activate.',
             'Reload Now'
         ).then(selection => {
             if (selection === 'Reload Now') {
                 vscode.commands.executeCommand('workbench.action.reloadWindow');
             }
         });
-    };
-
-    if (fs.existsSync(manifestPath)) {
-        try {
-            const current = JSON.parse(fs.readFileSync(manifestPath, 'utf-8'));
-            const existingServer = current?.mcpServers?.["swe-obey-me"];
-            const existingArgs = existingServer?.args || [];
-            const existingUri = existingArgs[0];
-            const versionMatches = existingServer?.version === manifestServer.version;
-            const uriMatches = existingUri === indexUri;
-
-            if (versionMatches && uriMatches) {
-                console.log('SWEObeyMe: windsurf-mcp.json already points at current dist/index.js');
-                return;
-            }
-
-            console.log('SWEObeyMe: Replacing stale manifest with updated URI/version');
-        } catch (error) {
-            console.error('SWEObeyMe: Failed to read existing manifest, rewriting:', error);
-        }
-    }
-
-    try {
-        writeManifest();
-    } catch (error) {
-        console.error('SWEObeyMe: Failed to write manifest:', error);
-        vscode.window.showErrorMessage(
-            `SWEObeyMe: Failed to create manifest. Error: ${error.message}`
-        );
+    } else {
+        console.log('SWEObeyMe: User MCP config unchanged');
     }
 }
 
