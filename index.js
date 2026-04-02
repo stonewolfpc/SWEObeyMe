@@ -57,7 +57,7 @@ function normalizePath(pathString) {
 // Initialize server
 const server = new Server({
   name: "swe-obey-me",
-  version: "1.0.9",
+  version: "1.0.12",
 }, {
   capabilities: { tools: {} }
 });
@@ -287,7 +287,7 @@ server.setRequestHandler(InitializeRequestSchema, async () => {
   return {
     protocolVersion: "2024-11-05",
     capabilities: { tools: {} },
-    serverInfo: { name: "SWEObeyMe", version: "1.0.9" },
+    serverInfo: { name: "SWEObeyMe", version: "1.0.12" },
   };
 });
 

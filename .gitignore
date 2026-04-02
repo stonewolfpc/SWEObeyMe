@@ -38,7 +38,7 @@ create_project_dump.ps1
 DumpCode.ps1
 
 # Old release artifacts
-SWEObeyMe-v1.0.9.zip
+SWEObeyMe-v1.0.12.zip
 *.vsix
 
 # Local config

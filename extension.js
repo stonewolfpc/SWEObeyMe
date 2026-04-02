@@ -101,6 +101,17 @@ function updateUserMcpConfig(desiredServer) {
                 console.log('SWEObeyMe: Updated user mcp_config.json at:', mcpConfigPath);
                 updatedAny = true;
             }
+
+            // Clean up any old workspace-based windsurf-mcp.json references
+            const workspaceMcpPath = path.join(workspaceFolders?.[0]?.uri.fsPath || '', 'windsurf-mcp.json');
+            if (workspaceFolders && workspaceFolders.length > 0 && fs.existsSync(workspaceMcpPath)) {
+                try {
+                    fs.unlinkSync(workspaceMcpPath);
+                    console.log('SWEObeyMe: Removed old workspace manifest:', workspaceMcpPath);
+                } catch (error) {
+                    console.error('SWEObeyMe: Failed to remove old manifest:', error);
+                }
+            }
         } catch (error) {
             console.error('SWEObeyMe: Failed to update user mcp_config.json at:', mcpConfigPath, error);
         }

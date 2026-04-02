@@ -264,6 +264,6 @@ For issues and questions:
 
 ## Changelog
 
-### v1.0.9
+### v1.0.12
 - Updated version references
 - Version alignment across all project files
