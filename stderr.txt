@@ -1,3 +1,0 @@
-[SWEObeyMe-Audit]: Backup directory ready: C:\SWEObeyMe\.sweobeyme-backups
-[SWEObeyMe-Audit]: Server started successfully.
-[ARES]: Governor Online. Handshake Complete.

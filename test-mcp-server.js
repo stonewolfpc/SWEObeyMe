@@ -1,150 +1,270 @@
+#!/usr/bin/env node
+
 /**
- * Test Script for SWE Automation MCP Server
- * 
- * This script tests the get_project_context tool by simulating
- * MCP tool calls and verifying the responses.
+ * MCP Server Test for SWEObeyMe
+ * Tests the MCP server by sending JSON-RPC messages
  */
 
 import { spawn } from 'child_process';
 import { createInterface } from 'readline';
 
-// Start the MCP server
-const serverProcess = spawn('node', ['dist/index.js'], {
-  stdio: ['pipe', 'pipe', 'inherit'],
-  cwd: process.cwd()
+const serverProcess = spawn('node', ['index.js'], {
+  cwd: process.cwd(),
+  stdio: ['pipe', 'pipe', 'inherit']
 });
 
-const rl = createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
+let messageId = 0;
+let testsPassed = 0;
+let testsFailed = 0;
 
-let requestId = 0;
-
-// Helper function to send MCP requests
 function sendRequest(method, params = {}) {
-  const request = {
-    jsonrpc: '2.0',
-    id: ++requestId,
-    method,
-    params
-  };
-  
-  console.log('📤 Sending:', JSON.stringify(request, null, 2));
-  serverProcess.stdin.write(JSON.stringify(request) + '\n');
-}
-
-// Helper function to test get_project_context
-function testGetProjectContext() {
-  console.log('\n🧪 Testing get_project_context tool...\n');
-  
-  // Test 1: Basic project context
-  sendRequest('tools/call', {
-    name: 'get_project_context',
-    arguments: {
-      projectPath: process.cwd(),
-      includeTests: false,
-      maxDepth: 5,
-      useCache: true
-    }
+  return new Promise((resolve, reject) => {
+    const request = {
+      jsonrpc: '2.0',
+      id: messageId++,
+      method: method,
+      params: params
+    };
+    
+    const responseHandler = (line) => {
+      try {
+        const response = JSON.parse(line);
+        if (response.id === request.id) {
+          serverProcess.stdout.off('data', dataHandler);
+          if (response.error) {
+            reject(new Error(response.error.message));
+          } else if (response.result && response.result.isError) {
+            reject(new Error(response.result.content[0].text));
+          } else {
+            resolve(response.result);
+          }
+        }
+      } catch (e) {
+        // Not a JSON line, ignore
+      }
+    };
+    
+    const dataHandler = (data) => {
+      const lines = data.toString().split('\n').filter(line => line.trim());
+      lines.forEach(line => responseHandler(line));
+    };
+    
+    serverProcess.stdout.on('data', dataHandler);
+    serverProcess.stdin.write(JSON.stringify(request) + '\n');
+    
+    // Timeout after 5 seconds
+    setTimeout(() => {
+      serverProcess.stdout.off('data', dataHandler);
+      reject(new Error('Request timeout'));
+    }, 5000);
   });
 }
 
-// Helper function to list available tools
-function listTools() {
-  console.log('\n🔍 Listing available tools...\n');
-  sendRequest('tools/list');
+async function runTests() {
+  console.log('?? TESTING SWEObeyMe MCP SERVER\n');
+  
+  try {
+    // Wait for server to start
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    // Test 1: Initialize
+    console.log('Test 1: Initialize...');
+    try {
+      const result = await sendRequest('initialize', {
+        protocolVersion: '2024-11-05',
+        capabilities: {},
+        clientInfo: {
+          name: 'test-client',
+          version: '1.0.9'
+        }
+      });
+      console.log('? Initialize successful');
+      console.log('   Server info:', JSON.stringify(result.serverInfo));
+      testsPassed++;
+    } catch (error) {
+      console.error('? Initialize failed:', error.message);
+      testsFailed++;
+    }
+    
+    // Test 2: List tools
+    console.log('\nTest 2: List tools...');
+    try {
+      const result = await sendRequest('tools/list');
+      console.log('? List tools successful');
+      console.log('   Tools found:', result.tools.length);
+      result.tools.slice(0, 5).forEach(tool => {
+        console.log('   -', tool.name);
+      });
+      if (result.tools.length > 5) {
+        console.log('   ... and', result.tools.length - 5, 'more');
+      }
+      testsPassed++;
+    } catch (error) {
+      console.error('? List tools failed:', error.message);
+      testsFailed++;
+    }
+    
+    // Test 3: Obey me status
+    console.log('\nTest 3: Obey me status...');
+    try {
+      const result = await sendRequest('tools/call', {
+        name: 'obey_me_status',
+        arguments: {}
+      });
+      console.log('? Obey me status successful');
+      console.log('   Response:', result.content[0].text);
+      testsPassed++;
+    } catch (error) {
+      console.error('? Obey me status failed:', error.message);
+      testsFailed++;
+    }
+    
+    // Test 4: Surgical plan (should approve)
+    console.log('\nTest 4: Surgical plan (valid)...');
+    try {
+      const result = await sendRequest('tools/call', {
+        name: 'obey_surgical_plan',
+        arguments: {
+          target_file: 'test.js',
+          current_line_count: 100,
+          estimated_addition: 50,
+          action: 'repair'
+        }
+      });
+      console.log('? Surgical plan successful');
+      console.log('   Response:', result.content[0].text);
+      testsPassed++;
+    } catch (error) {
+      console.error('? Surgical plan failed:', error.message);
+      testsFailed++;
+    }
+    
+    // Test 5: Surgical plan (should reject)
+    console.log('\nTest 5: Surgical plan (invalid - exceeds limit)...');
+    try {
+      const result = await sendRequest('tools/call', {
+        name: 'obey_surgical_plan',
+        arguments: {
+          target_file: 'test.js',
+          current_line_count: 650,
+          estimated_addition: 100,
+          action: 'repair'
+        }
+      });
+      console.error('? Surgical plan should have been rejected but was approved');
+      testsFailed++;
+    } catch (error) {
+      console.log('? Surgical plan correctly rejected');
+      console.log('   Error:', error.message);
+      testsPassed++;
+    }
+    
+    // Test 6: Enforce surgical rules (valid code)
+    console.log('\nTest 6: Enforce surgical rules (valid code)...');
+    try {
+      const result = await sendRequest('tools/call', {
+        name: 'enforce_surgical_rules',
+        arguments: {
+          proposed_code: 'function test() { return true; }',
+          file_path: 'test.js'
+        }
+      });
+      console.log('? Enforce surgical rules successful');
+      console.log('   Response:', result.content[0].text);
+      testsPassed++;
+    } catch (error) {
+      console.error('? Enforce surgical rules failed:', error.message);
+      testsFailed++;
+    }
+    
+    // Test 7: Enforce surgical rules (invalid code - console.log)
+    console.log('\nTest 7: Enforce surgical rules (invalid - console.log)...');
+    try {
+      const result = await sendRequest('tools/call', {
+        name: 'enforce_surgical_rules',
+        arguments: {
+          proposed_code: 'console.log("test");',
+          file_path: 'test.js'
+        }
+      });
+      console.error('? Enforce surgical rules should have rejected console.log');
+      testsFailed++;
+    } catch (error) {
+      console.log('? Enforce surgical rules correctly rejected console.log');
+      console.log('   Error:', error.message);
+      testsPassed++;
+    }
+    
+    // Test 8: Auto repair submission (JSON)
+    console.log('\nTest 8: Auto repair submission (JSON)...');
+    try {
+      const result = await sendRequest('tools/call', {
+        name: 'auto_repair_submission',
+        arguments: {
+          raw_content: '{"name": "test",}',
+          type: 'json'
+        }
+      });
+      console.log('? Auto repair submission successful');
+      console.log('   Repaired:', JSON.stringify(result.content[0].text));
+      testsPassed++;
+    } catch (error) {
+      console.error('? Auto repair submission failed:', error.message);
+      testsFailed++;
+    }
+    
+    // Test 9: Get session context
+    console.log('\nTest 9: Get session context...');
+    try {
+      const result = await sendRequest('tools/call', {
+        name: 'get_session_context',
+        arguments: {}
+      });
+      console.log('? Get session context successful');
+      testsPassed++;
+    } catch (error) {
+      console.error('? Get session context failed:', error.message);
+      testsFailed++;
+    }
+    
+    // Test 10: Query the oracle
+    console.log('\nTest 10: Query the oracle...');
+    try {
+      const result = await sendRequest('tools/call', {
+        name: 'query_the_oracle',
+        arguments: {}
+      });
+      console.log('? Query the oracle successful');
+      console.log('   Oracle says:', result.content[0].text);
+      testsPassed++;
+    } catch (error) {
+      console.error('? Query the oracle failed:', error.message);
+      testsFailed++;
+    }
+    
+    // Summary
+    console.log('\n' + '='.repeat(50));
+    console.log('?? TEST RESULTS');
+    console.log('='.repeat(50));
+    console.log(`? Passed: ${testsPassed}`);
+    console.log(`? Failed: ${testsFailed}`);
+    console.log(`?? Success Rate: ${((testsPassed / (testsPassed + testsFailed)) * 100).toFixed(1)}%`);
+    
+    if (testsFailed > 0) {
+      console.log('\n??  SOME TESTS FAILED!');
+      process.exit(1);
+    } else {
+      console.log('\n?? ALL TESTS PASSED!');
+      process.exit(0);
+    }
+    
+  } catch (error) {
+    console.error('?? Critical error:', error);
+    process.exit(1);
+  } finally {
+    // Clean up
+    serverProcess.kill();
+  }
 }
 
-// Handle server responses
-serverProcess.stdout.on('data', (data) => {
-  const lines = data.toString().trim().split('\n');
-  
-  for (const line of lines) {
-    if (line.trim()) {
-      try {
-        const response = JSON.parse(line);
-        console.log('📥 Received:', JSON.stringify(response, null, 2));
-        
-        // Handle different response types
-        if (response.method === 'tools/list') {
-          console.log('\n✅ Tools list received');
-          console.log('Available tools:', response.result.tools.map(t => t.name).join(', '));
-        } else if (response.result && response.result.metadata) {
-          console.log('\n✅ Project context received successfully!');
-          console.log(`📊 Project: ${response.result.metadata.type}`);
-          console.log(`🌐 Language: ${response.result.metadata.language}`);
-          console.log(`📁 Total Files: ${response.result.metadata.totalFiles}`);
-          console.log(`📝 Total Lines: ${response.result.metadata.totalLines}`);
-          console.log(`🏗️  Namespaces: ${response.result.namespaces.size}`);
-          console.log(`📦 Classes: ${response.result.classes.size}`);
-          console.log(`⚙️  Methods: ${response.result.methods.size}`);
-          console.log(`🔗 Dependencies: ${response.result.dependencies.bySource.size}`);
-          
-          if (response.result.patterns.length > 0) {
-            console.log(`🎨 Patterns: ${response.result.patterns.map(p => p.name).join(', ')}`);
-          }
-          
-          if (response.result.conventions.length > 0) {
-            console.log(`📋 Conventions: ${response.result.conventions.map(c => c.name).join(', ')}`);
-          }
-        } else if (response.error) {
-          console.log('\n❌ Error:', response.error.message);
-        }
-      } catch (error) {
-        console.log('📥 Raw response:', line);
-      }
-    }
-  }
-});
-
-serverProcess.on('error', (error) => {
-  console.error('❌ Server error:', error);
-});
-
-serverProcess.on('close', (code) => {
-  console.log(`\n🔚 Server exited with code: ${code}`);
-  process.exit(code);
-});
-
-// Interactive testing interface
-console.log('🚀 SWE Automation MCP Server Test Interface');
-console.log('==========================================');
-console.log('Available commands:');
-console.log('  tools     - List all available tools');
-console.log('  context   - Test get_project_context tool');
-console.log('  help      - Show this help');
-console.log('  exit      - Exit testing');
-console.log('==========================================\n');
-
-rl.on('line', (input) => {
-  const command = input.trim().toLowerCase();
-  
-  switch (command) {
-    case 'tools':
-      listTools();
-      break;
-    case 'context':
-      testGetProjectContext();
-      break;
-    case 'help':
-      console.log('\n🚀 Available commands:');
-      console.log('  tools     - List all available tools');
-      console.log('  context   - Test get_project_context tool');
-      console.log('  help      - Show this help');
-      console.log('  exit      - Exit testing\n');
-      break;
-    case 'exit':
-      console.log('\n👋 Shutting down test server...');
-      serverProcess.kill();
-      break;
-    default:
-      console.log(`\n❓ Unknown command: ${input}`);
-      console.log('Type "help" for available commands\n');
-  }
-});
-
-// Initialize with tools list
-setTimeout(() => {
-  listTools();
-}, 1000);
+runTests();

@@ -1,7 +1,7 @@
-#!/usr/bin/env node/******/ (() => { // webpackBootstrap
-/******/ 	var __webpack_modules__ = ({
+#!/usr/bin/env node
+/******/ var __webpack_modules__ = ({
 
-/***/ 101:
+/***/ 330:
 /***/ ((module) => {
 
 function webpackEmptyAsyncContext(req) {
@@ -15,82 +15,55 @@ function webpackEmptyAsyncContext(req) {
 }
 webpackEmptyAsyncContext.keys = () => ([]);
 webpackEmptyAsyncContext.resolve = webpackEmptyAsyncContext;
-webpackEmptyAsyncContext.id = 101;
+webpackEmptyAsyncContext.id = 330;
 module.exports = webpackEmptyAsyncContext;
 
 /***/ })
 
-/******/ 	});
+/******/ });
 /************************************************************************/
-/******/ 	// The module cache
-/******/ 	var __webpack_module_cache__ = {};
-/******/ 	
-/******/ 	// The require function
-/******/ 	function __nccwpck_require__(moduleId) {
-/******/ 		// Check if module is in cache
-/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
-/******/ 		if (cachedModule !== undefined) {
-/******/ 			return cachedModule.exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = __webpack_module_cache__[moduleId] = {
-/******/ 			// no module.id needed
-/******/ 			// no module.loaded needed
-/******/ 			exports: {}
-/******/ 		};
-/******/ 	
-/******/ 		// Execute the module function
-/******/ 		var threw = true;
-/******/ 		try {
-/******/ 			__webpack_modules__[moduleId](module, module.exports, __nccwpck_require__);
-/******/ 			threw = false;
-/******/ 		} finally {
-/******/ 			if(threw) delete __webpack_module_cache__[moduleId];
-/******/ 		}
-/******/ 	
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
+/******/ // The module cache
+/******/ var __webpack_module_cache__ = {};
+/******/ 
+/******/ // The require function
+/******/ function __nccwpck_require__(moduleId) {
+/******/ 	// Check if module is in cache
+/******/ 	var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 	if (cachedModule !== undefined) {
+/******/ 		return cachedModule.exports;
 /******/ 	}
-/******/ 	
+/******/ 	// Create a new module (and put it into the cache)
+/******/ 	var module = __webpack_module_cache__[moduleId] = {
+/******/ 		// no module.id needed
+/******/ 		// no module.loaded needed
+/******/ 		exports: {}
+/******/ 	};
+/******/ 
+/******/ 	// Execute the module function
+/******/ 	var threw = true;
+/******/ 	try {
+/******/ 		__webpack_modules__[moduleId](module, module.exports, __nccwpck_require__);
+/******/ 		threw = false;
+/******/ 	} finally {
+/******/ 		if(threw) delete __webpack_module_cache__[moduleId];
+/******/ 	}
+/******/ 
+/******/ 	// Return the exports of the module
+/******/ 	return module.exports;
+/******/ }
+/******/ 
 /************************************************************************/
-/******/ 	/* webpack/runtime/compat get default export */
-/******/ 	(() => {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__nccwpck_require__.n = (module) => {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				() => (module['default']) :
-/******/ 				() => (module);
-/******/ 			__nccwpck_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/define property getters */
-/******/ 	(() => {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__nccwpck_require__.d = (exports, definition) => {
-/******/ 			for(var key in definition) {
-/******/ 				if(__nccwpck_require__.o(definition, key) && !__nccwpck_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
-/******/ 			}
-/******/ 		};
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	(() => {
-/******/ 		__nccwpck_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/compat */
-/******/ 	
-/******/ 	if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = __dirname + "/";
-/******/ 	
+/******/ /* webpack/runtime/hasOwnProperty shorthand */
+/******/ (() => {
+/******/ 	__nccwpck_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ })();
+/******/ 
+/******/ /* webpack/runtime/compat */
+/******/ 
+/******/ if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = new URL('.', import.meta.url).pathname.slice(import.meta.url.match(/^file:\/\/\/\w:/) ? 1 : 0, -1) + "/";
+/******/ 
 /************************************************************************/
 var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be in strict mode.
-(() => {
-"use strict";
 
 ;// CONCATENATED MODULE: ./node_modules/zod/v3/helpers/util.js
 var util;
@@ -5559,7 +5532,7 @@ class Protocol {
  * // Create typed server
  * const server = new Server<CustomRequest, CustomNotification, CustomResult>({
  *   name: "CustomServer",
- *   version: "1.0.0"
+ *   version: "1.0.9"
  * })
  * ```
  */
@@ -5824,10 +5797,8 @@ class StdioServerTransport {
 //# sourceMappingURL=stdio.js.map
 ;// CONCATENATED MODULE: external "fs/promises"
 const promises_namespaceObject = require("fs/promises");
-var promises_default = /*#__PURE__*/__nccwpck_require__.n(promises_namespaceObject);
 ;// CONCATENATED MODULE: external "path"
 const external_path_namespaceObject = require("path");
-var external_path_default = /*#__PURE__*/__nccwpck_require__.n(external_path_namespaceObject);
 ;// CONCATENATED MODULE: external "url"
 const external_url_namespaceObject = require("url");
 ;// CONCATENATED MODULE: ./index.js
@@ -5858,8 +5829,8 @@ function toWindsurfUri(barePath) {
     // 1. Normalize slashes
     let normalized = barePath.replace(/\\/g, '/');
     // 2. Ensure it's absolute
-    if (!external_path_default().isAbsolute(normalized)) {
-        normalized = external_path_default().resolve(process.cwd(), normalized);
+    if (!external_path_namespaceObject.isAbsolute(normalized)) {
+        normalized = external_path_namespaceObject.resolve(process.cwd(), normalized);
     }
     // 3. Convert to file:// URI
     return (0,external_url_namespaceObject.pathToFileURL)(normalized).href;
@@ -5875,7 +5846,7 @@ function normalizePath(pathString) {
   // Dynamic import for quotes to work with bundler
   let getRandomQuote;
   try {
-    const quotesModule = await __nccwpck_require__(101)(external_path_default().join(external_path_default().dirname((0,external_url_namespaceObject.fileURLToPath)(require("url").pathToFileURL(__filename).href)), "quotes.js"));
+    const quotesModule = await __nccwpck_require__(330)(external_path_namespaceObject.join(external_path_namespaceObject.dirname((0,external_url_namespaceObject.fileURLToPath)(import.meta.url)), "quotes.js"));
     getRandomQuote = quotesModule.getRandomQuote;
   } catch (e) {
     // Fallback quotes if quotes.js not found
@@ -5890,7 +5861,7 @@ function normalizePath(pathString) {
 // Initialize server
 const server = new Server({
   name: "swe-obey-me",
-  version: "1.0.6",
+  version: "1.0.9",
 }, {
   capabilities: { tools: {} }
 });
@@ -5905,20 +5876,20 @@ const log = (msg) => {
 
 const defaultBackupDir = () => {
   const localAppData = process.env.LOCALAPPDATA
-    || (process.env.USERPROFILE ? external_path_default().join(process.env.USERPROFILE, "AppData", "Local") : null);
+    || (process.env.USERPROFILE ? external_path_namespaceObject.join(process.env.USERPROFILE, "AppData", "Local") : null);
   const base = localAppData || process.cwd();
-  return external_path_default().join(base, "SWEObeyMe", ".sweobeyme-backups");
+  return external_path_namespaceObject.join(base, "SWEObeyMe", ".sweobeyme-backups");
 };
 
 // Backup Directory Setup
 const BACKUP_DIR = process.env.SWEOBEYME_BACKUP_DIR
-  ? external_path_default().resolve(process.env.SWEOBEYME_BACKUP_DIR)
+  ? external_path_namespaceObject.resolve(process.env.SWEOBEYME_BACKUP_DIR)
   : defaultBackupDir();
 let backupCounter = 0;
 
 async function ensureBackupDir() {
   try {
-    await promises_default().mkdir(BACKUP_DIR, { recursive: true });
+    await promises_namespaceObject.mkdir(BACKUP_DIR, { recursive: true });
     log(`Backup directory ready: ${BACKUP_DIR}`);
   } catch (error) {
     process.stderr.write(`[CRITICAL] Failed to create backup directory: ${error.message}\n`);
@@ -5931,14 +5902,14 @@ async function ensureBackupDir() {
  * @returns {string} - The backup file path.
  */
 async function createBackup(filePath) {
-  const fullPath = external_path_default().resolve(filePath);
+  const fullPath = external_path_namespaceObject.resolve(filePath);
   try {
-    const content = await promises_default().readFile(fullPath, "utf-8");
+    const content = await promises_namespaceObject.readFile(fullPath, "utf-8");
     const timestamp = Date.now();
-    const backupFileName = `${external_path_default().basename(filePath)}.backup-${backupCounter++}-${timestamp}.readonly`;
-    const backupPath = external_path_default().join(BACKUP_DIR, backupFileName);
+    const backupFileName = `${external_path_namespaceObject.basename(filePath)}.backup-${backupCounter++}-${timestamp}.readonly`;
+    const backupPath = external_path_namespaceObject.join(BACKUP_DIR, backupFileName);
     
-    await promises_default().writeFile(backupPath, content, { encoding: "utf-8", mode: 0o444 }); // Read-only
+    await promises_namespaceObject.writeFile(backupPath, content, { encoding: "utf-8", mode: 0o444 }); // Read-only
     log(`Backup created: ${backupFileName}`);
     return backupPath;
   } catch (error) {
@@ -6080,7 +6051,7 @@ let projectContract = "";
 async function loadProjectContract() {
   try {
     const contractPath = __nccwpck_require__.ab + ".sweobeyme-contract.md";
-    projectContract = await promises_default().readFile(__nccwpck_require__.ab + ".sweobeyme-contract.md", "utf-8");
+    projectContract = await promises_namespaceObject.readFile(__nccwpck_require__.ab + ".sweobeyme-contract.md", "utf-8");
     log("Project contract loaded successfully");
   } catch (error) {
     log("No project contract found, continuing without");
@@ -6093,7 +6064,7 @@ let ignorePatterns = [];
 async function loadSweIgnore() {
   try {
     const ignorePath = __nccwpck_require__.ab + ".sweignore";
-    const content = await promises_default().readFile(__nccwpck_require__.ab + ".sweignore", "utf-8");
+    const content = await promises_namespaceObject.readFile(__nccwpck_require__.ab + ".sweignore", "utf-8");
     ignorePatterns = content.split("\n").filter(line => line.trim() && !line.startsWith("#"));
     log(`.sweignore loaded with ${ignorePatterns.length} patterns`);
   } catch (error) {
@@ -6120,7 +6091,7 @@ server.setRequestHandler(InitializeRequestSchema, async () => {
   return {
     protocolVersion: "2024-11-05",
     capabilities: { tools: {} },
-    serverInfo: { name: "SWEObeyMe", version: "1.0.6" },
+    serverInfo: { name: "SWEObeyMe", version: "1.0.9" },
   };
 });
 
@@ -6364,6 +6335,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         if (total > 700) {
           log(`CRITICAL: ${args.target_file} will exceed 700 lines. MANDATORY SPLIT REQUIRED.`);
           return {
+            isError: true,
             content: [{ type: "text", text: "REJECTED: File bloat detected. Execute 'Split Protocol' instead." }]
           };
         }
@@ -6381,12 +6353,12 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           };
         }
 
-        const content = await promises_default().readFile(args.path, "utf-8");
-        const stats = await promises_default().stat(args.path);
+        const content = await promises_namespaceObject.readFile(args.path, "utf-8");
+        const stats = await promises_namespaceObject.stat(args.path);
         const lineCount = content.split(/\r\n|\r|\n/).length;
 
         // Injected Context: Forces AI to see rules every time it reads
-        let contextHeader = `[SURGICAL CONTEXT]: File: ${external_path_default().basename(args.path)} | Lines: ${lineCount}/${MAX_LINES} | Last Modified: ${stats.mtime}\n\n`;
+        let contextHeader = `[SURGICAL CONTEXT]: File: ${external_path_namespaceObject.basename(args.path)} | Lines: ${lineCount}/${MAX_LINES} | Last Modified: ${stats.mtime}\n\n`;
         
         // Inject project contract if available
         if (projectContract) {
@@ -6394,11 +6366,12 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         }
         
         log(`Read ${args.path}: ${lineCount} lines.`);
-        return { 
-          content: [{ 
-            type: "text", 
-            text: contextHeader + content 
-          }] 
+        return {
+          content: [{
+            type: "text",
+            text: contextHeader + content
+          }],
+          uri: toWindsurfUri(args.path)
         };
       }
 
@@ -6439,7 +6412,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         // PHASE 8: Mandatory Backup Before Write (only for existing files)
         let fileExists = false;
         try {
-          await promises_default().access(args.path);
+          await promises_namespaceObject.access(args.path);
           fileExists = true;
         } catch {
           fileExists = false;
@@ -6460,7 +6433,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           console.error(`[SWE-LOG] Action: WARNING | Target: ${toWindsurfUri(args.path)} | Status: File at ${lineCount} lines, approaching ${MAX_LINES} limit`);
         }
 
-        await promises_default().writeFile(args.path, content, "utf-8");
+        await promises_namespaceObject.writeFile(args.path, content, "utf-8");
         
         // PHASE 8: Update workflow step if active
         const currentWf = activeWorkflows.get("current");
@@ -6563,7 +6536,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       case "refactor_move_block": {
-        const sourceContent = await promises_default().readFile(args.source_path, "utf-8");
+        const sourceContent = await promises_namespaceObject.readFile(args.source_path, "utf-8");
         
         // 1. Verify the code block exists in the source
         if (!sourceContent.includes(args.code_block)) {
@@ -6573,7 +6546,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         // 2. Read/Create target file
         let targetContent = "";
         try {
-          targetContent = await promises_default().readFile(args.target_path, "utf-8");
+          targetContent = await promises_namespaceObject.readFile(args.target_path, "utf-8");
         } catch (e) {
           targetContent = "// New Module created by SWEObeyMe\n";
         }
@@ -6587,12 +6560,15 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         }
 
         // 5. Atomic Execution
-        await promises_default().writeFile(args.target_path, newTargetContent, "utf-8");
-        const newSourceContent = sourceContent.replace(args.code_block, `// [MOVED TO ${external_path_default().basename(args.target_path)}]`);
-        await promises_default().writeFile(args.source_path, newSourceContent, "utf-8");
+        await promises_namespaceObject.writeFile(args.target_path, newTargetContent, "utf-8");
+        const newSourceContent = sourceContent.replace(args.code_block, `// [MOVED TO ${external_path_namespaceObject.basename(args.target_path)}]`);
+        await promises_namespaceObject.writeFile(args.source_path, newSourceContent, "utf-8");
 
         recordAction("REFACTOR_MOVE", { from: args.source_path, to: args.target_path });
-        return { content: [{ type: "text", text: `Successfully moved code block to ${args.target_path} (URI: ${normalizePath(args.target_path)}). Source has been updated with a reference comment.` }] };
+        return {
+          content: [{ type: "text", text: `Successfully moved code block to ${args.target_path} (URI: ${normalizePath(args.target_path)}). Source has been updated with a reference comment.` }],
+          uri: toWindsurfUri(args.target_path)
+        };
       }
 
       case "extract_to_new_file": {
@@ -6612,15 +6588,18 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         }
 
         // 4. Write the new file
-        await promises_default().writeFile(args.new_file_path, newContent, "utf-8");
+        await promises_namespaceObject.writeFile(args.new_file_path, newContent, "utf-8");
         
         // 5. Update source to reference the new file
-        const sourceContent = await promises_default().readFile(args.source_path, "utf-8");
-        const newSourceContent = sourceContent.replace(args.code_block, `// [EXTRACTED TO ${external_path_default().basename(args.new_file_path)}]\n// See: ${args.new_file_path}`);
-        await promises_default().writeFile(args.source_path, newSourceContent, "utf-8");
+        const sourceContent = await promises_namespaceObject.readFile(args.source_path, "utf-8");
+        const newSourceContent = sourceContent.replace(args.code_block, `// [EXTRACTED TO ${external_path_namespaceObject.basename(args.new_file_path)}]\n// See: ${args.new_file_path}`);
+        await promises_namespaceObject.writeFile(args.source_path, newSourceContent, "utf-8");
 
         recordAction("EXTRACT", { from: args.source_path, to: args.new_file_path });
-        return { content: [{ type: "text", text: `Successfully extracted to ${args.new_file_path} (URI: ${normalizePath(args.new_file_path)}). Source has been updated with reference comments.` }] };
+        return {
+          content: [{ type: "text", text: `Successfully extracted to ${args.new_file_path} (URI: ${normalizePath(args.new_file_path)}). Source has been updated with reference comments.` }],
+          uri: toWindsurfUri(args.new_file_path)
+        };
       }
 
       case "get_architectural_directive": {
@@ -6663,7 +6642,7 @@ Reminder: You are a surgeon. Precision over speed.`
       }
 
       case "analyze_file_health": {
-        const content = await promises_default().readFile(args.path, "utf-8");
+        const content = await promises_namespaceObject.readFile(args.path, "utf-8");
         const issues = [];
         
         // Check for Complexity (Deep Nesting)
@@ -6680,7 +6659,7 @@ Reminder: You are a surgeon. Precision over speed.`
       }
 
       case "detect_architectural_drift": {
-        const content = await promises_default().readFile(args.path, "utf-8");
+        const content = await promises_namespaceObject.readFile(args.path, "utf-8");
         const lines = content.split('\n');
         const commentCount = lines.filter(l => l.trim().startsWith("//") || l.trim().startsWith("/*")).length;
         const ratio = commentCount / lines.length;
@@ -6694,15 +6673,18 @@ Reminder: You are a surgeon. Precision over speed.`
       case "create_backup": {
         const backupPath = await createBackup(args.path);
         if (backupPath) {
-          return { content: [{ type: "text", text: `Backup created at: ${backupPath} (URI: ${normalizePath(backupPath)})` }] };
+          return {
+            content: [{ type: "text", text: `Backup created at: ${backupPath} (URI: ${normalizePath(backupPath)})` }],
+            uri: toWindsurfUri(backupPath)
+          };
         }
         return { isError: true, content: [{ type: "text", text: "Failed to create backup." }] };
       }
 
       case "restore_backup": {
         try {
-          const files = await promises_default().readdir(BACKUP_DIR);
-          const baseName = external_path_default().basename(args.path);
+          const files = await promises_namespaceObject.readdir(BACKUP_DIR);
+          const baseName = external_path_namespaceObject.basename(args.path);
           const backups = files.filter(f => f.startsWith(baseName + ".backup-"));
           
           if (args.backup_index >= backups.length) {
@@ -6717,11 +6699,14 @@ Reminder: You are a surgeon. Precision over speed.`
           });
           
           const backupFile = backups[args.backup_index];
-          const backupPath = external_path_default().join(BACKUP_DIR, backupFile);
-          const content = await promises_default().readFile(backupPath, "utf-8");
+          const backupPath = external_path_namespaceObject.join(BACKUP_DIR, backupFile);
+          const content = await promises_namespaceObject.readFile(backupPath, "utf-8");
           
-          await promises_default().writeFile(args.path, content, "utf-8");
-          return { content: [{ type: "text", text: `Restored ${args.path} (URI: ${normalizePath(args.path)}) from backup ${backupFile}.` }] };
+          await promises_namespaceObject.writeFile(args.path, content, "utf-8");
+          return {
+            content: [{ type: "text", text: `Restored ${args.path} (URI: ${normalizePath(args.path)}) from backup ${backupFile}.` }],
+            uri: toWindsurfUri(args.path)
+          };
         } catch (error) {
           return { isError: true, content: [{ type: "text", text: `Restore failed: ${error.message}` }] };
         }
@@ -6734,7 +6719,7 @@ Reminder: You are a surgeon. Precision over speed.`
       }
 
       case "list_directory": {
-        const files = await promises_default().readdir(args.path);
+        const files = await promises_namespaceObject.readdir(args.path);
         return { content: [{ type: "text", text: files.join("\n") }] };
       }
 
@@ -6840,8 +6825,7 @@ global.process.stdout.on('error', (err) => {
 });
 
 // 3. Handle standard Windows termination signals
-global.process.on("SIGINT", () => initiateShutdown("SIGINT received"));
-global.process.on("SIGTERM", () => initiateShutdown("SIGTERM received"));
+// Note: SIGINT and SIGTERM already registered above.
 
 // 4. Catch Unhandled Errors to prevent silent zombie hangs
 global.process.on("uncaughtException", (err) => {
@@ -6851,8 +6835,3 @@ global.process.on("uncaughtException", (err) => {
 
 })(); // Close async IIFE
 
-})();
-
-module.exports = __webpack_exports__;
-/******/ })()
-;

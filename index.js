@@ -57,7 +57,7 @@ function normalizePath(pathString) {
 // Initialize server
 const server = new Server({
   name: "swe-obey-me",
-  version: "1.0.8",
+  version: "1.0.9",
 }, {
   capabilities: { tools: {} }
 });
@@ -287,7 +287,7 @@ server.setRequestHandler(InitializeRequestSchema, async () => {
   return {
     protocolVersion: "2024-11-05",
     capabilities: { tools: {} },
-    serverInfo: { name: "SWEObeyMe", version: "1.0.8" },
+    serverInfo: { name: "SWEObeyMe", version: "1.0.9" },
   };
 });
 
@@ -531,6 +531,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         if (total > 700) {
           log(`CRITICAL: ${args.target_file} will exceed 700 lines. MANDATORY SPLIT REQUIRED.`);
           return {
+            isError: true,
             content: [{ type: "text", text: "REJECTED: File bloat detected. Execute 'Split Protocol' instead." }]
           };
         }
@@ -561,11 +562,12 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         }
         
         log(`Read ${args.path}: ${lineCount} lines.`);
-        return { 
-          content: [{ 
-            type: "text", 
-            text: contextHeader + content 
-          }] 
+        return {
+          content: [{
+            type: "text",
+            text: contextHeader + content
+          }],
+          uri: toWindsurfUri(args.path)
         };
       }
 
@@ -759,7 +761,10 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         await fs.writeFile(args.source_path, newSourceContent, "utf-8");
 
         recordAction("REFACTOR_MOVE", { from: args.source_path, to: args.target_path });
-        return { content: [{ type: "text", text: `Successfully moved code block to ${args.target_path} (URI: ${normalizePath(args.target_path)}). Source has been updated with a reference comment.` }] };
+        return {
+          content: [{ type: "text", text: `Successfully moved code block to ${args.target_path} (URI: ${normalizePath(args.target_path)}). Source has been updated with a reference comment.` }],
+          uri: toWindsurfUri(args.target_path)
+        };
       }
 
       case "extract_to_new_file": {
@@ -787,7 +792,10 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         await fs.writeFile(args.source_path, newSourceContent, "utf-8");
 
         recordAction("EXTRACT", { from: args.source_path, to: args.new_file_path });
-        return { content: [{ type: "text", text: `Successfully extracted to ${args.new_file_path} (URI: ${normalizePath(args.new_file_path)}). Source has been updated with reference comments.` }] };
+        return {
+          content: [{ type: "text", text: `Successfully extracted to ${args.new_file_path} (URI: ${normalizePath(args.new_file_path)}). Source has been updated with reference comments.` }],
+          uri: toWindsurfUri(args.new_file_path)
+        };
       }
 
       case "get_architectural_directive": {
@@ -861,7 +869,10 @@ Reminder: You are a surgeon. Precision over speed.`
       case "create_backup": {
         const backupPath = await createBackup(args.path);
         if (backupPath) {
-          return { content: [{ type: "text", text: `Backup created at: ${backupPath} (URI: ${normalizePath(backupPath)})` }] };
+          return {
+            content: [{ type: "text", text: `Backup created at: ${backupPath} (URI: ${normalizePath(backupPath)})` }],
+            uri: toWindsurfUri(backupPath)
+          };
         }
         return { isError: true, content: [{ type: "text", text: "Failed to create backup." }] };
       }
@@ -888,7 +899,10 @@ Reminder: You are a surgeon. Precision over speed.`
           const content = await fs.readFile(backupPath, "utf-8");
           
           await fs.writeFile(args.path, content, "utf-8");
-          return { content: [{ type: "text", text: `Restored ${args.path} (URI: ${normalizePath(args.path)}) from backup ${backupFile}.` }] };
+          return {
+            content: [{ type: "text", text: `Restored ${args.path} (URI: ${normalizePath(args.path)}) from backup ${backupFile}.` }],
+            uri: toWindsurfUri(args.path)
+          };
         } catch (error) {
           return { isError: true, content: [{ type: "text", text: `Restore failed: ${error.message}` }] };
         }

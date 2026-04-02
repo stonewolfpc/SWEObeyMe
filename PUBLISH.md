@@ -9,7 +9,7 @@ cd SWEObeyMe
 npm install
 ```
 
-Add to `%USERPROFILE%\.codeium\windsurf\mcp_config.json`:
+Add to `%USERPROFILE%\.codeium\windsurf-next\mcp_config.json`:
 ```json
 {
   "mcpServers": {
@@ -32,7 +32,7 @@ Reload Windsurf: `Ctrl+Shift+P` → "Developer: Reload Window"
 4. Follow prompts to configure Windsurf
 
 ### Method 3: VSIX Extension (Windsurf Store)
-1. Download `sweobeyme-1.0.0.vsix`
+1. Download `sweobeyme-1.0.9.vsix`
 2. In Windsurf: Extensions → Install from VSIX
 3. Select the downloaded file
 
@@ -41,12 +41,12 @@ Reload Windsurf: `Ctrl+Shift+P` → "Developer: Reload Window"
 ## For Maintainers: Publishing
 
 ### GitHub Release
-1. Tag release: `git tag -a v1.0.0 -m "Initial release"`
-2. Push tag: `git push origin v1.0.0`
+1. Tag release: `git tag -a v1.0.9 -m "Version 1.0.9 release"`
+2. Push tag: `git push origin v1.0.9`
 3. GitHub → Releases → Create new release
 4. Attach files:
    - `SWEObeyMe.zip` (full package)
-   - `sweobeyme-1.0.0.vsix` (extension)
+   - `sweobeyme-1.0.9.vsix` (extension)
 5. Publish
 
 ### VSIX Extension Store

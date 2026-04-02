@@ -56,9 +56,9 @@ Add the following to your Windsurf MCP configuration:
 ```json
 {
   "mcpServers": {
-    "swe-automation": {
+    "swe-obey-me": {
       "command": "node",
-      "args": ["dist/index.js"],
+      "args": ["d:/SWEObeyMe-restored/index.js"],
       "env": {
         "NODE_ENV": "production"
       }
@@ -264,9 +264,6 @@ For issues and questions:
 
 ## Changelog
 
-### v1.0.0
-- Initial release
-- 10 core automation tools
-- Full Windsurf MCP integration
-- Comprehensive documentation
-- Security and safety features
+### v1.0.9
+- Updated version references
+- Version alignment across all project files

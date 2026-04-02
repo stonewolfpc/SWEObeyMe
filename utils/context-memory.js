@@ -37,7 +37,7 @@ class ContextMemory {
    */
   async init() {
     try {
-      this.client = new Client({ name: "SWEObeyMe-Context", version: "1.0.0" });
+      this.client = new Client({ name: "SWEObeyMe-Context", version: "1.0.9" });
       const transport = new StdioClientTransport({
         command: "npx",
         args: ["-y", "@modelcontextprotocol/server-memory"]
