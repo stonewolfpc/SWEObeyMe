@@ -1,0 +1,17 @@
+﻿{
+  "mcpServers": {
+    "swe-obey-me": {
+      "command": "node",
+      "args": [
+        "--no-warnings",
+        "d:\\SWEObeyMe-restored\\index.js"
+      ],
+      "env": {
+        "NODE_ENV": "production",
+        "SWEOBEYME_BACKUP_DIR": "C:\\Users\\StoneWolfPC\\AppData\\Local\\SWEObeyMe\\.sweobeyme-backups",
+        "SWEOBEYME_DEBUG": "0"
+      },
+      "disabled": false
+    }
+  }
+}

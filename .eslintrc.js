@@ -5,17 +5,12 @@ module.exports = {
     node: true,
     jest: true,
   },
-  extends: [
-    'eslint:recommended',
-    'prettier',
-  ],
+  extends: ['eslint:recommended', 'prettier'],
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
-  plugins: [
-    'prettier',
-  ],
+  plugins: ['prettier'],
   rules: {
     'prettier/prettier': 'error',
     'no-console': ['warn', { allow: ['warn', 'error'] }],
@@ -23,10 +18,25 @@ module.exports = {
     'prefer-const': 'error',
     'no-var': 'error',
   },
-  ignorePatterns: [
-    'dist/',
-    'node_modules/',
-    '*.vsix',
-    '.git/',
+  overrides: [
+    {
+      files: ['index.js'],
+      rules: {
+        'no-console': 'off',
+      },
+    },
+    {
+      files: ['scripts/**/*.js'],
+      rules: {
+        'no-console': 'off',
+      },
+    },
+    {
+      files: ['extension.js'],
+      rules: {
+        'no-console': 'off',
+      },
+    },
   ],
+  ignorePatterns: ['dist/', 'node_modules/', '*.vsix', '.git/'],
 };

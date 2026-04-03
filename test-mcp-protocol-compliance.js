@@ -10,12 +10,12 @@ import { spawn } from 'child_process';
 
 let serverProcess;
 let messageId = 0;
-let testResults = {
+const testResults = {
   total: 0,
   passed: 0,
   failed: 0,
   warnings: [],
-  errors: []
+  errors: [],
 };
 
 /**
@@ -55,10 +55,10 @@ function warn(condition, testName, details = '') {
 function sendRequest(method, params = {}) {
   return new Promise((resolve, reject) => {
     const request = {
-      jsonrpc: "2.0",
+      jsonrpc: '2.0',
       id: messageId++,
       method: method,
-      params: params
+      params: params,
     };
 
     let responseReceived = false;
@@ -68,8 +68,11 @@ function sendRequest(method, params = {}) {
       }
     }, 5000);
 
-    const dataHandler = (data) => {
-      const lines = data.toString().split('\n').filter(line => line.trim());
+    const dataHandler = data => {
+      const lines = data
+        .toString()
+        .split('\n')
+        .filter(line => line.trim());
       for (const line of lines) {
         try {
           const response = JSON.parse(line);
@@ -104,7 +107,7 @@ function validateJsonRpcResponse(response, testName) {
     errors.push('Response is not an object');
   }
 
-  if (response.jsonrpc !== "2.0") {
+  if (response.jsonrpc !== '2.0') {
     errors.push(`jsonrpc version is "${response.jsonrpc}", expected "2.0"`);
   }
 
@@ -177,7 +180,7 @@ async function runMCPComplianceTests() {
     console.log('Starting MCP server...');
     serverProcess = spawn('node', ['index.js'], {
       cwd: process.cwd(),
-      stdio: ['pipe', 'pipe', 'inherit']
+      stdio: ['pipe', 'pipe', 'inherit'],
     });
 
     // Wait for server to start
@@ -191,8 +194,8 @@ async function runMCPComplianceTests() {
         capabilities: {},
         clientInfo: {
           name: 'test-client',
-          version: '1.0.0'
-        }
+          version: '1.0.0',
+        },
       });
 
       const validationErrors = validateJsonRpcResponse(initResponse, 'Initialize response');
@@ -206,9 +209,11 @@ async function runMCPComplianceTests() {
 
       // Validate protocol version
       if (initResponse.result.serverInfo.protocolVersion) {
-        assert(initResponse.result.serverInfo.protocolVersion === '2024-11-05',
-               'Protocol version matches 2024-11-05',
-               `Got: ${initResponse.result.serverInfo.protocolVersion}`);
+        assert(
+          initResponse.result.serverInfo.protocolVersion === '2024-11-05',
+          'Protocol version matches 2024-11-05',
+          `Got: ${initResponse.result.serverInfo.protocolVersion}`
+        );
       }
 
       console.log('  ✓ Initialize handshake complete');
@@ -250,7 +255,7 @@ async function runMCPComplianceTests() {
     try {
       const toolResponse = await sendRequest('tools/call', {
         name: 'obey_me_status',
-        arguments: {}
+        arguments: {},
       });
 
       const validationErrors = validateJsonRpcResponse(toolResponse, 'Tool call response');
@@ -263,7 +268,10 @@ async function runMCPComplianceTests() {
 
       toolResponse.result.content.forEach((item, index) => {
         assert(item.type, `Content item ${index} has type`);
-        assert(['text', 'image', 'resource'].includes(item.type), `Content item ${index} has valid type`);
+        assert(
+          ['text', 'image', 'resource'].includes(item.type),
+          `Content item ${index} has valid type`
+        );
         assert(item.text || item.data, `Content item ${index} has data`);
       });
 
@@ -278,10 +286,13 @@ async function runMCPComplianceTests() {
       // Note: MCP tools should be lenient with parameters, not strictly reject them
       const toolResponse = await sendRequest('tools/call', {
         name: 'obey_me_status',
-        arguments: { invalid_param: 'value' }
+        arguments: { invalid_param: 'value' },
       });
 
-      const validationErrors = validateJsonRpcResponse(toolResponse, 'Tool call with invalid params');
+      const validationErrors = validateJsonRpcResponse(
+        toolResponse,
+        'Tool call with invalid params'
+      );
       validationErrors.forEach(err => console.log(`  ✗ ${err}`));
       assert(validationErrors.length === 0, 'Tool call response format is valid');
 
@@ -298,7 +309,7 @@ async function runMCPComplianceTests() {
       try {
         await sendRequest('tools/call', {
           name: 'non_existent_tool',
-          arguments: {}
+          arguments: {},
         });
         assert(false, 'Tool call should reject non-existent tool');
       } catch (error) {
@@ -318,8 +329,8 @@ async function runMCPComplianceTests() {
             target_file: 'test.js',
             current_line_count: 10000,
             estimated_addition: 1000,
-            action: 'repair'
-          }
+            action: 'repair',
+          },
         });
 
         // Check if it returned an error in the result
@@ -346,15 +357,18 @@ async function runMCPComplianceTests() {
     console.log('\n=== Test 7: Missing Required Field ===');
     try {
       const request = {
-        jsonrpc: "2.0",
+        jsonrpc: '2.0',
         id: messageId++,
-        method: 'tools/call'
+        method: 'tools/call',
         // Missing 'params' field
       };
 
-      return new Promise((resolve) => {
-        const dataHandler = (data) => {
-          const lines = data.toString().split('\n').filter(line => line.trim());
+      return new Promise(resolve => {
+        const dataHandler = data => {
+          const lines = data
+            .toString()
+            .split('\n')
+            .filter(line => line.trim());
           for (const line of lines) {
             try {
               const response = JSON.parse(line);
@@ -387,12 +401,15 @@ async function runMCPComplianceTests() {
       const requests = [
         sendRequest('tools/call', { name: 'obey_me_status', arguments: {} }),
         sendRequest('tools/call', { name: 'get_session_context', arguments: {} }),
-        sendRequest('tools/call', { name: 'obey_me_status', arguments: {} })
+        sendRequest('tools/call', { name: 'obey_me_status', arguments: {} }),
       ];
 
       const responses = await Promise.all(requests);
       assert(responses.length === 3, 'All concurrent requests handled');
-      assert(responses.every(r => r.result), 'All responses have result field');
+      assert(
+        responses.every(r => r.result),
+        'All responses have result field'
+      );
       console.log('  ✓ Concurrent requests handled correctly');
     } catch (error) {
       assert(false, 'Concurrent requests test failed', error.message);
@@ -402,15 +419,18 @@ async function runMCPComplianceTests() {
     console.log('\n=== Test 9: Invalid JSON-RPC Version ===');
     try {
       const request = {
-        jsonrpc: "1.0",
+        jsonrpc: '1.0',
         id: messageId++,
         method: 'tools/call',
-        params: { name: 'obey_me_status', arguments: {} }
+        params: { name: 'obey_me_status', arguments: {} },
       };
 
-      return new Promise((resolve) => {
-        const dataHandler = (data) => {
-          const lines = data.toString().split('\n').filter(line => line.trim());
+      return new Promise(resolve => {
+        const dataHandler = data => {
+          const lines = data
+            .toString()
+            .split('\n')
+            .filter(line => line.trim());
           for (const line of lines) {
             try {
               const response = JSON.parse(line);
@@ -453,7 +473,7 @@ async function runMCPComplianceTests() {
     try {
       const response = await sendRequest('tools/call', {
         name: 'get_config',
-        arguments: {}
+        arguments: {},
       });
       assert(response.result !== undefined, 'Tool returns result even if empty');
       console.log('  ✓ Empty result handled correctly');
@@ -466,7 +486,7 @@ async function runMCPComplianceTests() {
     try {
       const response = await sendRequest('tools/call', {
         name: 'get_session_context',
-        arguments: {}
+        arguments: {},
       });
       assert(response.result, 'Large response handled');
       console.log('  ✓ Large response handled correctly');
@@ -482,8 +502,8 @@ async function runMCPComplianceTests() {
         arguments: {
           file_path: 'test-file with spaces.js',
           content: 'console.log("test");\n// Comments with "quotes"',
-          language: 'javascript'
-        }
+          language: 'javascript',
+        },
       });
       assert(response.result, 'Special characters handled');
       console.log('  ✓ Special characters handled correctly');
@@ -496,8 +516,11 @@ async function runMCPComplianceTests() {
     console.log('\n=== Test 14: Tool Capabilities ===');
     try {
       const toolsResponse = await sendRequest('tools/list');
-      const hasComplexTools = toolsResponse.result.tools.some(t =>
-        t.inputSchema && t.inputSchema.properties && Object.keys(t.inputSchema.properties).length > 0
+      const hasComplexTools = toolsResponse.result.tools.some(
+        t =>
+          t.inputSchema &&
+          t.inputSchema.properties &&
+          Object.keys(t.inputSchema.properties).length > 0
       );
       assert(hasComplexTools, 'Server has tools with complex schemas');
       console.log('  ✓ Tool capabilities validated');
@@ -511,7 +534,7 @@ async function runMCPComplianceTests() {
       const initResponse = await sendRequest('initialize', {
         protocolVersion: '2024-11-05',
         capabilities: {},
-        clientInfo: { name: 'test', version: '1.0' }
+        clientInfo: { name: 'test', version: '1.0' },
       });
 
       const serverInfo = initResponse.result.serverInfo;
@@ -561,7 +584,6 @@ async function runMCPComplianceTests() {
       console.log('These issues may cause problems with Windsurf Next or other MCP clients.');
       process.exit(1);
     }
-
   } catch (error) {
     console.error('\n✗ CRITICAL ERROR:', error.message);
     console.error(error.stack);

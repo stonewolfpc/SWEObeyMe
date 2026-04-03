@@ -1,6 +1,9 @@
 module.exports = {
-  preset: 'ts-jest',
   testEnvironment: 'node',
+  transform: {},
+  transformIgnorePatterns: [
+    'node_modules/(?!(?:@modelcontextprotocol/sdk)/)',
+  ],
   roots: ['<rootDir>'],
   testMatch: ['**/__tests__/**/*.js', '**/?(*.)+(spec|test).js'],
   collectCoverageFrom: [
@@ -20,5 +23,8 @@ module.exports = {
       lines: 70,
       statements: 70,
     },
+  },
+  moduleNameMapper: {
+    '^(\\.{1,2}/.*)\\.js$': '$1',
   },
 };

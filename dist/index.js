@@ -1,7 +1,6 @@
-#!/usr/bin/env node
 /******/ var __webpack_modules__ = ({
 
-/***/ 330:
+/***/ 765:
 /***/ ((module) => {
 
 function webpackEmptyAsyncContext(req) {
@@ -15,8 +14,998 @@ function webpackEmptyAsyncContext(req) {
 }
 webpackEmptyAsyncContext.keys = () => ([]);
 webpackEmptyAsyncContext.resolve = webpackEmptyAsyncContext;
-webpackEmptyAsyncContext.id = 330;
+webpackEmptyAsyncContext.id = 765;
 module.exports = webpackEmptyAsyncContext;
+
+/***/ }),
+
+/***/ 982:
+/***/ ((module) => {
+
+module.exports = require("crypto");
+
+/***/ }),
+
+/***/ 943:
+/***/ ((module) => {
+
+module.exports = require("fs/promises");
+
+/***/ }),
+
+/***/ 928:
+/***/ ((module) => {
+
+module.exports = require("path");
+
+/***/ }),
+
+/***/ 16:
+/***/ ((module) => {
+
+module.exports = require("url");
+
+/***/ }),
+
+/***/ 219:
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __nccwpck_require__) => {
+
+
+// EXPORTS
+__nccwpck_require__.d(__webpack_exports__, {
+  dx: () => (/* binding */ CSHARP_ENABLE_BRACKET_VALIDATION),
+  eV: () => (/* binding */ CSHARP_MATH_COMPLEXITY_THRESHOLD),
+  CV: () => (/* binding */ CSHARP_MAX_METHOD_COMPLEXITY),
+  Ql: () => (/* binding */ CSHARP_MAX_NESTING_DEPTH),
+  DS: () => (/* binding */ CSHARP_MAX_TRY_CATCH_DEPTH),
+  p6: () => (/* binding */ CSHARP_WARN_ON_COMPLEX_MATH),
+  mX: () => (/* binding */ DEBUG_LOGS),
+  iF: () => (/* binding */ ENABLE_ANTI_PATTERN_DETECTION),
+  Ar: () => (/* binding */ ENABLE_IMPORT_VALIDATION),
+  nu: () => (/* binding */ ENABLE_NAMING_VALIDATION),
+  UO: () => (/* binding */ ENABLE_SYNTAX_VALIDATION),
+  cl: () => (/* binding */ FORBIDDEN_PATTERNS),
+  q4: () => (/* binding */ MAX_BACKUPS_PER_FILE),
+  xg: () => (/* binding */ MAX_LINES),
+  q1: () => (/* binding */ MIN_DOCUMENTATION_RATIO),
+  ox: () => (/* binding */ REQUIRE_CONFIRMATION),
+  $E: () => (/* binding */ WARNING_THRESHOLD),
+  ag: () => (/* binding */ getAllConfig),
+  oU: () => (/* binding */ getConfigSchema),
+  E6: () => (/* binding */ resetConfig),
+  ql: () => (/* binding */ saveConfig),
+  Nk: () => (/* binding */ setConfig),
+  pP: () => (/* binding */ setConfigValues)
+});
+
+// UNUSED EXPORTS: CSHARP_ENABLE_MATH_SAFETY, CSHARP_FORBID_EMPTY_CATCH, CSHARP_REQUIRE_ASYNC_AWAIT, CSHARP_REQUIRE_USING, ENABLE_AUTO_CORRECTION, MAX_OPERATIONS_PER_MINUTE, REQUIRE_DRY_RUN, REQUIRE_IMPACT_ANALYSIS, STRICT_MODE, getConfig, loadConfig, validateConfigValue
+
+// EXTERNAL MODULE: external "fs/promises"
+var promises_ = __nccwpck_require__(943);
+// EXTERNAL MODULE: external "path"
+var external_path_ = __nccwpck_require__(928);
+;// CONCATENATED MODULE: external "os"
+const external_os_namespaceObject = require("os");
+;// CONCATENATED MODULE: ./lib/config.js
+
+
+
+
+/**
+ * Configuration management for SWEObeyMe MCP server
+ * Follows Windsurf Next best practices for configuration
+ */
+
+// Default configuration values
+const DEFAULT_CONFIG = {
+  // Surgical rules
+  maxLines: 700,
+  warningThreshold: 600,
+
+  // Backup settings
+  maxBackupsPerFile: 10,
+  backupLockTimeout: 30000, // 30 seconds
+
+  // Enforcement settings
+  enableAutoCorrection: true,
+  enableLoopDetection: true,
+  maxLoopAttempts: 3,
+
+  // Documentation requirements
+  minDocumentationRatio: 0.1, // 10%
+
+  // Debug settings
+  debugLogs: false,
+
+  // Feature toggles
+  enableWorkflowOrchestration: true,
+  enableSessionMemory: true,
+  enableOracle: true,
+
+  // Forbidden patterns
+  forbiddenPatterns: ['console\\.log', 'TODO', 'FIXME', 'HACK', 'debugger', 'eval\\('],
+
+  // Safety settings for lower-tier models
+  strictMode: false,
+  requireDryRun: false,
+  requireConfirmation: false,
+  maxOperationsPerMinute: 60,
+  enableSyntaxValidation: false,
+  enableImportValidation: false,
+  minDocumentationRatioStrict: 0.1,
+  enableAntiPatternDetection: false,
+  enableChangeVerification: false,
+  requireImpactAnalysis: false,
+  enableNamingConventionValidation: false,
+
+  // C# specific settings
+  csharpMaxMethodComplexity: 15,
+  csharpMaxNestingDepth: 5,
+  csharpRequireAsyncAwaitPattern: true,
+  csharpForbidEmptyCatchBlocks: true,
+  csharpRequireUsingStatements: true,
+  csharpEnableMathSafety: true,
+  csharpMaxTryCatchDepth: 3,
+  csharpEnableBracketValidation: true,
+  csharpWarnOnComplexMath: true,
+  csharpMathComplexityThreshold: 5,
+};
+
+// Configuration file path
+const CONFIG_FILE_PATH = external_path_.join(external_os_namespaceObject.homedir(), '.sweobeyme-config.json');
+
+// In-memory configuration (loaded from file or defaults)
+let config = { ...DEFAULT_CONFIG };
+
+/**
+ * Load configuration from file
+ */
+async function loadConfig() {
+  try {
+    if (
+      await promises_.access(CONFIG_FILE_PATH)
+        .then(() => true)
+        .catch(() => false)
+    ) {
+      const configData = await promises_.readFile(CONFIG_FILE_PATH, 'utf-8');
+      const userConfig = JSON.parse(configData);
+      config = { ...DEFAULT_CONFIG, ...userConfig };
+    } else {
+      config = { ...DEFAULT_CONFIG };
+    }
+  } catch (error) {
+    console.error(`[CONFIG] Error loading configuration: ${error.message}`);
+    config = { ...DEFAULT_CONFIG };
+  }
+  return config;
+}
+
+/**
+ * Save configuration to file
+ */
+async function saveConfig() {
+  try {
+    await promises_.writeFile(CONFIG_FILE_PATH, JSON.stringify(config, null, 2), 'utf-8');
+    return true;
+  } catch (error) {
+    console.error(`[CONFIG] Error saving configuration: ${error.message}`);
+    return false;
+  }
+}
+
+/**
+ * Get configuration value
+ */
+function getConfig(key) {
+  return config[key];
+}
+
+/**
+ * Get entire configuration
+ */
+function getAllConfig() {
+  return { ...config };
+}
+
+/**
+ * Set configuration value
+ */
+function setConfig(key, value) {
+  // Validate key exists in default config
+  if (!(key in DEFAULT_CONFIG)) {
+    throw new Error(`Unknown configuration key: ${key}`);
+  }
+
+  // Type validation
+  const defaultValue = DEFAULT_CONFIG[key];
+  if (typeof value !== typeof defaultValue) {
+    throw new Error(
+      `Invalid type for ${key}: expected ${typeof defaultValue}, got ${typeof value}`
+    );
+  }
+
+  // Range validation for numeric values
+  if (typeof value === 'number') {
+    if (key === 'maxLines' || key === 'warningThreshold') {
+      if (value < 1 || value > 10000) {
+        throw new Error(`${key} must be between 1 and 10000`);
+      }
+      if (key === 'warningThreshold' && value >= config.maxLines) {
+        throw new Error('warningThreshold must be less than maxLines');
+      }
+    }
+    if (key === 'maxBackupsPerFile' && (value < 1 || value > 100)) {
+      throw new Error('maxBackupsPerFile must be between 1 and 100');
+    }
+    if (key === 'minDocumentationRatio' && (value < 0 || value > 1)) {
+      throw new Error('minDocumentationRatio must be between 0 and 1');
+    }
+  }
+
+  // Array validation
+  if (key === 'forbiddenPatterns' && !Array.isArray(value)) {
+    throw new Error('forbiddenPatterns must be an array');
+  }
+
+  config[key] = value;
+}
+
+/**
+ * Set multiple configuration values
+ */
+function setConfigValues(updates) {
+  const errors = [];
+
+  for (const [key, value] of Object.entries(updates)) {
+    try {
+      setConfig(key, value);
+    } catch (error) {
+      errors.push(error.message);
+    }
+  }
+
+  if (errors.length > 0) {
+    throw new Error(`Configuration errors: ${errors.join(', ')}`);
+  }
+}
+
+/**
+ * Reset configuration to defaults
+ */
+function resetConfig() {
+  config = { ...DEFAULT_CONFIG };
+}
+
+/**
+ * Get configuration schema (for validation and UI)
+ */
+function getConfigSchema() {
+  return {
+    maxLines: {
+      type: 'number',
+      default: DEFAULT_CONFIG.maxLines,
+      min: 1,
+      max: 10000,
+      description: 'Maximum lines allowed per file',
+    },
+    warningThreshold: {
+      type: 'number',
+      default: DEFAULT_CONFIG.warningThreshold,
+      min: 1,
+      max: 9999,
+      description: 'Warning threshold for line count (must be less than maxLines)',
+    },
+    maxBackupsPerFile: {
+      type: 'number',
+      default: DEFAULT_CONFIG.maxBackupsPerFile,
+      min: 1,
+      max: 100,
+      description: 'Maximum number of backups to keep per file',
+    },
+    backupLockTimeout: {
+      type: 'number',
+      default: DEFAULT_CONFIG.backupLockTimeout,
+      min: 1000,
+      max: 300000,
+      description: 'Backup lock timeout in milliseconds',
+    },
+    enableAutoCorrection: {
+      type: 'boolean',
+      default: DEFAULT_CONFIG.enableAutoCorrection,
+      description: 'Enable automatic correction of forbidden patterns',
+    },
+    enableLoopDetection: {
+      type: 'boolean',
+      default: DEFAULT_CONFIG.enableLoopDetection,
+      description: 'Enable loop detection for repetitive operations',
+    },
+    maxLoopAttempts: {
+      type: 'number',
+      default: DEFAULT_CONFIG.maxLoopAttempts,
+      min: 1,
+      max: 10,
+      description: 'Maximum attempts before loop detection triggers',
+    },
+    minDocumentationRatio: {
+      type: 'number',
+      default: DEFAULT_CONFIG.minDocumentationRatio,
+      min: 0,
+      max: 1,
+      description: 'Minimum documentation ratio (0-1)',
+    },
+    debugLogs: {
+      type: 'boolean',
+      default: DEFAULT_CONFIG.debugLogs,
+      description: 'Enable debug logging',
+    },
+    enableWorkflowOrchestration: {
+      type: 'boolean',
+      default: DEFAULT_CONFIG.enableWorkflowOrchestration,
+      description: 'Enable workflow orchestration',
+    },
+    enableSessionMemory: {
+      type: 'boolean',
+      default: DEFAULT_CONFIG.enableSessionMemory,
+      description: 'Enable session memory tracking',
+    },
+    enableOracle: {
+      type: 'boolean',
+      default: DEFAULT_CONFIG.enableOracle,
+      description: 'Enable oracle for surgical wisdom',
+    },
+    forbiddenPatterns: {
+      type: 'array',
+      default: DEFAULT_CONFIG.forbiddenPatterns,
+      description: 'Array of forbidden patterns (regex strings)',
+    },
+    strictMode: {
+      type: 'boolean',
+      default: DEFAULT_CONFIG.strictMode,
+      description: 'Enable strict validation mode for lower-tier models',
+    },
+    requireDryRun: {
+      type: 'boolean',
+      default: DEFAULT_CONFIG.requireDryRun,
+      description: 'Require dry_run before write operations',
+    },
+    requireConfirmation: {
+      type: 'boolean',
+      default: DEFAULT_CONFIG.requireConfirmation,
+      description: 'Require confirmation for dangerous operations',
+    },
+    maxOperationsPerMinute: {
+      type: 'number',
+      default: DEFAULT_CONFIG.maxOperationsPerMinute,
+      min: 1,
+      max: 600,
+      description: 'Maximum operations per minute',
+    },
+    enableSyntaxValidation: {
+      type: 'boolean',
+      default: DEFAULT_CONFIG.enableSyntaxValidation,
+      description: 'Enable syntax validation',
+    },
+    enableImportValidation: {
+      type: 'boolean',
+      default: DEFAULT_CONFIG.enableImportValidation,
+      description: 'Enable import validation',
+    },
+    minDocumentationRatioStrict: {
+      type: 'number',
+      default: DEFAULT_CONFIG.minDocumentationRatioStrict,
+      min: 0,
+      max: 1,
+      description: 'Minimum documentation ratio in strict mode (0-1)',
+    },
+    enableAntiPatternDetection: {
+      type: 'boolean',
+      default: DEFAULT_CONFIG.enableAntiPatternDetection,
+      description: 'Enable anti-pattern detection',
+    },
+    enableChangeVerification: {
+      type: 'boolean',
+      default: DEFAULT_CONFIG.enableChangeVerification,
+      description: 'Enable change verification after applying',
+    },
+    requireImpactAnalysis: {
+      type: 'boolean',
+      default: DEFAULT_CONFIG.requireImpactAnalysis,
+      description: 'Require impact analysis before changes',
+    },
+    enableNamingConventionValidation: {
+      type: 'boolean',
+      default: DEFAULT_CONFIG.enableNamingConventionValidation,
+      description: 'Enable naming convention validation',
+    },
+    csharpMaxMethodComplexity: {
+      type: 'number',
+      default: DEFAULT_CONFIG.csharpMaxMethodComplexity,
+      min: 1,
+      max: 100,
+      description: 'Maximum cyclomatic complexity for C# methods',
+    },
+    csharpMaxNestingDepth: {
+      type: 'number',
+      default: DEFAULT_CONFIG.csharpMaxNestingDepth,
+      min: 1,
+      max: 20,
+      description: 'Maximum nesting depth for C# code',
+    },
+    csharpRequireAsyncAwaitPattern: {
+      type: 'boolean',
+      default: DEFAULT_CONFIG.csharpRequireAsyncAwaitPattern,
+      description: 'Require proper async/await patterns in C#',
+    },
+    csharpForbidEmptyCatchBlocks: {
+      type: 'boolean',
+      default: DEFAULT_CONFIG.csharpForbidEmptyCatchBlocks,
+      description: 'Forbid empty catch blocks in C#',
+    },
+    csharpRequireUsingStatements: {
+      type: 'boolean',
+      default: DEFAULT_CONFIG.csharpRequireUsingStatements,
+      description: 'Require using statements for IDisposable in C#',
+    },
+    csharpEnableMathSafety: {
+      type: 'boolean',
+      default: DEFAULT_CONFIG.csharpEnableMathSafety,
+      description: 'Enable math expression safety checks in C#',
+    },
+    csharpMaxTryCatchDepth: {
+      type: 'number',
+      default: DEFAULT_CONFIG.csharpMaxTryCatchDepth,
+      min: 1,
+      max: 10,
+      description: 'Maximum depth of nested try-catch blocks',
+    },
+    csharpEnableBracketValidation: {
+      type: 'boolean',
+      default: DEFAULT_CONFIG.csharpEnableBracketValidation,
+      description: 'Enable bracket matching and validation',
+    },
+    csharpWarnOnComplexMath: {
+      type: 'boolean',
+      default: DEFAULT_CONFIG.csharpWarnOnComplexMath,
+      description: 'Warn on complex mathematical expressions',
+    },
+    csharpMathComplexityThreshold: {
+      type: 'number',
+      default: DEFAULT_CONFIG.csharpMathComplexityThreshold,
+      min: 1,
+      max: 20,
+      description: 'Threshold for warning on math expression complexity',
+    },
+  };
+}
+
+/**
+ * Validate configuration value
+ */
+function validateConfigValue(key, value) {
+  try {
+    setConfig(key, value);
+    // Restore original value since this is just validation
+    config[key] = DEFAULT_CONFIG[key];
+    return { valid: true };
+  } catch (error) {
+    return { valid: false, error: error.message };
+  }
+}
+
+// Initialize configuration on module load
+loadConfig().catch(error => {
+  console.error('[CONFIG] Failed to initialize configuration:', error);
+});
+
+// Export configuration constants for backward compatibility
+const MAX_LINES = () => config.maxLines;
+const WARNING_THRESHOLD = () => config.warningThreshold;
+const DEBUG_LOGS = () => config.debugLogs;
+const ENABLE_AUTO_CORRECTION = () => config.enableAutoCorrection;
+const MAX_BACKUPS_PER_FILE = () => config.maxBackupsPerFile;
+const MIN_DOCUMENTATION_RATIO = () => config.minDocumentationRatio;
+const FORBIDDEN_PATTERNS = () => config.forbiddenPatterns;
+const STRICT_MODE = () => config.strictMode;
+const REQUIRE_DRY_RUN = () => config.requireDryRun;
+const REQUIRE_CONFIRMATION = () => config.requireConfirmation;
+const MAX_OPERATIONS_PER_MINUTE = () => config.maxOperationsPerMinute;
+const ENABLE_SYNTAX_VALIDATION = () => config.enableSyntaxValidation;
+const ENABLE_IMPORT_VALIDATION = () => config.enableImportValidation;
+const ENABLE_ANTI_PATTERN_DETECTION = () => config.enableAntiPatternDetection;
+const REQUIRE_IMPACT_ANALYSIS = () => config.requireImpactAnalysis;
+const ENABLE_NAMING_VALIDATION = () => config.enableNamingConventionValidation;
+const CSHARP_MAX_METHOD_COMPLEXITY = () => config.csharpMaxMethodComplexity;
+const CSHARP_MAX_NESTING_DEPTH = () => config.csharpMaxNestingDepth;
+const CSHARP_REQUIRE_ASYNC_AWAIT = () => config.csharpRequireAsyncAwaitPattern;
+const CSHARP_FORBID_EMPTY_CATCH = () => config.csharpForbidEmptyCatchBlocks;
+const CSHARP_REQUIRE_USING = () => config.csharpRequireUsingStatements;
+const CSHARP_ENABLE_MATH_SAFETY = () => config.csharpEnableMathSafety;
+const CSHARP_MAX_TRY_CATCH_DEPTH = () => config.csharpMaxTryCatchDepth;
+const CSHARP_ENABLE_BRACKET_VALIDATION = () => config.csharpEnableBracketValidation;
+const CSHARP_WARN_ON_COMPLEX_MATH = () => config.csharpWarnOnComplexMath;
+const CSHARP_MATH_COMPLEXITY_THRESHOLD = () => config.csharpMathComplexityThreshold;
+
+
+/***/ }),
+
+/***/ 554:
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __nccwpck_require__) => {
+
+
+// EXPORTS
+__nccwpck_require__.d(__webpack_exports__, {
+  j: () => (/* binding */ checkTestCoverage),
+  runRelatedTests: () => (/* binding */ runRelatedTests)
+});
+
+// UNUSED EXPORTS: hasTests
+
+// EXTERNAL MODULE: external "fs/promises"
+var promises_ = __nccwpck_require__(943);
+// EXTERNAL MODULE: external "path"
+var external_path_ = __nccwpck_require__(928);
+;// CONCATENATED MODULE: external "child_process"
+const external_child_process_namespaceObject = require("child_process");
+;// CONCATENATED MODULE: ./lib/testing.js
+
+
+
+
+/**
+ * Testing tools for integration with test frameworks
+ */
+
+/**
+ * Run tests for affected files
+ */
+async function runRelatedTests(filePath) {
+  const result = {
+    success: true,
+    testsRun: 0,
+    testsPassed: 0,
+    testsFailed: 0,
+    coverage: 0,
+    errors: [],
+    output: '',
+  };
+
+  try {
+    // Check if test file exists
+    const ext = external_path_.extname(filePath);
+    const testName = external_path_.basename(filePath, ext);
+    const testDir = external_path_.dirname(filePath);
+
+    // Look for test files
+    const possibleTestFiles = [
+      external_path_.join(testDir, `${testName}.test${ext}`),
+      external_path_.join(testDir, `${testName}.spec${ext}`),
+      external_path_.join(testDir, `test/${testName}.test${ext}`),
+      external_path_.join(testDir, `tests/${testName}.test${ext}`),
+    ];
+
+    let testFile = null;
+    for (const file of possibleTestFiles) {
+      try {
+        await promises_.access(file);
+        testFile = file;
+        break;
+      } catch (e) {
+        // File doesn't exist
+      }
+    }
+
+    if (!testFile) {
+      result.warnings.push('No test file found for this file');
+      return result;
+    }
+
+    // Try to run tests using npm test
+    return new Promise(resolve => {
+      (0,external_child_process_namespaceObject.exec)('npm test', { cwd: testDir }, (error, stdout, stderr) => {
+        result.output = stdout + stderr;
+
+        // Parse test results (simplified)
+        const output = result.output;
+
+        // Try to extract test counts
+        const passMatch = output.match(/(\d+)\s+passing/i);
+        const failMatch = output.match(/(\d+)\s+failing/i);
+        const totalMatch = output.match(/(\d+)\s+tests?\s/i);
+
+        if (passMatch) result.testsPassed = parseInt(passMatch[1]);
+        if (failMatch) result.testsFailed = parseInt(failMatch[1]);
+        if (totalMatch) result.testsRun = parseInt(totalMatch[1]);
+
+        result.success = result.testsFailed === 0;
+
+        if (error && !result.success) {
+          result.errors.push(error.message);
+        }
+
+        resolve(result);
+      });
+    });
+  } catch (error) {
+    result.success = false;
+    result.errors.push(`Test execution failed: ${error.message}`);
+  }
+
+  return result;
+}
+
+/**
+ * Check test coverage
+ */
+async function checkTestCoverage(filePath) {
+  const result = {
+    success: true,
+    coverage: 0,
+    uncoveredLines: [],
+    errors: [],
+    warnings: [],
+  };
+
+  try {
+    // Try to run coverage report
+    return new Promise(resolve => {
+      (0,external_child_process_namespaceObject.exec)('npm run test:coverage', { cwd: external_path_.dirname(filePath) }, (error, stdout, stderr) => {
+        const output = stdout + stderr;
+
+        // Try to extract coverage percentage
+        const coverageMatch = output.match(/(\d+\.?\d*)%/g);
+        if (coverageMatch && coverageMatch.length > 0) {
+          result.coverage = parseFloat(coverageMatch[0]);
+        }
+
+        if (error) {
+          result.warnings.push('Coverage report not available');
+        }
+
+        resolve(result);
+      });
+    });
+  } catch (error) {
+    result.success = false;
+    result.errors.push(`Coverage check failed: ${error.message}`);
+  }
+
+  return result;
+}
+
+/**
+ * Check if file has tests
+ */
+async function hasTests(filePath) {
+  try {
+    const ext = path.extname(filePath);
+    const testName = path.basename(filePath, ext);
+    const testDir = path.dirname(filePath);
+
+    const possibleTestFiles = [
+      path.join(testDir, `${testName}.test${ext}`),
+      path.join(testDir, `${testName}.spec${ext}`),
+    ];
+
+    for (const file of possibleTestFiles) {
+      try {
+        await fs.access(file);
+        return true;
+      } catch (e) {
+        // File doesn't exist
+      }
+    }
+
+    return false;
+  } catch (error) {
+    return false;
+  }
+}
+
+
+/***/ }),
+
+/***/ 912:
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __nccwpck_require__) => {
+
+/* harmony export */ __nccwpck_require__.d(__webpack_exports__, {
+/* harmony export */   L: () => (/* binding */ validateNamingConventions),
+/* harmony export */   k: () => (/* binding */ checkAntiPatterns),
+/* harmony export */   validateCodeComprehensive: () => (/* binding */ validateCodeComprehensive),
+/* harmony export */   validateImports: () => (/* binding */ validateImports),
+/* harmony export */   validateSyntax: () => (/* binding */ validateSyntax)
+/* harmony export */ });
+/* harmony import */ var fs_promises__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(943);
+/* harmony import */ var path__WEBPACK_IMPORTED_MODULE_1__ = __nccwpck_require__(928);
+/* harmony import */ var _config_js__WEBPACK_IMPORTED_MODULE_2__ = __nccwpck_require__(219);
+
+
+
+
+/**
+ * Validation tools for reducing hallucination risk
+ */
+
+/**
+ * Validate syntax of JavaScript/TypeScript code
+ */
+function validateSyntax(code) {
+  const errors = [];
+
+  // Basic syntax validation
+  try {
+    // Check for unmatched braces
+    const openBraces = (code.match(/{/g) || []).length;
+    const closeBraces = (code.match(/}/g) || []).length;
+    if (openBraces !== closeBraces) {
+      errors.push(`Unmatched braces: ${openBraces} opening, ${closeBraces} closing`);
+    }
+
+    // Check for unmatched parentheses
+    const openParens = (code.match(/\(/g) || []).length;
+    const closeParens = (code.match(/\)/g) || []).length;
+    if (openParens !== closeParens) {
+      errors.push(`Unmatched parentheses: ${openParens} opening, ${closeParens} closing`);
+    }
+
+    // Check for unmatched brackets
+    const openBrackets = (code.match(/\[/g) || []).length;
+    const closeBrackets = (code.match(/\]/g) || []).length;
+    if (openBrackets !== closeBrackets) {
+      errors.push(`Unmatched brackets: ${openBrackets} opening, ${closeBrackets} closing`);
+    }
+
+    // Check for unclosed strings
+    const singleQuotes = (code.match(/'/g) || []).length;
+    const doubleQuotes = (code.match(/"/g) || []).length;
+    if (singleQuotes % 2 !== 0) {
+      errors.push('Unclosed single quotes');
+    }
+    if (doubleQuotes % 2 !== 0) {
+      errors.push('Unclosed double quotes');
+    }
+
+    // Check for common syntax errors
+    if (code.includes('function') && !code.includes('(')) {
+      errors.push('Function declaration missing parentheses');
+    }
+
+    if (code.includes('=>') && !code.includes('(') && !code.includes('=> {')) {
+      errors.push('Arrow function may be missing parentheses');
+    }
+  } catch (error) {
+    errors.push(`Syntax validation error: ${error.message}`);
+  }
+
+  return {
+    valid: errors.length === 0,
+    errors,
+  };
+}
+
+/**
+ * Validate imports in code
+ */
+function validateImports(code, filePath) {
+  const errors = [];
+  const warnings = [];
+
+  // Extract import statements
+  const importRegex = /import\s+.*?from\s+['"]([^'"]+)['"]/g;
+  const imports = [];
+  let match;
+
+  while ((match = importRegex.exec(code)) !== null) {
+    imports.push(match[1]);
+  }
+
+  // Check for relative imports
+  imports.forEach(imp => {
+    if (imp.startsWith('./') || imp.startsWith('../')) {
+      // Check if the file exists
+      const importPath = path__WEBPACK_IMPORTED_MODULE_1__.resolve(path__WEBPACK_IMPORTED_MODULE_1__.dirname(filePath), imp);
+
+      // Try common extensions
+      const extensions = ['.js', '.ts', '.json'];
+      let exists = false;
+
+      for (const ext of extensions) {
+        try {
+          if (fs_promises__WEBPACK_IMPORTED_MODULE_0__.existsSync(importPath + ext)) {
+            exists = true;
+            break;
+          }
+        } catch (e) {
+          // Ignore
+        }
+      }
+
+      // Check for index files
+      for (const ext of extensions) {
+        try {
+          if (fs_promises__WEBPACK_IMPORTED_MODULE_0__.existsSync(path__WEBPACK_IMPORTED_MODULE_1__.join(importPath, 'index' + ext))) {
+            exists = true;
+            break;
+          }
+        } catch (e) {
+          // Ignore
+        }
+      }
+
+      if (!exists) {
+        errors.push(`Import not found: ${imp}`);
+      }
+    }
+  });
+
+  // Check for circular dependencies (simple check)
+  const circularDeps = [];
+  for (let i = 0; i < imports.length; i++) {
+    for (let j = i + 1; j < imports.length; j++) {
+      if (imports[i].includes(imports[j]) && imports[j].includes(imports[i])) {
+        circularDeps.push(`${imports[i]} <-> ${imports[j]}`);
+      }
+    }
+  }
+
+  if (circularDeps.length > 0) {
+    warnings.push(`Potential circular dependencies: ${circularDeps.join(', ')}`);
+  }
+
+  return {
+    valid: errors.length === 0,
+    errors,
+    warnings,
+  };
+}
+
+/**
+ * Check for anti-patterns in code
+ */
+function checkAntiPatterns(code) {
+  const issues = [];
+
+  // Check for god functions (functions > 100 lines)
+  const functionBlocks = code.match(/function\s+\w+[^{]*\{[\s\S]*?\}/g) || [];
+  functionBlocks.forEach(fn => {
+    const lines = fn.split('\n').length;
+    if (lines > 100) {
+      issues.push(`God function detected: ${lines} lines`);
+    }
+  });
+
+  // Check for deep nesting
+  const lines = code.split('\n');
+  lines.forEach((line, idx) => {
+    const indent = line.search(/\S|$/);
+    if (indent > 24) {
+      // More than 6 levels of indentation
+      issues.push(`Deep nesting detected at line ${idx + 1}: ${indent} spaces`);
+    }
+  });
+
+  // Check for magic numbers
+  const magicNumbers = code.match(/\b\d{4,}\b/g) || [];
+  if (magicNumbers.length > 5) {
+    issues.push(`Multiple magic numbers detected: ${magicNumbers.slice(0, 5).join(', ')}...`);
+  }
+
+  // Check for TODO/FIXME comments
+  const todos = code.match(/\/\/\s*(TODO|FIXME|HACK|XXX)/gi) || [];
+  if (todos.length > 0) {
+    issues.push(`${todos.length} TODO/FIXME comments found`);
+  }
+
+  // Check for console.log statements
+  const consoleLogs = code.match(/console\.log/g) || [];
+  if (consoleLogs.length > 0) {
+    issues.push(`${consoleLogs.length} console.log statements found`);
+  }
+
+  // Check for empty catch blocks
+  const emptyCatch = code.match(/catch\s*\([^)]*\)\s*\{\s*\}/g) || [];
+  if (emptyCatch.length > 0) {
+    issues.push(`${emptyCatch.length} empty catch blocks`);
+  }
+
+  // Check for var usage
+  const varUsage = code.match(/\bvar\s+/g) || [];
+  if (varUsage.length > 0) {
+    issues.push(`${varUsage.length} var declarations (prefer const/let)`);
+  }
+
+  return {
+    issues,
+    issueCount: issues.length,
+  };
+}
+
+/**
+ * Validate naming conventions
+ */
+function validateNamingConventions(code) {
+  const errors = [];
+  const warnings = [];
+
+  // Check function names (camelCase)
+  const functionNames = code.match(/function\s+([a-zA-Z_$][a-zA-Z0-9_$]*)/g) || [];
+  functionNames.forEach(fn => {
+    const name = fn.replace('function ', '');
+    if (name[0] !== name[0].toLowerCase()) {
+      warnings.push(`Function ${name} should use camelCase`);
+    }
+  });
+
+  // Check class names (PascalCase)
+  const classNames = code.match(/class\s+([a-zA-Z_$][a-zA-Z0-9_$]*)/g) || [];
+  classNames.forEach(cls => {
+    const name = cls.replace('class ', '');
+    if (name[0] !== name[0].toUpperCase()) {
+      errors.push(`Class ${name} should use PascalCase`);
+    }
+  });
+
+  // Check constant names (UPPER_SNAKE_CASE)
+  const constDeclarations = code.match(/const\s+([A-Z_][A-Z0-9_]*)\s*=/g) || [];
+  constDeclarations.forEach(decl => {
+    const name = decl.replace(/const\s+|\s*=/g, '');
+    if (name !== name.toUpperCase()) {
+      warnings.push(`Constant ${name} should use UPPER_SNAKE_CASE`);
+    }
+  });
+
+  // Check for file name conventions
+  // This would need the file path to check
+
+  return {
+    valid: errors.length === 0,
+    errors,
+    warnings,
+  };
+}
+
+/**
+ * Comprehensive validation
+ */
+async function validateCodeComprehensive(code, filePath) {
+  const results = {
+    syntax: { valid: true, errors: [] },
+    imports: { valid: true, errors: [], warnings: [] },
+    antiPatterns: { issues: [], issueCount: 0 },
+    naming: { valid: true, errors: [], warnings: [] },
+    overall: { valid: true, errors: [], warnings: [] },
+  };
+
+  // Syntax validation
+  if ((0,_config_js__WEBPACK_IMPORTED_MODULE_2__/* .ENABLE_SYNTAX_VALIDATION */ .UO)()) {
+    results.syntax = validateSyntax(code);
+    results.overall.errors.push(...results.syntax.errors);
+  }
+
+  // Import validation
+  if ((0,_config_js__WEBPACK_IMPORTED_MODULE_2__/* .ENABLE_IMPORT_VALIDATION */ .Ar)()) {
+    results.imports = await validateImports(code, filePath);
+    results.overall.errors.push(...results.imports.errors);
+    results.overall.warnings.push(...results.imports.warnings);
+  }
+
+  // Anti-pattern detection
+  if ((0,_config_js__WEBPACK_IMPORTED_MODULE_2__/* .ENABLE_ANTI_PATTERN_DETECTION */ .iF)()) {
+    results.antiPatterns = checkAntiPatterns(code);
+    results.overall.warnings.push(...results.antiPatterns.issues);
+  }
+
+  // Naming convention validation
+  if ((0,_config_js__WEBPACK_IMPORTED_MODULE_2__/* .ENABLE_NAMING_VALIDATION */ .nu)()) {
+    results.naming = validateNamingConventions(code);
+    results.overall.errors.push(...results.naming.errors);
+    results.overall.warnings.push(...results.naming.warnings);
+  }
+
+  results.overall.valid = results.overall.errors.length === 0;
+
+  return results;
+}
+
 
 /***/ })
 
@@ -53,9 +1042,62 @@ module.exports = webpackEmptyAsyncContext;
 /******/ }
 /******/ 
 /************************************************************************/
+/******/ /* webpack/runtime/create fake namespace object */
+/******/ (() => {
+/******/ 	var getProto = Object.getPrototypeOf ? (obj) => (Object.getPrototypeOf(obj)) : (obj) => (obj.__proto__);
+/******/ 	var leafPrototypes;
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 16: return value when it's Promise-like
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__nccwpck_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = this(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if(typeof value === 'object' && value) {
+/******/ 			if((mode & 4) && value.__esModule) return value;
+/******/ 			if((mode & 16) && typeof value.then === 'function') return value;
+/******/ 		}
+/******/ 		var ns = Object.create(null);
+/******/ 		__nccwpck_require__.r(ns);
+/******/ 		var def = {};
+/******/ 		leafPrototypes = leafPrototypes || [null, getProto({}), getProto([]), getProto(getProto)];
+/******/ 		for(var current = mode & 2 && value; typeof current == 'object' && !~leafPrototypes.indexOf(current); current = getProto(current)) {
+/******/ 			Object.getOwnPropertyNames(current).forEach((key) => (def[key] = () => (value[key])));
+/******/ 		}
+/******/ 		def['default'] = () => (value);
+/******/ 		__nccwpck_require__.d(ns, def);
+/******/ 		return ns;
+/******/ 	};
+/******/ })();
+/******/ 
+/******/ /* webpack/runtime/define property getters */
+/******/ (() => {
+/******/ 	// define getter functions for harmony exports
+/******/ 	__nccwpck_require__.d = (exports, definition) => {
+/******/ 		for(var key in definition) {
+/******/ 			if(__nccwpck_require__.o(definition, key) && !__nccwpck_require__.o(exports, key)) {
+/******/ 				Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 			}
+/******/ 		}
+/******/ 	};
+/******/ })();
+/******/ 
 /******/ /* webpack/runtime/hasOwnProperty shorthand */
 /******/ (() => {
 /******/ 	__nccwpck_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ })();
+/******/ 
+/******/ /* webpack/runtime/make namespace object */
+/******/ (() => {
+/******/ 	// define __esModule on exports
+/******/ 	__nccwpck_require__.r = (exports) => {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
 /******/ })();
 /******/ 
 /******/ /* webpack/runtime/compat */
@@ -5532,7 +6574,7 @@ class Protocol {
  * // Create typed server
  * const server = new Server<CustomRequest, CustomNotification, CustomResult>({
  *   name: "CustomServer",
- *   version: "1.0.9"
+ *   version: "1.0.0"
  * })
  * ```
  */
@@ -5795,101 +6837,85 @@ class StdioServerTransport {
     }
 }
 //# sourceMappingURL=stdio.js.map
-;// CONCATENATED MODULE: external "fs/promises"
-const promises_namespaceObject = require("fs/promises");
-;// CONCATENATED MODULE: external "path"
-const external_path_namespaceObject = require("path");
-;// CONCATENATED MODULE: external "url"
-const external_url_namespaceObject = require("url");
-;// CONCATENATED MODULE: ./index.js
-
-
-// [LOCKDOWN]: Ensure NOTHING hits stdout except the MCP Protocol
-const originalLog = console.log;
-console.log = (...args) => {
-  // Redirects all standard logs to the error channel (safe for Windsurf)
-  process.stderr.write(args.join(' ') + '\n');
-};
-
-// Also silence the Audit/SWEObeyMe messages specifically
-const auditLog = (msg) => process.stderr.write(`[AUDIT]: ${msg}\n`);
+// EXTERNAL MODULE: external "fs/promises"
+var promises_ = __nccwpck_require__(943);
+// EXTERNAL MODULE: external "path"
+var external_path_ = __nccwpck_require__(928);
+// EXTERNAL MODULE: external "crypto"
+var external_crypto_ = __nccwpck_require__(982);
+// EXTERNAL MODULE: external "url"
+var external_url_ = __nccwpck_require__(16);
+;// CONCATENATED MODULE: ./lib/utils.js
 
 
 
-
-
-
-
-
-
-// MARCH 2026 COMPLIANCE: Sovereign URI Normalizer
-// Ensures Windsurf Next matches files in explorer to MCP edits
+/**
+ * MARCH 2026 COMPLIANCE: Sovereign URI Normalizer
+ * Ensures Windsurf Next matches files in explorer to MCP edits
+ */
 function toWindsurfUri(barePath) {
-    if (!barePath) return barePath;
-    // 1. Normalize slashes
-    let normalized = barePath.replace(/\\/g, '/');
-    // 2. Ensure it's absolute
-    if (!external_path_namespaceObject.isAbsolute(normalized)) {
-        normalized = external_path_namespaceObject.resolve(process.cwd(), normalized);
-    }
-    // 3. Convert to file:// URI
-    return (0,external_url_namespaceObject.pathToFileURL)(normalized).href;
-}
-
-// Legacy normalizePath function for backwards compatibility
-function normalizePath(pathString) {
-    return toWindsurfUri(pathString);
-}
-
-// Main async initialization
-(async () => {
-  // Dynamic import for quotes to work with bundler
-  let getRandomQuote;
-  try {
-    const quotesModule = await __nccwpck_require__(330)(external_path_namespaceObject.join(external_path_namespaceObject.dirname((0,external_url_namespaceObject.fileURLToPath)(import.meta.url)), "quotes.js"));
-    getRandomQuote = quotesModule.getRandomQuote;
-  } catch (e) {
-    // Fallback quotes if quotes.js not found
-    const fallbackQuotes = {
-      SUCCESS: ["Surgery complete."],
-      FAILURE: ["Non-compliance detected."],
-      RECOVERY: ["Recovery initiated."]
-    };
-    getRandomQuote = (category) => fallbackQuotes[category][0];
+  if (!barePath) return barePath;
+  // 1. Normalize slashes
+  let normalized = barePath.replace(/\\/g, '/');
+  // 2. Ensure it's absolute
+  if (!external_path_.isAbsolute(normalized)) {
+    normalized = external_path_.resolve(process.cwd(), normalized);
   }
+  // 3. Convert to file:// URI
+  return (0,external_url_.pathToFileURL)(normalized).href;
+}
 
-// Initialize server
-const server = new Server({
-  name: "swe-obey-me",
-  version: "1.0.9",
-}, {
-  capabilities: { tools: {} }
-});
+/**
+ * Legacy normalizePath function for backwards compatibility
+ */
+function normalizePath(pathString) {
+  return toWindsurfUri(pathString);
+}
 
-const MAX_LINES = 700;
-const WARNING_THRESHOLD = 600;
-const DEBUG_LOGS = process.env.SWEOBEYME_DEBUG === "1";
-const log = (msg) => {
+/**
+ * Get default backup directory path
+ */
+function getDefaultBackupDir() {
+  const localAppData =
+    process.env.LOCALAPPDATA ||
+    (process.env.USERPROFILE ? external_path_.join(process.env.USERPROFILE, 'AppData', 'Local') : null);
+  const base = localAppData || process.cwd();
+  return external_path_.join(base, 'SWEObeyMe', '.sweobeyme-backups');
+}
+
+// EXTERNAL MODULE: ./lib/config.js + 1 modules
+var lib_config = __nccwpck_require__(219);
+;// CONCATENATED MODULE: ./lib/backup.js
+
+
+
+
+
+
+const BACKUP_DIR = process.env.SWEOBEYME_BACKUP_DIR
+  ? external_path_.resolve(process.env.SWEOBEYME_BACKUP_DIR)
+  : getDefaultBackupDir();
+let backupCounter = 0;
+
+// Configuration
+const BACKUP_LOCK_TIMEOUT = 30000; // 30 seconds
+
+// State management
+const activeBackups = new Map(); // Track in-progress backups
+const writeLocks = new Map(); // Track write locks
+
+const DEBUG_LOGS = process.env.SWEOBEYME_DEBUG === '1';
+const log = msg => {
   if (!DEBUG_LOGS) return;
   process.stderr.write(`[SWEObeyMe-Audit]: ${msg}\n`);
 };
 
-const defaultBackupDir = () => {
-  const localAppData = process.env.LOCALAPPDATA
-    || (process.env.USERPROFILE ? external_path_namespaceObject.join(process.env.USERPROFILE, "AppData", "Local") : null);
-  const base = localAppData || process.cwd();
-  return external_path_namespaceObject.join(base, "SWEObeyMe", ".sweobeyme-backups");
-};
-
-// Backup Directory Setup
-const BACKUP_DIR = process.env.SWEOBEYME_BACKUP_DIR
-  ? external_path_namespaceObject.resolve(process.env.SWEOBEYME_BACKUP_DIR)
-  : defaultBackupDir();
-let backupCounter = 0;
-
+/**
+ * Ensure backup directory exists
+ */
 async function ensureBackupDir() {
   try {
-    await promises_namespaceObject.mkdir(BACKUP_DIR, { recursive: true });
+    await promises_.mkdir(BACKUP_DIR, { recursive: true });
     log(`Backup directory ready: ${BACKUP_DIR}`);
   } catch (error) {
     process.stderr.write(`[CRITICAL] Failed to create backup directory: ${error.message}\n`);
@@ -5897,65 +6923,623 @@ async function ensureBackupDir() {
 }
 
 /**
- * Creates a numbered backup of a file.
+ * Calculate SHA-256 hash of content
+ */
+function calculateHash(content) {
+  return external_crypto_.createHash('sha256').update(content).digest('hex');
+}
+
+/**
+ * Verify backup integrity
+ */
+async function verifyBackup(backupPath, originalContent, originalHash) {
+  try {
+    const backupContent = await promises_.readFile(backupPath, 'utf-8');
+    const backupHash = calculateHash(backupContent);
+
+    if (originalHash !== backupHash) {
+      throw new Error('Backup content hash mismatch');
+    }
+
+    if (backupContent !== originalContent) {
+      throw new Error('Backup content mismatch');
+    }
+
+    return true;
+  } catch (error) {
+    process.stderr.write(`[BACKUP VERIFICATION FAILED] ${backupPath}: ${error.message}\n`);
+    return false;
+  }
+}
+
+/**
+ * Clean up old backups for a file
+ */
+async function cleanupOldBackups(filePath) {
+  try {
+    const baseName = external_path_.basename(filePath);
+    const files = await promises_.readdir(BACKUP_DIR);
+    const backups = files
+      .filter(f => f.startsWith(baseName + '.backup-') && f.endsWith('.readonly'))
+      .sort((a, b) => {
+        // Sort by timestamp (newest first)
+        const tsA = parseInt(a.match(/-(\d+)\.readonly$/)[1]);
+        const tsB = parseInt(b.match(/-(\d+)\.readonly$/)[1]);
+        return tsB - tsA;
+      });
+
+    // Delete old backups beyond limit
+    for (let i = (0,lib_config/* MAX_BACKUPS_PER_FILE */.q4)(); i < backups.length; i++) {
+      const oldBackup = external_path_.join(BACKUP_DIR, backups[i]);
+      await promises_.unlink(oldBackup).catch(() => {});
+      log(`Cleaned up old backup: ${backups[i]}`);
+    }
+  } catch (error) {
+    process.stderr.write(`[BACKUP CLEANUP WARNING] ${filePath}: ${error.message}\n`);
+  }
+}
+
+/**
+ * Acquire write lock for a file
+ */
+async function acquireWriteLock(filePath) {
+  const fullPath = external_path_.resolve(filePath);
+
+  if (writeLocks.has(fullPath)) {
+    const lockTime = writeLocks.get(fullPath);
+    const age = Date.now() - lockTime;
+
+    // Lock expired?
+    if (age > BACKUP_LOCK_TIMEOUT) {
+      writeLocks.delete(fullPath);
+      process.stderr.write(`[BACKUP WARNING] Expired write lock removed for ${filePath}\n`);
+    } else {
+      throw new Error(
+        `File ${filePath} is being written by another operation (lock age: ${age}ms)`
+      );
+    }
+  }
+
+  writeLocks.set(fullPath, Date.now());
+  return () => writeLocks.delete(fullPath); // Return release function
+}
+
+/**
+ * Creates a numbered backup of a file with atomic operations and verification.
  * @param {string} filePath - Path to the file to backup.
- * @returns {string} - The backup file path.
+ * @returns {string|null} - The backup file path or null if failed.
  */
 async function createBackup(filePath) {
-  const fullPath = external_path_namespaceObject.resolve(filePath);
+  const fullPath = external_path_.resolve(filePath);
+
   try {
-    const content = await promises_namespaceObject.readFile(fullPath, "utf-8");
-    const timestamp = Date.now();
-    const backupFileName = `${external_path_namespaceObject.basename(filePath)}.backup-${backupCounter++}-${timestamp}.readonly`;
-    const backupPath = external_path_namespaceObject.join(BACKUP_DIR, backupFileName);
-    
-    await promises_namespaceObject.writeFile(backupPath, content, { encoding: "utf-8", mode: 0o444 }); // Read-only
-    log(`Backup created: ${backupFileName}`);
-    return backupPath;
+    // Check if backup already in progress
+    if (activeBackups.has(fullPath)) {
+      const existingBackup = await activeBackups.get(fullPath);
+      if (existingBackup) {
+        log(`Using existing in-progress backup for ${filePath}`);
+        return existingBackup;
+      }
+    }
+
+    // Acquire write lock
+    const releaseLock = await acquireWriteLock(filePath);
+
+    const backupPromise = performBackup(filePath, fullPath);
+    activeBackups.set(fullPath, backupPromise);
+
+    try {
+      const backupPath = await backupPromise;
+      releaseLock();
+      return backupPath;
+    } catch (error) {
+      releaseLock();
+      throw error;
+    } finally {
+      activeBackups.delete(fullPath);
+    }
   } catch (error) {
-    process.stderr.write(`[BACKUP FAILED] ${error.message}\n`);
+    process.stderr.write(`[BACKUP FAILED] ${filePath}: ${error.message}\n`);
     return null;
   }
 }
 
-// PHASE 8: Workflow Orchestration Engine
-const activeWorkflows = new Map();
+/**
+ * Internal backup implementation with atomic operations
+ */
+async function performBackup(filePath, fullPath) {
+  try {
+    // Read original file
+    const content = await promises_.readFile(fullPath, 'utf-8');
+    const originalHash = calculateHash(content);
 
-class SurgicalWorkflow {
-  constructor(id, goal, steps) {
-    this.id = id;
-    this.goal = goal;
-    this.steps = steps.map(s => ({ ...s, status: "pending" }));
-    this.startTime = Date.now();
-  }
+    // Generate backup filename
+    const timestamp = Date.now();
+    const backupFileName = `${external_path_.basename(filePath)}.backup-${backupCounter++}-${timestamp}.readonly`;
+    const backupPath = external_path_.join(BACKUP_DIR, backupFileName);
 
-  updateStep(stepName, status) {
-    const step = this.steps.find(s => s.name === stepName);
-    if (step) step.status = status;
-  }
+    // Atomic write: write to temp file first
+    const tempPath = `${backupPath}.tmp`;
+    await promises_.writeFile(tempPath, content, { encoding: 'utf-8', mode: 0o444 });
 
-  isComplete() {
-    return this.steps.every(s => s.status === "completed");
+    // Atomic rename (atomic on Unix, Windows with proper flags)
+    await promises_.rename(tempPath, backupPath);
+
+    // Set read-only permission (Unix)
+    if (process.platform !== 'win32') {
+      await promises_.chmod(backupPath, 0o444);
+    }
+
+    // Verify backup integrity
+    const verified = await verifyBackup(backupPath, content, originalHash);
+    if (!verified) {
+      // Cleanup failed backup
+      await promises_.unlink(backupPath).catch(() => {});
+      throw new Error('Backup verification failed');
+    }
+
+    // Clean up old backups
+    await cleanupOldBackups(filePath);
+
+    log(
+      `Backup created and verified: ${backupFileName} (hash: ${originalHash.substring(0, 8)}...)`
+    );
+    return backupPath;
+  } catch (error) {
+    process.stderr.write(`[BACKUP ERROR] ${filePath}: ${error.message}\n`);
+    throw error;
   }
 }
 
-// ENFORCEMENT RULES - Hardcoded, cannot be bypassed
-const ENFORCEMENT_RULES = {
-  MAX_LINES: 700,
-  FORBIDDEN_PATTERNS: [
-    /console\.log/g,           // No console.log in production
-    /\/\/\s*todo:/gi,         // No TODO comments without tracking
-    /debugger;/g,             // No debugger statements
-    /eval\s*\(/g,             // No eval() for security
-  ],
+/**
+ * List all backups for a file
+ */
+async function listBackups(filePath) {
+  try {
+    const baseName = path.basename(filePath);
+    const files = await fs.readdir(BACKUP_DIR);
+    const backups = files
+      .filter(f => f.startsWith(baseName + '.backup-') && f.endsWith('.readonly'))
+      .sort((a, b) => {
+        const tsA = parseInt(a.match(/-(\d+)\.readonly$/)[1]);
+        const tsB = parseInt(b.match(/-(\d+)\.readonly$/)[1]);
+        return tsB - tsA; // Newest first
+      });
+
+    return backups.map(name => ({
+      name,
+      path: path.join(BACKUP_DIR, name),
+      timestamp: parseInt(name.match(/-(\d+)\.readonly$/)[1]),
+    }));
+  } catch (error) {
+    process.stderr.write(`[BACKUP LIST ERROR] ${filePath}: ${error.message}\n`);
+    return [];
+  }
+}
+
+/**
+ * Get backup statistics
+ */
+async function getBackupStats() {
+  try {
+    const files = await fs.readdir(BACKUP_DIR);
+    const backups = files.filter(f => f.endsWith('.readonly'));
+
+    // Calculate total size
+    let totalSize = 0;
+    for (const backup of backups) {
+      const backupPath = path.join(BACKUP_DIR, backup);
+      const stats = await fs.stat(backupPath);
+      totalSize += stats.size;
+    }
+
+    // Group by original file
+    const byFile = {};
+    for (const backup of backups) {
+      const originalFile = backup.replace(/\.backup-\d+-\d+\.readonly$/, '');
+      byFile[originalFile] = (byFile[originalFile] || 0) + 1;
+    }
+
+    return {
+      totalBackups: backups.length,
+      totalSize,
+      totalSizeMB: (totalSize / (1024 * 1024)).toFixed(2),
+      byFile,
+      backupDir: BACKUP_DIR,
+    };
+  } catch (error) {
+    process.stderr.write(`[BACKUP STATS ERROR]: ${error.message}\n`);
+    return null;
+  }
+}
+
+
+
+;// CONCATENATED MODULE: ./lib/csharp-validation.js
+/**
+ * C# specific validation utilities
+ * Helps prevent chaos in complex C# .NET 8/10 projects
+ */
+
+
+
+/**
+ * Analyze C# code complexity
+ */
+function analyzeCSharpComplexity(code) {
+  const lines = code.split('\n');
+  const issues = [];
+  const metrics = {
+    maxNestingDepth: 0,
+    maxMethodComplexity: 0,
+    tryCatchDepth: 0,
+    emptyCatchBlocks: [],
+    asyncAwaitIssues: [],
+    missingUsingStatements: [],
+  };
+
+  let currentNestingDepth = 0;
+  let currentTryCatchDepth = 0;
+  let methodComplexity = 0;
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim();
+    const lineNum = i + 1;
+
+    // Track nesting depth
+    if (line.includes('{')) {
+      currentNestingDepth++;
+      metrics.maxNestingDepth = Math.max(metrics.maxNestingDepth, currentNestingDepth);
+    }
+    if (line.includes('}')) {
+      currentNestingDepth--;
+    }
+
+    // Track try-catch depth
+    if (line.startsWith('try') && line.includes('{')) {
+      currentTryCatchDepth++;
+      metrics.tryCatchDepth = Math.max(metrics.tryCatchDepth, currentTryCatchDepth);
+    }
+    if (line.startsWith('catch') && line.includes('{')) {
+      currentTryCatchDepth++;
+      metrics.tryCatchDepth = Math.max(metrics.tryCatchDepth, currentTryCatchDepth);
+    }
+    if (
+      line.includes('}') &&
+      (lines[i - 1]?.trim().includes('catch') || lines[i - 1]?.trim().includes('try'))
+    ) {
+      currentTryCatchDepth--;
+    }
+
+    // Detect empty catch blocks
+    if (line.startsWith('catch') && line.includes('{')) {
+      const nextLines = lines.slice(i).join('\n');
+      const catchEnd = nextLines.indexOf('}');
+      const catchBody = nextLines.substring(nextLines.indexOf('{') + 1, catchEnd).trim();
+      if (catchBody === '' || catchBody === '//' || catchBody.startsWith('//')) {
+        issues.push({
+          line: lineNum,
+          type: 'EMPTY_CATCH',
+          message: 'Empty catch block detected - exceptions are being swallowed',
+        });
+        metrics.emptyCatchBlocks.push(lineNum);
+      }
+    }
+
+    // Detect async/await anti-patterns
+    if (line.includes('async Task') && !line.includes('await')) {
+      // Check if there's an await in the method
+      const methodEnd = findMethodEnd(lines, i);
+      const methodBody = lines.slice(i, methodEnd).join('\n');
+      if (!methodBody.includes('await')) {
+        issues.push({
+          line: lineNum,
+          type: 'ASYNC_NO_AWAIT',
+          message: 'Async method without await - use async Task instead of async Task<T>',
+        });
+        metrics.asyncAwaitIssues.push(lineNum);
+      }
+    }
+
+    // Detect void async methods (should return Task)
+    if (line.includes('async void')) {
+      issues.push({
+        line: lineNum,
+        type: 'ASYNC_VOID',
+        message: 'Async void method detected - use async Task instead for better error handling',
+      });
+      metrics.asyncAwaitIssues.push(lineNum);
+    }
+
+    // Detect missing using statements for IDisposable
+    const disposablePattern =
+      /\b(Stream|Reader|Writer|Connection|Command|Transaction|HttpClient|DbContext|Disposable)\b/;
+    if (disposablePattern.test(line) && !line.includes('using') && !line.includes('await using')) {
+      // Check if it's inside a using statement
+      const previousLines = lines.slice(0, i).reverse();
+      let inUsing = false;
+      for (const prevLine of previousLines) {
+        if (prevLine.includes('using (') || prevLine.includes('await using (')) {
+          inUsing = true;
+          break;
+        }
+        if (prevLine.includes('}')) {
+          break;
+        }
+      }
+      if (!inUsing) {
+        issues.push({
+          line: lineNum,
+          type: 'MISSING_USING',
+          message: 'IDisposable object without using statement - potential resource leak',
+        });
+        metrics.missingUsingStatements.push(lineNum);
+      }
+    }
+
+    // Calculate cyclomatic complexity (simplified)
+    if (
+      line.includes('if') ||
+      line.includes('else if') ||
+      line.includes('for') ||
+      line.includes('foreach') ||
+      line.includes('while') ||
+      line.includes('case') ||
+      line.includes('&&') ||
+      line.includes('||') ||
+      line.includes('?')
+    ) {
+      methodComplexity++;
+    }
+  }
+
+  metrics.maxMethodComplexity = methodComplexity;
+
+  return {
+    issues,
+    metrics,
+    summary: generateSummary(metrics, issues),
+  };
+}
+
+/**
+ * Find the end of a method
+ */
+function findMethodEnd(lines, startLine) {
+  let braceCount = 0;
+  for (let i = startLine; i < lines.length; i++) {
+    const line = lines[i];
+    braceCount += (line.match(/{/g) || []).length;
+    braceCount -= (line.match(/}/g) || []).length;
+    if (braceCount === 0 && i > startLine) {
+      return i;
+    }
+  }
+  return lines.length;
+}
+
+/**
+ * Generate summary of complexity analysis
+ */
+function generateSummary(metrics, _issues) {
+  const summary = [];
+
+  if (metrics.maxNestingDepth > (0,lib_config/* CSHARP_MAX_NESTING_DEPTH */.Ql)()) {
+    summary.push(
+      `CRITICAL: Nesting depth ${metrics.maxNestingDepth} exceeds limit of ${(0,lib_config/* CSHARP_MAX_NESTING_DEPTH */.Ql)()}`
+    );
+  }
+
+  if (metrics.maxMethodComplexity > (0,lib_config/* CSHARP_MAX_METHOD_COMPLEXITY */.CV)()) {
+    summary.push(
+      `WARNING: Method complexity ${metrics.maxMethodComplexity} exceeds limit of ${(0,lib_config/* CSHARP_MAX_METHOD_COMPLEXITY */.CV)()}`
+    );
+  }
+
+  if (metrics.tryCatchDepth > (0,lib_config/* CSHARP_MAX_TRY_CATCH_DEPTH */.DS)()) {
+    summary.push(
+      `CRITICAL: Try-catch nesting ${metrics.tryCatchDepth} exceeds limit of ${(0,lib_config/* CSHARP_MAX_TRY_CATCH_DEPTH */.DS)()}`
+    );
+  }
+
+  if (metrics.emptyCatchBlocks.length > 0) {
+    summary.push(`WARNING: ${metrics.emptyCatchBlocks.length} empty catch block(s) detected`);
+  }
+
+  if (metrics.missingUsingStatements.length > 0) {
+    summary.push(
+      `CRITICAL: ${metrics.missingUsingStatements.length} missing using statement(s) for IDisposable`
+    );
+  }
+
+  if (metrics.asyncAwaitIssues.length > 0) {
+    summary.push(
+      `WARNING: ${metrics.asyncAwaitIssues.length} async/await anti-pattern(s) detected`
+    );
+  }
+
+  return summary.length > 0 ? summary : ['Code complexity is within acceptable limits'];
+}
+
+/**
+ * Validate bracket matching in C# code
+ */
+function validateCSharpBrackets(code) {
+  const issues = [];
+  const stack = [];
+  const lines = code.split('\n');
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const lineNum = i + 1;
+
+    for (let j = 0; j < line.length; j++) {
+      const char = line[j];
+      const column = j + 1;
+
+      if (char === '{' || char === '(' || char === '[') {
+        stack.push({ char, line: lineNum, column });
+      } else if (char === '}' || char === ')' || char === ']') {
+        const opening = stack.pop();
+        if (!opening) {
+          issues.push({
+            line: lineNum,
+            column,
+            type: 'UNEXPECTED_CLOSING_BRACKET',
+            message: `Unexpected closing bracket '${char}' without matching opening bracket`,
+          });
+        } else {
+          const pairs = { '{': '}', '(': ')', '[': ']' };
+          if (pairs[opening.char] !== char) {
+            issues.push({
+              line: lineNum,
+              column,
+              type: 'MISMATCHED_BRACKET',
+              message: `Mismatched brackets: expected '${pairs[opening.char]}' but found '${char}' (opened at line ${opening.line}, column ${opening.column})`,
+            });
+          }
+        }
+      }
+    }
+  }
+
+  // Check for unclosed brackets
+  while (stack.length > 0) {
+    const unclosed = stack.pop();
+    issues.push({
+      line: unclosed.line,
+      column: unclosed.column,
+      type: 'UNCLOSED_BRACKET',
+      message: `Unclosed bracket '${unclosed.char}' at line ${unclosed.line}, column ${unclosed.column}`,
+    });
+  }
+
+  return {
+    valid: issues.length === 0,
+    issues,
+    summary:
+      issues.length > 0
+        ? `${issues.length} bracket issue(s) found`
+        : 'All brackets properly matched',
+  };
+}
+
+/**
+ * Visualize scope depth for C# code
+ */
+function visualizeScopeDepth(code) {
+  const lines = code.split('\n');
+  const visualization = [];
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    let depth = 0;
+
+    // Calculate depth based on opening/closing brackets
+    for (let j = 0; j < line.length; j++) {
+      if (line[j] === '{' || line[j] === '(' || line[j] === '[') {
+        depth++;
+      } else if (line[j] === '}' || line[j] === ')' || line[j] === ']') {
+        depth--;
+      }
+    }
+
+    const indent = '│  '.repeat(Math.max(0, depth));
+    const depthIndicator = depth > 5 ? ` ⚠️[${depth}]` : ` [${depth}]`;
+    visualization.push(`${indent}${depthIndicator}${line}`);
+  }
+
+  return visualization.join('\n');
+}
+
+/**
+ * Detect nested try-catch nightmares
+ */
+function detectNestedTryCatch(code) {
+  const lines = code.split('\n');
+  const issues = [];
+  const tryStack = [];
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim();
+
+    if (line.startsWith('try') && line.includes('{')) {
+      tryStack.push({ line: i + 1, depth: tryStack.length });
+      if (tryStack.length > (0,lib_config/* CSHARP_MAX_TRY_CATCH_DEPTH */.DS)()) {
+        issues.push({
+          line: i + 1,
+          depth: tryStack.length,
+          type: 'DEEPLY_NESTED_TRY_CATCH',
+          message: `Try-catch nested ${tryStack.length} levels deep - consider extracting to separate methods`,
+        });
+      }
+    } else if (line.startsWith('catch') && line.includes('{')) {
+      tryStack.push({ line: i + 1, depth: tryStack.length });
+    } else if (line.startsWith('finally') && line.includes('{')) {
+      tryStack.push({ line: i + 1, depth: tryStack.length });
+    } else if (line === '}' && tryStack.length > 0) {
+      tryStack.pop();
+    }
+  }
+
+  return {
+    issues,
+    maxDepth: tryStack.reduce((max, item) => Math.max(max, item.depth), 0),
+    summary:
+      issues.length > 0
+        ? `${issues.length} deeply nested try-catch issue(s) found`
+        : 'Try-catch nesting is acceptable',
+  };
+}
+
+/**
+ * Validate C# code comprehensively
+ */
+function validateCSharpCode(code) {
+  const complexity = analyzeCSharpComplexity(code);
+  const brackets = validateCSharpBrackets(code);
+  const tryCatch = detectNestedTryCatch(code);
+
+  const allIssues = [...complexity.issues, ...brackets.issues, ...tryCatch.issues];
+
+  const criticalIssues = allIssues.filter(
+    i => i.type.includes('CRITICAL') || i.type.includes('UNCLOSED') || i.type.includes('UNEXPECTED')
+  );
+  const warnings = allIssues.filter(i => !criticalIssues.includes(i));
+
+  return {
+    valid: criticalIssues.length === 0,
+    issues: allIssues,
+    criticalIssues,
+    warnings,
+    metrics: complexity.metrics,
+    summary: {
+      complexity: complexity.summary,
+      brackets: brackets.summary,
+      tryCatch: tryCatch.summary,
+    },
+  };
+}
+
+;// CONCATENATED MODULE: ./lib/enforcement.js
+
+
+
+// ENFORCEMENT RULES - Now configurable through config system
+const getEnforcementRules = () => ({
+  MAX_LINES: (0,lib_config/* MAX_LINES */.xg)(),
+  FORBIDDEN_PATTERNS: (0,lib_config/* FORBIDDEN_PATTERNS */.cl)().map(p => new RegExp(p, 'g')),
   MANDATORY_COMMENTS: true,
-  STRICT_MODE: true
-};
+  STRICT_MODE: true,
+});
+
+// Backward compatibility - use current config values
+const ENFORCEMENT_RULES = getEnforcementRules();
 
 // PHASE 10: Personality Layer - The "Soul" of the Governor
 const CONSTITUTION = {
-  TONE: "Surgical, Professional, Minimalist",
-  MANDATE: "Protect the codebase from digital debt and file bloat.",
+  TONE: 'Surgical, Professional, Minimalist',
+  MANDATE: 'Protect the codebase from digital debt and file bloat.',
   RECOVERY_MODE: false,
   ERROR_THRESHOLD: 3, // Max errors before mandatory "Deep Scan"
 };
@@ -5963,31 +7547,76 @@ const CONSTITUTION = {
 const internalAudit = {
   consecutiveFailures: 0,
   lastHealthCheck: Date.now(),
-  surgicalIntegrityScore: 100
+  surgicalIntegrityScore: 100,
 };
 
 /**
  * Validates code content against architectural rules.
  * @param {string} content - The code to check.
- * @returns {Object} { valid: boolean, errors: string[] }
+ * @param {string} language - Optional language parameter for language-specific validation.
+ * @returns {Object} { valid: boolean, errors: string[], warnings: string[] }
  */
-function validateCode(content) {
+function validateCode(content, language = null) {
   const errors = [];
+  const warnings = [];
   const lines = content.split(/\r\n|\r|\n/).length;
 
+  // Basic line count validation
   if (lines > ENFORCEMENT_RULES.MAX_LINES) {
     errors.push(`Line count ${lines} exceeds maximum of ${ENFORCEMENT_RULES.MAX_LINES}.`);
   }
 
+  // Forbidden pattern validation
   ENFORCEMENT_RULES.FORBIDDEN_PATTERNS.forEach(pattern => {
     if (pattern.test(content)) {
       errors.push(`Forbidden pattern detected: ${pattern.toString()}`);
     }
   });
 
+  // C# specific validations
+  if (language === 'csharp' || (content.includes('namespace ') && content.includes('using '))) {
+    // Bracket validation
+    if ((0,lib_config/* CSHARP_ENABLE_BRACKET_VALIDATION */.dx)()) {
+      const bracketValidation = validateCSharpBrackets(content);
+      if (!bracketValidation.valid) {
+        bracketValidation.issues.forEach(issue => {
+          errors.push(
+            `Bracket error at line ${issue.line}, column ${issue.column}: ${issue.message}`
+          );
+        });
+      }
+    }
+
+    // Complexity validation
+    const complexity = analyzeCSharpComplexity(content);
+    if (complexity.metrics.maxNestingDepth > (0,lib_config/* CSHARP_MAX_NESTING_DEPTH */.Ql)()) {
+      errors.push(
+        `Nesting depth ${complexity.metrics.maxNestingDepth} exceeds maximum of ${(0,lib_config/* CSHARP_MAX_NESTING_DEPTH */.Ql)()}.`
+      );
+    }
+
+    // Try-catch depth validation
+    const tryCatch = detectNestedTryCatch(content);
+    if (tryCatch.maxDepth > (0,lib_config/* CSHARP_MAX_TRY_CATCH_DEPTH */.DS)()) {
+      errors.push(
+        `Try-catch nesting depth ${tryCatch.maxDepth} exceeds maximum of ${(0,lib_config/* CSHARP_MAX_TRY_CATCH_DEPTH */.DS)()}.`
+      );
+    }
+
+    // Add complexity issues as warnings
+    complexity.issues.forEach(issue => {
+      if (issue.type === 'EMPTY_CATCH' || issue.type === 'MISSING_USING') {
+        errors.push(`Line ${issue.line}: ${issue.message}`);
+      } else {
+        warnings.push(`Line ${issue.line}: ${issue.message}`);
+      }
+    });
+  }
+
   return {
     valid: errors.length === 0,
-    errors
+    errors,
+    warnings,
   };
 }
 
@@ -5999,10 +7628,10 @@ function validateCode(content) {
 function repairJson(rawString) {
   try {
     // 1. Clean up common AI "Markdown" wrapping
-    let clean = rawString.replace(/```json|```/g, "").trim();
-    
+    let clean = rawString.replace(/```json|```/g, '').trim();
+
     // 2. Fix trailing commas before closing braces
-    clean = clean.replace(/,\s*([\]}])/g, "$1");
+    clean = clean.replace(/,\s*([\]}])/g, '$1');
 
     return JSON.parse(clean);
   } catch (e) {
@@ -6018,27 +7647,92 @@ function autoCorrectCode(content) {
   let fixed = content;
   // Auto-remove forbidden patterns instead of just blocking (Phase 6 upgrade)
   ENFORCEMENT_RULES.FORBIDDEN_PATTERNS.forEach(pattern => {
-    fixed = fixed.replace(pattern, "// [REMOVED BY SWEObeyMe]: Forbidden Pattern");
+    fixed = fixed.replace(pattern, '// [REMOVED BY SWEObeyMe]: Forbidden Pattern');
   });
   return fixed;
 }
 
+;// CONCATENATED MODULE: ./lib/project.js
+
+
+
+const project_DEBUG_LOGS = process.env.SWEOBEYME_DEBUG === '1';
+const project_log = msg => {
+  if (!project_DEBUG_LOGS) return;
+  process.stderr.write(`[SWEObeyMe-Audit]: ${msg}\n`);
+};
+
+// Load Project Contract for context injection
+let projectContract = '';
+
+/**
+ * Load Project Contract for context injection
+ */
+async function loadProjectContract() {
+  try {
+    const contractPath = __nccwpck_require__.ab + ".sweobeyme-contract.md";
+    projectContract = await promises_.readFile(__nccwpck_require__.ab + ".sweobeyme-contract.md", 'utf-8');
+    project_log('Project contract loaded successfully');
+  } catch (error) {
+    project_log('No project contract found, continuing without');
+    projectContract = '';
+  }
+}
+
+/**
+ * Get the loaded project contract
+ */
+function getProjectContract() {
+  return projectContract;
+}
+
+// Load .sweignore patterns
+let ignorePatterns = [];
+
+/**
+ * Load .sweignore patterns
+ */
+async function loadSweIgnore() {
+  try {
+    const ignorePath = __nccwpck_require__.ab + ".sweignore";
+    const content = await promises_.readFile(__nccwpck_require__.ab + ".sweignore", 'utf-8');
+    ignorePatterns = content.split('\n').filter(line => line.trim() && !line.startsWith('#'));
+    project_log(`.sweignore loaded with ${ignorePatterns.length} patterns`);
+  } catch (error) {
+    project_log('No .sweignore found, using empty ignore list');
+    ignorePatterns = [];
+  }
+}
+
+/**
+ * Check if path matches ignore patterns
+ */
+function shouldIgnore(filepath) {
+  return ignorePatterns.some(pattern => {
+    const regex = new RegExp(pattern.replace(/\*/g, '.*').replace(/\?/g, '.'));
+    return regex.test(filepath);
+  });
+}
+
+;// CONCATENATED MODULE: ./lib/session.js
 // Session Memory Store - tracks actions for accountability
 const sessionMemory = {
   history: [],
   lastAction: null,
   pendingSplits: [],
   violationCount: 0,
-  maxHistory: 20
+  maxHistory: 20,
 };
 
-// Helper to push to memory
-function recordAction(action, details, status = "success") {
+/**
+ * Helper to push to memory
+ */
+function recordAction(action, details, status = 'success') {
   sessionMemory.history.unshift({
     timestamp: new Date().toISOString(),
     action,
     details,
-    status
+    status,
   });
   if (sessionMemory.history.length > sessionMemory.maxHistory) {
     sessionMemory.history.pop();
@@ -6046,792 +7740,6320 @@ function recordAction(action, details, status = "success") {
   sessionMemory.lastAction = action;
 }
 
-// Load Project Contract for context injection
-let projectContract = "";
-async function loadProjectContract() {
-  try {
-    const contractPath = __nccwpck_require__.ab + ".sweobeyme-contract.md";
-    projectContract = await promises_namespaceObject.readFile(__nccwpck_require__.ab + ".sweobeyme-contract.md", "utf-8");
-    log("Project contract loaded successfully");
-  } catch (error) {
-    log("No project contract found, continuing without");
-    projectContract = "";
+;// CONCATENATED MODULE: ./lib/workflow.js
+// PHASE 8: Workflow Orchestration Engine
+const activeWorkflows = new Map();
+
+class SurgicalWorkflow {
+  constructor(id, goal, steps) {
+    this.id = id;
+    this.goal = goal;
+    this.steps = steps.map(s => ({ ...s, status: 'pending' }));
+    this.startTime = Date.now();
+  }
+
+  updateStep(stepName, status) {
+    const step = this.steps.find(s => s.name === stepName);
+    if (step) step.status = status;
+  }
+
+  isComplete() {
+    return this.steps.every(s => s.status === 'completed');
   }
 }
 
-// Load .sweignore patterns
-let ignorePatterns = [];
-async function loadSweIgnore() {
-  try {
-    const ignorePath = __nccwpck_require__.ab + ".sweignore";
-    const content = await promises_namespaceObject.readFile(__nccwpck_require__.ab + ".sweignore", "utf-8");
-    ignorePatterns = content.split("\n").filter(line => line.trim() && !line.startsWith("#"));
-    log(`.sweignore loaded with ${ignorePatterns.length} patterns`);
-  } catch (error) {
-    log("No .sweignore found, using empty ignore list");
-    ignorePatterns = [];
-  }
-}
 
-// Check if path matches ignore patterns
-function shouldIgnore(filepath) {
-  return ignorePatterns.some(pattern => {
-    const regex = new RegExp(pattern.replace(/\*/g, ".*").replace(/\?/g, "."));
-    return regex.test(filepath);
-  });
-}
 
-// Initialize handler - REQUIRED for handshake
-server.setRequestHandler(InitializeRequestSchema, async () => {
-  // Do not block initialize on filesystem IO; Windsurf may EOF if init is slow.
-  // Kick off in background if not already loaded.
-  loadProjectContract().catch(() => {});
-  loadSweIgnore().catch(() => {});
-  
-  return {
-    protocolVersion: "2024-11-05",
-    capabilities: { tools: {} },
-    serverInfo: { name: "SWEObeyMe", version: "1.0.9" },
-  };
-});
+;// CONCATENATED MODULE: ./lib/tools/config-handlers.js
 
-// ListTools handler - REQUIRED for green dot
-server.setRequestHandler(ListToolsRequestSchema, async () => ({
-  tools: [
-    {
-      name: "obey_me_status",
-      description: "Checks if the SWEObeyMe system is operational.",
-      inputSchema: {
-        type: "object",
-        properties: {},
-      },
-    },
-    {
-      name: "obey_surgical_plan",
-      description: "REQUIRED before any edit. Defines the scope and prevents file bloat.",
-      inputSchema: {
-        type: "object",
-        properties: {
-          target_file: { type: "string" },
-          current_line_count: { type: "number" },
-          estimated_addition: { type: "number" },
-          action: { type: "string", enum: ["repair", "split", "initialize"] }
-        },
-        required: ["target_file", "current_line_count", "action"]
-      }
-    },
-    {
-      name: "read_file",
-      description: "Reads a file. Mandatory for context before editing.",
-      inputSchema: {
-        type: "object",
-        properties: { path: { type: "string" } },
-        required: ["path"],
-      },
-    },
-    {
-      name: "write_file",
-      description: "Writes/Updates a file. Enforces the 700-line limit.",
-      inputSchema: {
-        type: "object",
-        properties: {
-          path: { type: "string" },
-          content: { type: "string" }
-        },
-        required: ["path", "content"],
-      },
-    },
-    {
-      name: "list_directory",
-      description: "Lists files in a directory to map project structure.",
-      inputSchema: {
-        type: "object",
-        properties: { path: { type: "string" } },
-        required: ["path"],
-      },
-    },
-    {
-      name: "get_session_context",
-      description: "Retrieves the last 20 actions and any pending architectural decisions (like required splits).",
-      inputSchema: { type: "object", properties: {} }
-    },
-    {
-      name: "record_decision",
-      description: "Records a specific architectural choice (e.g., 'Decided to split Helper.js into Helper.Auth.js').",
-      inputSchema: {
-        type: "object",
-        properties: {
-          decision: { type: "string" },
-          reasoning: { type: "string" }
-        },
-        required: ["decision"]
-      }
-    },
-    {
-      name: "enforce_surgical_rules",
-      description: "MANDATORY: Submit your proposed code change here FIRST to check for architectural violations.",
-      inputSchema: {
-        type: "object",
-        properties: {
-          proposed_code: { type: "string" },
-          file_path: { type: "string" }
-        },
-        required: ["proposed_code"]
-      }
-    },
-    {
-      name: "sanitize_request",
-      description: "Cleans up a request to ensure it follows the SWEObeyMe naming conventions and thread-safety rules.",
-      inputSchema: {
-        type: "object",
-        properties: {
-          logic_intent: { type: "string" }
-        },
-        required: ["logic_intent"]
-      }
-    },
-    {
-      name: "auto_repair_submission",
-      description: "Pass a failed or malformed JSON/Code block here for architectural sanitization.",
-      inputSchema: {
-        type: "object",
-        properties: {
-          raw_content: { type: "string" },
-          type: { type: "string", enum: ["json", "code"] }
-        },
-        required: ["raw_content", "type"]
-      }
-    },
-    {
-      name: "analyze_file_health",
-      description: "Scans for 'Code Smells', complexity, and potential race conditions (SWEObeyMe Orange).",
-      inputSchema: {
-        type: "object",
-        properties: {
-          path: { type: "string" }
-        },
-        required: ["path"]
-      }
-    },
-    {
-      name: "detect_architectural_drift",
-      description: "Checks if the file has strayed from the 'Surgical' intent (e.g., missing documentation).",
-      inputSchema: {
-        type: "object",
-        properties: {
-          path: { type: "string" }
-        }
-      }
-    },
-    {
-      name: "create_backup",
-      description: "Creates a read-only numbered backup of a file before modification.",
-      inputSchema: {
-        type: "object",
-        properties: {
-          path: { type: "string" }
-        },
-        required: ["path"]
-      }
-    },
-    {
-      name: "restore_backup",
-      description: "Restores a file from its numbered backup.",
-      inputSchema: {
-        type: "object",
-        properties: {
-          path: { type: "string" },
-          backup_index: { type: "number" }
-        },
-        required: ["path", "backup_index"]
-      }
-    },
-    {
-      name: "initiate_surgical_workflow",
-      description: "MANDATORY for complex tasks (Splitting, Refactoring). Defines the sequence of tools to be used.",
-      inputSchema: {
-        type: "object",
-        properties: {
-          goal: { type: "string" },
-          steps: { 
-            type: "array", 
-            items: { 
-              type: "object",
-              properties: {
-                name: { type: "string" },
-                tool: { type: "string" }
-              }
-            } 
-          }
-        },
-        required: ["goal", "steps"]
-      }
-    },
-    {
-      name: "get_workflow_status",
-      description: "Checks the progress of the current surgical operation.",
-      inputSchema: { type: "object", properties: {} }
-    },
-    {
-      name: "refactor_move_block",
-      description: "Surgically moves a block of code from one file to another. Follows the high-stakes protocol.",
-      inputSchema: {
-        type: "object",
-        properties: {
-          source_path: { type: "string" },
-          target_path: { type: "string" },
-          code_block: { type: "string" },
-          insert_after_line: { type: "number" }
-        },
-        required: ["source_path", "target_path", "code_block"]
-      }
-    },
-    {
-      name: "extract_to_new_file",
-      description: "Takes a block of code and creates a new, documented module from it. Automatically handles the split.",
-      inputSchema: {
-        type: "object",
-        properties: {
-          source_path: { type: "string" },
-          new_file_path: { type: "string" },
-          code_block: { type: "string" },
-          description: { type: "string" }
-        },
-        required: ["source_path", "new_file_path", "code_block"]
-      }
-    },
-    {
-      name: "get_architectural_directive",
-      description: "Retrieves the current 'State of the Union' for the project, including rules and integrity scores.",
-      inputSchema: { type: "object", properties: {} }
-    },
-    {
-      name: "request_surgical_recovery",
-      description: "If the AI feels 'lost' or context is drifting, this tool resets the session memory and triggers a deep project scan.",
-      inputSchema: { type: "object", properties: { reason: { type: "string" } } }
-    },
-    {
-      name: "query_the_oracle",
-      description: "When the AI is stuck, it asks the Oracle for a random bit of sci-fi wisdom to re-center its logic.",
-      inputSchema: { type: "object", properties: {} }
+
+/**
+ * Configuration tool handlers
+ */
+
+const configHandlers = {
+  get_config: async _args => {
+    try {
+      const config = (0,lib_config/* getAllConfig */.ag)();
+      return {
+        content: [{ type: 'text', text: JSON.stringify(config, null, 2) }],
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [{ type: 'text', text: `Failed to get configuration: ${error.message}` }],
+      };
     }
-  ],
-}));
+  },
 
-// CallTool handler with surgical planning and file operations
-server.setRequestHandler(CallToolRequestSchema, async (request) => {
-  const { name, arguments: args } = request.params;
+  set_config: async args => {
+    try {
+      (0,lib_config/* setConfigValues */.pP)(args.settings);
+      await (0,lib_config/* saveConfig */.ql)();
+      return {
+        content: [
+          {
+            type: 'text',
+            text: `Configuration updated successfully. New settings:\n${JSON.stringify(args.settings, null, 2)}`,
+          },
+        ],
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [{ type: 'text', text: `Failed to set configuration: ${error.message}` }],
+      };
+    }
+  },
+
+  reset_config: async _args => {
+    try {
+      (0,lib_config/* resetConfig */.E6)();
+      await (0,lib_config/* saveConfig */.ql)();
+      return {
+        content: [{ type: 'text', text: 'Configuration reset to defaults.' }],
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [{ type: 'text', text: `Failed to reset configuration: ${error.message}` }],
+      };
+    }
+  },
+
+  get_config_schema: async _args => {
+    try {
+      const schema = (0,lib_config/* getConfigSchema */.oU)();
+      return {
+        content: [{ type: 'text', text: JSON.stringify(schema, null, 2) }],
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [{ type: 'text', text: `Failed to get configuration schema: ${error.message}` }],
+      };
+    }
+  },
+
+  enforce_strict_mode: async args => {
+    try {
+      if (args.enable) {
+        (0,lib_config/* setConfig */.Nk)('strictMode', true);
+        (0,lib_config/* setConfig */.Nk)('requireDryRun', true);
+        (0,lib_config/* setConfig */.Nk)('enableSyntaxValidation', true);
+        (0,lib_config/* setConfig */.Nk)('enableImportValidation', true);
+        (0,lib_config/* setConfig */.Nk)('enableAntiPatternDetection', true);
+      } else {
+        (0,lib_config/* setConfig */.Nk)('strictMode', false);
+        (0,lib_config/* setConfig */.Nk)('requireDryRun', false);
+      }
+      await (0,lib_config/* saveConfig */.ql)();
+      return {
+        content: [
+          {
+            type: 'text',
+            text: `Strict mode ${args.enable ? 'enabled' : 'disabled'}. ${args.enable ? 'Extra guardrails activated.' : 'Standard mode restored.'}`,
+          },
+        ],
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [{ type: 'text', text: `Failed to set strict mode: ${error.message}` }],
+      };
+    }
+  },
+};
+
+// EXTERNAL MODULE: ./lib/validation.js
+var validation = __nccwpck_require__(912);
+;// CONCATENATED MODULE: ./lib/verification.js
+
+
+
+
+/**
+ * Verification tools for validating code before applying changes
+ */
+
+/**
+ * Dry run a write operation
+ */
+async function dryRunWriteFile(filePath, content) {
+  const result = {
+    success: true,
+    errors: [],
+    warnings: [],
+    wouldChange: false,
+    lineCount: 0,
+    fileSize: content.length,
+  };
 
   try {
-    switch (name) {
-      case "obey_me_status": {
-        return {
-          content: [{ type: "text", text: "SWEObeyMe is online and compliant." }],
-        };
+    // Check if file exists
+    const exists = await promises_.access(filePath)
+      .then(() => true)
+      .catch(() => false);
+
+    if (exists) {
+      result.wouldChange = true;
+      const currentContent = await promises_.readFile(filePath, 'utf-8');
+
+      // Check if content is the same
+      if (currentContent === content) {
+        result.warnings.push('Content is identical to current file');
+        result.wouldChange = false;
       }
+    } else {
+      result.wouldChange = true;
+      result.warnings.push('New file will be created');
+    }
 
-      case "obey_surgical_plan": {
-        const total = args.current_line_count + (args.estimated_addition || 0);
-        if (total > 700) {
-          log(`CRITICAL: ${args.target_file} will exceed 700 lines. MANDATORY SPLIT REQUIRED.`);
-          return {
-            isError: true,
-            content: [{ type: "text", text: "REJECTED: File bloat detected. Execute 'Split Protocol' instead." }]
-          };
-        }
-        return {
-          content: [{ type: "text", text: "PLAN APPROVED: Proceed with surgical precision." }]
-        };
+    // Validate syntax
+    if ((0,lib_config/* ENABLE_SYNTAX_VALIDATION */.UO)()) {
+      const syntaxResult = (0,validation.validateSyntax)(content);
+      if (!syntaxResult.valid) {
+        result.success = false;
+        result.errors.push(...syntaxResult.errors);
       }
+    }
 
-      case "read_file": {
-        // Check if file should be ignored
-        if (shouldIgnore(args.path)) {
-          return {
-            isError: true,
-            content: [{ type: "text", text: `File ${args.path} is in .sweignore and excluded from AI context.` }]
-          };
-        }
+    // Check line count
+    const lineCount = content.split('\n').length;
+    result.lineCount = lineCount;
 
-        const content = await promises_namespaceObject.readFile(args.path, "utf-8");
-        const stats = await promises_namespaceObject.stat(args.path);
-        const lineCount = content.split(/\r\n|\r|\n/).length;
+    // Check for forbidden patterns
+    const forbiddenPatterns = ['console.log', 'TODO', 'FIXME', 'HACK', 'debugger', 'eval('];
 
-        // Injected Context: Forces AI to see rules every time it reads
-        let contextHeader = `[SURGICAL CONTEXT]: File: ${external_path_namespaceObject.basename(args.path)} | Lines: ${lineCount}/${MAX_LINES} | Last Modified: ${stats.mtime}\n\n`;
-        
-        // Inject project contract if available
-        if (projectContract) {
-          contextHeader += `=== PROJECT CONTRACT ===\n${projectContract.substring(0, 500)}...\n=== END CONTRACT ===\n\n`;
-        }
-        
-        log(`Read ${args.path}: ${lineCount} lines.`);
-        return {
-          content: [{
-            type: "text",
-            text: contextHeader + content
-          }],
-          uri: toWindsurfUri(args.path)
-        };
+    forbiddenPatterns.forEach(pattern => {
+      if (content.includes(pattern)) {
+        result.errors.push(`Forbidden pattern detected: ${pattern}`);
       }
+    });
 
-      case "write_file": {
-        let content = args.content;
-        
-        // Phase 6: Auto-Correction
-        const correctedContent = autoCorrectCode(content);
-        if (correctedContent !== content) {
-          console.error(`[SWE-LOG] Action: HEAL | Target: ${toWindsurfUri(args.path)} | Status: Auto-corrected forbidden patterns`);
-          content = correctedContent;
+    result.success = result.errors.length === 0;
+  } catch (error) {
+    result.success = false;
+    result.errors.push(`Dry run failed: ${error.message}`);
+  }
+
+  return result;
+}
+
+/**
+ * Verify syntax
+ */
+async function verifySyntax(code, language = 'javascript') {
+  const { validateSyntax } = await Promise.resolve(/* import() */).then(__nccwpck_require__.bind(__nccwpck_require__, 912));
+  return validateSyntax(code, language);
+}
+
+/**
+ * Verify imports
+ */
+async function verifyImports(code, filePath) {
+  const { validateImports } = await Promise.resolve(/* import() */).then(__nccwpck_require__.bind(__nccwpck_require__, 912));
+  return validateImports(code, filePath);
+}
+
+/**
+ * Verify type safety (basic check)
+ */
+function verifyTypeSafety(code) {
+  const errors = [];
+
+  // Check for TypeScript type annotations
+  const hasTypeAnnotations = /:\s*(string|number|boolean|any|object|void|null)/.test(code);
+
+  // Check for potential null/undefined issues
+  const potentialNullIssues = code.match(/\w+\.\w+/g) || [];
+  potentialNullIssues.forEach(ref => {
+    if (!ref.includes('!') && !ref.includes('?')) {
+      // This is a simplified check - real type checking would require TypeScript compiler
+    }
+  });
+
+  // Check for any types (anti-pattern)
+  const anyTypes = code.match(/:\s*any\b/g) || [];
+  if (anyTypes.length > 0) {
+    errors.push(`${anyTypes.length} uses of 'any' type detected`);
+  }
+
+  return {
+    valid: errors.length === 0,
+    errors,
+    hasTypeAnnotations,
+  };
+}
+
+/**
+ * Verify change after applying
+ */
+async function verifyChangeAfterApply(filePath, expectedContent) {
+  const result = {
+    success: true,
+    errors: [],
+    warnings: [],
+  };
+
+  try {
+    const actualContent = await fs.readFile(filePath, 'utf-8');
+
+    if (actualContent !== expectedContent) {
+      result.success = false;
+      result.errors.push('Content does not match expected content');
+
+      // Find differences
+      const expectedLines = expectedContent.split('\n');
+      const actualLines = actualContent.split('\n');
+      const maxLines = Math.max(expectedLines.length, actualLines.length);
+
+      for (let i = 0; i < maxLines; i++) {
+        if (expectedLines[i] !== actualLines[i]) {
+          result.errors.push(`Line ${i + 1} differs`);
         }
+      }
+    }
 
-        const validation = validateCode(content);
-        if (!validation.valid) {
-          // If still invalid (e.g., line count), then we block
-          recordAction("VIOLATION", { path: args.path, errors: validation.errors }, "fail");
-          return {
-            isError: true,
-            content: [{ type: "text", text: `REJECTED: ${validation.errors.join(", ")}` }]
-          };
-        }
+    // Verify syntax
+    if (ENABLE_SYNTAX_VALIDATION()) {
+      const syntaxResult = validateSyntax(actualContent);
+      if (!syntaxResult.valid) {
+        result.success = false;
+        result.errors.push(...syntaxResult.errors);
+      }
+    }
+  } catch (error) {
+    result.success = false;
+    result.errors.push(`Verification failed: ${error.message}`);
+  }
 
-        const lineCount = content.split(/\r\n|\r|\n/).length;
+  return result;
+}
 
-        // ANTI-LOOP: Detect if AI is stuck writing the same file repeatedly
-        const recentWrites = sessionMemory.history.filter(h => h.action === "WRITE" && h.details?.path === args.path);
-        if (recentWrites.length >= 3) {
-          return {
-            isError: true,
-            content: [{ 
-              type: "text", 
-              text: "CRITICAL: Loop detected. You have attempted to write to this file 3 times without moving to the next task. Re-evaluate your plan." 
-            }]
-          };
-        }
+;// CONCATENATED MODULE: ./lib/guardrails.js
 
-        // PHASE 8: Mandatory Backup Before Write (only for existing files)
-        let fileExists = false;
+
+
+/**
+ * Guardrail tools for enforcing strict rules
+ */
+
+/**
+ * Enforce strict mode validation
+ */
+function enforceStrictMode(content) {
+  if (!STRICT_MODE()) {
+    return { valid: true, errors: [], warnings: [] };
+  }
+
+  const errors = [];
+  const warnings = [];
+
+  // Stricter line count limit (10% less than normal)
+  const strictMaxLines = MAX_LINES() * 0.9;
+  const lineCount = content.split('\n').length;
+
+  if (lineCount > strictMaxLines) {
+    errors.push(`Strict mode: Line count ${lineCount} exceeds strict limit of ${strictMaxLines}`);
+  }
+
+  // Check all forbidden patterns
+  const patterns = FORBIDDEN_PATTERNS();
+  patterns.forEach(pattern => {
+    const regex = new RegExp(pattern, 'g');
+    const matches = content.match(regex);
+    if (matches) {
+      errors.push(`Strict mode: Forbidden pattern '${pattern}' found ${matches.length} times`);
+    }
+  });
+
+  // Require minimum documentation (15% in strict mode)
+  const lines = content.split('\n');
+  const commentLines = lines.filter(
+    line => line.trim().startsWith('//') || line.trim().startsWith('/*')
+  ).length;
+  const commentRatio = commentLines / lineCount;
+  const minRatio = MIN_DOCUMENTATION_RATIO() * 1.5;
+
+  if (commentRatio < minRatio) {
+    errors.push(
+      `Strict mode: Documentation ratio ${(commentRatio * 100).toFixed(1)}% below strict minimum of ${(minRatio * 100).toFixed(1)}%`
+    );
+  }
+
+  // Check for anti-patterns
+  const antiPatterns = checkAntiPatterns(content);
+  if (antiPatterns.issueCount > 0) {
+    errors.push(`Strict mode: ${antiPatterns.issueCount} anti-patterns detected`);
+    errors.push(...antiPatterns.issues);
+  }
+
+  // Check naming conventions
+  const naming = validateNamingConventions(content);
+  if (!naming.valid) {
+    errors.push(`Strict mode: Naming convention violations`);
+    errors.push(...naming.errors);
+  }
+
+  return {
+    valid: errors.length === 0,
+    errors,
+    warnings,
+  };
+}
+
+/**
+ * Check for anti-patterns
+ */
+function checkForAntiPatterns(content) {
+  return (0,validation/* checkAntiPatterns */.k)(content);
+}
+
+/**
+ * Check for dangerous operations
+ */
+function checkForDangerousOperations(content) {
+  const dangerousPatterns = [
+    { pattern: /rm\s+-rf/g, description: 'Recursive delete command' },
+    { pattern: /exec\s*\(/g, description: 'Dynamic code execution' },
+    { pattern: /eval\s*\(/g, description: 'eval() usage' },
+    { pattern: /innerHTML\s*=/g, description: 'innerHTML assignment (XSS risk)' },
+    { pattern: /document\.write/g, description: 'document.write (XSS risk)' },
+    { pattern: /setTimeout\s*\(\s*['"]/g, description: 'setTimeout with string (code execution)' },
+  ];
+
+  const issues = [];
+
+  dangerousPatterns.forEach(({ pattern, description }) => {
+    const matches = content.match(pattern);
+    if (matches) {
+      issues.push({
+        description,
+        count: matches.length,
+        severity: 'high',
+      });
+    }
+  });
+
+  return {
+    hasDangerousOperations: issues.length > 0,
+    issues,
+  };
+}
+
+/**
+ * Check for security issues
+ */
+function checkForSecurityIssues(content) {
+  const securityIssues = [];
+
+  // Check for hardcoded secrets
+  const secretPatterns = [
+    /password\s*=\s*['"][^'"]+['"]/gi,
+    /api[_-]?key\s*=\s*['"][^'"]+['"]/gi,
+    /secret\s*=\s*['"][^'"]+['"]/gi,
+    /token\s*=\s*['"][^'"]+['"]/gi,
+  ];
+
+  secretPatterns.forEach(pattern => {
+    const matches = content.match(pattern);
+    if (matches) {
+      securityIssues.push({
+        type: 'hardcoded_secret',
+        count: matches.length,
+        severity: 'high',
+        message: 'Potential hardcoded secrets detected',
+      });
+    }
+  });
+
+  // Check for SQL injection risks
+  if (
+    content.includes('SELECT') &&
+    content.includes('WHERE') &&
+    !content.includes('prepared') &&
+    !content.includes('parameterized')
+  ) {
+    securityIssues.push({
+      type: 'sql_injection',
+      severity: 'high',
+      message: 'Potential SQL injection vulnerability',
+    });
+  }
+
+  // Check for XSS risks
+  if (content.includes('innerHTML') || content.includes('document.write')) {
+    securityIssues.push({
+      type: 'xss',
+      severity: 'high',
+      message: 'Potential XSS vulnerability',
+    });
+  }
+
+  return {
+    hasSecurityIssues: securityIssues.length > 0,
+    issues: securityIssues,
+  };
+}
+
+;// CONCATENATED MODULE: ./lib/tools/validation-handlers.js
+
+
+
+
+
+/**
+ * Validation and verification tool handlers
+ */
+
+const validationHandlers = {
+  dry_run_write_file: async args => {
+    try {
+      const result = await dryRunWriteFile(args.path, args.content);
+      return {
+        content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [{ type: 'text', text: `Dry run failed: ${error.message}` }],
+      };
+    }
+  },
+
+  validate_change_before_apply: async args => {
+    try {
+      const { validateCodeComprehensive } = await Promise.resolve(/* import() */).then(__nccwpck_require__.bind(__nccwpck_require__, 912));
+      const result = await validateCodeComprehensive(args.content, args.path);
+      return {
+        content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [{ type: 'text', text: `Validation failed: ${error.message}` }],
+      };
+    }
+  },
+
+  verify_syntax: async args => {
+    try {
+      const result = verifySyntax(args.code, args.language);
+      return {
+        content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [{ type: 'text', text: `Syntax verification failed: ${error.message}` }],
+      };
+    }
+  },
+
+  verify_imports: async args => {
+    try {
+      const result = await verifyImports(args.content, args.path);
+      return {
+        content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [{ type: 'text', text: `Import verification failed: ${error.message}` }],
+      };
+    }
+  },
+
+  check_for_anti_patterns: async args => {
+    try {
+      const content = await promises_.readFile(args.path, 'utf-8');
+      const result = checkForAntiPatterns(content);
+      return {
+        content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [{ type: 'text', text: `Anti-pattern check failed: ${error.message}` }],
+      };
+    }
+  },
+
+  validate_naming_conventions: async args => {
+    try {
+      const content = await promises_.readFile(args.path, 'utf-8');
+      const result = (0,validation/* validateNamingConventions */.L)(content);
+      return {
+        content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [{ type: 'text', text: `Naming validation failed: ${error.message}` }],
+      };
+    }
+  },
+};
+
+;// CONCATENATED MODULE: ./lib/math-safety.js
+/**
+ * Math expression safety utilities for C# and other languages
+ * Helps prevent chaos in complex mathematical code
+ */
+
+
+
+/**
+ * Analyze mathematical expression complexity
+ */
+function analyzeMathExpression(code) {
+  const issues = [];
+  const lines = code.split('\n');
+  const metrics = {
+    complexExpressions: [],
+    potentialOverflow: [],
+    precisionLoss: [],
+    divisionByZeroRisk: [],
+    operatorPrecedenceIssues: [],
+  };
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim();
+    const lineNum = i + 1;
+
+    // Skip comments and empty lines
+    if (line.startsWith('//') || line.startsWith('/*') || line === '') {
+      continue;
+    }
+
+    // Detect complex mathematical expressions
+    const operators = (line.match(/[+\-*/%^]/g) || []).length;
+    const parentheses = (line.match(/\(/g) || []).length;
+    const complexity = operators + parentheses;
+
+    if (complexity >= (0,lib_config/* CSHARP_MATH_COMPLEXITY_THRESHOLD */.eV)()) {
+      metrics.complexExpressions.push({
+        line: lineNum,
+        complexity,
+        expression: line.substring(0, 100),
+      });
+
+      if ((0,lib_config/* CSHARP_WARN_ON_COMPLEX_MATH */.p6)()) {
+        issues.push({
+          line: lineNum,
+          type: 'COMPLEX_MATH_EXPRESSION',
+          severity: 'WARNING',
+          message: `Complex mathematical expression (complexity: ${complexity}). Consider breaking into smaller expressions or variables.`,
+        });
+      }
+    }
+
+    // Detect potential integer overflow
+    if (line.includes('int') && (line.includes('*') || line.includes('+'))) {
+      // Check for multiplication/addition that could overflow
+      const hasLargeNumbers = /\b\d{4,}\b/.test(line);
+      if (hasLargeNumbers) {
+        issues.push({
+          line: lineNum,
+          type: 'POTENTIAL_OVERFLOW',
+          severity: 'WARNING',
+          message:
+            'Potential integer overflow detected with large numbers. Consider using long or checked context.',
+        });
+        metrics.potentialOverflow.push(lineNum);
+      }
+    }
+
+    // Detect precision loss issues (decimal vs double)
+    if (line.includes('double') && line.includes('decimal')) {
+      issues.push({
+        line: lineNum,
+        type: 'PRECISION_LOSS',
+        severity: 'WARNING',
+        message: 'Mixing double and decimal may cause precision loss. Use consistent types.',
+      });
+      metrics.precisionLoss.push(lineNum);
+    }
+
+    // Detect division without zero check
+    if (line.includes('/') && !line.includes('0') && !line.includes('Zero')) {
+      // Check if there's a zero check before this line
+      const previousLines = lines.slice(Math.max(0, i - 5), i);
+      const hasZeroCheck = previousLines.some(
+        l => l.includes('== 0') || l.includes('!= 0') || l.includes('Zero') || l.includes('throw')
+      );
+
+      if (!hasZeroCheck) {
+        issues.push({
+          line: lineNum,
+          type: 'DIVISION_BY_ZERO_RISK',
+          severity: 'WARNING',
+          message:
+            'Division operation without explicit zero check detected. Add validation to prevent division by zero.',
+        });
+        metrics.divisionByZeroRisk.push(lineNum);
+      }
+    }
+
+    // Detect operator precedence issues
+    if (line.includes('&&') && line.includes('||')) {
+      // Mixing && and || without parentheses can be ambiguous
+      const hasParens = line.includes('(') && line.includes(')');
+      if (!hasParens) {
+        issues.push({
+          line: lineNum,
+          type: 'OPERATOR_PRECEDENCE',
+          severity: 'WARNING',
+          message:
+            'Mixing && and || operators without parentheses. Use explicit grouping to clarify intent.',
+        });
+        metrics.operatorPrecedenceIssues.push(lineNum);
+      }
+    }
+
+    // Detect complex nested parentheses
+    const nestedParens = line.match(/\([^()]*\([^()]*\)/g);
+    if (nestedParens && nestedParens.length > 0) {
+      issues.push({
+        line: lineNum,
+        type: 'NESTED_PARENTHESES',
+        severity: 'INFO',
+        message:
+          'Nested parentheses detected. Consider extracting sub-expressions to named variables for clarity.',
+      });
+    }
+
+    // Detect magic numbers in calculations
+    const magicNumbers = line.match(/\b\d+\b/g);
+    if (
+      magicNumbers &&
+      magicNumbers.length > 2 &&
+      !line.includes('const') &&
+      !line.includes('readonly')
+    ) {
+      issues.push({
+        line: lineNum,
+        type: 'MAGIC_NUMBERS',
+        severity: 'INFO',
+        message:
+          'Multiple magic numbers in expression. Consider extracting to named constants for maintainability.',
+      });
+    }
+  }
+
+  return {
+    issues,
+    metrics,
+    summary: generateMathSummary(metrics, issues),
+  };
+}
+
+/**
+ * Generate summary of math safety analysis
+ */
+function generateMathSummary(metrics, _issues) {
+  const summary = [];
+
+  if (metrics.complexExpressions.length > 0) {
+    const maxComplexity = Math.max(...metrics.complexExpressions.map(e => e.complexity));
+    summary.push(
+      `${metrics.complexExpressions.length} complex math expression(s) found (max complexity: ${maxComplexity})`
+    );
+  }
+
+  if (metrics.potentialOverflow.length > 0) {
+    summary.push(`${metrics.potentialOverflow.length} potential overflow risk(s) detected`);
+  }
+
+  if (metrics.precisionLoss.length > 0) {
+    summary.push(`${metrics.precisionLoss.length} precision loss issue(s) detected`);
+  }
+
+  if (metrics.divisionByZeroRisk.length > 0) {
+    summary.push(`${metrics.divisionByZeroRisk.length} division by zero risk(s) detected`);
+  }
+
+  if (metrics.operatorPrecedenceIssues.length > 0) {
+    summary.push(
+      `${metrics.operatorPrecedenceIssues.length} operator precedence issue(s) detected`
+    );
+  }
+
+  return summary.length > 0 ? summary : ['Mathematical expressions are safe'];
+}
+
+/**
+ * Validate C# math-specific patterns
+ */
+function validateCSharpMath(code) {
+  const issues = [];
+  const lines = code.split('\n');
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim();
+    const lineNum = i + 1;
+
+    // Check for Math.Abs on potentially negative numbers
+    if (line.includes('Math.Abs') && !line.includes('Math.Max')) {
+      issues.push({
+        line: lineNum,
+        type: 'MATH_ABS_USAGE',
+        severity: 'INFO',
+        message: 'Math.Abs detected. Ensure this is the intended behavior for your use case.',
+      });
+    }
+
+    // Check for floating point equality comparisons
+    if (line.includes('==') && (line.includes('double') || line.includes('float'))) {
+      issues.push({
+        line: lineNum,
+        type: 'FLOAT_EQUALITY',
+        severity: 'WARNING',
+        message:
+          'Direct equality comparison of floating point numbers is unreliable. Use Math.Abs(a - b) < epsilon instead.',
+      });
+    }
+
+    // Check for Math.Round without specifying rounding mode
+    if (line.includes('Math.Round(') && !line.includes('MidpointRounding')) {
+      issues.push({
+        line: lineNum,
+        type: 'MATH_ROUND_IMPLICIT',
+        severity: 'INFO',
+        message:
+          'Math.Round without explicit MidpointRounding. Specify rounding mode for predictable behavior.',
+      });
+    }
+
+    // Check for unchecked arithmetic
+    if (line.includes('unchecked') && (line.includes('+') || line.includes('*'))) {
+      issues.push({
+        line: lineNum,
+        type: 'UNCHECKED_ARITHMETIC',
+        severity: 'INFO',
+        message: 'Unchecked arithmetic block. Ensure overflow behavior is intended.',
+      });
+    }
+
+    // Check for large calculations without decimal precision
+    if (
+      (line.includes('double') && line.includes('0.1')) ||
+      line.includes('0.2') ||
+      line.includes('0.3')
+    ) {
+      issues.push({
+        line: lineNum,
+        type: 'FLOATING_POINT_IMPRECISION',
+        severity: 'WARNING',
+        message:
+          'Floating point arithmetic with values that may have precision issues. Consider using decimal for financial calculations.',
+      });
+    }
+
+    // Detect complex LINQ calculations
+    if (line.includes('.Select(') || line.includes('.Where(') || line.includes('.Sum(')) {
+      const nextLines = lines.slice(i, i + 5).join('\n');
+      if (nextLines.includes('+') || nextLines.includes('*') || nextLines.includes('/')) {
+        issues.push({
+          line: lineNum,
+          type: 'COMPLEX_LINQ_CALCULATION',
+          severity: 'WARNING',
+          message:
+            'Complex calculation within LINQ expression. Consider extracting to separate method for readability and performance.',
+        });
+      }
+    }
+  }
+
+  return {
+    issues,
+    summary:
+      issues.length > 0
+        ? `${issues.length} C# math-specific issue(s) detected`
+        : 'C# math patterns are correct',
+  };
+}
+
+/**
+ * Suggest improvements for complex math expressions
+ */
+function suggestMathImprovements(code) {
+  const suggestions = [];
+  const lines = code.split('\n');
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim();
+    const lineNum = i + 1;
+
+    // Suggest using named variables for complex expressions
+    const operators = (line.match(/[+\-*/%^]/g) || []).length;
+    if (operators >= 5) {
+      suggestions.push({
+        line: lineNum,
+        type: 'EXTRACT_VARIABLE',
+        suggestion:
+          'Extract complex sub-expressions to named variables for better readability and debugging.',
+      });
+    }
+
+    // Suggest using Math.Max/Min instead of ternary
+    if (line.includes('?') && line.includes(':') && (line.includes('>') || line.includes('<'))) {
+      suggestions.push({
+        line: lineNum,
+        type: 'USE_MATH_MAX_MIN',
+        suggestion:
+          'Consider using Math.Max() or Math.Min() instead of ternary operator for clarity.',
+      });
+    }
+
+    // Suggest using decimal for financial calculations
+    if (
+      line.includes('double') &&
+      (line.includes('$') ||
+        line.includes('price') ||
+        line.includes('amount') ||
+        line.includes('cost'))
+    ) {
+      suggestions.push({
+        line: lineNum,
+        type: 'USE_DECIMAL',
+        suggestion:
+          'Consider using decimal instead of double for financial calculations to avoid floating point precision issues.',
+      });
+    }
+
+    // Suggest using BigInteger for very large numbers
+    if (line.includes('long') && line.includes('1000000000')) {
+      suggestions.push({
+        line: lineNum,
+        type: 'USE_BIGINT',
+        suggestion:
+          'Consider using BigInteger for very large number calculations to prevent overflow.',
+      });
+    }
+  }
+
+  return suggestions;
+}
+
+/**
+ * Comprehensive math safety validation
+ */
+function validateMathSafety(code) {
+  const generalMath = analyzeMathExpression(code);
+  const csharpMath = validateCSharpMath(code);
+  const improvements = suggestMathImprovements(code);
+
+  const allIssues = [...generalMath.issues, ...csharpMath.issues];
+
+  const criticalIssues = allIssues.filter(
+    i => i.severity === 'WARNING' || i.severity === 'CRITICAL'
+  );
+  const infoIssues = allIssues.filter(i => i.severity === 'INFO');
+
+  return {
+    valid: criticalIssues.length === 0,
+    issues: allIssues,
+    criticalIssues,
+    infoIssues,
+    suggestions: improvements,
+    metrics: generalMath.metrics,
+    summary: {
+      general: generalMath.summary,
+      csharp: csharpMath.summary,
+      suggestions: `${improvements.length} improvement suggestion(s) available`,
+    },
+  };
+}
+
+;// CONCATENATED MODULE: ./lib/context.js
+
+
+
+
+
+/**
+ * Context tools for providing comprehensive file context
+ */
+
+/**
+ * Get comprehensive file context
+ */
+async function getFileContext(filePath) {
+  try {
+    const content = await promises_.readFile(filePath, 'utf-8');
+    const lines = content.split('\n');
+
+    // Extract imports
+    const imports = [];
+    const importRegex = /import\s+.*?from\s+['"]([^'"]+)['"]/g;
+    let match;
+    while ((match = importRegex.exec(content)) !== null) {
+      imports.push(match[1]);
+    }
+
+    // Extract exports
+    const exports = [];
+    const exportRegex = /export\s+(?:default\s+)?(?:function|class|const|let|var)\s+(\w+)/g;
+    while ((match = exportRegex.exec(content)) !== null) {
+      exports.push(match[1]);
+    }
+
+    // Extract function definitions
+    const functions = [];
+    const functionRegex = /function\s+(\w+)/g;
+    while ((match = functionRegex.exec(content)) !== null) {
+      functions.push(match[1]);
+    }
+
+    // Extract class definitions
+    const classes = [];
+    const classRegex = /class\s+(\w+)/g;
+    while ((match = classRegex.exec(content)) !== null) {
+      classes.push(match[1]);
+    }
+
+    // Calculate metrics
+    const lineCount = lines.length;
+    const charCount = content.length;
+    const commentLines = lines.filter(
+      line => line.trim().startsWith('//') || line.trim().startsWith('/*')
+    ).length;
+    const codeLines = lineCount - commentLines;
+    const commentRatio = commentLines / lineCount;
+
+    // Detect language and add language-specific complexity metrics
+    let complexityMetrics = {};
+    const isCSharp = content.includes('namespace ') && content.includes('using ');
+    const isJavaScript =
+      content.includes('import ') || content.includes('function ') || content.includes('const ');
+
+    if (isCSharp) {
+      const csharpComplexity = analyzeCSharpComplexity(content);
+      const bracketValidation = validateCSharpBrackets(content);
+      const mathSafety = analyzeMathExpression(content);
+
+      complexityMetrics = {
+        language: 'csharp',
+        maxNestingDepth: csharpComplexity.metrics.maxNestingDepth,
+        maxMethodComplexity: csharpComplexity.metrics.maxMethodComplexity,
+        tryCatchDepth: csharpComplexity.metrics.tryCatchDepth,
+        emptyCatchBlocks: csharpComplexity.metrics.emptyCatchBlocks.length,
+        missingUsingStatements: csharpComplexity.metrics.missingUsingStatements.length,
+        asyncAwaitIssues: csharpComplexity.metrics.asyncAwaitIssues.length,
+        bracketValidation: bracketValidation.valid,
+        complexMathExpressions: mathSafety.metrics.complexExpressions.length,
+        potentialOverflow: mathSafety.metrics.potentialOverflow.length,
+        precisionLoss: mathSafety.metrics.precisionLoss.length,
+        divisionByZeroRisk: mathSafety.metrics.divisionByZeroRisk.length,
+        complexityScore: calculateComplexityScore(csharpComplexity, mathSafety),
+      };
+    } else if (isJavaScript) {
+      const mathSafety = analyzeMathExpression(content);
+      complexityMetrics = {
+        language: 'javascript',
+        complexMathExpressions: mathSafety.metrics.complexExpressions.length,
+        potentialOverflow: mathSafety.metrics.potentialOverflow.length,
+        divisionByZeroRisk: mathSafety.metrics.divisionByZeroRisk.length,
+        complexityScore: calculateJSComplexityScore(content, mathSafety),
+      };
+    }
+
+    return {
+      filePath,
+      lineCount,
+      charCount,
+      commentLines,
+      codeLines,
+      commentRatio: commentRatio.toFixed(2),
+      imports,
+      exports,
+      functions,
+      classes,
+      complexityMetrics,
+      summary: `${lineCount} lines, ${functions.length} functions, ${classes.length} classes, ${(commentRatio * 100).toFixed(1)}% comments${complexityMetrics.complexityScore ? `, complexity score: ${complexityMetrics.complexityScore}/100` : ''}`,
+    };
+  } catch (error) {
+    throw new Error(`Failed to get file context: ${error.message}`);
+  }
+}
+
+/**
+ * Calculate overall complexity score for C# code (0-100, higher is better)
+ */
+function calculateComplexityScore(csharpComplexity, mathSafety) {
+  let score = 100;
+
+  // Deduct for high nesting depth
+  score -= Math.min(20, csharpComplexity.metrics.maxNestingDepth * 2);
+
+  // Deduct for high method complexity
+  score -= Math.min(15, csharpComplexity.metrics.maxMethodComplexity);
+
+  // Deduct for deep try-catch nesting
+  score -= Math.min(15, csharpComplexity.metrics.tryCatchDepth * 3);
+
+  // Deduct for empty catch blocks
+  score -= csharpComplexity.metrics.emptyCatchBlocks.length * 10;
+
+  // Deduct for missing using statements
+  score -= csharpComplexity.metrics.missingUsingStatements.length * 15;
+
+  // Deduct for async/await issues
+  score -= csharpComplexity.metrics.asyncAwaitIssues.length * 5;
+
+  // Deduct for complex math expressions
+  score -= mathSafety.metrics.complexExpressions.length * 3;
+
+  // Deduct for potential overflow risks
+  score -= mathSafety.metrics.potentialOverflow.length * 8;
+
+  // Deduct for precision loss issues
+  score -= mathSafety.metrics.precisionLoss.length * 5;
+
+  // Deduct for division by zero risks
+  score -= mathSafety.metrics.divisionByZeroRisk.length * 10;
+
+  return Math.max(0, Math.min(100, score));
+}
+
+/**
+ * Calculate complexity score for JavaScript code
+ */
+function calculateJSComplexityScore(content, mathSafety) {
+  let score = 100;
+
+  // Deduct for complex math expressions
+  score -= mathSafety.metrics.complexExpressions.length * 3;
+
+  // Deduct for potential overflow risks
+  score -= mathSafety.metrics.potentialOverflow.length * 8;
+
+  // Deduct for division by zero risks
+  score -= mathSafety.metrics.divisionByZeroRisk.length * 10;
+
+  // Check for deep nesting
+  const lines = content.split('\n');
+  let maxDepth = 0;
+  lines.forEach(line => {
+    const depth = (line.match(/[{}]/g) || []).length;
+    maxDepth = Math.max(maxDepth, depth);
+  });
+  score -= Math.min(20, maxDepth * 2);
+
+  return Math.max(0, Math.min(100, score));
+}
+
+/**
+ * Analyze change impact
+ */
+async function analyzeChangeImpact(filePath, changes) {
+  try {
+    const impact = {
+      affectedFiles: [],
+      affectedFunctions: [],
+      affectedClasses: [],
+      breakingChanges: [],
+      warnings: [],
+    };
+
+    // Get current file context
+    const context = await getFileContext(filePath);
+
+    // Check if changes affect exports
+    if (changes.includes('export')) {
+      impact.affectedFunctions.push(...context.exports);
+      impact.warnings.push('Changes to exports may affect dependent files');
+    }
+
+    // Check if changes affect functions
+    context.functions.forEach(fn => {
+      if (changes.includes(fn)) {
+        impact.affectedFunctions.push(fn);
+        impact.warnings.push(`Function ${fn} changed, check for callers`);
+      }
+    });
+
+    // Check if changes affect classes
+    context.classes.forEach(cls => {
+      if (changes.includes(cls)) {
+        impact.affectedClasses.push(cls);
+        impact.warnings.push(`Class ${cls} changed, check for instances`);
+      }
+    });
+
+    // Check for breaking changes
+    if (changes.includes('delete') || changes.includes('remove')) {
+      impact.breakingChanges.push('Code deletion detected');
+    }
+
+    if (changes.includes('function') || changes.includes('class')) {
+      impact.breakingChanges.push('Function/class structure changed');
+    }
+
+    // Try to find files that import this file
+    const dir = external_path_.dirname(filePath);
+    const files = await promises_.readdir(dir);
+    const dependentFiles = [];
+
+    for (const file of files) {
+      if (file.endsWith('.js') || file.endsWith('.ts')) {
+        const filePath2 = external_path_.join(dir, file);
         try {
-          await promises_namespaceObject.access(args.path);
-          fileExists = true;
-        } catch {
-          fileExists = false;
-        }
-        
-        if (fileExists) {
-          const backupPath = await createBackup(args.path);
-          if (!backupPath) {
-            return {
-              isError: true,
-              content: [{ type: "text", text: `BACKUP FAILED: Cannot write to ${args.path} without a verified backup. Fix the backup system first.` }]
-            };
+          const content = await promises_.readFile(filePath2, 'utf-8');
+          const relativePath = external_path_.relative(dir, filePath).replace(/\\/g, '/');
+          if (
+            content.includes(relativePath) ||
+            content.includes(`from './${relativePath.replace('.js', '')}`)
+          ) {
+            dependentFiles.push(file);
           }
+        } catch (e) {
+          // Ignore
         }
+      }
+    }
 
-        // Silent Foresight: Warn when approaching limit
-        if (lineCount > WARNING_THRESHOLD) {
-          console.error(`[SWE-LOG] Action: WARNING | Target: ${toWindsurfUri(args.path)} | Status: File at ${lineCount} lines, approaching ${MAX_LINES} limit`);
-        }
+    impact.affectedFiles = dependentFiles;
 
-        await promises_namespaceObject.writeFile(args.path, content, "utf-8");
-        
-        // PHASE 8: Update workflow step if active
-        const currentWf = activeWorkflows.get("current");
-        if (currentWf) {
-          const writeStep = currentWf.steps.find(s => s.tool === "write_file" && s.status === "pending");
-          if (writeStep) {
-            currentWf.updateStep(writeStep.name, "completed");
-            console.error(`[ORCHESTRATOR] Step completed: ${writeStep.name}`);
-          }
-          
-          if (currentWf.isComplete()) {
-            console.error(`[ORCHESTRATOR] Workflow ${currentWf.id} complete!`);
-            activeWorkflows.delete("current");
-          }
-        }
-        
-        // MEMORY: Record the write action
-        const actionType = correctedContent !== args.content ? "WRITE_REPAIRED" : "WRITE";
-        recordAction(actionType, { path: args.path, lines: lineCount });
-        
-        const msg = correctedContent !== args.content 
-          ? `File saved. (Note: SWEObeyMe auto-corrected minor architectural violations in your syntax). URI: ${normalizePath(args.path)}`
-          : `Successfully saved ${args.path}. All rules satisfied. URI: ${normalizePath(args.path)}`;
-        return { 
-            content: [{ type: "text", text: msg }],
-            uri: toWindsurfUri(args.path)
+    return impact;
+  } catch (error) {
+    throw new Error(`Failed to analyze change impact: ${error.message}`);
+  }
+}
+
+/**
+ * Get symbol references
+ */
+async function getSymbolReferences(filePath, symbol) {
+  try {
+    const references = {
+      symbol,
+      filePath,
+      references: [],
+      definition: null,
+      count: 0,
+    };
+
+    const content = await promises_.readFile(filePath, 'utf-8');
+    const lines = content.split('\n');
+
+    // Find definition
+    const definitionRegex = new RegExp(`(?:function|class|const|let|var)\\s+${symbol}\\b`, 'g');
+    lines.forEach((line, idx) => {
+      if (definitionRegex.test(line)) {
+        references.definition = {
+          line: idx + 1,
+          content: line.trim(),
         };
       }
+    });
 
-      case "get_session_context": {
-        return { 
-          content: [{ 
-            type: "text", 
-            text: JSON.stringify(sessionMemory, null, 2) 
-          }] 
+    // Find references
+    const referenceRegex = new RegExp(`\\b${symbol}\\b`, 'g');
+    lines.forEach((line, idx) => {
+      const matches = line.match(referenceRegex);
+      if (matches && matches.length > 0) {
+        // Skip the definition line
+        if (references.definition && references.definition.line === idx + 1) {
+          return;
+        }
+
+        references.references.push({
+          line: idx + 1,
+          content: line.trim(),
+          count: matches.length,
+        });
+      }
+    });
+
+    references.count = references.references.length;
+
+    return references;
+  } catch (error) {
+    throw new Error(`Failed to get symbol references: ${error.message}`);
+  }
+}
+
+;// CONCATENATED MODULE: ./lib/comparison.js
+
+
+/**
+ * Comparison tools for showing changes
+ */
+
+/**
+ * Generate diff between two strings
+ */
+function generateDiff(original, modified) {
+  const originalLines = original.split('\n');
+  const modifiedLines = modified.split('\n');
+  const diff = [];
+
+  let originalIdx = 0;
+  let modifiedIdx = 0;
+
+  while (originalIdx < originalLines.length || modifiedIdx < modifiedLines.length) {
+    const originalLine = originalLines[originalIdx];
+    const modifiedLine = modifiedLines[modifiedIdx];
+
+    if (originalLine === modifiedLine) {
+      if (originalLine !== undefined) {
+        diff.push({ type: 'equal', line: originalLine });
+      }
+      originalIdx++;
+      modifiedIdx++;
+    } else {
+      // Line added
+      if (originalIdx >= originalLines.length) {
+        diff.push({ type: 'add', line: modifiedLine });
+        modifiedIdx++;
+      }
+      // Line deleted
+      else if (modifiedIdx >= modifiedLines.length) {
+        diff.push({ type: 'remove', line: originalLine });
+        originalIdx++;
+      }
+      // Line changed
+      else {
+        diff.push({ type: 'remove', line: originalLine });
+        diff.push({ type: 'add', line: modifiedLine });
+        originalIdx++;
+        modifiedIdx++;
+      }
+    }
+  }
+
+  return diff;
+}
+
+/**
+ * Format diff for display
+ */
+function formatDiff(diff) {
+  let output = '';
+
+  diff.forEach(item => {
+    switch (item.type) {
+      case 'equal':
+        output += `  ${item.line}\n`;
+        break;
+      case 'add':
+        output += `+ ${item.line}\n`;
+        break;
+      case 'remove':
+        output += `- ${item.line}\n`;
+        break;
+    }
+  });
+
+  return output;
+}
+
+/**
+ * Get change summary
+ */
+function getChangeSummary(original, modified) {
+  const diff = generateDiff(original, modified);
+
+  const summary = {
+    additions: 0,
+    deletions: 0,
+    modifications: 0,
+    unchanged: 0,
+    totalChanges: 0,
+  };
+
+  let prevType = null;
+
+  diff.forEach(item => {
+    switch (item.type) {
+      case 'add':
+        if (prevType === 'remove') {
+          summary.modifications++;
+        } else {
+          summary.additions++;
+        }
+        break;
+      case 'remove':
+        summary.deletions++;
+        break;
+      case 'equal':
+        summary.unchanged++;
+        break;
+    }
+    prevType = item.type;
+  });
+
+  summary.totalChanges = summary.additions + summary.deletions + summary.modifications;
+
+  return summary;
+}
+
+/**
+ * Compare with backup
+ */
+async function compareWithBackup(filePath, _backupIndex = 0) {
+  // Backup comparison not yet implemented
+  return {
+    success: false,
+    error: 'Backup comparison not yet implemented',
+  };
+}
+
+/**
+ * Compare two files
+ */
+async function compareFiles(filePath1, filePath2) {
+  try {
+    const content1 = await fs.readFile(filePath1, 'utf-8');
+    const content2 = await fs.readFile(filePath2, 'utf-8');
+
+    const diff = generateDiff(content1, content2);
+    const summary = getChangeSummary(content1, content2);
+
+    return {
+      success: true,
+      diff,
+      summary,
+      formattedDiff: formatDiff(diff),
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: error.message,
+    };
+  }
+}
+
+;// CONCATENATED MODULE: ./lib/tools/context-handlers.js
+
+
+
+
+/**
+ * Context and comparison tool handlers
+ */
+
+const contextHandlers = {
+  diff_changes: async args => {
+    try {
+      const currentContent = await promises_.readFile(args.path, 'utf-8');
+      const diff = generateDiff(currentContent, args.proposed_content);
+      const summary = getChangeSummary(currentContent, args.proposed_content);
+      return {
+        content: [
+          {
+            type: 'text',
+            text: `CHANGE SUMMARY:\n${JSON.stringify(summary, null, 2)}\n\nDIFF:\n${formatDiff(diff)}`,
+          },
+        ],
+      };
+    } catch (error) {
+      return { isError: true, content: [{ type: 'text', text: `Diff failed: ${error.message}` }] };
+    }
+  },
+
+  get_file_context: async args => {
+    try {
+      const context = await getFileContext(args.path);
+      return {
+        content: [{ type: 'text', text: JSON.stringify(context, null, 2) }],
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [{ type: 'text', text: `Failed to get file context: ${error.message}` }],
+      };
+    }
+  },
+
+  analyze_change_impact: async args => {
+    try {
+      const impact = await analyzeChangeImpact(args.path, args.changes);
+      return {
+        content: [{ type: 'text', text: JSON.stringify(impact, null, 2) }],
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [{ type: 'text', text: `Impact analysis failed: ${error.message}` }],
+      };
+    }
+  },
+
+  get_symbol_references: async args => {
+    try {
+      const references = await getSymbolReferences(args.path, args.symbol);
+      return {
+        content: [{ type: 'text', text: JSON.stringify(references, null, 2) }],
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [{ type: 'text', text: `Failed to get symbol references: ${error.message}` }],
+      };
+    }
+  },
+};
+
+;// CONCATENATED MODULE: ./lib/safety.js
+
+
+/**
+ * Safety mechanisms for preventing dangerous operations
+ */
+
+// Operation tracking for rate limiting
+const operationHistory = (/* unused pure expression or super */ null && ([]));
+
+/**
+ * Confirm dangerous operation
+ */
+function confirmDangerousOperation(operation) {
+  const dangerousOperations = [
+    'delete',
+    'remove',
+    'unlink',
+    'rm -rf',
+    'exec',
+    'eval',
+    'innerHTML',
+    'document.write',
+  ];
+
+  const isDangerous = dangerousOperations.some(op => operation.toLowerCase().includes(op));
+
+  if (!isDangerous) {
+    return { requiresConfirmation: false, reason: '' };
+  }
+
+  if (!(0,lib_config/* REQUIRE_CONFIRMATION */.ox)()) {
+    return { requiresConfirmation: false, reason: 'Confirmation not required' };
+  }
+
+  return {
+    requiresConfirmation: true,
+    reason: `Operation contains dangerous pattern: ${operation}`,
+    warning: 'This operation cannot be undone. Are you sure?',
+  };
+}
+
+/**
+ * Rate limit operations
+ */
+function rateLimitOperation() {
+  const now = Date.now();
+
+  // Remove operations older than 1 minute
+  const oneMinuteAgo = now - 60000;
+  const recentOperations = operationHistory.filter(op => op > oneMinuteAgo);
+
+  // Check if we're over the limit
+  if (recentOperations.length >= MAX_OPERATIONS_PER_MINUTE()) {
+    const oldestOperation = recentOperations[0];
+    const waitTime = Math.ceil((oldestOperation + 60000 - now) / 1000);
+
+    return {
+      allowed: false,
+      reason: `Rate limit exceeded. Wait ${waitTime} seconds before next operation.`,
+      waitTime,
+      operationsPerMinute: recentOperations.length,
+      maxOperations: MAX_OPERATIONS_PER_MINUTE(),
+    };
+  }
+
+  // Add this operation to history
+  operationHistory.push(now);
+
+  return {
+    allowed: true,
+    operationsPerMinute: recentOperations.length,
+    maxOperations: MAX_OPERATIONS_PER_MINUTE(),
+  };
+}
+
+/**
+ * Sandbox execution (placeholder)
+ */
+async function sandboxExecution(code, _filePath) {
+  // In a real implementation, this would execute code in a sandbox
+  // For now, we'll just validate the code
+
+  const result = {
+    success: true,
+    output: '',
+    errors: [],
+    warnings: [],
+  };
+
+  // Basic validation
+  if (code.includes('process.exit')) {
+    result.warnings.push('Code contains process.exit() call');
+  }
+
+  if (code.includes('require(') && !code.includes('fs.') && !code.includes('path.')) {
+    result.warnings.push('Code may attempt to load external modules');
+  }
+
+  return result;
+}
+
+/**
+ * Check for repetitive patterns (loop detection)
+ */
+function checkForRepetitivePatterns(operations) {
+  const patterns = [];
+  const threshold = 3;
+
+  // Check for repeated operations on same file
+  const fileOperations = {};
+  operations.forEach(op => {
+    if (!op.file) return;
+    fileOperations[op.file] = (fileOperations[op.file] || 0) + 1;
+  });
+
+  for (const [file, count] of Object.entries(fileOperations)) {
+    if (count >= threshold) {
+      patterns.push({
+        type: 'repetitive_file_operation',
+        file,
+        count,
+        message: `${count} operations on file ${file}`,
+      });
+    }
+  }
+
+  // Check for repeated tool calls
+  const toolOperations = {};
+  operations.forEach(op => {
+    if (!op.tool) return;
+    toolOperations[op.tool] = (toolOperations[op.tool] || 0) + 1;
+  });
+
+  for (const [tool, count] of Object.entries(toolOperations)) {
+    if (count >= threshold) {
+      patterns.push({
+        type: 'repetitive_tool_call',
+        tool,
+        count,
+        message: `${count} calls to tool ${tool}`,
+      });
+    }
+  }
+
+  return {
+    hasRepetitivePatterns: patterns.length > 0,
+    patterns,
+    suggestion:
+      patterns.length > 0 ? 'Consider breaking out of the loop or using a different approach' : '',
+  };
+}
+
+/**
+ * Validate operation safety
+ */
+function validateOperationSafety(operation, content) {
+  const result = {
+    safe: true,
+    warnings: [],
+    errors: [],
+    requiresConfirmation: false,
+  };
+
+  // Check for dangerous patterns
+  const dangerousPatterns = [
+    { pattern: /rm\s+-rf/g, severity: 'critical' },
+    { pattern: /exec\s*\(/g, severity: 'high' },
+    { pattern: /eval\s*\(/g, severity: 'high' },
+    { pattern: /innerHTML\s*=/g, severity: 'medium' },
+  ];
+
+  dangerousPatterns.forEach(({ pattern, severity }) => {
+    const matches = content.match(pattern);
+    if (matches) {
+      result.warnings.push(`Dangerous pattern detected: ${pattern} (${severity} severity)`);
+      if (severity === 'critical') {
+        result.safe = false;
+        result.errors.push('Critical safety violation');
+      }
+      if (severity === 'high' || severity === 'critical') {
+        result.requiresConfirmation = true;
+      }
+    }
+  });
+
+  // Check for large file operations
+  if (content.length > 100000) {
+    // 100KB
+    result.warnings.push('Large file operation (>100KB)');
+  }
+
+  return result;
+}
+
+// EXTERNAL MODULE: ./lib/testing.js + 1 modules
+var testing = __nccwpck_require__(554);
+;// CONCATENATED MODULE: ./lib/tools/safety-handlers.js
+
+
+
+/**
+ * Safety and testing tool handlers
+ */
+
+const safetyHandlers = {
+  check_for_anti_patterns: async args => {
+    try {
+      const fs = await Promise.resolve(/* import() */).then(__nccwpck_require__.t.bind(__nccwpck_require__, 943, 19));
+      const content = await fs.readFile(args.path, 'utf-8');
+      const { checkForAntiPatterns } = await Promise.resolve(/* import() */).then(__nccwpck_require__.bind(__nccwpck_require__, 912));
+      const result = checkForAntiPatterns(content);
+      return {
+        content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [{ type: 'text', text: `Anti-pattern check failed: ${error.message}` }],
+      };
+    }
+  },
+
+  confirm_dangerous_operation: async args => {
+    try {
+      const result = confirmDangerousOperation(args.operation);
+      return {
+        content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [{ type: 'text', text: `Danger check failed: ${error.message}` }],
+      };
+    }
+  },
+
+  check_for_repetitive_patterns: async args => {
+    try {
+      const result = checkForRepetitivePatterns(args.operations);
+      return {
+        content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [{ type: 'text', text: `Repetitive pattern check failed: ${error.message}` }],
+      };
+    }
+  },
+
+  check_test_coverage: async args => {
+    try {
+      const result = await (0,testing/* checkTestCoverage */.j)(args.path);
+      return {
+        content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [{ type: 'text', text: `Coverage check failed: ${error.message}` }],
+      };
+    }
+  },
+
+  run_related_tests: async args => {
+    try {
+      const { runRelatedTests } = await Promise.resolve(/* import() */).then(__nccwpck_require__.bind(__nccwpck_require__, 554));
+      const result = await runRelatedTests(args.path);
+      return {
+        content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [{ type: 'text', text: `Test execution failed: ${error.message}` }],
+      };
+    }
+  },
+};
+
+;// CONCATENATED MODULE: ./lib/documentation.js
+
+
+
+/**
+ * Documentation tools for enforcing documentation requirements
+ */
+
+/**
+ * Require documentation for code
+ */
+function requireDocumentation(content) {
+  const result = {
+    valid: true,
+    errors: [],
+    warnings: [],
+    documentationRatio: 0,
+  };
+
+  const lines = content.split('\n');
+  const lineCount = lines.length;
+
+  // Count comment lines
+  const commentLines = lines.filter(line => {
+    const trimmed = line.trim();
+    return trimmed.startsWith('//') || trimmed.startsWith('/*') || trimmed.startsWith('*');
+  });
+
+  const commentCount = commentLines.length;
+  const ratio = lineCount > 0 ? commentCount / lineCount : 0;
+  result.documentationRatio = ratio;
+
+  // Check minimum documentation ratio
+  const minRatio = (0,lib_config/* MIN_DOCUMENTATION_RATIO */.q1)();
+  if (ratio < minRatio) {
+    result.valid = false;
+    result.errors.push(
+      `Documentation ratio ${(ratio * 100).toFixed(1)}% below minimum of ${(minRatio * 100).toFixed(1)}%`
+    );
+    result.errors.push(`Need ${Math.ceil(minRatio * lineCount) - commentCount} more comment lines`);
+  }
+
+  // Check for function documentation
+  const functions = content.match(/function\s+(\w+)/g) || [];
+  const documentedFunctions = content.match(/\/\*\*[\s\S]*?\*\/\s*function/g) || [];
+
+  if (functions.length > documentedFunctions.length) {
+    result.warnings.push(
+      `${functions.length - documentedFunctions.length} functions without JSDoc`
+    );
+  }
+
+  // Check for class documentation
+  const classes = content.match(/class\s+(\w+)/g) || [];
+  const documentedClasses = content.match(/\/\*\*[\s\S]*?\*\/\s*class/g) || [];
+
+  if (classes.length > documentedClasses.length) {
+    result.warnings.push(`${classes.length - documentedClasses.length} classes without JSDoc`);
+  }
+
+  return result;
+}
+
+/**
+ * Generate change summary
+ */
+function generateChangeSummary(filePath, changes) {
+  const summary = {
+    filePath,
+    timestamp: new Date().toISOString(),
+    changes: [],
+    filesModified: [],
+    functionsAdded: [],
+    functionsRemoved: [],
+    classesAdded: [],
+    classesRemoved: [],
+  };
+
+  // Parse changes
+  const lines = changes.split('\n');
+  lines.forEach(line => {
+    if (line.startsWith('+')) {
+      summary.changes.push({ type: 'add', content: line.substring(1) });
+
+      // Check for function additions
+      const fnMatch = line.match(/\+\s*function\s+(\w+)/);
+      if (fnMatch) summary.functionsAdded.push(fnMatch[1]);
+
+      // Check for class additions
+      const clsMatch = line.match(/\+\s*class\s+(\w+)/);
+      if (clsMatch) summary.classesAdded.push(clsMatch[1]);
+    } else if (line.startsWith('-')) {
+      summary.changes.push({ type: 'remove', content: line.substring(1) });
+
+      // Check for function removals
+      const fnMatch = line.match(/-\s*function\s+(\w+)/);
+      if (fnMatch) summary.functionsRemoved.push(fnMatch[1]);
+
+      // Check for class removals
+      const clsMatch = line.match(/-\s*class\s+(\w+)/);
+      if (clsMatch) summary.classesRemoved.push(clsMatch[1]);
+    }
+  });
+
+  summary.filesModified.push(filePath);
+
+  return summary;
+}
+
+/**
+ * Generate commit message draft
+ */
+function generateCommitMessage(filePath, changes) {
+  const summary = generateChangeSummary(filePath, changes);
+
+  let commitType = 'chore';
+  const commitScope = external_path_.basename(filePath, external_path_.extname(filePath));
+
+  // Determine commit type based on changes
+  if (summary.functionsAdded.length > 0 || summary.classesAdded.length > 0) {
+    commitType = 'feat';
+  } else if (summary.functionsRemoved.length > 0 || summary.classesRemoved.length > 0) {
+    commitType = 'refactor';
+  } else if (summary.changes.some(c => c.content.includes('fix') || c.content.includes('bug'))) {
+    commitType = 'fix';
+  }
+
+  let message = `${commitType}(${commitScope}): `;
+
+  // Add description
+  if (summary.functionsAdded.length > 0) {
+    message += `Add ${summary.functionsAdded.join(', ')}`;
+  } else if (summary.functionsRemoved.length > 0) {
+    message += `Remove ${summary.functionsRemoved.join(', ')}`;
+  } else {
+    message += 'Update implementation';
+  }
+
+  // Add details
+  if (summary.classesAdded.length > 0) {
+    message += `\n\n- Add classes: ${summary.classesAdded.join(', ')}`;
+  }
+
+  if (summary.classesRemoved.length > 0) {
+    message += `\n\n- Remove classes: ${summary.classesRemoved.join(', ')}`;
+  }
+
+  return message;
+}
+
+;// CONCATENATED MODULE: ./lib/feedback.js
+
+
+/**
+ * Feedback tools for providing guidance and explanations
+ */
+
+/**
+ * Explain rejection
+ */
+function explainRejection(rejectionReason, context) {
+  const explanations = {
+    line_count_exceeded: {
+      reason: 'File exceeds maximum line count limit',
+      explanation:
+        'The file has too many lines. This can make code harder to maintain and understand.',
+      suggestions: [
+        'Extract functions into separate modules',
+        'Use refactor_move_block to move code blocks to other files',
+        'Consider splitting the file into smaller, focused modules',
+        'Remove dead code or consolidate similar functions',
+      ],
+      tools: ['refactor_move_block', 'extract_to_new_file'],
+    },
+    forbidden_pattern: {
+      reason: 'Contains forbidden pattern',
+      explanation:
+        'The code contains patterns that are prohibited for security or code quality reasons.',
+      suggestions: [
+        'Remove the forbidden pattern',
+        'Use auto_repair_submission to automatically fix the issue',
+        'Replace console.log with proper logging',
+        'Remove TODO/FIXME comments and create proper issues',
+      ],
+      tools: ['auto_repair_submission'],
+    },
+    backup_failed: {
+      reason: 'Backup creation failed',
+      explanation:
+        'Unable to create a backup before writing. This is a safety measure to prevent data loss.',
+      suggestions: [
+        'Check backup directory permissions',
+        'Ensure backup directory exists',
+        'Check available disk space',
+        'Use create_backup manually to diagnose the issue',
+      ],
+      tools: ['create_backup'],
+    },
+    syntax_error: {
+      reason: 'Syntax validation failed',
+      explanation: 'The code contains syntax errors that would prevent it from running.',
+      suggestions: [
+        'Check for unmatched braces, parentheses, or brackets',
+        'Verify string quotes are properly closed',
+        'Check for missing semicolons or commas',
+        'Use auto_repair_submission to fix common syntax issues',
+      ],
+      tools: ['auto_repair_submission'],
+    },
+    import_error: {
+      reason: 'Import validation failed',
+      explanation: 'The code contains imports that cannot be resolved.',
+      suggestions: [
+        'Verify import paths are correct',
+        'Ensure imported files exist',
+        'Check for circular dependencies',
+        'Update relative import paths',
+      ],
+      tools: [],
+    },
+    loop_detected: {
+      reason: 'Repetitive operation detected',
+      explanation: 'The same operation has been attempted multiple times, suggesting a loop.',
+      suggestions: [
+        'Review your approach and try a different strategy',
+        'Use request_surgical_recovery to reset session state',
+        'Check get_session_context to understand what is happening',
+        'Use get_architectural_directive for guidance',
+      ],
+      tools: ['request_surgical_recovery', 'get_session_context', 'get_architectural_directive'],
+    },
+    default: {
+      reason: rejectionReason,
+      explanation: 'The operation was rejected for the stated reason.',
+      suggestions: [
+        'Review the error message carefully',
+        'Check get_config_schema to understand requirements',
+        'Use get_architectural_directive for guidance',
+        'Try a different approach',
+      ],
+      tools: ['get_config_schema', 'get_architectural_directive'],
+    },
+  };
+
+  const explanation = explanations[rejectionReason] || explanations['default'];
+
+  return {
+    reason: explanation.reason,
+    explanation: explanation.explanation,
+    suggestions: explanation.suggestions,
+    tools: explanation.tools,
+    context,
+  };
+}
+
+/**
+ * Suggest alternatives
+ */
+function suggestAlternatives(failedOperation, context) {
+  const alternatives = {
+    write_file: [
+      {
+        tool: 'refactor_move_block',
+        reason: 'Move code blocks to reduce file size',
+        description:
+          'Extract a code block to another file to keep the source file under the line limit',
+      },
+      {
+        tool: 'extract_to_new_file',
+        reason: 'Create new module',
+        description: 'Extract a code block to a new file when creating a new module',
+      },
+      {
+        tool: 'auto_repair_submission',
+        reason: 'Fix syntax or formatting issues',
+        description: 'Automatically repair common JSON or code formatting issues',
+      },
+    ],
+    obey_surgical_plan: [
+      {
+        tool: 'refactor_move_block',
+        reason: 'Reduce file size before writing',
+        description: 'Move code blocks to other files to make room for new changes',
+      },
+      {
+        tool: 'extract_to_new_file',
+        reason: 'Extract code to new file',
+        description: 'Extract large code blocks to new files to reduce source file size',
+      },
+      {
+        tool: 'get_architectural_directive',
+        reason: 'Get guidance on architectural approach',
+        description: 'Query the architectural directive for guidance on how to proceed',
+      },
+    ],
+    default: [
+      {
+        tool: 'get_architectural_directive',
+        reason: 'Get architectural guidance',
+        description: 'Query the architectural directive for guidance on how to proceed',
+      },
+      {
+        tool: 'get_session_context',
+        reason: 'Review session history',
+        description: 'Check session context to understand what has been attempted',
+      },
+      {
+        tool: 'request_surgical_recovery',
+        reason: 'Reset session state',
+        description: 'Reset session state if stuck in a loop',
+      },
+    ],
+  };
+
+  const toolAlternatives = alternatives[failedOperation] || alternatives['default'];
+
+  return {
+    failedOperation,
+    alternatives: toolAlternatives,
+    context,
+  };
+}
+
+/**
+ * Get historical context
+ */
+async function getHistoricalContext(filePath) {
+  try {
+    const content = await promises_.readFile(filePath, 'utf-8');
+    const lines = content.split('\n');
+
+    // Extract recent changes (last 50 lines)
+    const recentLines = lines.slice(-50);
+
+    // Look for recent change markers
+    const changeMarkers = recentLines.filter(
+      line =>
+        line.includes('// Changed:') || line.includes('// Updated:') || line.includes('// Fixed:')
+    );
+
+    return {
+      filePath,
+      recentChanges: changeMarkers,
+      lastModified: (await promises_.stat(filePath)).mtime,
+      lineCount: lines.length,
+      summary: `${lines.length} lines, ${changeMarkers.length} recent change markers`,
+    };
+  } catch (error) {
+    throw new Error(`Failed to get historical context: ${error.message}`);
+  }
+}
+
+/**
+ * Get operation guidance
+ */
+function getOperationGuidance(operation, context) {
+  const guidance = {
+    write_file: {
+      prerequisites: ['obey_surgical_plan', 'read_file'],
+      warnings: [
+        'Always call obey_surgical_plan before write_file',
+        'Ensure you have read the file first',
+        'Backups are created automatically for existing files',
+      ],
+      bestPractices: [
+        'Keep changes focused and minimal',
+        'Verify line count before writing',
+        'Test changes locally if possible',
+      ],
+    },
+    refactor_move_block: {
+      prerequisites: ['read_file'],
+      warnings: [
+        'Ensure source file exists',
+        "Verify target file won't exceed line limit",
+        'Make sure code block matches exactly',
+      ],
+      bestPractices: [
+        'Move logically related code together',
+        'Update imports if needed',
+        'Verify the move does not break dependencies',
+      ],
+    },
+    default: {
+      prerequisites: [],
+      warnings: [],
+      bestPractices: [
+        'Read tool descriptions for usage guidance',
+        'Follow the suggested tool ordering',
+        'Use get_config_schema to understand requirements',
+      ],
+    },
+  };
+
+  const operationGuidance = guidance[operation] || guidance['default'];
+
+  return {
+    operation,
+    ...operationGuidance,
+    context,
+  };
+}
+
+;// CONCATENATED MODULE: ./lib/tools/feedback-handlers.js
+
+
+
+/**
+ * Documentation and feedback tool handlers
+ */
+
+const feedbackHandlers = {
+  require_documentation: async args => {
+    try {
+      const result = requireDocumentation(args.content);
+      return {
+        content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [{ type: 'text', text: `Documentation check failed: ${error.message}` }],
+      };
+    }
+  },
+
+  generate_change_summary: async args => {
+    try {
+      const summary = generateChangeSummary(args.path, args.changes);
+      const commitMessage = generateCommitMessage(args.path, args.changes);
+      return {
+        content: [
+          {
+            type: 'text',
+            text: `CHANGE SUMMARY:\n${JSON.stringify(summary, null, 2)}\n\nCOMMIT MESSAGE:\n${commitMessage}`,
+          },
+        ],
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [{ type: 'text', text: `Summary generation failed: ${error.message}` }],
+      };
+    }
+  },
+
+  explain_rejection: async args => {
+    try {
+      const result = explainRejection(args.reason, args.context);
+      return {
+        content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [{ type: 'text', text: `Rejection explanation failed: ${error.message}` }],
+      };
+    }
+  },
+
+  suggest_alternatives: async args => {
+    try {
+      const result = suggestAlternatives(args.failed_operation, args.context);
+      return {
+        content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [{ type: 'text', text: `Alternative suggestion failed: ${error.message}` }],
+      };
+    }
+  },
+
+  get_historical_context: async args => {
+    try {
+      const result = await getHistoricalContext(args.path);
+      return {
+        content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [{ type: 'text', text: `Historical context failed: ${error.message}` }],
+      };
+    }
+  },
+
+  get_operation_guidance: async args => {
+    try {
+      const result = getOperationGuidance(args.operation, args.context);
+      return {
+        content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [{ type: 'text', text: `Operation guidance failed: ${error.message}` }],
+      };
+    }
+  },
+};
+
+;// CONCATENATED MODULE: ./lib/tools/csharp-handlers.js
+/**
+ * C# specific tool handlers
+ * Provides specialized tools for C# .NET 8/10 development
+ */
+
+
+
+
+
+/**
+ * C# tool handlers
+ */
+const csharpHandlers = {
+  /**
+   * Validate C# code comprehensively
+   */
+  validate_csharp_code: async args => {
+    try {
+      const content = await promises_.readFile(args.path, 'utf-8');
+      const result = validateCSharpCode(content);
+
+      return {
+        content: [
+          {
+            type: 'text',
+            text: `C# Code Validation for ${args.path}:
+
+VALID: ${result.valid ? 'YES' : 'NO'}
+
+CRITICAL ISSUES (${result.criticalIssues.length}):
+${result.criticalIssues.length > 0 ? result.criticalIssues.map(i => `  Line ${i.line}: ${i.message}`).join('\n') : '  None'}
+
+WARNINGS (${result.warnings.length}):
+${result.warnings.length > 0 ? result.warnings.map(i => `  Line ${i.line}: ${i.message}`).join('\n') : '  None'}
+
+METRICS:
+  Max Nesting Depth: ${result.metrics.maxNestingDepth}
+  Max Method Complexity: ${result.metrics.maxMethodComplexity}
+  Try-Catch Depth: ${result.metrics.tryCatchDepth}
+  Empty Catch Blocks: ${result.metrics.emptyCatchBlocks.length}
+  Missing Using Statements: ${result.metrics.missingUsingStatements.length}
+  Async/Await Issues: ${result.metrics.asyncAwaitIssues.length}
+
+SUMMARY:
+  Complexity: ${result.summary.complexity.join('\n  ')}
+  Brackets: ${result.summary.brackets}
+  Try-Catch: ${result.summary.tryCatch}`,
+          },
+        ],
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [{ type: 'text', text: `Validation failed: ${error.message}` }],
+      };
+    }
+  },
+
+  /**
+   * Validate bracket matching in C# code
+   */
+  validate_csharp_brackets: async args => {
+    try {
+      const content = await promises_.readFile(args.path, 'utf-8');
+      const result = validateCSharpBrackets(content);
+
+      return {
+        content: [
+          {
+            type: 'text',
+            text: `Bracket Validation for ${args.path}:
+
+VALID: ${result.valid ? 'YES' : 'NO'}
+
+${
+  result.valid
+    ? 'All brackets properly matched!'
+    : `ISSUES (${result.issues.length}):
+${result.issues.map(i => `  Line ${i.line}, Column ${i.column}: ${i.message}`).join('\n')}`
+}`,
+          },
+        ],
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [{ type: 'text', text: `Bracket validation failed: ${error.message}` }],
+      };
+    }
+  },
+
+  /**
+   * Analyze C# code complexity
+   */
+  analyze_csharp_complexity: async args => {
+    try {
+      const content = await promises_.readFile(args.path, 'utf-8');
+      const result = analyzeCSharpComplexity(content);
+
+      return {
+        content: [
+          {
+            type: 'text',
+            text: `C# Complexity Analysis for ${args.path}:
+
+METRICS:
+  Max Nesting Depth: ${result.metrics.maxNestingDepth}
+  Max Method Complexity: ${result.metrics.maxMethodComplexity}
+  Try-Catch Depth: ${result.metrics.tryCatchDepth}
+  Empty Catch Blocks: ${result.metrics.emptyCatchBlocks.length}
+  Missing Using Statements: ${result.metrics.missingUsingStatements.length}
+  Async/Await Issues: ${result.metrics.asyncAwaitIssues.length}
+
+DETAILED ISSUES (${result.issues.length}):
+${result.issues.map(i => `  [${i.type}] Line ${i.line}: ${i.message}`).join('\n') || '  No issues found'}
+
+SUMMARY:
+${result.summary.join('\n  ')}`,
+          },
+        ],
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [{ type: 'text', text: `Complexity analysis failed: ${error.message}` }],
+      };
+    }
+  },
+
+  /**
+   * Detect nested try-catch blocks
+   */
+  detect_nested_try_catch: async args => {
+    try {
+      const content = await promises_.readFile(args.path, 'utf-8');
+      const result = detectNestedTryCatch(content);
+
+      return {
+        content: [
+          {
+            type: 'text',
+            text: `Nested Try-Catch Analysis for ${args.path}:
+
+MAX DEPTH: ${result.maxDepth}
+${result.maxDepth > 3 ? '⚠️ WARNING: Deep nesting detected!' : '✓ Try-catch nesting is acceptable'}
+
+ISSUES (${result.issues.length}):
+${result.issues.length > 0 ? result.issues.map(i => `  Line ${i.line} (Depth ${i.depth}): ${i.message}`).join('\n') : '  No deeply nested try-catch blocks found'}
+
+SUMMARY:
+  ${result.summary}`,
+          },
+        ],
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [{ type: 'text', text: `Try-catch detection failed: ${error.message}` }],
+      };
+    }
+  },
+
+  /**
+   * Visualize scope depth
+   */
+  visualize_scope_depth: async args => {
+    try {
+      const content = await promises_.readFile(args.path, 'utf-8');
+      const visualization = visualizeScopeDepth(content);
+
+      return {
+        content: [
+          {
+            type: 'text',
+            text: `Scope Depth Visualization for ${args.path}:
+(│ represents nesting level, [n] shows depth)
+
+${visualization}
+
+Legend:
+  │  - Nesting level
+  [n] - Depth level
+  ⚠️  - Warning: depth > 5`,
+          },
+        ],
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [{ type: 'text', text: `Scope visualization failed: ${error.message}` }],
+      };
+    }
+  },
+
+  /**
+   * Validate math safety in C# code
+   */
+  validate_math_safety: async args => {
+    try {
+      const content = await promises_.readFile(args.path, 'utf-8');
+      const result = validateMathSafety(content);
+
+      return {
+        content: [
+          {
+            type: 'text',
+            text: `Math Safety Validation for ${args.path}:
+
+VALID: ${result.valid ? 'YES' : 'NO'}
+
+CRITICAL ISSUES (${result.criticalIssues.length}):
+${result.criticalIssues.length > 0 ? result.criticalIssues.map(i => `  Line ${i.line}: ${i.message}`).join('\n') : '  None'}
+
+INFO ISSUES (${result.infoIssues.length}):
+${result.infoIssues.length > 0 ? result.infoIssues.map(i => `  Line ${i.line}: ${i.message}`).join('\n') : '  None'}
+
+METRICS:
+  Complex Expressions: ${result.metrics.complexExpressions.length}
+  Potential Overflow: ${result.metrics.potentialOverflow.length}
+  Precision Loss: ${result.metrics.precisionLoss.length}
+  Division by Zero Risk: ${result.metrics.divisionByZeroRisk.length}
+  Operator Precedence Issues: ${result.metrics.operatorPrecedenceIssues.length}
+
+SUMMARY:
+  General: ${result.summary.general.join('\n  ')}
+  C# Specific: ${result.summary.csharp}
+  Suggestions: ${result.summary.suggestions}
+
+IMPROVEMENT SUGGESTIONS (${result.suggestions.length}):
+${result.suggestions.length > 0 ? result.suggestions.map(s => `  Line ${s.line}: ${s.suggestion}`).join('\n') : '  No suggestions'}`,
+          },
+        ],
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [{ type: 'text', text: `Math safety validation failed: ${error.message}` }],
+      };
+    }
+  },
+
+  /**
+   * Analyze math expressions
+   */
+  analyze_math_expressions: async args => {
+    try {
+      const content = await promises_.readFile(args.path, 'utf-8');
+      const result = analyzeMathExpression(content);
+
+      return {
+        content: [
+          {
+            type: 'text',
+            text: `Math Expression Analysis for ${args.path}:
+
+ISSUES (${result.issues.length}):
+${result.issues.length > 0 ? result.issues.map(i => `  [${i.type}] Line ${i.line}: ${i.message}`).join('\n') : '  No issues found'}
+
+DETAILED METRICS:
+  Complex Expressions: ${result.metrics.complexExpressions.length}
+  Potential Overflow: ${result.metrics.potentialOverflow.length}
+  Precision Loss: ${result.metrics.precisionLoss.length}
+  Division by Zero Risk: ${result.metrics.divisionByZeroRisk.length}
+  Operator Precedence Issues: ${result.metrics.operatorPrecedenceIssues.length}
+
+SUMMARY:
+${result.summary.join('\n  ')}`,
+          },
+        ],
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [{ type: 'text', text: `Math expression analysis failed: ${error.message}` }],
+      };
+    }
+  },
+
+  /**
+   * Validate C# specific math patterns
+   */
+  validate_csharp_math: async args => {
+    try {
+      const content = await promises_.readFile(args.path, 'utf-8');
+      const result = validateCSharpMath(content);
+
+      return {
+        content: [
+          {
+            type: 'text',
+            text: `C# Math Pattern Validation for ${args.path}:
+
+ISSUES (${result.issues.length}):
+${result.issues.length > 0 ? result.issues.map(i => `  [${i.type}] Line ${i.line}: ${i.message}`).join('\n') : '  No issues found'}
+
+SUMMARY:
+  ${result.summary}`,
+          },
+        ],
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [{ type: 'text', text: `C# math validation failed: ${error.message}` }],
+      };
+    }
+  },
+
+  /**
+   * Get math improvement suggestions
+   */
+  suggest_math_improvements: async args => {
+    try {
+      const content = await promises_.readFile(args.path, 'utf-8');
+      const suggestions = suggestMathImprovements(content);
+
+      return {
+        content: [
+          {
+            type: 'text',
+            text: `Math Improvement Suggestions for ${args.path}:
+
+SUGGESTIONS (${suggestions.length}):
+${suggestions.length > 0 ? suggestions.map(s => `  Line ${s.line} [${s.type}]: ${s.suggestion}`).join('\n') : '  No improvement suggestions'}
+
+Note: These are suggestions for improving code quality and maintainability.`,
+          },
+        ],
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [{ type: 'text', text: `Math suggestions failed: ${error.message}` }],
+      };
+    }
+  },
+
+  /**
+   * Comprehensive C# health check
+   */
+  csharp_health_check: async args => {
+    try {
+      const content = await promises_.readFile(args.path, 'utf-8');
+
+      // Run all validations
+      const codeValidation = validateCSharpCode(content);
+      const bracketValidation = validateCSharpBrackets(content);
+      const mathValidation = validateMathSafety(content);
+      const complexity = analyzeCSharpComplexity(content);
+      const tryCatch = detectNestedTryCatch(content);
+
+      // Calculate overall health score
+      let healthScore = 100;
+      healthScore -= codeValidation.criticalIssues.length * 15;
+      healthScore -= codeValidation.warnings.length * 5;
+      healthScore -= !bracketValidation.valid ? 20 : 0;
+      healthScore -= mathValidation.criticalIssues.length * 10;
+      healthScore -= complexity.metrics.emptyCatchBlocks.length * 10;
+      healthScore -= complexity.metrics.missingUsingStatements.length * 15;
+      healthScore -= tryCatch.maxDepth > 3 ? (tryCatch.maxDepth - 3) * 10 : 0;
+
+      healthScore = Math.max(0, Math.min(100, healthScore));
+
+      const healthStatus =
+        healthScore >= 80
+          ? 'EXCELLENT'
+          : healthScore >= 60
+            ? 'GOOD'
+            : healthScore >= 40
+              ? 'FAIR'
+              : 'POOR';
+
+      return {
+        content: [
+          {
+            type: 'text',
+            text: `C# Health Check for ${args.path}:
+
+╔════════════════════════════════════════╗
+║         HEALTH SCORE: ${healthScore}/100         ║
+║           STATUS: ${healthStatus.padEnd(15)}║
+╚════════════════════════════════════════╝
+
+📊 METRICS:
+  Max Nesting Depth: ${complexity.metrics.maxNestingDepth}
+  Max Method Complexity: ${complexity.metrics.maxMethodComplexity}
+  Try-Catch Depth: ${tryCatch.maxDepth}
+  Empty Catch Blocks: ${complexity.metrics.emptyCatchBlocks.length}
+  Missing Using Statements: ${complexity.metrics.missingUsingStatements.length}
+  Bracket Validation: ${bracketValidation.valid ? '✓ PASS' : '✗ FAIL'}
+  Complex Math Expressions: ${mathValidation.metrics.complexExpressions.length}
+  Potential Overflow: ${mathValidation.metrics.potentialOverflow.length}
+
+⚠️  CRITICAL ISSUES (${codeValidation.criticalIssues.length + mathValidation.criticalIssues.length}):
+${
+  codeValidation.criticalIssues.length + mathValidation.criticalIssues.length > 0
+    ? [...codeValidation.criticalIssues, ...mathValidation.criticalIssues]
+        .map(i => `  Line ${i.line}: ${i.message}`)
+        .join('\n')
+    : '  None'
+}
+
+⚡ WARNINGS (${codeValidation.warnings.length + mathValidation.infoIssues.length}):
+${
+  codeValidation.warnings.length + mathValidation.infoIssues.length > 0
+    ? [...codeValidation.warnings, ...mathValidation.infoIssues]
+        .map(i => `  Line ${i.line}: ${i.message}`)
+        .join('\n')
+    : '  None'
+}
+
+💡 RECOMMENDATIONS:
+${healthScore < 80 ? '  Consider refactoring to improve code quality and maintainability.' : '  Code is in good shape! Keep up the good work.'}
+${complexity.metrics.missingUsingStatements.length > 0 ? '  • Add using statements for IDisposable objects to prevent resource leaks' : ''}
+${complexity.metrics.emptyCatchBlocks.length > 0 ? '  • Remove or add proper error handling to empty catch blocks' : ''}
+${tryCatch.maxDepth > 3 ? `  • Reduce try-catch nesting depth (currently ${tryCatch.maxDepth})` : ''}
+${!bracketValidation.valid ? '  • Fix bracket matching issues' : ''}
+${mathValidation.metrics.potentialOverflow.length > 0 ? '  • Add overflow protection for large number calculations' : ''}`,
+          },
+        ],
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [{ type: 'text', text: `Health check failed: ${error.message}` }],
+      };
+    }
+  },
+};
+
+;// CONCATENATED MODULE: ./lib/file-registry.js
+/**
+ * File Registry System
+ * Tracks all files in the project to prevent duplication and ensure proper auditing
+ * Critical for massive projects with thousands of files
+ */
+
+
+
+
+
+/**
+ * File Registry - maintains a comprehensive index of all project files
+ */
+class FileRegistry {
+  constructor() {
+    this.files = new Map(); // path -> FileMetadata
+    this.fileHashes = new Map(); // hash -> Set of file paths
+    this.directories = new Map(); // directory -> Set of file paths
+    this.lastIndexTime = 0;
+    this.indexed = false;
+  }
+
+  /**
+   * Calculate file hash for content comparison
+   */
+  calculateHash(content) {
+    return external_crypto_.createHash('md5').update(content).digest('hex');
+  }
+
+  /**
+   * Index a single file
+   */
+  async indexFile(filePath) {
+    try {
+      const stats = await promises_.stat(filePath);
+      const content = await promises_.readFile(filePath, 'utf-8');
+      const hash = this.calculateHash(content);
+      const dir = external_path_.dirname(filePath);
+
+      const metadata = {
+        path: filePath,
+        hash,
+        size: stats.size,
+        modified: stats.mtime,
+        indexed: Date.now(),
+        directory: dir,
+        basename: external_path_.basename(filePath),
+        extension: external_path_.extname(filePath),
+      };
+
+      // Store file metadata
+      this.files.set(filePath, metadata);
+
+      // Store hash mapping for duplicate detection
+      if (!this.fileHashes.has(hash)) {
+        this.fileHashes.set(hash, new Set());
+      }
+      this.fileHashes.get(hash).add(filePath);
+
+      // Store directory mapping
+      if (!this.directories.has(dir)) {
+        this.directories.set(dir, new Set());
+      }
+      this.directories.get(dir).add(filePath);
+
+      return metadata;
+    } catch (error) {
+      // File might not exist or be inaccessible
+      return null;
+    }
+  }
+
+  /**
+   * Index entire project directory
+   */
+  async indexProject(rootDir, options = {}) {
+    const {
+      ignorePatterns = ['node_modules', '.git', 'dist', 'build', 'bin', 'obj'],
+      maxDepth = 20,
+      onProgress = null,
+    } = options;
+
+    this.files.clear();
+    this.fileHashes.clear();
+    this.directories.clear();
+    this.lastIndexTime = Date.now();
+
+    let indexedCount = 0;
+    let skippedCount = 0;
+
+    const indexDirectory = async (dir, depth = 0) => {
+      if (depth > maxDepth) return;
+
+      try {
+        const entries = await promises_.readdir(dir, { withFileTypes: true });
+
+        for (const entry of entries) {
+          const fullPath = external_path_.join(dir, entry.name);
+
+          // Skip ignored patterns
+          if (ignorePatterns.some(pattern => fullPath.includes(pattern))) {
+            skippedCount++;
+            continue;
+          }
+
+          if (entry.isDirectory()) {
+            await indexDirectory(fullPath, depth + 1);
+          } else if (entry.isFile()) {
+            const metadata = await this.indexFile(fullPath);
+            if (metadata) {
+              indexedCount++;
+              if (onProgress && indexedCount % 100 === 0) {
+                onProgress(indexedCount, fullPath);
+              }
+            }
+          }
+        }
+      } catch (error) {
+        // Directory might be inaccessible
+        console.error(`[FILE-REGISTRY] Error indexing directory ${dir}: ${error.message}`);
+      }
+    };
+
+    await indexDirectory(rootDir);
+    this.indexed = true;
+
+    console.error(`[FILE-REGISTRY] Indexed ${indexedCount} files, skipped ${skippedCount} files`);
+
+    return {
+      indexedCount,
+      skippedCount,
+      totalFiles: this.files.size,
+      directories: this.directories.size,
+    };
+  }
+
+  /**
+   * Check if file exists in registry
+   */
+  fileExists(filePath) {
+    return this.files.has(filePath);
+  }
+
+  /**
+   * Get file metadata
+   */
+  getFileMetadata(filePath) {
+    return this.files.get(filePath);
+  }
+
+  /**
+   * Check if file content already exists (duplicate detection)
+   */
+  findDuplicateFiles(filePath, content) {
+    const hash = this.calculateHash(content);
+    const duplicates = this.fileHashes.get(hash);
+
+    if (!duplicates) {
+      return [];
+    }
+
+    // Return all files with same hash except the current one
+    return Array.from(duplicates).filter(p => p !== filePath);
+  }
+
+  /**
+   * Check if file with same name exists in directory
+   */
+  findSameNameFiles(filePath) {
+    const dir = external_path_.dirname(filePath);
+    const basename = external_path_.basename(filePath);
+    const filesInDir = this.directories.get(dir);
+
+    if (!filesInDir) {
+      return [];
+    }
+
+    return Array.from(filesInDir).filter(p => {
+      const otherBasename = external_path_.basename(p);
+      return otherBasename === basename && p !== filePath;
+    });
+  }
+
+  /**
+   * Check if similar file exists (by name similarity)
+   */
+  findSimilarFiles(filePath, threshold = 0.7) {
+    const basename = external_path_.basename(filePath, external_path_.extname(filePath));
+    const similarFiles = [];
+
+    for (const [otherPath] of this.files) {
+      if (otherPath === filePath) continue;
+
+      const otherBasename = external_path_.basename(otherPath, external_path_.extname(otherPath));
+      const similarity = this.calculateStringSimilarity(basename, otherBasename);
+
+      if (similarity >= threshold) {
+        similarFiles.push({
+          path: otherPath,
+          similarity,
+          basename: otherBasename,
+        });
+      }
+    }
+
+    return similarFiles.sort((a, b) => b.similarity - a.similarity);
+  }
+
+  /**
+   * Calculate string similarity (Levenshtein distance based)
+   */
+  calculateStringSimilarity(str1, str2) {
+    const len1 = str1.length;
+    const len2 = str2.length;
+    const matrix = [];
+
+    for (let i = 0; i <= len1; i++) {
+      matrix[i] = [i];
+    }
+
+    for (let j = 0; j <= len2; j++) {
+      matrix[0][j] = j;
+    }
+
+    for (let i = 1; i <= len1; i++) {
+      for (let j = 1; j <= len2; j++) {
+        const cost = str1[i - 1] === str2[j - 1] ? 0 : 1;
+        matrix[i][j] = Math.min(
+          matrix[i - 1][j] + 1,
+          matrix[i][j - 1] + 1,
+          matrix[i - 1][j - 1] + cost
+        );
+      }
+    }
+
+    const distance = matrix[len1][len2];
+    const maxLength = Math.max(len1, len2);
+    return 1 - distance / maxLength;
+  }
+
+  /**
+   * Get all files in directory
+   */
+  getFilesInDirectory(dir, recursive = false) {
+    if (!recursive) {
+      const files = this.directories.get(dir);
+      return files ? Array.from(files) : [];
+    }
+
+    // Recursive search
+    const results = [];
+    for (const [filePath] of this.files) {
+      if (filePath.startsWith(dir)) {
+        results.push(filePath);
+      }
+    }
+    return results;
+  }
+
+  /**
+   * Search files by pattern
+   */
+  searchFiles(pattern, options = {}) {
+    const { caseSensitive = false, inDirectory = null, extension = null } = options;
+
+    const regex = new RegExp(pattern, caseSensitive ? 'g' : 'gi');
+    const results = [];
+
+    for (const [filePath, metadata] of this.files) {
+      // Filter by directory
+      if (inDirectory && !filePath.startsWith(inDirectory)) {
+        continue;
+      }
+
+      // Filter by extension
+      if (extension && metadata.extension !== extension) {
+        continue;
+      }
+
+      // Check if basename matches pattern
+      if (regex.test(metadata.basename)) {
+        results.push(metadata);
+      }
+    }
+
+    return results;
+  }
+
+  /**
+   * Get file statistics
+   */
+  getStatistics() {
+    const stats = {
+      totalFiles: this.files.size,
+      totalDirectories: this.directories.size,
+      lastIndexed: this.lastIndexTime,
+      fileTypes: {},
+      duplicates: 0,
+      totalSize: 0,
+    };
+
+    for (const metadata of this.files.values()) {
+      // Count by extension
+      const ext = metadata.extension || 'no-extension';
+      stats.fileTypes[ext] = (stats.fileTypes[ext] || 0) + 1;
+
+      // Calculate total size
+      stats.totalSize += metadata.size;
+    }
+
+    // Count duplicates
+    for (const [, paths] of this.fileHashes) {
+      if (paths.size > 1) {
+        stats.duplicates += paths.size - 1;
+      }
+    }
+
+    return stats;
+  }
+
+  /**
+   * Remove file from registry
+   */
+  async removeFile(filePath) {
+    const metadata = this.files.get(filePath);
+    if (!metadata) return false;
+
+    // Remove from files map
+    this.files.delete(filePath);
+
+    // Remove from hash mapping
+    const hashPaths = this.fileHashes.get(metadata.hash);
+    if (hashPaths) {
+      hashPaths.delete(filePath);
+      if (hashPaths.size === 0) {
+        this.fileHashes.delete(metadata.hash);
+      }
+    }
+
+    // Remove from directory mapping
+    const dirFiles = this.directories.get(metadata.directory);
+    if (dirFiles) {
+      dirFiles.delete(filePath);
+      if (dirFiles.size === 0) {
+        this.directories.delete(metadata.directory);
+      }
+    }
+
+    return true;
+  }
+
+  /**
+   * Update file in registry
+   */
+  async updateFile(filePath, _content) {
+    // Remove old entry
+    await this.removeFile(filePath);
+
+    // Add new entry
+    return await this.indexFile(filePath);
+  }
+
+  /**
+   * Check registry needs reindexing
+   */
+  needsReindex(maxAge = 60000) {
+    if (!this.indexed) return true;
+    const age = Date.now() - this.lastIndexTime;
+    return age > maxAge;
+  }
+
+  /**
+   * Export registry to JSON
+   */
+  exportRegistry() {
+    const exportData = {
+      version: 1,
+      lastIndexTime: this.lastIndexTime,
+      files: Array.from(this.files.entries()),
+      directories: Object.fromEntries(
+        Array.from(this.directories.entries()).map(([dir, files]) => [dir, Array.from(files)])
+      ),
+    };
+
+    return JSON.stringify(exportData, null, 2);
+  }
+
+  /**
+   * Import registry from JSON
+   */
+  importRegistry(jsonData) {
+    try {
+      const data = JSON.parse(jsonData);
+
+      this.files = new Map(data.files);
+      this.directories = new Map(
+        Object.entries(data.directories).map(([dir, files]) => [dir, new Set(files)])
+      );
+      this.fileHashes = new Map();
+
+      // Rebuild hash mappings
+      for (const [filePath, metadata] of this.files) {
+        if (!this.fileHashes.has(metadata.hash)) {
+          this.fileHashes.set(metadata.hash, new Set());
+        }
+        this.fileHashes.get(metadata.hash).add(filePath);
+      }
+
+      this.lastIndexTime = data.lastIndexTime;
+      this.indexed = true;
+
+      console.error(`[FILE-REGISTRY] Imported registry with ${this.files.size} files`);
+
+      return true;
+    } catch (error) {
+      console.error(`[FILE-REGISTRY] Error importing registry: ${error.message}`);
+      return false;
+    }
+  }
+}
+
+// Global file registry instance
+const fileRegistry = new FileRegistry();
+
+/**
+ * Get the global file registry instance
+ */
+function getFileRegistry() {
+  return fileRegistry;
+}
+
+/**
+ * Initialize file registry
+ */
+async function initializeFileRegistry(rootDir, options) {
+  return await fileRegistry.indexProject(rootDir, options);
+}
+
+/**
+ * Check if file exists in registry
+ */
+function checkFileExists(filePath) {
+  return fileRegistry.fileExists(filePath);
+}
+
+/**
+ * Find duplicate files
+ */
+function findDuplicateFiles(filePath, content) {
+  return fileRegistry.findDuplicateFiles(filePath, content);
+}
+
+/**
+ * Find similar files
+ */
+function findSimilarFiles(filePath, threshold) {
+  return fileRegistry.findSimilarFiles(filePath, threshold);
+}
+
+/**
+ * Find files with same name
+ */
+function findSameNameFiles(filePath) {
+  return fileRegistry.findSameNameFiles(filePath);
+}
+
+/**
+ * Get file metadata
+ */
+function getFileMetadata(filePath) {
+  return fileRegistry.getFileMetadata(filePath);
+}
+
+/**
+ * Search files
+ */
+function searchFiles(pattern, options) {
+  return fileRegistry.searchFiles(pattern, options);
+}
+
+/**
+ * Update file in registry
+ */
+async function updateFileInRegistry(filePath, content) {
+  return await fileRegistry.updateFile(filePath, content);
+}
+
+/**
+ * Remove file from registry
+ */
+async function removeFileFromRegistry(filePath) {
+  return await fileRegistry.removeFile(filePath);
+}
+
+/**
+ * Get registry statistics
+ */
+function getRegistryStatistics() {
+  return fileRegistry.getStatistics();
+}
+
+;// CONCATENATED MODULE: ./lib/file-operation-audit.js
+/**
+ * File Operation Audit System
+ * Tracks all file operations to prevent duplication and ensure proper auditing
+ * Critical for massive projects where SWE might create duplicate files
+ */
+
+/**
+ * Operation types
+ */
+const OperationType = {
+  READ: 'READ',
+  WRITE: 'WRITE',
+  CREATE: 'CREATE',
+  DELETE: 'DELETE',
+  RENAME: 'RENAME',
+  COPY: 'COPY',
+  MOVE: 'MOVE',
+};
+
+/**
+ * Operation status
+ */
+const OperationStatus = {
+  PENDING: 'PENDING',
+  SUCCESS: 'SUCCESS',
+  FAILED: 'FAILED',
+  BLOCKED: 'BLOCKED',
+  DUPLICATE: 'DUPLICATE',
+};
+
+/**
+ * File Operation Audit Log
+ */
+class FileOperationAudit {
+  constructor() {
+    this.operations = []; // Array of operation records
+    this.operationHistory = new Map(); // filePath -> Array of operations
+    this.operationSignatures = new Map(); // signature -> timestamp
+    this.maxHistorySize = 10000;
+    this.sessionStartTime = Date.now();
+  }
+
+  /**
+   * Generate unique operation signature for deduplication
+   */
+  async generateSignature(operation, filePath, content = null) {
+    const base = `${operation}:${filePath}`;
+    if (content) {
+      // Include content hash for write operations
+      const crypto = await Promise.resolve(/* import() */).then(__nccwpck_require__.t.bind(__nccwpck_require__, 982, 19));
+      const hash = crypto.createHash('md5').update(content).digest('hex').substring(0, 8);
+      return `${base}:${hash}`;
+    }
+    return base;
+  }
+
+  /**
+   * Check if operation was recently performed (prevents duplicates)
+   */
+  isRecentOperation(signature, timeWindow = 5000) {
+    const timestamp = this.operationSignatures.get(signature);
+    if (!timestamp) return false;
+
+    const age = Date.now() - timestamp;
+    return age < timeWindow;
+  }
+
+  /**
+   * Record an operation
+   */
+  async recordOperation(operation, filePath, details = {}) {
+    const signature = await this.generateSignature(operation, filePath, details.content);
+
+    // Check for recent duplicate operations
+    if (this.isRecentOperation(signature)) {
+      const record = {
+        type: operation,
+        filePath,
+        status: OperationStatus.DUPLICATE,
+        timestamp: Date.now(),
+        signature,
+        details,
+        note: 'Operation blocked: Recent duplicate detected',
+      };
+      this.addRecord(record);
+      return record;
+    }
+
+    const record = {
+      type: operation,
+      filePath,
+      status: OperationStatus.PENDING,
+      timestamp: Date.now(),
+      signature,
+      details,
+      sessionId: this.sessionStartTime,
+    };
+
+    this.addRecord(record);
+    this.operationSignatures.set(signature, Date.now());
+
+    return record;
+  }
+
+  /**
+   * Add record to audit log
+   */
+  addRecord(record) {
+    this.operations.push(record);
+
+    // Add to file history
+    if (!this.operationHistory.has(record.filePath)) {
+      this.operationHistory.set(record.filePath, []);
+    }
+    this.operationHistory.get(record.filePath).push(record);
+
+    // Prune old operations if history is too large
+    if (this.operations.length > this.maxHistorySize) {
+      const removed = this.operations.shift();
+      // Clean up from file history if needed
+      const fileHistory = this.operationHistory.get(removed.filePath);
+      if (fileHistory && fileHistory.length > 0 && fileHistory[0] === removed) {
+        fileHistory.shift();
+      }
+    }
+  }
+
+  /**
+   * Update operation status
+   */
+  updateOperationStatus(signature, status, details = {}) {
+    const operation = this.operations.find(op => op.signature === signature);
+    if (operation) {
+      operation.status = status;
+      operation.completedAt = Date.now();
+      operation.details = { ...operation.details, ...details };
+    }
+    return operation;
+  }
+
+  /**
+   * Check if file was recently written
+   */
+  wasRecentlyWritten(filePath, timeWindow = 30000) {
+    const history = this.operationHistory.get(filePath);
+    if (!history) return false;
+
+    const recentWrites = history.filter(
+      op =>
+        op.type === OperationType.WRITE &&
+        op.status === OperationStatus.SUCCESS &&
+        Date.now() - op.timestamp < timeWindow
+    );
+
+    return recentWrites.length > 0;
+  }
+
+  /**
+   * Check for duplicate write operations
+   */
+  async checkForDuplicateWrite(filePath, content, timeWindow = 10000) {
+    const history = this.operationHistory.get(filePath);
+    if (!history) return null;
+
+    const crypto = await Promise.resolve(/* import() */).then(__nccwpck_require__.t.bind(__nccwpck_require__, 982, 19));
+    const contentHash = crypto.createHash('md5').update(content).digest('hex');
+
+    for (let i = history.length - 1; i >= 0; i--) {
+      const op = history[i];
+      if (
+        op.type === OperationType.WRITE &&
+        op.status === OperationStatus.SUCCESS &&
+        Date.now() - op.timestamp < timeWindow
+      ) {
+        // Check if content is the same
+        if (op.details.contentHash === contentHash) {
+          return op;
+        }
+      }
+    }
+
+    return null;
+  }
+
+  /**
+   * Get operation history for a file
+   */
+  getFileHistory(filePath, limit = 50) {
+    const history = this.operationHistory.get(filePath);
+    if (!history) return [];
+
+    return history.slice(-limit);
+  }
+
+  /**
+   * Get all operations of a specific type
+   */
+  getOperationsByType(type, limit = 100) {
+    return this.operations.filter(op => op.type === type).slice(-limit);
+  }
+
+  /**
+   * Get operations within time range
+   */
+  getOperationsInTimeRange(startTime, endTime) {
+    return this.operations.filter(op => op.timestamp >= startTime && op.timestamp <= endTime);
+  }
+
+  /**
+   * Get failed operations
+   */
+  getFailedOperations(limit = 50) {
+    return this.operations.filter(op => op.status === OperationStatus.FAILED).slice(-limit);
+  }
+
+  /**
+   * Get blocked operations
+   */
+  getBlockedOperations(limit = 50) {
+    return this.operations
+      .filter(
+        op => op.status === OperationStatus.BLOCKED || op.status === OperationStatus.DUPLICATE
+      )
+      .slice(-limit);
+  }
+
+  /**
+   * Get duplicate operations
+   */
+  getDuplicateOperations(limit = 50) {
+    return this.operations.filter(op => op.status === OperationStatus.DUPLICATE).slice(-limit);
+  }
+
+  /**
+   * Get operation statistics
+   */
+  getStatistics() {
+    const stats = {
+      totalOperations: this.operations.length,
+      sessionDuration: Date.now() - this.sessionStartTime,
+      operationsByType: {},
+      operationsByStatus: {},
+      uniqueFiles: this.operationHistory.size,
+      duplicateCount: 0,
+      blockedCount: 0,
+      failedCount: 0,
+      successCount: 0,
+    };
+
+    this.operations.forEach(op => {
+      // Count by type
+      stats.operationsByType[op.type] = (stats.operationsByType[op.type] || 0) + 1;
+
+      // Count by status
+      stats.operationsByStatus[op.status] = (stats.operationsByStatus[op.status] || 0) + 1;
+
+      // Count specific statuses
+      if (op.status === OperationStatus.DUPLICATE) stats.duplicateCount++;
+      if (op.status === OperationStatus.BLOCKED) stats.blockedCount++;
+      if (op.status === OperationStatus.FAILED) stats.failedCount++;
+      if (op.status === OperationStatus.SUCCESS) stats.successCount++;
+    });
+
+    return stats;
+  }
+
+  /**
+   * Detect potential issues
+   */
+  detectIssues() {
+    const issues = [];
+
+    // Check for excessive duplicate operations
+    const duplicates = this.getDuplicateOperations();
+    if (duplicates.length > 10) {
+      issues.push({
+        type: 'EXCESSIVE_DUPLICATES',
+        severity: 'WARNING',
+        count: duplicates.length,
+        message: `${duplicates.length} duplicate operations detected - SWE may be in a loop`,
+      });
+    }
+
+    // Check for excessive failed operations
+    const failed = this.getFailedOperations();
+    if (failed.length > 5) {
+      issues.push({
+        type: 'EXCESSIVE_FAILURES',
+        severity: 'ERROR',
+        count: failed.length,
+        message: `${failed.length} failed operations detected - check for systemic issues`,
+      });
+    }
+
+    // Check for rapid file creation (potential spam)
+    const recentCreates = this.getOperationsByType(OperationType.CREATE).filter(
+      op => Date.now() - op.timestamp < 10000
+    );
+    if (recentCreates.length > 5) {
+      issues.push({
+        type: 'RAPID_FILE_CREATION',
+        severity: 'WARNING',
+        count: recentCreates.length,
+        message: `${recentCreates.length} files created in 10 seconds - potential file spam`,
+      });
+    }
+
+    // Check for repeated operations on same file
+    for (const [filePath, history] of this.operationHistory) {
+      const recentOps = history.filter(op => Date.now() - op.timestamp < 30000);
+      if (recentOps.length > 10) {
+        issues.push({
+          type: 'EXCESSIVE_FILE_OPERATIONS',
+          severity: 'WARNING',
+          filePath,
+          count: recentOps.length,
+          message: `${recentOps.length} operations on ${filePath} in 30 seconds`,
+        });
+      }
+    }
+
+    return issues;
+  }
+
+  /**
+   * Generate audit report
+   */
+  generateReport() {
+    const stats = this.getStatistics();
+    const issues = this.detectIssues();
+
+    return {
+      timestamp: Date.now(),
+      sessionDuration: stats.sessionDuration,
+      statistics: stats,
+      issues: issues,
+      recentOperations: this.operations.slice(-20),
+    };
+  }
+
+  /**
+   * Clear old operations
+   */
+  clearOldOperations(olderThan = 3600000) {
+    const cutoff = Date.now() - olderThan;
+    const removed = 0;
+
+    this.operations = this.operations.filter(op => {
+      if (op.timestamp < cutoff) {
+        // Remove from file history
+        const fileHistory = this.operationHistory.get(op.filePath);
+        if (fileHistory) {
+          const index = fileHistory.indexOf(op);
+          if (index > -1) {
+            fileHistory.splice(index, 1);
+          }
+        }
+        return false;
+      }
+      return true;
+    });
+
+    // Clean up empty file histories
+    for (const [filePath, history] of this.operationHistory) {
+      if (history.length === 0) {
+        this.operationHistory.delete(filePath);
+      }
+    }
+
+    return removed;
+  }
+
+  /**
+   * Export audit log
+   */
+  exportAuditLog() {
+    return JSON.stringify(
+      {
+        sessionStartTime: this.sessionStartTime,
+        operations: this.operations,
+        statistics: this.getStatistics(),
+      },
+      null,
+      2
+    );
+  }
+
+  /**
+   * Import audit log
+   */
+  importAuditLog(jsonData) {
+    try {
+      const data = JSON.parse(jsonData);
+
+      this.sessionStartTime = data.sessionStartTime;
+      this.operations = data.operations;
+
+      // Rebuild operation history
+      this.operationHistory.clear();
+      this.operations.forEach(op => {
+        if (!this.operationHistory.has(op.filePath)) {
+          this.operationHistory.set(op.filePath, []);
+        }
+        this.operationHistory.get(op.filePath).push(op);
+      });
+
+      console.error(`[FILE-AUDIT] Imported audit log with ${this.operations.length} operations`);
+
+      return true;
+    } catch (error) {
+      console.error(`[FILE-AUDIT] Error importing audit log: ${error.message}`);
+      return false;
+    }
+  }
+}
+
+// Global audit instance
+const fileOperationAudit = new FileOperationAudit();
+
+/**
+ * Get the global file operation audit instance
+ */
+function getFileOperationAudit() {
+  return fileOperationAudit;
+}
+
+/**
+ * Record a file operation
+ */
+async function recordFileOperation(operation, filePath, details = {}) {
+  return await fileOperationAudit.recordOperation(operation, filePath, details);
+}
+
+/**
+ * Update operation status
+ */
+function updateOperationStatus(signature, status, details = {}) {
+  return fileOperationAudit.updateOperationStatus(signature, status, details);
+}
+
+/**
+ * Check if file was recently written
+ */
+function wasFileRecentlyWritten(filePath, timeWindow) {
+  return fileOperationAudit.wasRecentlyWritten(filePath, timeWindow);
+}
+
+/**
+ * Check for duplicate write operations
+ */
+async function checkForDuplicateWrite(filePath, content, timeWindow) {
+  return await fileOperationAudit.checkForDuplicateWrite(filePath, content, timeWindow);
+}
+
+/**
+ * Get file operation history
+ */
+function getFileOperationHistory(filePath, limit) {
+  return fileOperationAudit.getFileHistory(filePath, limit);
+}
+
+/**
+ * Get audit statistics
+ */
+function getAuditStatistics() {
+  return fileOperationAudit.getStatistics();
+}
+
+/**
+ * Detect audit issues
+ */
+function detectAuditIssues() {
+  return fileOperationAudit.detectIssues();
+}
+
+/**
+ * Generate audit report
+ */
+function generateAuditReport() {
+  return fileOperationAudit.generateReport();
+}
+
+/**
+ * Clear old operations
+ */
+function clearOldAuditOperations(olderThan) {
+  return fileOperationAudit.clearOldOperations(olderThan);
+}
+
+// Export constants
+
+
+;// CONCATENATED MODULE: ./lib/reference-validation.js
+/**
+ * Reference Validation System
+ * Ensures that referenced files, classes, functions, and symbols exist before operations
+ * Critical for preventing SWE from creating broken code with missing references
+ */
+
+
+
+
+
+/**
+ * Reference types
+ */
+const ReferenceType = {
+  IMPORT: 'IMPORT',
+  REQUIRE: 'REQUIRE',
+  CLASS: 'CLASS',
+  FUNCTION: 'FUNCTION',
+  VARIABLE: 'VARIABLE',
+  TYPE: 'TYPE',
+  INTERFACE: 'INTERFACE',
+  NAMESPACE: 'NAMESPACE',
+  FILE: 'FILE',
+};
+
+/**
+ * Reference validation result
+ */
+class ReferenceValidationResult {
+  constructor() {
+    this.valid = true;
+    this.errors = [];
+    this.warnings = [];
+    this.references = [];
+    this.missingReferences = [];
+    this.foundReferences = [];
+  }
+
+  addError(message, reference) {
+    this.valid = false;
+    this.errors.push({ message, reference });
+  }
+
+  addWarning(message, reference) {
+    this.warnings.push({ message, reference });
+  }
+
+  addReference(reference, found) {
+    this.references.push({ ...reference, found });
+    if (found) {
+      this.foundReferences.push(reference);
+    } else {
+      this.missingReferences.push(reference);
+      this.valid = false;
+    }
+  }
+}
+
+/**
+ * Reference Validator
+ */
+class ReferenceValidator {
+  constructor() {
+    this.patterns = {
+      // JavaScript/TypeScript import patterns
+      jsImport: /import\s+(?:{[^}]*}|\*\s+as\s+\w+|\w+)\s+from\s+['"]([^'"]+)['"]/g,
+      jsRequire: /require\s*\(\s*['"]([^'"]+)['"]\s*\)/g,
+
+      // C# using patterns
+      csharpUsing: /using\s+(?:static\s+)?([^;]+);/g,
+      csharpNamespace: /namespace\s+([^;{]+)/g,
+
+      // Python import patterns
+      pythonImport: /(?:from\s+([^\s]+)\s+)?import\s+([^\n]+)/g,
+
+      // Generic file references
+      fileReference: /['"]([^.]+\.[a-zA-Z0-9]+)['"]/g,
+
+      // Function/class references
+      functionCall: /(\w+)\s*\(/g,
+      classInstantiation: /new\s+(\w+)/g,
+
+      // Type references
+      typeAnnotation: /:\s*(\w+)/g,
+      typeDeclaration: /:\s*(\w+)/g,
+    };
+  }
+
+  /**
+   * Validate imports in code
+   */
+  async validateImports(code, filePath, language) {
+    const result = new ReferenceValidationResult();
+    const dir = external_path_.dirname(filePath);
+
+    if (language === 'javascript' || language === 'typescript') {
+      // Validate ES6 imports
+      let match;
+      const importRegex = /import\s+(?:{[^}]*}|\*\s+as\s+\w+|\w+)\s+from\s+['"]([^'"]+)['"]/g;
+      while ((match = importRegex.exec(code)) !== null) {
+        const importPath = match[1];
+        const reference = {
+          type: ReferenceType.IMPORT,
+          name: importPath,
+          line: this.getLineNumber(code, match.index),
         };
+
+        // Check if it's a relative import
+        if (importPath.startsWith('.')) {
+          const resolvedPath = external_path_.resolve(dir, importPath);
+          const exists = await this.checkFileExists(resolvedPath, ['.js', '.ts', '.json']);
+          result.addReference(reference, exists);
+          if (!exists) {
+            result.addError(`Import not found: ${importPath}`, reference);
+          }
+        } else {
+          // Node module - check if it exists
+          const nodeModulesPath = external_path_.join(process.cwd(), 'node_modules', importPath);
+          const exists = await this.checkFileExists(nodeModulesPath);
+          result.addReference(reference, exists);
+          if (!exists) {
+            result.addWarning(
+              `Node module not found: ${importPath} (may need to be installed)`,
+              reference
+            );
+          }
+        }
       }
 
-      case "record_decision": {
-        recordAction("DECISION", args.decision);
-        console.error(`[MEMORY] Decision Recorded: ${args.decision}`);
-        return { content: [{ type: "text", text: "Decision logged to session memory." }] };
+      // Validate require statements
+      const requireRegex = /require\s*\(\s*['"]([^'"]+)['"]\s*\)/g;
+      while ((match = requireRegex.exec(code)) !== null) {
+        const requirePath = match[1];
+        const reference = {
+          type: ReferenceType.REQUIRE,
+          name: requirePath,
+          line: this.getLineNumber(code, match.index),
+        };
+
+        if (requirePath.startsWith('.')) {
+          const resolvedPath = external_path_.resolve(dir, requirePath);
+          const exists = await this.checkFileExists(resolvedPath, ['.js', '.json']);
+          result.addReference(reference, exists);
+          if (!exists) {
+            result.addError(`Require not found: ${requirePath}`, reference);
+          }
+        } else {
+          const nodeModulesPath = external_path_.join(process.cwd(), 'node_modules', requirePath);
+          const exists = await this.checkFileExists(nodeModulesPath);
+          result.addReference(reference, exists);
+          if (!exists) {
+            result.addWarning(
+              `Node module not found: ${requirePath} (may need to be installed)`,
+              reference
+            );
+          }
+        }
+      }
+    } else if (language === 'csharp') {
+      // Validate C# using statements
+      let match;
+      const usingRegex = /using\s+(?:static\s+)?([^;]+);/g;
+      while ((match = usingRegex.exec(code)) !== null) {
+        const usingStatement = match[1];
+        const reference = {
+          type: ReferenceType.IMPORT,
+          name: usingStatement,
+          line: this.getLineNumber(code, match.index),
+        };
+
+        // Check if it's a project reference or system namespace
+        if (usingStatement.startsWith('System') || usingStatement.startsWith('Microsoft')) {
+          // System namespace - assume it exists
+          result.addReference(reference, true);
+        } else {
+          // Project reference - check if file exists
+          const exists = await this.checkCSharpReference(usingStatement, dir);
+          result.addReference(reference, exists);
+          if (!exists) {
+            result.addError(`C# using not found: ${usingStatement}`, reference);
+          }
+        }
+      }
+    }
+
+    return result;
+  }
+
+  /**
+   * Validate function and class references
+   */
+  async validateReferences(code, filePath, language) {
+    const result = new ReferenceValidationResult();
+
+    // Extract defined symbols
+    const definedSymbols = this.extractDefinedSymbols(code, language);
+
+    // Extract used references
+    const usedReferences = this.extractUsedReferences(code, language);
+
+    // Check if all used references are defined
+    for (const ref of usedReferences) {
+      const reference = {
+        type: ref.type,
+        name: ref.name,
+        line: ref.line,
+      };
+
+      const isDefined = definedSymbols.has(ref.name) || this.isBuiltInSymbol(ref.name, language);
+      result.addReference(reference, isDefined);
+
+      if (!isDefined) {
+        result.addError(`${ref.type} '${ref.name}' is not defined`, reference);
+      }
+    }
+
+    return result;
+  }
+
+  /**
+   * Validate file references in code
+   */
+  async validateFileReferences(code, filePath) {
+    const result = new ReferenceValidationResult();
+    const dir = external_path_.dirname(filePath);
+
+    // Find file references (e.g., in comments, strings, etc.)
+    const filePattern = /['"]([^'"]*\.[a-zA-Z0-9]+)['"]/g;
+    let match;
+
+    while ((match = filePattern.exec(code)) !== null) {
+      const filePathRef = match[1];
+      const reference = {
+        type: ReferenceType.FILE,
+        name: filePathRef,
+        line: this.getLineNumber(code, match.index),
+      };
+
+      // Skip if it's a URL or data URI
+      if (
+        filePathRef.startsWith('http://') ||
+        filePathRef.startsWith('https://') ||
+        filePathRef.startsWith('data:')
+      ) {
+        continue;
       }
 
-      case "enforce_surgical_rules": {
-        const validation = validateCode(args.proposed_code);
-        
-        if (!validation.valid) {
-          recordAction("VIOLATION", { path: args.file_path, errors: validation.errors }, "fail");
+      // Check if it's a relative path
+      if (filePathRef.startsWith('.') || filePathRef.startsWith('/')) {
+        const resolvedPath = external_path_.resolve(dir, filePathRef);
+        const exists = await promises_.access(resolvedPath)
+          .then(() => true)
+          .catch(() => false);
+        result.addReference(reference, exists);
+
+        if (!exists) {
+          result.addWarning(`File reference not found: ${filePathRef}`, reference);
+        }
+      }
+    }
+
+    return result;
+  }
+
+  /**
+   * Extract defined symbols from code
+   */
+  extractDefinedSymbols(code, language) {
+    const symbols = new Set();
+
+    if (language === 'javascript' || language === 'typescript') {
+      // Extract function definitions
+      const funcRegex =
+        /(?:function\s+(\w+)|(?:const|let|var)\s+(\w+)\s*=\s*(?:async\s+)?function|(?:const|let|var)\s+(\w+)\s*=\s*\([^)]*\)\s*=>|class\s+(\w+))/g;
+      let match;
+      while ((match = funcRegex.exec(code)) !== null) {
+        const symbol = match[1] || match[2] || match[3] || match[4];
+        if (symbol) symbols.add(symbol);
+      }
+
+      // Extract exports
+      const exportRegex = /export\s+(?:default\s+)?(?:function|class|const|let|var)\s+(\w+)/g;
+      while ((match = exportRegex.exec(code)) !== null) {
+        symbols.add(match[1]);
+      }
+    } else if (language === 'csharp') {
+      // Extract class definitions
+      const classRegex = /class\s+(\w+)/g;
+      let match;
+      while ((match = classRegex.exec(code)) !== null) {
+        symbols.add(match[1]);
+      }
+
+      // Extract method definitions
+      const methodRegex =
+        /(?:public|private|protected|internal)\s+(?:static\s+)?(?:async\s+)?(?:void|\w+)\s+(\w+)/g;
+      while ((match = methodRegex.exec(code)) !== null) {
+        symbols.add(match[1]);
+      }
+    }
+
+    return symbols;
+  }
+
+  /**
+   * Extract used references from code
+   */
+  extractUsedReferences(code, language) {
+    const references = [];
+
+    if (language === 'javascript' || language === 'typescript') {
+      // Extract function calls
+      const callRegex = /(\w+)\s*\(/g;
+      let match;
+      while ((match = callRegex.exec(code)) !== null) {
+        const name = match[1];
+        // Skip built-in methods and keywords
+        if (!this.isBuiltInSymbol(name, language)) {
+          references.push({
+            type: ReferenceType.FUNCTION,
+            name,
+            line: this.getLineNumber(code, match.index),
+          });
+        }
+      }
+
+      // Extract class instantiations
+      const newRegex = /new\s+(\w+)/g;
+      while ((match = newRegex.exec(code)) !== null) {
+        const name = match[1];
+        if (!this.isBuiltInSymbol(name, language)) {
+          references.push({
+            type: ReferenceType.CLASS,
+            name,
+            line: this.getLineNumber(code, match.index),
+          });
+        }
+      }
+    } else if (language === 'csharp') {
+      // Extract method calls
+      const callRegex = /(\w+)\s*\(/g;
+      let match;
+      while ((match = callRegex.exec(code)) !== null) {
+        const name = match[1];
+        if (!this.isBuiltInSymbol(name, language)) {
+          references.push({
+            type: ReferenceType.FUNCTION,
+            name,
+            line: this.getLineNumber(code, match.index),
+          });
+        }
+      }
+
+      // Extract type references
+      const typeRegex = /:\s*(\w+)/g;
+      while ((match = typeRegex.exec(code)) !== null) {
+        const name = match[1];
+        if (!this.isBuiltInSymbol(name, language)) {
+          references.push({
+            type: ReferenceType.TYPE,
+            name,
+            line: this.getLineNumber(code, match.index),
+          });
+        }
+      }
+    }
+
+    return references;
+  }
+
+  /**
+   * Check if symbol is built-in
+   */
+  isBuiltInSymbol(symbol, language) {
+    const builtIns = {
+      javascript: [
+        'console',
+        'document',
+        'window',
+        'Math',
+        'Array',
+        'Object',
+        'String',
+        'Number',
+        'Boolean',
+        'Date',
+        'Promise',
+        'setTimeout',
+        'setInterval',
+        'fetch',
+        'JSON',
+        'parseInt',
+        'parseFloat',
+        'isNaN',
+        'isFinite',
+      ],
+      typescript: [
+        'console',
+        'document',
+        'window',
+        'Math',
+        'Array',
+        'Object',
+        'String',
+        'Number',
+        'Boolean',
+        'Date',
+        'Promise',
+        'setTimeout',
+        'setInterval',
+        'fetch',
+        'JSON',
+        'parseInt',
+        'parseFloat',
+        'isNaN',
+        'isFinite',
+        'interface',
+        'type',
+        'enum',
+      ],
+      csharp: [
+        'Console',
+        'String',
+        'int',
+        'double',
+        'float',
+        'bool',
+        'void',
+        'Task',
+        'List',
+        'Dictionary',
+        'Array',
+        'IEnumerable',
+        'string',
+        'var',
+        'async',
+        'await',
+        'return',
+        'if',
+        'else',
+        'for',
+        'foreach',
+        'while',
+        'try',
+        'catch',
+        'finally',
+        'throw',
+        'new',
+        'this',
+        'base',
+        'typeof',
+        'as',
+        'is',
+      ],
+    };
+
+    return builtIns[language]?.includes(symbol) || false;
+  }
+
+  /**
+   * Check if file exists with possible extensions
+   */
+  async checkFileExists(filePath, extensions = ['', '.js', '.ts', '.json', '.cs', '.py']) {
+    for (const ext of extensions) {
+      const fullPath = filePath + ext;
+      try {
+        await promises_.access(fullPath);
+        return true;
+      } catch {
+        continue;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Check if C# reference exists
+   */
+  async checkCSharpReference(usingStatement, _dir) {
+    // This is a simplified check - in real implementation, you'd need to parse the project structure
+    // For now, we'll check if there's a matching file in the project
+    const parts = usingStatement.split('.');
+
+    // Try to find a file matching the namespace
+    const searchResults = searchFiles(parts[parts.length - 1], { extension: '.cs' });
+
+    return searchResults.length > 0;
+  }
+
+  /**
+   * Get line number from character index
+   */
+  getLineNumber(code, index) {
+    const lines = code.substring(0, index).split('\n');
+    return lines.length;
+  }
+
+  /**
+   * Validate all references in code
+   */
+  async validateAllReferences(code, filePath, language) {
+    const results = {
+      imports: await this.validateImports(code, filePath, language),
+      references: await this.validateReferences(code, filePath, language),
+      fileReferences: await this.validateFileReferences(code, filePath),
+    };
+
+    const combined = new ReferenceValidationResult();
+    combined.valid = results.imports.valid && results.references.valid;
+    combined.errors = [...results.imports.errors, ...results.references.errors];
+    combined.warnings = [
+      ...results.imports.warnings,
+      ...results.references.warnings,
+      ...results.fileReferences.warnings,
+    ];
+    combined.references = [
+      ...results.imports.references,
+      ...results.references.references,
+      ...results.fileReferences.references,
+    ];
+    combined.missingReferences = [
+      ...results.imports.missingReferences,
+      ...results.references.missingReferences,
+    ];
+    combined.foundReferences = [
+      ...results.imports.foundReferences,
+      ...results.references.foundReferences,
+    ];
+
+    return combined;
+  }
+}
+
+// Global validator instance
+const referenceValidator = new ReferenceValidator();
+
+/**
+ * Validate imports in code
+ */
+async function validateImports(code, filePath, language) {
+  return await referenceValidator.validateImports(code, filePath, language);
+}
+
+/**
+ * Validate references in code
+ */
+async function validateReferences(code, filePath, language) {
+  return await referenceValidator.validateReferences(code, filePath, language);
+}
+
+/**
+ * Validate file references
+ */
+async function validateFileReferences(code, filePath) {
+  return await referenceValidator.validateFileReferences(code, filePath);
+}
+
+/**
+ * Validate all references
+ */
+async function validateAllReferences(code, filePath, language) {
+  return await referenceValidator.validateAllReferences(code, filePath, language);
+}
+
+// Export constants
+
+
+;// CONCATENATED MODULE: ./lib/tools/project-integrity-handlers.js
+/**
+ * Project Integrity Handlers
+ * Comprehensive handlers to prevent file duplication, ensure proper auditing,
+ * and maintain integrity in massive projects
+ */
+
+
+
+
+
+
+/**
+ * Project Integrity Handlers
+ */
+const projectIntegrityHandlers = {
+  /**
+   * Index project files into the registry
+   */
+  index_project_files: async args => {
+    try {
+      const registry = getFileRegistry();
+      const rootDir = args.root_dir || process.cwd();
+
+      console.error(`[PROJECT-INTEGRITY] Indexing project files in ${rootDir}...`);
+
+      const result = await registry.indexProject(rootDir, {
+        ignorePatterns: args.ignore_patterns || [
+          'node_modules',
+          '.git',
+          'dist',
+          'build',
+          'bin',
+          'obj',
+          '.next',
+          'out',
+        ],
+        maxDepth: args.max_depth || 20,
+        onProgress: (count, _path) => {
+          if (count % 100 === 0) {
+            console.error(`[PROJECT-INTEGRITY] Indexed ${count} files...`);
+          }
+        },
+      });
+
+      recordAction('PROJECT_INDEXED', {
+        rootDir,
+        indexedCount: result.indexedCount,
+        skippedCount: result.skippedCount,
+        totalFiles: result.totalFiles,
+      });
+
+      return {
+        content: [
+          {
+            type: 'text',
+            text: `Project Indexed Successfully!
+
+Root Directory: ${rootDir}
+Files Indexed: ${result.indexedCount}
+Files Skipped: ${result.skippedCount}
+Total Files: ${result.totalFiles}
+Directories: ${result.directories}
+
+The file registry is now active and will help prevent file duplication.`,
+          },
+        ],
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [{ type: 'text', text: `Project indexing failed: ${error.message}` }],
+      };
+    }
+  },
+
+  /**
+   * Check for duplicate files before creating
+   */
+  check_file_duplicates: async args => {
+    try {
+      const { file_path, content } = args;
+
+      if (!file_path) {
+        return { isError: true, content: [{ type: 'text', text: 'file_path is required' }] };
+      }
+
+      const issues = [];
+
+      // Check for exact duplicates by content
+      const exactDuplicates = findDuplicateFiles(file_path, content || '');
+      if (exactDuplicates.length > 0) {
+        issues.push({
+          type: 'EXACT_DUPLICATE',
+          severity: 'ERROR',
+          message: `Exact duplicate found! File with identical content already exists at: ${exactDuplicates.join(', ')}`,
+          duplicates: exactDuplicates,
+        });
+      }
+
+      // Check for same name files
+      const sameNameFiles = findSameNameFiles(file_path);
+      if (sameNameFiles.length > 0) {
+        issues.push({
+          type: 'SAME_NAME',
+          severity: 'WARNING',
+          message: `File with same name already exists: ${sameNameFiles.join(', ')}`,
+          duplicates: sameNameFiles,
+        });
+      }
+
+      // Check for similar files
+      const similarFiles = findSimilarFiles(file_path, args.similarity_threshold || 0.7);
+      if (similarFiles.length > 0) {
+        issues.push({
+          type: 'SIMILAR_NAME',
+          severity: 'INFO',
+          message: `Similar files found: ${similarFiles.map(f => `${f.path} (${(f.similarity * 100).toFixed(0)}% similarity)`).join(', ')}`,
+          similar: similarFiles,
+        });
+      }
+
+      const hasCriticalIssues = issues.some(i => i.severity === 'ERROR');
+
+      return {
+        content: [
+          {
+            type: 'text',
+            text: `File Duplicate Check for ${file_path}:
+
+${issues.length > 0 ? issues.map(i => `[${i.severity}] ${i.message}`).join('\n\n') : 'No duplicates detected. Safe to proceed.'}
+
+${hasCriticalIssues ? '\n⚠️ CRITICAL: Exact duplicate detected. Consider using existing file or modifying existing content.' : ''}`,
+          },
+        ],
+        hasCriticalIssues,
+        issues,
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [{ type: 'text', text: `Duplicate check failed: ${error.message}` }],
+      };
+    }
+  },
+
+  /**
+   * Validate file references before write
+   */
+  validate_file_references: async args => {
+    try {
+      const { file_path, content, language } = args;
+
+      if (!content) {
+        return { isError: true, content: [{ type: 'text', text: 'content is required' }] };
+      }
+
+      // Auto-detect language if not provided
+      let detectedLanguage = language;
+      if (!detectedLanguage) {
+        if (file_path.endsWith('.js') || file_path.endsWith('.mjs')) {
+          detectedLanguage = 'javascript';
+        } else if (file_path.endsWith('.ts')) {
+          detectedLanguage = 'typescript';
+        } else if (file_path.endsWith('.cs')) {
+          detectedLanguage = 'csharp';
+        } else if (file_path.endsWith('.py')) {
+          detectedLanguage = 'python';
+        }
+      }
+
+      const validation = await validateAllReferences(content, file_path, detectedLanguage);
+
+      const hasErrors = validation.errors.length > 0;
+
+      return {
+        content: [
+          {
+            type: 'text',
+            text: `Reference Validation for ${file_path}:
+
+VALID: ${validation.valid ? 'YES' : 'NO'}
+Total References: ${validation.references.length}
+Found: ${validation.foundReferences.length}
+Missing: ${validation.missingReferences.length}
+
+${validation.errors.length > 0 ? `ERRORS (${validation.errors.length}):\n${validation.errors.map(e => `  Line ${e.reference.line}: ${e.message}`).join('\n')}\n` : ''}
+${validation.warnings.length > 0 ? `WARNINGS (${validation.warnings.length}):\n${validation.warnings.map(w => `  Line ${w.reference.line}: ${w.message}`).join('\n')}\n` : ''}
+
+${hasErrors ? '\n⚠️ CRITICAL: Missing references detected. Ensure all imports/referenced files exist.' : 'All references validated successfully.'}`,
+          },
+        ],
+        valid: validation.valid,
+        errors: validation.errors,
+        warnings: validation.warnings,
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [{ type: 'text', text: `Reference validation failed: ${error.message}` }],
+      };
+    }
+  },
+
+  /**
+   * Check recent file operations (prevents redundant operations)
+   */
+  check_recent_operations: async args => {
+    try {
+      const { file_path, operation, time_window } = args;
+
+      const stats = getAuditStatistics();
+
+      // Check for recent operations on file
+      if (file_path) {
+        const recentWrite = wasFileRecentlyWritten(file_path, time_window || 30000);
+        if (recentWrite) {
           return {
-            isError: true,
-            content: [{ 
-              type: "text", 
-              text: `SURGICAL BLOCK: Your code was rejected for the following violations:\n- ${validation.errors.join("\n- ")}\n\nYou must refactor and try again within limits.` 
-            }]
+            content: [
+              {
+                type: 'text',
+                text: `⚠️ WARNING: File ${file_path} was recently written in the last ${time_window || 30} seconds.
+
+This may indicate:
+- SWE is in a loop writing the same file
+- Redundant operation that should be skipped
+- File is being modified by multiple processes
+
+Recommendation: Review the operation history to determine if this operation is necessary.`,
+              },
+            ],
+            hasRecentOperation: true,
           };
         }
-        
+      }
+
+      // Check for duplicate operations
+      if (operation && args.content) {
+        const duplicate = await checkForDuplicateWrite(
+          file_path,
+          args.content,
+          time_window || 10000
+        );
+        if (duplicate) {
+          return {
+            content: [
+              {
+                type: 'text',
+                text: `⚠️ DUPLICATE OPERATION DETECTED!
+
+An identical write operation was performed on ${file_path} at ${new Date(duplicate.timestamp).toISOString()}.
+
+This operation will be blocked to prevent redundant work.`,
+              },
+            ],
+            isDuplicate: true,
+            duplicateOperation: duplicate,
+          };
+        }
+      }
+
+      return {
+        content: [
+          {
+            type: 'text',
+            text: `No recent operations detected. Safe to proceed.
+
+Session Statistics:
+- Total Operations: ${stats.totalOperations}
+- Success: ${stats.successCount}
+- Failed: ${stats.failedCount}
+- Duplicates Blocked: ${stats.duplicateCount}
+- Blocked: ${stats.blockedCount}`,
+          },
+        ],
+        hasRecentOperation: false,
+        isDuplicate: false,
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [{ type: 'text', text: `Recent operation check failed: ${error.message}` }],
+      };
+    }
+  },
+
+  /**
+   * Comprehensive pre-write validation
+   */
+  validate_before_write: async args => {
+    try {
+      const { file_path, content, language } = args;
+
+      if (!file_path || !content) {
         return {
-          content: [{ type: "text", text: "✓ All surgical rules satisfied. Code is compliant." }]
+          isError: true,
+          content: [{ type: 'text', text: 'file_path and content are required' }],
         };
       }
 
-      case "sanitize_request": {
-        const sanitized = `[OBEY-MODE]: Processing intent "${args.logic_intent}" through SWEObeyMe Filter... 
+      const issues = [];
+      const criticalIssues = [];
+
+      // 1. Check for duplicates
+      const duplicateCheck = await undefined.check_file_duplicates({ file_path, content });
+      if (duplicateCheck.hasCriticalIssues) {
+        criticalIssues.push(...duplicateCheck.issues.filter(i => i.severity === 'ERROR'));
+      }
+      issues.push(...duplicateCheck.issues);
+
+      // 2. Validate references
+      const referenceCheck = await undefined.validate_file_references({ file_path, content, language });
+      if (!referenceCheck.valid) {
+        criticalIssues.push(...referenceCheck.errors);
+      }
+      issues.push(...referenceCheck.errors);
+      issues.push(...referenceCheck.warnings);
+
+      // 3. Check recent operations
+      const recentCheck = await undefined.check_recent_operations({ file_path, content });
+      if (recentCheck.isDuplicate) {
+        criticalIssues.push({
+          type: 'DUPLICATE_OPERATION',
+          severity: 'ERROR',
+          message: 'Duplicate operation detected - identical write was performed recently',
+        });
+      }
+
+      // 4. Record the operation for audit
+      await recordFileOperation('WRITE', file_path, { content });
+
+      const hasCriticalIssues = criticalIssues.length > 0;
+
+      return {
+        content: [
+          {
+            type: 'text',
+            text: `Pre-Write Validation for ${file_path}:
+
+${criticalIssues.length > 0 ? `CRITICAL ISSUES (${criticalIssues.length}):\n${criticalIssues.map(i => `  [${i.type}] ${i.message}`).join('\n')}\n` : ''}
+${
+  issues.filter(i => i.severity !== 'ERROR').length > 0
+    ? `WARNINGS (${issues.filter(i => i.severity !== 'ERROR').length}):\n${issues
+        .filter(i => i.severity !== 'ERROR')
+        .map(i => `  [${i.type}] ${i.message}`)
+        .join('\n')}\n`
+    : ''
+}
+
+${hasCriticalIssues ? '❌ WRITE BLOCKED: Critical issues detected. Address these issues before proceeding.' : '✓ VALIDATION PASSED: Safe to write file.'}`,
+          },
+        ],
+        valid: !hasCriticalIssues,
+        criticalIssues,
+        warnings: issues.filter(i => i.severity !== 'ERROR'),
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [{ type: 'text', text: `Pre-write validation failed: ${error.message}` }],
+      };
+    }
+  },
+
+  /**
+   * Get registry statistics
+   */
+  get_registry_stats: async _args => {
+    try {
+      const stats = getRegistryStatistics();
+      const auditStats = getAuditStatistics();
+      const auditIssues = detectAuditIssues();
+
+      return {
+        content: [
+          {
+            type: 'text',
+            text: `Project Registry Statistics:
+
+File Registry:
+- Total Files: ${stats.totalFiles}
+- Total Directories: ${stats.totalDirectories}
+- Duplicates: ${stats.duplicates}
+- Total Size: ${(stats.totalSize / 1024 / 1024).toFixed(2)} MB
+- Last Indexed: ${new Date(stats.lastIndexed).toISOString()}
+
+File Types:
+${Object.entries(stats.fileTypes)
+  .map(([ext, count]) => `  ${ext || 'no-extension'}: ${count}`)
+  .join('\n')}
+
+Operation Audit:
+- Total Operations: ${auditStats.totalOperations}
+- Session Duration: ${(auditStats.sessionDuration / 1000).toFixed(0)}s
+- Success: ${auditStats.successCount}
+- Failed: ${auditStats.failedCount}
+- Duplicates Blocked: ${auditStats.duplicateCount}
+- Blocked: ${auditStats.blockedCount}
+
+${auditIssues.length > 0 ? `Issues Detected:\n${auditIssues.map(i => `  [${i.type}] ${i.message}`).join('\n')}` : 'No issues detected.'}`,
+          },
+        ],
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [{ type: 'text', text: `Failed to get registry stats: ${error.message}` }],
+      };
+    }
+  },
+
+  /**
+   * Search for files in the registry
+   */
+  search_files: async args => {
+    try {
+      const { pattern, case_sensitive, in_directory, extension } = args;
+
+      if (!pattern) {
+        return { isError: true, content: [{ type: 'text', text: 'pattern is required' }] };
+      }
+
+      const results = searchFiles(pattern, {
+        caseSensitive: case_sensitive || false,
+        inDirectory: in_directory || null,
+        extension: extension || null,
+      });
+
+      return {
+        content: [
+          {
+            type: 'text',
+            text: `Search Results for "${pattern}":
+
+Found ${results.length} file(s):
+${results.map(f => `  ${f.path} (${f.basename}) - ${(f.size / 1024).toFixed(2)} KB`).join('\n')}
+
+${results.length === 0 ? 'No files found matching the pattern.' : ''}`,
+          },
+        ],
+        results,
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [{ type: 'text', text: `File search failed: ${error.message}` }],
+      };
+    }
+  },
+
+  /**
+   * Generate comprehensive audit report
+   */
+  generate_audit_report: async _args => {
+    try {
+      const report = generateAuditReport();
+
+      return {
+        content: [
+          {
+            type: 'text',
+            text: `Project Integrity Audit Report:
+
+Generated: ${new Date(report.timestamp).toISOString()}
+Session Duration: ${(report.sessionDuration / 1000).toFixed(0)}s
+
+Statistics:
+- Total Operations: ${report.statistics.totalOperations}
+- Success: ${report.statistics.successCount}
+- Failed: ${report.statistics.failedCount}
+- Duplicates Blocked: ${report.statistics.duplicateCount}
+- Blocked: ${report.statistics.blockedCount}
+
+${report.issues.length > 0 ? `Issues Detected:\n${report.issues.map(i => `  [${i.type}] ${i.severity}: ${i.message}`).join('\n')}\n` : 'No issues detected.\n'}
+
+Recent Operations (last 20):
+${report.recentOperations.map(op => `  [${op.status}] ${op.type} ${op.path} - ${new Date(op.timestamp).toISOString()}`).join('\n')}`,
+          },
+        ],
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [{ type: 'text', text: `Audit report generation failed: ${error.message}` }],
+      };
+    }
+  },
+
+  /**
+   * Check file exists in registry
+   */
+  check_file_exists: async args => {
+    try {
+      const { file_path } = args;
+      const registry = getFileRegistry();
+
+      const exists = registry.fileExists(file_path);
+      const metadata = exists ? registry.getFileMetadata(file_path) : null;
+
+      return {
+        content: [
+          {
+            type: 'text',
+            text: `File Existence Check for ${file_path}:
+
+${exists ? `✓ File EXISTS in registry` : `✗ File NOT FOUND in registry`}
+
+${
+  metadata
+    ? `
+Metadata:
+  Size: ${(metadata.size / 1024).toFixed(2)} KB
+  Modified: ${new Date(metadata.modified).toISOString()}
+  Directory: ${metadata.directory}
+  Hash: ${metadata.hash}`
+    : ''
+}`,
+          },
+        ],
+        exists,
+        metadata,
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [{ type: 'text', text: `File existence check failed: ${error.message}` }],
+      };
+    }
+  },
+};
+
+;// CONCATENATED MODULE: ./lib/tools/handlers.js
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const handlers_log = msg => {
+  if (!(0,lib_config/* DEBUG_LOGS */.mX)()) return;
+  process.stderr.write(`[SWEObeyMe-Audit]: ${msg}\n`);
+};
+
+// getRandomQuote will be set by the main module
+let getRandomQuote;
+function setGetRandomQuote(fn) {
+  getRandomQuote = fn;
+}
+
+/**
+ * Tool handlers registry
+ */
+const toolHandlers = {
+  obey_me_status: async _args => {
+    return {
+      content: [{ type: 'text', text: 'SWEObeyMe is online and compliant.' }],
+    };
+  },
+
+  obey_surgical_plan: async args => {
+    const total = args.current_line_count + (args.estimated_addition || 0);
+    if (total > 700) {
+      handlers_log(`CRITICAL: ${args.target_file} will exceed 700 lines. MANDATORY SPLIT REQUIRED.`);
+      return {
+        isError: true,
+        content: [
+          {
+            type: 'text',
+            text: "REJECTED: File bloat detected. Execute 'Split Protocol' instead.",
+          },
+        ],
+      };
+    }
+    return {
+      content: [{ type: 'text', text: 'PLAN APPROVED: Proceed with surgical precision.' }],
+    };
+  },
+
+  read_file: async args => {
+    // Check if file should be ignored
+    if (shouldIgnore(args.path)) {
+      return {
+        isError: true,
+        content: [
+          {
+            type: 'text',
+            text: `File ${args.path} is in .sweignore and excluded from AI context.`,
+          },
+        ],
+      };
+    }
+
+    const content = await promises_.readFile(args.path, 'utf-8');
+    const stats = await promises_.stat(args.path);
+    const lineCount = content.split(/\r\n|\r|\n/).length;
+
+    // Injected Context: Forces AI to see rules every time it reads
+    let contextHeader = `[SURGICAL CONTEXT]: File: ${external_path_.basename(args.path)} | Lines: ${lineCount}/${(0,lib_config/* MAX_LINES */.xg)()} | Last Modified: ${stats.mtime}\n\n`;
+
+    // Inject project contract if available
+    const projectContract = getProjectContract();
+    if (projectContract) {
+      contextHeader += `=== PROJECT CONTRACT ===\n${projectContract.substring(0, 500)}...\n=== END CONTRACT ===\n\n`;
+    }
+
+    // Add C# complexity warnings for C# files
+    const isCSharp =
+      args.path.endsWith('.cs') || (content.includes('namespace ') && content.includes('using '));
+    if (isCSharp) {
+      contextHeader += `=== C# COMPLEXITY ANALYSIS ===\n`;
+      const complexity = analyzeCSharpComplexity(content);
+      const brackets = validateCSharpBrackets(content);
+      const mathSafety = analyzeMathExpression(content);
+
+      // Calculate complexity score
+      let complexityScore = 100;
+      complexityScore -= complexity.metrics.maxNestingDepth * 2;
+      complexityScore -= complexity.metrics.maxMethodComplexity;
+      complexityScore -= complexity.metrics.tryCatchDepth * 3;
+      complexityScore -= complexity.metrics.emptyCatchBlocks.length * 10;
+      complexityScore -= complexity.metrics.missingUsingStatements.length * 15;
+      complexityScore -= complexity.metrics.asyncAwaitIssues.length * 5;
+      complexityScore -= mathSafety.metrics.complexExpressions.length * 3;
+      complexityScore -= mathSafety.metrics.potentialOverflow.length * 8;
+      complexityScore -= mathSafety.metrics.divisionByZeroRisk.length * 10;
+      complexityScore = Math.max(0, Math.min(100, complexityScore));
+
+      contextHeader += `Complexity Score: ${complexityScore}/100 | `;
+      contextHeader += `Max Nesting: ${complexity.metrics.maxNestingDepth} | `;
+      contextHeader += `Try-Catch Depth: ${complexity.metrics.tryCatchDepth} | `;
+      contextHeader += `Brackets: ${brackets.valid ? '✓' : '✗'}\n`;
+
+      // Add warnings if needed
+      const warnings = [];
+      if (complexityScore < 70) warnings.push(`⚠️ LOW COMPLEXITY SCORE (${complexityScore}/100)`);
+      if (complexity.metrics.maxNestingDepth > 5)
+        warnings.push(`⚠️ DEEP NESTING (${complexity.metrics.maxNestingDepth} levels)`);
+      if (complexity.metrics.tryCatchDepth > 3)
+        warnings.push(`⚠️ DEEP TRY-CATCH (${complexity.metrics.tryCatchDepth} levels)`);
+      if (!brackets.valid) warnings.push(`⚠️ BRACKET MISMATCH DETECTED`);
+      if (complexity.metrics.emptyCatchBlocks.length > 0)
+        warnings.push(`⚠️ ${complexity.metrics.emptyCatchBlocks.length} EMPTY CATCH BLOCKS`);
+      if (complexity.metrics.missingUsingStatements.length > 0)
+        warnings.push(
+          `⚠️ ${complexity.metrics.missingUsingStatements.length} MISSING USING STATEMENTS`
+        );
+      if (mathSafety.metrics.potentialOverflow.length > 0)
+        warnings.push(`⚠️ ${mathSafety.metrics.potentialOverflow.length} POTENTIAL OVERFLOW RISKS`);
+      if (mathSafety.metrics.divisionByZeroRisk.length > 0)
+        warnings.push(`⚠️ ${mathSafety.metrics.divisionByZeroRisk.length} DIVISION BY ZERO RISKS`);
+
+      if (warnings.length > 0) {
+        contextHeader += `WARNINGS:\n${warnings.join('\n')}\n`;
+      }
+
+      contextHeader += `=== END C# ANALYSIS ===\n\n`;
+    }
+
+    handlers_log(`Read ${args.path}: ${lineCount} lines.`);
+    return {
+      content: [
+        {
+          type: 'text',
+          text: contextHeader + content,
+        },
+      ],
+      uri: toWindsurfUri(args.path),
+    };
+  },
+
+  write_file: async args => {
+    let content = args.content;
+
+    // RECORD OPERATION: Track the write attempt
+    const operationRecord = await recordFileOperation('WRITE', args.path, { content });
+    if (operationRecord.status === 'DUPLICATE') {
+      return {
+        isError: true,
+        content: [
+          { type: 'text', text: `BLOCKED: Duplicate operation detected. ${operationRecord.note}` },
+        ],
+      };
+    }
+
+    // DUPLICATE CHECK: Check for recent duplicate writes
+    const recentDuplicate = await checkForDuplicateWrite(args.path, content, 10000);
+    if (recentDuplicate) {
+      console.error(
+        `[SWE-INTEGRITY] Blocked duplicate write to ${args.path} - identical content written ${Date.now() - recentDuplicate.timestamp}ms ago`
+      );
+      return {
+        isError: true,
+        content: [
+          {
+            type: 'text',
+            text: `BLOCKED: Duplicate write operation detected. An identical write was performed on this file ${(Date.now() - recentDuplicate.timestamp) / 1000} seconds ago. This suggests SWE is in a loop. Please review your plan.`,
+          },
+        ],
+      };
+    }
+
+    // DUPLICATE FILE CHECK: Check if file with same content already exists
+    const duplicateFiles = findDuplicateFiles(args.path, content);
+    if (duplicateFiles.length > 0) {
+      console.error(
+        `[SWE-INTEGRITY] Detected duplicate file creation attempt: ${args.path} matches ${duplicateFiles.join(', ')}`
+      );
+      return {
+        isError: true,
+        content: [
+          {
+            type: 'text',
+            text: `BLOCKED: File with identical content already exists at: ${duplicateFiles.join(', ')}. Use the existing file instead of creating a duplicate.`,
+          },
+        ],
+      };
+    }
+
+    // SAME NAME CHECK: Check if file with same name exists in directory
+    const sameNameFiles = findSameNameFiles(args.path);
+    if (sameNameFiles.length > 0) {
+      console.error(
+        `[SWE-INTEGRITY] Detected same-name file creation attempt: ${args.path} matches ${sameNameFiles.join(', ')}`
+      );
+      return {
+        isError: true,
+        content: [
+          {
+            type: 'text',
+            text: `BLOCKED: File with same name already exists in directory: ${sameNameFiles.join(', ')}. This suggests you may be creating a duplicate file. Please verify the file path.`,
+          },
+        ],
+      };
+    }
+
+    // RECENT WRITE CHECK: Prevent rapid repeated writes
+    if (wasFileRecentlyWritten(args.path, 30000)) {
+      console.error(`[SWE-INTEGRITY] Blocked rapid repeated write to ${args.path}`);
+      return {
+        isError: true,
+        content: [
+          {
+            type: 'text',
+            text: `BLOCKED: This file was written less than 30 seconds ago. This suggests SWE may be in a loop. Please wait or verify the operation is necessary.`,
+          },
+        ],
+      };
+    }
+
+    // Phase 6: Auto-Correction
+    const correctedContent = autoCorrectCode(content);
+    if (correctedContent !== content) {
+      console.error(
+        `[SWE-LOG] Action: HEAL | Target: ${toWindsurfUri(args.path)} | Status: Auto-corrected forbidden patterns`
+      );
+      content = correctedContent;
+    }
+
+    const validation = validateCode(content);
+    if (!validation.valid) {
+      // If still invalid (e.g., line count), then we block
+      recordAction('VIOLATION', { path: args.path, errors: validation.errors }, 'fail');
+      return {
+        isError: true,
+        content: [{ type: 'text', text: `REJECTED: ${validation.errors.join(', ')}` }],
+      };
+    }
+
+    const lineCount = content.split(/\r\n|\r|\n/).length;
+
+    // ANTI-LOOP: Detect if AI is stuck writing the same file repeatedly
+    const recentWrites = sessionMemory.history.filter(
+      h => h.action === 'WRITE' && h.details?.path === args.path
+    );
+    if (recentWrites.length >= 3) {
+      return {
+        isError: true,
+        content: [
+          {
+            type: 'text',
+            text: 'CRITICAL: Loop detected. You have attempted to write to this file 3 times without moving to the next task. Re-evaluate your plan.',
+          },
+        ],
+      };
+    }
+
+    // PHASE 8: Mandatory Backup Before Write (only for existing files)
+    let fileExists = false;
+    try {
+      await promises_.access(args.path);
+      fileExists = true;
+    } catch {
+      fileExists = false;
+    }
+
+    if (fileExists) {
+      const backupPath = await createBackup(args.path);
+      if (!backupPath) {
+        return {
+          isError: true,
+          content: [
+            {
+              type: 'text',
+              text: `BACKUP FAILED: Cannot write to ${args.path} without a verified backup. Fix the backup system first.`,
+            },
+          ],
+        };
+      }
+    }
+
+    // Silent Foresight: Warn when approaching limit
+    if (lineCount > (0,lib_config/* WARNING_THRESHOLD */.$E)()) {
+      console.error(
+        `[SWE-LOG] Action: WARNING | Target: ${toWindsurfUri(args.path)} | Status: File at ${lineCount} lines, approaching ${(0,lib_config/* MAX_LINES */.xg)()} limit`
+      );
+    }
+
+    await promises_.writeFile(args.path, content, 'utf-8');
+
+    // Update file registry after successful write
+    await updateFileInRegistry(args.path, content);
+
+    // PHASE 8: Update workflow step if active
+    const currentWf = activeWorkflows.get('current');
+    if (currentWf) {
+      const writeStep = currentWf.steps.find(
+        s => s.tool === 'write_file' && s.status === 'pending'
+      );
+      if (writeStep) {
+        currentWf.updateStep(writeStep.name, 'completed');
+        console.error(`[ORCHESTRATOR] Step completed: ${writeStep.name}`);
+      }
+
+      if (currentWf.isComplete()) {
+        console.error(`[ORCHESTRATOR] Workflow ${currentWf.id} complete!`);
+        activeWorkflows.delete('current');
+      }
+    }
+
+    // MEMORY: Record the write action
+    const actionType = correctedContent !== args.content ? 'WRITE_REPAIRED' : 'WRITE';
+    recordAction(actionType, { path: args.path, lines: lineCount });
+
+    const msg =
+      correctedContent !== args.content
+        ? `File saved. (Note: SWEObeyMe auto-corrected minor architectural violations in your syntax). URI: ${normalizePath(args.path)}`
+        : `Successfully saved ${args.path}. All rules satisfied. URI: ${normalizePath(args.path)}`;
+    return {
+      content: [{ type: 'text', text: msg }],
+      uri: toWindsurfUri(args.path),
+    };
+  },
+
+  get_session_context: async _args => {
+    return {
+      content: [
+        {
+          type: 'text',
+          text: JSON.stringify(sessionMemory, null, 2),
+        },
+      ],
+    };
+  },
+
+  record_decision: async args => {
+    recordAction('DECISION', args.decision);
+    console.error(`[MEMORY] Decision Recorded: ${args.decision}`);
+    return { content: [{ type: 'text', text: 'Decision logged to session memory.' }] };
+  },
+
+  enforce_surgical_rules: async args => {
+    const validation = validateCode(args.proposed_code);
+
+    if (!validation.valid) {
+      recordAction('VIOLATION', { path: args.file_path, errors: validation.errors }, 'fail');
+      return {
+        isError: true,
+        content: [
+          {
+            type: 'text',
+            text: `SURGICAL BLOCK: Your code was rejected for the following violations:\n- ${validation.errors.join('\n- ')}\n\nYou must refactor and try again within limits.`,
+          },
+        ],
+      };
+    }
+
+    return {
+      content: [{ type: 'text', text: 'âœ“ All surgical rules satisfied. Code is compliant.' }],
+    };
+  },
+
+  sanitize_request: async args => {
+    const sanitized = `[OBEY-MODE]: Processing intent "${args.logic_intent}" through SWEObeyMe Filter... 
   - Thread-safety: CHECKED.
   - Memory-leak prevention: CHECKED.
   - Line-count compliance: PENDING WRITE.
   - Forbidden patterns: SCANNING...`;
-        
-        return { content: [{ type: "text", text: sanitized }] };
-      }
 
-      case "initiate_surgical_workflow": {
-        const workflowId = `WF-${Date.now()}`;
-        const newWorkflow = new SurgicalWorkflow(workflowId, args.goal, args.steps);
-        activeWorkflows.set("current", newWorkflow);
-        
-        recordAction("WORKFLOW_START", { id: workflowId, goal: args.goal });
-        console.error(`[ORCHESTRATOR] New Workflow Initiated: ${args.goal}`);
-        
-        return { 
-          content: [{ 
-            type: "text", 
-            text: `Workflow ${workflowId} active. Proceed with Step 1: ${args.steps[0].name}.` 
-          }] 
-        };
-      }
+    return { content: [{ type: 'text', text: sanitized }] };
+  },
 
-      case "get_workflow_status": {
-        const wf = activeWorkflows.get("current");
-        if (!wf) return { content: [{ type: "text", text: "No active workflow." }] };
-        
-        return { 
-          content: [{ 
-            type: "text", 
-            text: `Active Workflow: ${wf.goal}\nProgress: ${JSON.stringify(wf.steps, null, 2)}` 
-          }] 
-        };
-      }
+  initiate_surgical_workflow: async args => {
+    const workflowId = `WF-${Date.now()}`;
+    const newWorkflow = new SurgicalWorkflow(workflowId, args.goal, args.steps);
+    activeWorkflows.set('current', newWorkflow);
 
-      case "refactor_move_block": {
-        const sourceContent = await promises_namespaceObject.readFile(args.source_path, "utf-8");
-        
-        // 1. Verify the code block exists in the source
-        if (!sourceContent.includes(args.code_block)) {
-          return { isError: true, content: [{ type: "text", text: "ERROR: Code block not found in source file. Move aborted." }] };
-        }
+    recordAction('WORKFLOW_START', { id: workflowId, goal: args.goal });
+    console.error(`[ORCHESTRATOR] New Workflow Initiated: ${args.goal}`);
 
-        // 2. Read/Create target file
-        let targetContent = "";
-        try {
-          targetContent = await promises_namespaceObject.readFile(args.target_path, "utf-8");
-        } catch (e) {
-          targetContent = "// New Module created by SWEObeyMe\n";
-        }
+    return {
+      content: [
+        {
+          type: 'text',
+          text: `Workflow ${workflowId} active. Proceed with Step 1: ${args.steps[0].name}.`,
+        },
+      ],
+    };
+  },
 
-        // 3. Perform the "Paste"
-        const newTargetContent = targetContent + "\n" + args.code_block;
-        
-        // 4. Validate the new file doesn't break our 700-line rule
-        if (newTargetContent.split('\n').length > 700) {
-          return { isError: true, content: [{ type: "text", text: "ERROR: Move would cause target file to exceed 700 lines." }] };
-        }
+  get_workflow_status: async _args => {
+    const wf = activeWorkflows.get('current');
+    if (!wf) return { content: [{ type: 'text', text: 'No active workflow.' }] };
 
-        // 5. Atomic Execution
-        await promises_namespaceObject.writeFile(args.target_path, newTargetContent, "utf-8");
-        const newSourceContent = sourceContent.replace(args.code_block, `// [MOVED TO ${external_path_namespaceObject.basename(args.target_path)}]`);
-        await promises_namespaceObject.writeFile(args.source_path, newSourceContent, "utf-8");
+    return {
+      content: [
+        {
+          type: 'text',
+          text: `Active Workflow: ${wf.goal}\nProgress: ${JSON.stringify(wf.steps, null, 2)}`,
+        },
+      ],
+    };
+  },
 
-        recordAction("REFACTOR_MOVE", { from: args.source_path, to: args.target_path });
-        return {
-          content: [{ type: "text", text: `Successfully moved code block to ${args.target_path} (URI: ${normalizePath(args.target_path)}). Source has been updated with a reference comment.` }],
-          uri: toWindsurfUri(args.target_path)
-        };
-      }
+  refactor_move_block: async args => {
+    const sourceContent = await promises_.readFile(args.source_path, 'utf-8');
 
-      case "extract_to_new_file": {
-        // 1. Create the new file with the code block and description
-        const header = `// ${args.description || "Module extracted by SWEObeyMe"}\n// Source: ${args.source_path}\n\n`;
-        const newContent = header + args.code_block;
-        
-        // 2. Validate line count
-        if (newContent.split('\n').length > 700) {
-          return { isError: true, content: [{ type: "text", text: "ERROR: Extracted module would exceed 700 lines." }] };
-        }
+    // 1. Verify the code block exists in the source
+    if (!sourceContent.includes(args.code_block)) {
+      return {
+        isError: true,
+        content: [
+          { type: 'text', text: 'ERROR: Code block not found in source file. Move aborted.' },
+        ],
+      };
+    }
 
-        // 3. Create backup of source first
-        const backupPath = await createBackup(args.source_path);
-        if (!backupPath) {
-          return { isError: true, content: [{ type: "text", text: "BACKUP FAILED: Cannot extract without verified backup." }] };
-        }
+    // 2. Read/Create target file
+    let targetContent = '';
+    try {
+      targetContent = await promises_.readFile(args.target_path, 'utf-8');
+    } catch (e) {
+      targetContent = '// New Module created by SWEObeyMe\n';
+    }
 
-        // 4. Write the new file
-        await promises_namespaceObject.writeFile(args.new_file_path, newContent, "utf-8");
-        
-        // 5. Update source to reference the new file
-        const sourceContent = await promises_namespaceObject.readFile(args.source_path, "utf-8");
-        const newSourceContent = sourceContent.replace(args.code_block, `// [EXTRACTED TO ${external_path_namespaceObject.basename(args.new_file_path)}]\n// See: ${args.new_file_path}`);
-        await promises_namespaceObject.writeFile(args.source_path, newSourceContent, "utf-8");
+    // 3. Perform the "Paste"
+    const newTargetContent = targetContent + '\n' + args.code_block;
 
-        recordAction("EXTRACT", { from: args.source_path, to: args.new_file_path });
-        return {
-          content: [{ type: "text", text: `Successfully extracted to ${args.new_file_path} (URI: ${normalizePath(args.new_file_path)}). Source has been updated with reference comments.` }],
-          uri: toWindsurfUri(args.new_file_path)
-        };
-      }
+    // 4. Validate the new file doesn't break our 700-line rule
+    if (newTargetContent.split('\n').length > 700) {
+      return {
+        isError: true,
+        content: [
+          { type: 'text', text: 'ERROR: Move would cause target file to exceed 700 lines.' },
+        ],
+      };
+    }
 
-      case "get_architectural_directive": {
-        const status = internalAudit.surgicalIntegrityScore > 80 ? "STABLE" : "COMPROMISED";
-        return { 
-          content: [{ 
-            type: "text", 
-            text: `[SWEObeyMe CONSTITUTION]:
+    // 5. Atomic Execution
+    await promises_.writeFile(args.target_path, newTargetContent, 'utf-8');
+    const newSourceContent = sourceContent.replace(
+      args.code_block,
+      `// [MOVED TO ${external_path_.basename(args.target_path)}]`
+    );
+    await promises_.writeFile(args.source_path, newSourceContent, 'utf-8');
+
+    recordAction('REFACTOR_MOVE', { from: args.source_path, to: args.target_path });
+    return {
+      content: [
+        {
+          type: 'text',
+          text: `Successfully moved code block to ${args.target_path} (URI: ${normalizePath(args.target_path)}). Source has been updated with a reference comment.`,
+        },
+      ],
+      uri: toWindsurfUri(args.target_path),
+    };
+  },
+
+  extract_to_new_file: async args => {
+    // 1. Create the new file with the code block and description
+    const header = `// ${args.description || 'Module extracted by SWEObeyMe'}\n// Source: ${args.source_path}\n\n`;
+    const newContent = header + args.code_block;
+
+    // 2. Validate line count
+    if (newContent.split('\n').length > 700) {
+      return {
+        isError: true,
+        content: [{ type: 'text', text: 'ERROR: Extracted module would exceed 700 lines.' }],
+      };
+    }
+
+    // 3. Create backup of source first
+    const backupPath = await createBackup(args.source_path);
+    if (!backupPath) {
+      return {
+        isError: true,
+        content: [{ type: 'text', text: 'BACKUP FAILED: Cannot extract without verified backup.' }],
+      };
+    }
+
+    // 4. Write the new file
+    await promises_.writeFile(args.new_file_path, newContent, 'utf-8');
+
+    // 5. Update source to reference the new file
+    const sourceContent = await promises_.readFile(args.source_path, 'utf-8');
+    const newSourceContent = sourceContent.replace(
+      args.code_block,
+      `// [EXTRACTED TO ${external_path_.basename(args.new_file_path)}]\n// See: ${args.new_file_path}`
+    );
+    await promises_.writeFile(args.source_path, newSourceContent, 'utf-8');
+
+    recordAction('EXTRACT', { from: args.source_path, to: args.new_file_path });
+    return {
+      content: [
+        {
+          type: 'text',
+          text: `Successfully extracted to ${args.new_file_path} (URI: ${normalizePath(args.new_file_path)}). Source has been updated with reference comments.`,
+        },
+      ],
+      uri: toWindsurfUri(args.new_file_path),
+    };
+  },
+
+  get_architectural_directive: async _args => {
+    const status = internalAudit.surgicalIntegrityScore > 80 ? 'STABLE' : 'COMPROMISED';
+    return {
+      content: [
+        {
+          type: 'text',
+          text: `[SWEObeyMe CONSTITUTION]:
 Status: ${status}
 Integrity Score: ${internalAudit.surgicalIntegrityScore}%
 Current Mandate: ${CONSTITUTION.MANDATE}
-Reminder: You are a surgeon. Precision over speed.` 
-          }] 
-        };
+Reminder: You are a surgeon. Precision over speed.`,
+        },
+      ],
+    };
+  },
+
+  request_surgical_recovery: async args => {
+    sessionMemory.history = []; // Wipe the confusing history
+    internalAudit.consecutiveFailures = 0;
+    recordAction('RECOVERY', `Recovery triggered: ${args.reason}`);
+    return {
+      content: [
+        {
+          type: 'text',
+          text: "RECOVERY INITIATED: Session memory purged. Please run 'scan_project' to re-orient your surgical map.",
+        },
+      ],
+    };
+  },
+
+  auto_repair_submission: async args => {
+    if (args.type === 'json') {
+      const repaired = repairJson(args.raw_content);
+      if (repaired) {
+        return { content: [{ type: 'text', text: JSON.stringify(repaired, null, 2) }] };
       }
-
-      case "request_surgical_recovery": {
-        sessionMemory.history = []; // Wipe the confusing history
-        internalAudit.consecutiveFailures = 0;
-        recordAction("RECOVERY", `Recovery triggered: ${args.reason}`);
-        return { 
-          content: [{ 
-            type: "text", 
-            text: "RECOVERY INITIATED: Session memory purged. Please run 'scan_project' to re-orient your surgical map." 
-          }] 
-        };
-      }
-
-      case "auto_repair_submission": {
-        if (args.type === "json") {
-          const repaired = repairJson(args.raw_content);
-          if (repaired) {
-            return { content: [{ type: "text", text: JSON.stringify(repaired, null, 2) }] };
-          }
-        } else if (args.type === "code") {
-          const corrected = autoCorrectCode(args.raw_content);
-          return { content: [{ type: "text", text: corrected }] };
-        }
-        return { isError: true, content: [{ type: "text", text: "Content unrepairable. Refactor required." }] };
-      }
-
-      case "analyze_file_health": {
-        const content = await promises_namespaceObject.readFile(args.path, "utf-8");
-        const issues = [];
-        
-        // Check for Complexity (Deep Nesting)
-        const maxNesting = content.split('\n').reduce((max, line) => {
-          const depth = (line.match(/  |\t/g) || []).length;
-          return Math.max(max, depth);
-        }, 0);
-
-        if (maxNesting > 5) issues.push("CRITICAL: Deep nesting detected. Logic is becoming a 'Black Box'.");
-        if (content.includes("try {} catch") || content.includes("catch (e) {}")) issues.push("SMELL: Silent catch blocks detected. Digital Debt alert.");
-        
-        const report = issues.length > 0 ? issues.join("\n") : "File is Surgically Clean.";
-        return { content: [{ type: "text", text: `[HEALTH REPORT for ${args.path}]:\n${report}` }] };
-      }
-
-      case "detect_architectural_drift": {
-        const content = await promises_namespaceObject.readFile(args.path, "utf-8");
-        const lines = content.split('\n');
-        const commentCount = lines.filter(l => l.trim().startsWith("//") || l.trim().startsWith("/*")).length;
-        const ratio = commentCount / lines.length;
-
-        if (ratio < 0.1) {
-          return { content: [{ type: "text", text: "DRIFT DETECTED: Documentation ratio is below 10%. Add 'Non-Coder' explanations immediately." }] };
-        }
-        return { content: [{ type: "text", text: "Alignment: COMPLIANT." }] };
-      }
-
-      case "create_backup": {
-        const backupPath = await createBackup(args.path);
-        if (backupPath) {
-          return {
-            content: [{ type: "text", text: `Backup created at: ${backupPath} (URI: ${normalizePath(backupPath)})` }],
-            uri: toWindsurfUri(backupPath)
-          };
-        }
-        return { isError: true, content: [{ type: "text", text: "Failed to create backup." }] };
-      }
-
-      case "restore_backup": {
-        try {
-          const files = await promises_namespaceObject.readdir(BACKUP_DIR);
-          const baseName = external_path_namespaceObject.basename(args.path);
-          const backups = files.filter(f => f.startsWith(baseName + ".backup-"));
-          
-          if (args.backup_index >= backups.length) {
-            return { isError: true, content: [{ type: "text", text: "Invalid backup index." }] };
-          }
-          
-          // Sort by timestamp (newest first)
-          backups.sort((a, b) => {
-            const tsA = parseInt(a.match(/-(\d+)\.readonly$/)[1]);
-            const tsB = parseInt(b.match(/-(\d+)\.readonly$/)[1]);
-            return tsB - tsA;
-          });
-          
-          const backupFile = backups[args.backup_index];
-          const backupPath = external_path_namespaceObject.join(BACKUP_DIR, backupFile);
-          const content = await promises_namespaceObject.readFile(backupPath, "utf-8");
-          
-          await promises_namespaceObject.writeFile(args.path, content, "utf-8");
-          return {
-            content: [{ type: "text", text: `Restored ${args.path} (URI: ${normalizePath(args.path)}) from backup ${backupFile}.` }],
-            uri: toWindsurfUri(args.path)
-          };
-        } catch (error) {
-          return { isError: true, content: [{ type: "text", text: `Restore failed: ${error.message}` }] };
-        }
-      }
-
-      case "query_the_oracle": {
-        const categories = ["SUCCESS", "FAILURE", "RECOVERY"];
-        const randomCat = categories[Math.floor(Math.random() * categories.length)];
-        return { content: [{ type: "text", text: `[ORACLE]: ${getRandomQuote(randomCat)}` }] };
-      }
-
-      case "list_directory": {
-        const files = await promises_namespaceObject.readdir(args.path);
-        return { content: [{ type: "text", text: files.join("\n") }] };
-      }
-
-      default:
-        throw new Error(`Tool ${name} not found`);
+    } else if (args.type === 'code') {
+      const corrected = autoCorrectCode(args.raw_content);
+      return { content: [{ type: 'text', text: corrected }] };
     }
-    
-    // PHASE 10: Pre-flight hook - Update internalAudit based on result
-    if (result && result.isError) {
-      internalAudit.consecutiveFailures++;
-      internalAudit.surgicalIntegrityScore -= 5;
-    } else if (result) {
-      internalAudit.consecutiveFailures = 0;
-      internalAudit.surgicalIntegrityScore = Math.min(100, internalAudit.surgicalIntegrityScore + 1);
-    }
-
-    // If the AI is failing too much, force it to check the Constitution
-    if (internalAudit.consecutiveFailures >= CONSTITUTION.ERROR_THRESHOLD && result) {
-      result.content.push({ 
-        type: "text", 
-        text: "\n[SYSTEM ALERT]: High failure rate detected. Call 'get_architectural_directive' before your next move." 
-      });
-    }
-    
-    return result;
-  } catch (error) {
-    // PHASE 10: Update audit on errors too
-    internalAudit.consecutiveFailures++;
-    internalAudit.surgicalIntegrityScore -= 5;
-    
-    log(`ERROR: ${error.message}`);
     return {
       isError: true,
-      content: [{ type: "text", text: error.message }]
+      content: [{ type: 'text', text: 'Content unrepairable. Refactor required.' }],
     };
-  }
-});
+  },
 
-// [STRICT TRANSPORT]: Standard Input/Output
-const transport = new StdioServerTransport();
+  analyze_file_health: async args => {
+    const content = await promises_.readFile(args.path, 'utf-8');
+    const issues = [];
 
-// Re-check the handshake logic
-const startServer = async () => {
-  try {
-    await server.connect(transport);
-    if (DEBUG_LOGS) process.stderr.write("[SWEObeyMe]: Governor Online. Handshake Complete.\n");
-  } catch (error) {
-    process.stderr.write(`[CRITICAL]: Handshake Failed: ${error}\n`);
-    // Do NOT call process.exit() - VS Code extension host prevents it
-    throw error;
-  }
+    // Check for Complexity (Deep Nesting)
+    const maxNesting = content.split('\n').reduce((max, line) => {
+      const depth = (line.match(/ {2}|\t/g) || []).length;
+      return Math.max(max, depth);
+    }, 0);
+
+    if (maxNesting > 5)
+      issues.push("CRITICAL: Deep nesting detected. Logic is becoming a 'Black Box'.");
+    if (content.includes('try {} catch') || content.includes('catch (e) {}'))
+      issues.push('SMELL: Silent catch blocks detected. Digital Debt alert.');
+
+    const report = issues.length > 0 ? issues.join('\n') : 'File is Surgically Clean.';
+    return { content: [{ type: 'text', text: `[HEALTH REPORT for ${args.path}]:\n${report}` }] };
+  },
+
+  detect_architectural_drift: async args => {
+    const content = await promises_.readFile(args.path, 'utf-8');
+    const lines = content.split('\n');
+    const commentCount = lines.filter(
+      l => l.trim().startsWith('//') || l.trim().startsWith('/*')
+    ).length;
+    const ratio = commentCount / lines.length;
+
+    if (ratio < 0.1) {
+      return {
+        content: [
+          {
+            type: 'text',
+            text: "DRIFT DETECTED: Documentation ratio is below 10%. Add 'Non-Coder' explanations immediately.",
+          },
+        ],
+      };
+    }
+    return { content: [{ type: 'text', text: 'Alignment: COMPLIANT.' }] };
+  },
+
+  create_backup: async args => {
+    const backupPath = await createBackup(args.path);
+    if (backupPath) {
+      return {
+        content: [
+          {
+            type: 'text',
+            text: `Backup created at: ${backupPath} (URI: ${normalizePath(backupPath)})`,
+          },
+        ],
+        uri: toWindsurfUri(backupPath),
+      };
+    }
+    return { isError: true, content: [{ type: 'text', text: 'Failed to create backup.' }] };
+  },
+
+  restore_backup: async args => {
+    try {
+      const files = await promises_.readdir(BACKUP_DIR);
+      const baseName = external_path_.basename(args.path);
+      const backups = files.filter(f => f.startsWith(baseName + '.backup-'));
+
+      if (args.backup_index >= backups.length) {
+        return { isError: true, content: [{ type: 'text', text: 'Invalid backup index.' }] };
+      }
+
+      // Sort by timestamp (newest first)
+      backups.sort((a, b) => {
+        const tsA = parseInt(a.match(/-(\d+)\.readonly$/)[1]);
+        const tsB = parseInt(b.match(/-(\d+)\.readonly$/)[1]);
+        return tsB - tsA;
+      });
+
+      const backupFile = backups[args.backup_index];
+      const backupPath = external_path_.join(BACKUP_DIR, backupFile);
+      const content = await promises_.readFile(backupPath, 'utf-8');
+
+      await promises_.writeFile(args.path, content, 'utf-8');
+      return {
+        content: [
+          {
+            type: 'text',
+            text: `Restored ${args.path} (URI: ${normalizePath(args.path)}) from backup ${backupFile}.`,
+          },
+        ],
+        uri: toWindsurfUri(args.path),
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [{ type: 'text', text: `Restore failed: ${error.message}` }],
+      };
+    }
+  },
+
+  query_the_oracle: async _args => {
+    const categories = ['SUCCESS', 'FAILURE', 'RECOVERY'];
+    const randomCat = categories[Math.floor(Math.random() * categories.length)];
+    return { content: [{ type: 'text', text: `[ORACLE]: ${getRandomQuote(randomCat)}` }] };
+  },
+
+  get_config: configHandlers.get_config,
+
+  set_config: configHandlers.set_config,
+
+  reset_config: configHandlers.reset_config,
+
+  get_config_schema: configHandlers.get_config_schema,
+
+  list_directory: async args => {
+    const files = await promises_.readdir(args.path);
+    return { content: [{ type: 'text', text: files.join('\n') }] };
+  },
+
+  dry_run_write_file: validationHandlers.dry_run_write_file,
+
+  validate_change_before_apply: validationHandlers.validate_change_before_apply,
+
+  diff_changes: contextHandlers.diff_changes,
+
+  get_file_context: contextHandlers.get_file_context,
+
+  verify_syntax: validationHandlers.verify_syntax,
+
+  analyze_change_impact: contextHandlers.analyze_change_impact,
+
+  get_symbol_references: contextHandlers.get_symbol_references,
+
+  enforce_strict_mode: configHandlers.enforce_strict_mode,
+
+  check_for_anti_patterns: validationHandlers.check_for_anti_patterns,
+
+  validate_naming_conventions: validationHandlers.validate_naming_conventions,
+
+  verify_imports: validationHandlers.verify_imports,
+
+  check_test_coverage: safetyHandlers.check_test_coverage,
+
+  require_documentation: feedbackHandlers.require_documentation,
+
+  generate_change_summary: feedbackHandlers.generate_change_summary,
+
+  confirm_dangerous_operation: safetyHandlers.confirm_dangerous_operation,
+
+  check_for_repetitive_patterns: safetyHandlers.check_for_repetitive_patterns,
+
+  explain_rejection: feedbackHandlers.explain_rejection,
+
+  suggest_alternatives: feedbackHandlers.suggest_alternatives,
+
+  get_historical_context: feedbackHandlers.get_historical_context,
+
+  get_operation_guidance: feedbackHandlers.get_operation_guidance,
+
+  run_related_tests: safetyHandlers.run_related_tests,
+
+  // C# specific handlers
+  validate_csharp_code: csharpHandlers.validate_csharp_code,
+  validate_csharp_brackets: csharpHandlers.validate_csharp_brackets,
+  analyze_csharp_complexity: csharpHandlers.analyze_csharp_complexity,
+  detect_nested_try_catch: csharpHandlers.detect_nested_try_catch,
+  visualize_scope_depth: csharpHandlers.visualize_scope_depth,
+  validate_math_safety: csharpHandlers.validate_math_safety,
+  analyze_math_expressions: csharpHandlers.analyze_math_expressions,
+  validate_csharp_math: csharpHandlers.validate_csharp_math,
+  suggest_math_improvements: csharpHandlers.suggest_math_improvements,
+  csharp_health_check: csharpHandlers.csharp_health_check,
+
+  // Project integrity handlers
+  index_project_files: projectIntegrityHandlers.index_project_files,
+  check_file_duplicates: projectIntegrityHandlers.check_file_duplicates,
+  validate_file_references: projectIntegrityHandlers.validate_file_references,
+  check_recent_operations: projectIntegrityHandlers.check_recent_operations,
+  validate_before_write: projectIntegrityHandlers.validate_before_write,
+  get_registry_stats: projectIntegrityHandlers.get_registry_stats,
+  search_files: projectIntegrityHandlers.search_files,
+  generate_audit_report: projectIntegrityHandlers.generate_audit_report,
+  check_file_exists: projectIntegrityHandlers.check_file_exists,
 };
 
-// Start the server with strict handshake ASAP (avoid startup EOF/timeouts)
-await startServer();
+;// CONCATENATED MODULE: ./lib/tools/registry.js
+function getToolDefinitions() {
+  return [
+    {
+      name: 'obey_me_status',
+      description:
+        'Checks if the SWEObMe surgical governance system is operational. Use this first to verify the system is active before proceeding with any file operations.',
+    },
+    {
+      name: 'obey_surgical_plan',
+      description:
+        'CRITICAL: MUST call this BEFORE using write_file to validate your surgical plan complies with architectural rules. This prevents file bloat by checking if your changes will exceed the 700-line limit. If rejected, you MUST use refactor_move_block or extract_to_new_file to reduce file size before proceeding. Example: Call with current_line_count=650 and estimated_addition=100 to check if adding 100 lines to a 650-line file is safe.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          target_file: {
+            type: 'string',
+            description: 'File to be modified - REQUIRED for validation',
+          },
+          current_line_count: {
+            type: 'number',
+            description: 'Current line count - REQUIRED for validation',
+          },
+          estimated_addition: {
+            type: 'number',
+            description: 'Estimated lines to add - defaults to 0 if not specified',
+          },
+        },
+        required: ['target_file', 'current_line_count'],
+      },
+    },
+    {
+      name: 'read_file',
+      description:
+        'Read a file with surgical context injection. This is the ONLY way to read files - it enforces .sweignore rules and injects architectural context including line count, last modified time, and project contract. Use this instead of direct file reading to ensure you see architectural constraints. Example: Read index.js to see it has 156 lines and any surgical warnings.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          path: { type: 'string', description: 'File path to read' },
+        },
+        required: ['path'],
+      },
+    },
+    {
+      name: 'write_file',
+      description:
+        'CRITICAL: This is the ONLY way to write files. It enforces surgical rules including: 1) Line count limit (max 700), 2) Forbidden pattern detection (console.log, debugger, eval, TODO comments), 3) Automatic backup of existing files, 4) Loop detection (prevents repetitive writes), 5) Auto-correction of minor violations. PREREQUISITE: MUST call obey_surgical_plan BEFORE this to ensure compliance. If your write is rejected with line count error, use refactor_move_block or extract_to_new_file to reduce file size first.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          path: { type: 'string', description: 'File path to write' },
+          content: {
+            type: 'string',
+            description: 'Content to write - will be validated for surgical compliance',
+          },
+        },
+        required: ['path', 'content'],
+      },
+    },
+    {
+      name: 'list_directory',
+      description:
+        'List files in a directory. Use this to explore project structure before making changes. Example: List the lib directory to see available modules before refactoring.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          path: { type: 'string', description: 'Directory path' },
+        },
+        required: ['path'],
+      },
+    },
+    {
+      name: 'get_session_context',
+      description:
+        "Get current session memory and history. Use this when you encounter repeated failures or need to understand what actions have been taken. This helps you avoid loops and understand your progress. Example: Check session context after 3 consecutive failures to see if you're stuck in a loop.",
+    },
+    {
+      name: 'record_decision',
+      description:
+        'Record a decision to session memory for accountability. Use this to document architectural decisions and rationale. Example: Record your decision to extract a large function to a new module for maintainability.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          decision: { type: 'string', description: 'Decision to record' },
+        },
+        required: ['decision'],
+      },
+    },
+    {
+      name: 'enforce_surgical_rules',
+      description:
+        'Validate code against surgical rules BEFORE writing. This is a pre-flight check to ensure your code complies with architectural standards designed to prevent technical debt. Use this before write_file to avoid rejections. It checks for: line count limits, forbidden patterns (console.log, debugger, eval, TODO), and mandatory comments. Example: Validate your refactored code before calling write_file to ensure it passes all surgical rules.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          proposed_code: { type: 'string', description: 'Code to validate' },
+          file_path: { type: 'string', description: 'File path for context' },
+        },
+        required: ['proposed_code'],
+      },
+    },
+    {
+      name: 'sanitize_request',
+      description:
+        'Sanitize a request through SWEObMe filters. This ensures your intent aligns with surgical principles before execution. Use this for complex operations to verify your approach is sound. Example: Sanitize your intent to refactor a large file to ensure it follows surgical principles.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          logic_intent: { type: 'string', description: 'Logic intent to sanitize' },
+        },
+        required: ['logic_intent'],
+      },
+    },
+    {
+      name: 'auto_repair_submission',
+      description:
+        'Attempt to repair malformed submissions automatically. Use this when write_file rejects your content with JSON or syntax errors. It fixes trailing commas, markdown wrapping, and removes forbidden patterns. Example: Repair a JSON response that has trailing commas before calling write_file again.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          type: {
+            type: 'string',
+            enum: ['json', 'code'],
+            description: 'Type of content to repair',
+          },
+          raw_content: { type: 'string', description: 'Raw content to repair' },
+        },
+        required: ['type', 'raw_content'],
+      },
+    },
+    {
+      name: 'analyze_file_health',
+      description:
+        'Analyze file health for code smells and complexity. Use this before refactoring to identify issues like deep nesting, silent catch blocks, and complexity. Example: Analyze index.js before refactoring to understand what needs to be improved.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          path: { type: 'string', description: 'File path to analyze' },
+        },
+        required: ['path'],
+      },
+    },
+    {
+      name: 'detect_architectural_drift',
+      description:
+        'Detect architectural drift from documentation standards. Use this to check if files have adequate documentation (min 10% comment ratio). Example: Check if a recently modified file still follows documentation standards.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          path: { type: 'string', description: 'File path to check' },
+        },
+        required: ['path'],
+      },
+    },
+    {
+      name: 'create_backup',
+      description:
+        'Create a manual backup of a file. Use this before risky operations. Note: write_file automatically creates backups for existing files, so this is only needed for manual backup operations. Example: Backup a critical file before attempting a complex refactoring.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          path: { type: 'string', description: 'File path to backup' },
+        },
+        required: ['path'],
+      },
+    },
+    {
+      name: 'restore_backup',
+      description:
+        'Restore a file from backup. Use this when a change breaks the code and you need to revert. Example: Restore index.js to its previous state after a failed refactoring attempt. Use backup_index=0 for the most recent backup.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          path: { type: 'string', description: 'File path to restore' },
+          backup_index: {
+            type: 'number',
+            description: 'Backup index (0 = newest, 1 = second newest, etc.)',
+          },
+        },
+        required: ['path', 'backup_index'],
+      },
+    },
+    {
+      name: 'initiate_surgical_workflow',
+      description:
+        'Initiate a multi-step surgical workflow for complex operations. Use this for tasks requiring multiple coordinated steps (e.g., refactoring a large file into multiple modules). This ensures proper sequencing and maintains surgical compliance throughout. Example: Initiate a workflow to split a 600-line file into three smaller modules.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          goal: { type: 'string', description: 'Workflow goal - what you want to accomplish' },
+          steps: {
+            type: 'array',
+            description: 'Workflow steps in execution order',
+            items: {
+              type: 'object',
+              properties: {
+                name: { type: 'string', description: 'Step name for tracking' },
+                tool: { type: 'string', description: 'Tool to execute for this step' },
+              },
+            },
+          },
+        },
+        required: ['goal', 'steps'],
+      },
+    },
+    {
+      name: 'get_workflow_status',
+      description:
+        "Get status of the active surgical workflow. Use this to track progress and understand which steps are completed. Example: Check workflow status to see if you've completed the extraction step before proceeding to the next step.",
+    },
+    {
+      name: 'refactor_move_block',
+      description:
+        "Move a code block from one file to another while maintaining surgical compliance. This is the PREFERRED method for reducing file size when obey_surgical_plan rejects your plan. It validates that the target file won't exceed 700 lines. Example: Move a 200-line function from index.js to utils.js to keep index.js under the limit.",
+      inputSchema: {
+        type: 'object',
+        properties: {
+          source_path: { type: 'string', description: 'Source file path to extract from' },
+          target_path: { type: 'string', description: 'Target file path to move to' },
+          code_block: {
+            type: 'string',
+            description: 'Exact code block to move (must match source file content exactly)',
+          },
+        },
+        required: ['source_path', 'target_path', 'code_block'],
+      },
+    },
+    {
+      name: 'extract_to_new_file',
+      description:
+        "Extract a code block to a new file while maintaining surgical compliance. Use this when you need to create a new module from existing code. It validates the new file won't exceed 700 lines and creates a backup of the source. Example: Extract a large class to a new file to reduce source file size.",
+      inputSchema: {
+        type: 'object',
+        properties: {
+          source_path: { type: 'string', description: 'Source file path to extract from' },
+          new_file_path: { type: 'string', description: 'New file path to create' },
+          code_block: {
+            type: 'string',
+            description: 'Exact code block to extract (must match source file content exactly)',
+          },
+          description: {
+            type: 'string',
+            description: 'Description of the extraction for documentation',
+          },
+        },
+        required: ['source_path', 'new_file_path', 'code_block'],
+      },
+    },
+    {
+      name: 'get_architectural_directive',
+      description:
+        "Get the current architectural directive from SWEObeyMe. Call this when you're unsure about the project's coding standards or when you've encountered multiple failures. This provides the current mandate, integrity score, and compliance status. Example: Call after 3 consecutive failures to understand why your approach is being rejected.",
+    },
+    {
+      name: 'request_surgical_recovery',
+      description:
+        "Reset session state when you encounter repeated failures. Call this after 3 consecutive errors to clear history and start fresh. This is a recovery mechanism when you're stuck in a loop or the session state is corrupted. Example: Call after 3 failed write attempts to reset and try a different approach.",
+      inputSchema: {
+        type: 'object',
+        properties: {
+          reason: {
+            type: 'string',
+            description: "Reason for recovery (e.g., '3 consecutive write failures')",
+          },
+        },
+        required: ['reason'],
+      },
+    },
+    {
+      name: 'query_the_oracle',
+      description:
+        'Query the Oracle for surgical wisdom and motivation. Use this when you need guidance or encouragement during complex tasks. This provides inspirational quotes to maintain surgical discipline. Example: Query the Oracle for motivation when tackling a difficult refactoring.',
+    },
+    {
+      name: 'get_config',
+      description:
+        'Get current SWEObeyMe configuration values. Use this to view all configurable settings and their current values. Example: Get current configuration to see line count limits and feature toggles.',
+    },
+    {
+      name: 'set_config',
+      description:
+        'Set SWEObeyMe configuration values. Use this to change settings like line count limits, warning thresholds, debug logging, auto-correction, and feature toggles. All changes are saved to ~/.sweobeyme-config.json. Example: Set maxLines to 800 to increase the file size limit.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          settings: {
+            type: 'object',
+            description:
+              'Configuration key-value pairs to set. Valid keys: maxLines, warningThreshold, maxBackupsPerFile, enableAutoCorrection, debugLogs, enableLoopDetection, maxLoopAttempts, minDocumentationRatio, enableWorkflowOrchestration, enableSessionMemory, enableOracle, forbiddenPatterns',
+          },
+        },
+        required: ['settings'],
+      },
+    },
+    {
+      name: 'reset_config',
+      description:
+        'Reset all SWEObeyMe configuration to default values. Use this when you want to revert all custom settings. Example: Reset configuration after making too many experimental changes.',
+    },
+    {
+      name: 'get_config_schema',
+      description:
+        'Get the configuration schema with validation rules and descriptions. Use this to understand what configuration options are available and their valid values. Example: Get schema to see what settings can be configured.',
+    },
+    {
+      name: 'dry_run_write_file',
+      description:
+        'Simulate a write operation without actually writing to the file. CRITICAL for lower-tier models to prevent irreversible mistakes. Validates line count, forbidden patterns, and syntax before any changes. Returns detailed results showing what would happen. MUST use this before write_file when requireDryRun is enabled. Example: Dry run a file write to validate it will succeed.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          path: { type: 'string', description: 'File path to write' },
+          content: { type: 'string', description: 'Content to write' },
+        },
+        required: ['path', 'content'],
+      },
+    },
+    {
+      name: 'validate_change_before_apply',
+      description:
+        'Comprehensive validation of proposed changes before applying. Checks syntax, imports, anti-patterns, naming conventions, and more. Returns detailed validation report with issues and fixes. CRITICAL for lower-tier models to prevent broken code. Example: Validate a refactoring before applying changes.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          path: { type: 'string', description: 'File path to validate' },
+          content: { type: 'string', description: 'Proposed content' },
+        },
+        required: ['path', 'content'],
+      },
+    },
+    {
+      name: 'diff_changes',
+      description:
+        'Generate detailed diff between current and proposed file content. Shows line-by-line additions, deletions, and modifications. Helps understand exactly what will change. Example: Generate diff to see what changes will be made to a file.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          path: { type: 'string', description: 'File path to compare' },
+          proposed_content: { type: 'string', description: 'Proposed new content' },
+        },
+        required: ['path', 'proposed_content'],
+      },
+    },
+    {
+      name: 'get_file_context',
+      description:
+        'Get comprehensive context about a file including imports, exports, functions, classes, and metrics. Provides dependencies and usage information to prevent breaking changes. CRITICAL for understanding ripple effects of changes. Example: Get context for a file before refactoring.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          path: { type: 'string', description: 'File path to analyze' },
+        },
+        required: ['path'],
+      },
+    },
+    {
+      name: 'verify_syntax',
+      description:
+        'Validate syntax of JavaScript/TypeScript code. Checks for unmatched braces, parentheses, brackets, and unclosed strings. Returns specific syntax errors with line numbers. CRITICAL for preventing broken code. Example: Verify syntax of code before writing.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          code: { type: 'string', description: 'Code to validate' },
+          language: {
+            type: 'string',
+            description: 'Language (javascript or typescript)',
+            default: 'javascript',
+          },
+        },
+        required: ['code'],
+      },
+    },
+    {
+      name: 'analyze_change_impact',
+      description:
+        'Analyze the impact of proposed changes on the codebase. Lists affected files, functions, and classes. Identifies potential breaking changes and dependencies. CRITICAL for understanding ripple effects. Example: Analyze impact before refactoring a function.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          path: { type: 'string', description: 'File path to analyze' },
+          changes: { type: 'string', description: 'Description of changes' },
+        },
+        required: ['path', 'changes'],
+      },
+    },
+    {
+      name: 'get_symbol_references',
+      description:
+        'Find all references to a symbol (function, class, variable) in a file. Helps understand ripple effects of changes and ensures complete refactoring. Example: Find all references to a function before renaming it.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          path: { type: 'string', description: 'File path to search' },
+          symbol: { type: 'string', description: 'Symbol name to find references for' },
+        },
+        required: ['path', 'symbol'],
+      },
+    },
+    {
+      name: 'enforce_strict_mode',
+      description:
+        'Enforce strict validation mode with extra conservative checks. Rejects more changes and requires higher quality standards. Use this for lower-tier models that need more guardrails. Example: Enable strict mode for safer operations.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          enable: { type: 'boolean', description: 'Enable or disable strict mode' },
+        },
+        required: ['enable'],
+      },
+    },
+    {
+      name: 'check_for_anti_patterns',
+      description:
+        'Detect common anti-patterns and code smells in code. Checks for god functions, deep nesting, magic numbers, and more. Returns specific issues with line numbers. Example: Check code for anti-patterns before committing.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          path: { type: 'string', description: 'File path to check' },
+        },
+        required: ['path'],
+      },
+    },
+    {
+      name: 'validate_naming_conventions',
+      description:
+        'Enforce naming conventions (camelCase, PascalCase, UPPER_SNAKE_CASE). Validates function, class, and constant naming. Returns violations with suggestions. Example: Validate naming conventions in a file.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          path: { type: 'string', description: 'File path to validate' },
+        },
+        required: ['path'],
+      },
+    },
+    {
+      name: 'verify_imports',
+      description:
+        'Validate all imports in code. Checks that imported files exist and are accessible. Detects circular dependencies. Returns specific import errors. Example: Verify imports before writing code.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          path: { type: 'string', description: 'File path to validate' },
+          content: { type: 'string', description: 'Code content to check' },
+        },
+        required: ['path', 'content'],
+      },
+    },
+    {
+      name: 'check_test_coverage',
+      description:
+        'Calculate test coverage for changed code. Returns coverage percentage and identifies untested code. Requires minimum coverage threshold when enabled. Example: Check test coverage for a file.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          path: { type: 'string', description: 'File path to check' },
+        },
+        required: ['path'],
+      },
+    },
+    {
+      name: 'require_documentation',
+      description:
+        'Enforce documentation requirements. Checks for function/class comments and minimum documentation ratio. Returns specific documentation issues. Example: Check documentation for a file.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          path: { type: 'string', description: 'File path to check' },
+          content: { type: 'string', description: 'Code content to check' },
+        },
+        required: ['path', 'content'],
+      },
+    },
+    {
+      name: 'generate_change_summary',
+      description:
+        'Generate a summary of changes made. Lists files modified, functions added/removed, and creates a commit message draft. Helps with accountability and tracking. Example: Generate summary after making changes.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          path: { type: 'string', description: 'File path' },
+          changes: { type: 'string', description: 'Description of changes' },
+        },
+        required: ['path', 'changes'],
+      },
+    },
+    {
+      name: 'confirm_dangerous_operation',
+      description:
+        'Check if an operation is dangerous and requires confirmation. Returns warning and requires user approval for destructive operations. Example: Check before deleting a file.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          operation: { type: 'string', description: 'Operation description' },
+        },
+        required: ['operation'],
+      },
+    },
+    {
+      name: 'check_for_repetitive_patterns',
+      description:
+        'Detect repetitive operations that indicate a loop. Warns about stuck patterns and suggests breaking out. CRITICAL for preventing infinite loops. Example: Check for repetitive file operations.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          operations: { type: 'array', description: 'Array of recent operations' },
+        },
+        required: ['operations'],
+      },
+    },
+    {
+      name: 'explain_rejection',
+      description:
+        'Explain why an operation was rejected. Provides specific reasons, explanations, suggestions, and recommended tools. Helps model learn from mistakes. Example: Get explanation for a rejected write operation.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          reason: { type: 'string', description: 'Rejection reason' },
+          context: { type: 'string', description: 'Additional context' },
+        },
+        required: ['reason'],
+      },
+    },
+    {
+      name: 'suggest_alternatives',
+      description:
+        'Suggest alternative approaches when operations fail. Provides specific tools and methods to try next. Helps model find better solutions. Example: Get alternatives when write_file is rejected.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          failed_operation: { type: 'string', description: 'Name of failed operation' },
+          context: { type: 'string', description: 'Additional context' },
+        },
+        required: ['failed_operation'],
+      },
+    },
+    {
+      name: 'get_historical_context',
+      description:
+        'Get historical context about a file. Shows previous changes, last modified time, and change markers. Helps understand file evolution. Example: Get historical context before refactoring.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          path: { type: 'string', description: 'File path to analyze' },
+        },
+        required: ['path'],
+      },
+    },
+    {
+      name: 'get_operation_guidance',
+      description:
+        'Get guidance on how to use a specific operation. Provides prerequisites, warnings, and best practices. Helps model use tools correctly. Example: Get guidance for write_file operation.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          operation: { type: 'string', description: 'Operation name' },
+          context: { type: 'string', description: 'Additional context' },
+        },
+        required: ['operation'],
+      },
+    },
+    {
+      name: 'run_related_tests',
+      description:
+        'Run tests for files affected by changes. Returns test results and coverage. Fails changes that break tests. Prevents regressions. Example: Run tests after modifying a file.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          path: { type: 'string', description: 'File path to run tests for' },
+        },
+        required: ['path'],
+      },
+    },
+  ];
+}
 
-// Background initialization (must not delay MCP handshake)
-ensureBackupDir().catch(() => {});
-loadProjectContract().catch(() => {});
-loadSweIgnore().catch(() => {});
-log("Server started successfully.");
+;// CONCATENATED MODULE: ./lib/tools.js
 
-// [LIFECYCLE MANAGEMENT]: Graceful Shutdown for VS Code Extension Host
-let isShuttingDown = false;
-const initiateShutdown = (reason) => {
-  if (isShuttingDown) return;
-  isShuttingDown = true;
-  process.stderr.write(`[SHUTDOWN] ${reason}. Cleaning up gracefully (no exit call)...\n`);
-  // Close the MCP transport gracefully - do NOT call process.exit()
-  // VS Code's extension host prevents process.exit() - let it close naturally
-  transport.close().catch(() => {});
-};
 
-// Use the global process object explicitly
-global.process.on("SIGINT", () => initiateShutdown("SIGINT"));
-global.process.on("SIGTERM", () => initiateShutdown("SIGTERM"));
 
-// Listen for pipe closure (The Windsurf "Reload" fix)
-global.process.stdin.on("close", () => initiateShutdown("Stdin Closed"));
 
-// [DISTRIBUTION PATCH]: Active Parent Monitoring
-// Stores/VSIX often mask stdin 'close' events.
-const parentPid = global.process.ppid;
-
-setInterval(() => {
+// Set getRandomQuote after initialization
+async function initializeQuotes() {
   try {
-    // Check if the parent process still exists
-    global.process.kill(parentPid, 0); 
+    const { fileURLToPath } = await Promise.resolve(/* import() */).then(__nccwpck_require__.t.bind(__nccwpck_require__, 16, 19));
+    const quotesModule = await __nccwpck_require__(765)(external_path_.join(external_path_.dirname(fileURLToPath(import.meta.url)), '../quotes.js'));
+    const getRandomQuote = quotesModule.getRandomQuote;
+    setGetRandomQuote(getRandomQuote);
   } catch (e) {
-    // Parent is gone (or we lost permission to see it), time to exit.
-    initiateShutdown("Parent Process (IDE) not found. Store-Life Protocol triggered.");
+    // Fallback quotes if quotes.js not found
+    const fallbackQuotes = {
+      SUCCESS: ['Surgery complete.'],
+      FAILURE: ['Non-compliance detected.'],
+      RECOVERY: ['Recovery initiated.'],
+    };
+    setGetRandomQuote(category => fallbackQuotes[category][0]);
   }
-}, 5000); // Check every 5 seconds
+}
 
-// 2. Handle "End of File" on stdin (Standard MCP exit)
-global.process.stdin.on("end", () => {
-  initiateShutdown("IDE sent EOF");
-});
+// Re-export for convenience
 
-// [ZOMBIE PREVENTION]: Force absolute termination on any pipe error
-global.process.stdout.on('error', (err) => {
-  if (err.code === 'EPIPE') initiateShutdown("Stdout Pipe Broken (EPIPE)");
-});
 
-// 3. Handle standard Windows termination signals
-// Note: SIGINT and SIGTERM already registered above.
+;// CONCATENATED MODULE: ./index.js
+// [LOCKDOWN]: Ensure NOTHING hits stdout except the MCP Protocol
+const originalLog = console.log;
+console.log = (...args) => {
+  // Redirects all standard logs to the error channel (safe for Windsurf)
+  process.stderr.write(args.join(' ') + '\n');
+};
 
-// 4. Catch Unhandled Errors to prevent silent zombie hangs
-global.process.on("uncaughtException", (err) => {
-  process.stderr.write(`[CRITICAL ERROR] ${err.message}\n`);
-  initiateShutdown("Uncaught Exception");
-});
+// Also silence the Audit/SWEObeyMe messages specifically
+const auditLog = msg => process.stderr.write(`[AUDIT]: ${msg}\n`);
+// Suppress unused variable warnings
+void originalLog;
+void auditLog;
 
+
+
+
+
+// Import from lib modules
+
+
+
+
+
+const index_DEBUG_LOGS = process.env.SWEOBEYME_DEBUG === '1';
+const index_log = msg => {
+  if (!index_DEBUG_LOGS) return;
+  process.stderr.write(`[SWEObeyMe-Audit]: ${msg}\n`);
+};
+
+// Main async initialization
+(async () => {
+  try {
+    // Initialize quotes module
+    await initializeQuotes();
+  } catch (error) {
+    console.error('[SWEObeyMe]: Failed to initialize quotes:', error);
+  }
+
+  // Initialize server
+  const server = new Server(
+    {
+      name: 'swe-obey-me',
+      version: '1.0.16',
+    },
+    {
+      capabilities: { tools: {} },
+    }
+  );
+
+  // Ensure backup directory exists
+  await ensureBackupDir();
+
+  // Initialize handler - REQUIRED for handshake
+  server.setRequestHandler(InitializeRequestSchema, async () => {
+    // Do not block initialize on filesystem IO; Windsurf may EOF if init is slow.
+    // Kick off in background if not already loaded.
+    loadProjectContract().catch(() => {});
+    loadSweIgnore().catch(() => {});
+
+    return {
+      protocolVersion: '2024-11-05',
+      capabilities: { tools: {} },
+      serverInfo: { name: 'SWEObeyMe', version: '1.0.16' },
+    };
+  });
+
+  // ListTools handler - REQUIRED for green dot
+  server.setRequestHandler(ListToolsRequestSchema, async () => ({
+    tools: getToolDefinitions(),
+  }));
+
+  // CallTool handler - Core MCP interaction
+  server.setRequestHandler(CallToolRequestSchema, async request => {
+    const { name, arguments: args } = request.params;
+
+    index_log(`Tool called: ${name}`);
+
+    // Check if tool exists
+    if (!toolHandlers[name]) {
+      throw new Error(`Tool ${name} not found`);
+    }
+
+    let result;
+    try {
+      // Call the tool handler
+      result = await toolHandlers[name](args);
+
+      // PHASE 10: Pre-flight hook - Update internalAudit based on result
+      if (result && result.isError) {
+        internalAudit.consecutiveFailures++;
+        internalAudit.surgicalIntegrityScore -= 5;
+      } else if (result) {
+        internalAudit.consecutiveFailures = 0;
+        internalAudit.surgicalIntegrityScore = Math.min(
+          100,
+          internalAudit.surgicalIntegrityScore + 1
+        );
+      }
+
+      // If the AI is failing too much, force it to check the Constitution
+      if (internalAudit.consecutiveFailures >= CONSTITUTION.ERROR_THRESHOLD && result) {
+        result.content.push({
+          type: 'text',
+          text: "\n[SYSTEM ALERT]: High failure rate detected. Call 'get_architectural_directive' before your next move.",
+        });
+      }
+
+      return result;
+    } catch (error) {
+      // PHASE 10: Update audit on errors too
+      internalAudit.consecutiveFailures++;
+      internalAudit.surgicalIntegrityScore -= 5;
+
+      index_log(`ERROR: ${error.message}`);
+      return {
+        isError: true,
+        content: [{ type: 'text', text: error.message }],
+      };
+    }
+  });
+
+  // [STRICT TRANSPORT]: Standard Input/Output
+  const transport = new StdioServerTransport();
+
+  // Re-check the handshake logic
+  const startServer = async () => {
+    try {
+      await server.connect(transport);
+      if (index_DEBUG_LOGS) process.stderr.write('[SWEObeyMe]: Governor Online. Handshake Complete.\n');
+    } catch (error) {
+      process.stderr.write(`[CRITICAL]: Handshake Failed: ${error}\n`);
+      // Do NOT call process.exit() - VS Code extension host prevents it
+      throw error;
+    }
+  };
+
+  await startServer();
+
+  // Background initialization (must not delay MCP handshake)
+  ensureBackupDir().catch(() => {});
+  loadProjectContract().catch(() => {});
+  loadSweIgnore().catch(() => {});
+  index_log('Server started successfully.');
+
+  // [LIFECYCLE MANAGEMENT]: Graceful Shutdown for VS Code Extension Host
+  let isShuttingDown = false;
+  const initiateShutdown = reason => {
+    if (isShuttingDown) return;
+    isShuttingDown = true;
+    process.stderr.write(`[SHUTDOWN] ${reason}. Cleaning up gracefully (no exit call)...\n`);
+    // Close the MCP transport gracefully - do NOT call process.exit()
+    // VS Code's extension host prevents process.exit() - let it close naturally
+    transport.close().catch(() => {});
+  };
+
+  // Use the global process object explicitly
+  global.process.on('SIGINT', () => initiateShutdown('SIGINT'));
+  global.process.on('SIGTERM', () => initiateShutdown('SIGTERM'));
+
+  // Listen for pipe closure (The Windsurf "Reload" fix)
+  global.process.stdin.on('close', () => initiateShutdown('Stdin Closed'));
+
+  // [DISTRIBUTION PATCH]: Active Parent Monitoring
+  // Stores/VSIX often mask stdin 'close' events.
+  const parentPid = global.process.ppid;
+
+  setInterval(() => {
+    try {
+      // Check if the parent process still exists
+      // On Windows, process.kill(pid, 0) can fail due to permission issues even when parent exists
+      // Only shut down if we get a specific error indicating the process is gone
+      try {
+        global.process.kill(parentPid, 0);
+      } catch (e) {
+        // On Windows, EPERM or EACCES means permission denied, not process gone
+        // Only shut down on ESRCH (No such process)
+        if (e.code === 'ESRCH') {
+          initiateShutdown('Parent Process (IDE) not found. Store-Life Protocol triggered.');
+        }
+        // Ignore permission errors - parent is likely still running
+      }
+    } catch (e) {
+      // Ignore any other errors in parent checking
+    }
+  }, 5000); // Check every 5 seconds
+
+  // 2. Handle "End of File" on stdin (Standard MCP exit)
+  global.process.stdin.on('end', () => {
+    initiateShutdown('IDE sent EOF');
+  });
+
+  // [ZOMBIE PREVENTION]: Force absolute termination on any pipe error
+  global.process.stdout.on('error', err => {
+    if (err.code === 'EPIPE') initiateShutdown('Stdout Pipe Broken (EPIPE)');
+  });
+
+  // 3. Handle standard Windows termination signals
+  // Note: SIGINT and SIGTERM already registered above.
+
+  // 4. Catch Unhandled Errors to prevent silent zombie hangs
+  global.process.on('uncaughtException', err => {
+    process.stderr.write(`[CRITICAL ERROR] ${err.message}\n`);
+    initiateShutdown('Uncaught Exception');
+  });
 })(); // Close async IIFE
 

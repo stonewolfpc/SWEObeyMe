@@ -1,0 +1,85 @@
+name: Hotfix
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to hotfix (e.g., 1.0.13)'
+        required: true
+        type: string
+      description:
+        description: 'Hotfix description'
+        required: true
+        type: string
+
+jobs:
+  hotfix:
+    name: Create Hotfix
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: main
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Create hotfix branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b hotfix/${{ inputs.version }}
+
+      - name: Run tests
+        run: npm test
+
+      - name: Run linter
+        run: npm run lint
+
+      - name: Build project
+        run: npm run build
+
+      - name: Bump version
+        run: npm version ${{ inputs.version }} --no-git-tag-version
+
+      - name: Commit version bump
+        run: |
+          git add package.json package-lock.json
+          git commit -m "chore(release): bump version to ${{ inputs.version }}"
+
+      - name: Push hotfix branch
+        run: git push origin hotfix/${{ inputs.version }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          title: "Hotfix ${{ inputs.version }}: ${{ inputs.description }}"
+          body: |
+            ## Hotfix Description
+            ${{ inputs.description }}
+
+            ## Version
+            ${{ inputs.version }}
+
+            ## Checklist
+            - [ ] Tests pass
+            - [ ] Linting passes
+            - [ ] Build succeeds
+            - [ ] Documentation updated
+            - [ ] Changelog updated
+          branch: hotfix/${{ inputs.version }}
+          base: main
+          labels: hotfix, urgent
+          draft: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
