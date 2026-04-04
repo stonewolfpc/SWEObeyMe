@@ -501,6 +501,25 @@ MIT License - see LICENSE file for details.
 - **Clearer tool discovery** - Tools now provide examples and context in descriptions to help AI models understand when and how to use them
 - **Error recovery guidance** - Error messages include specific tool suggestions and actionable next steps
 
+#### Error Feedback Loops
+- **Consecutive failure tracking** - Tracks consecutive errors across all tool calls
+- **Constitution reading trigger** - When consecutive failures reach ERROR_THRESHOLD (3), AI is forced to call get_architectural_directive to review the Constitution
+- **Learning from failures** - Each failure reduces surgical integrity score, each success increases it
+- **Progressive pressure** - More failures = more strict enforcement and stronger guidance
+
+#### Tool Response Design
+- **Clear error messages** - Specific error messages with context (e.g., "ERROR: 'target_file' parameter is REQUIRED and must be a string")
+- **Actionable guidance** - Error messages include next steps and tool suggestions (e.g., "Call get_architectural_directive before proceeding")
+- **Contextual feedback** - Error messages explain what was violated and why (e.g., "This violates project contract section X")
+- **Next-step hints** - Suggestions for alternative approaches (e.g., "Try using refactor_move_block for file reorganization")
+
+#### Surgical Integrity Score
+- **Visible to AI** - Surgical integrity score is displayed in all tool responses (e.g., "[SURGICAL INTEGRITY: 95/100]")
+- **Consequences** - Low score triggers more strict enforcement and Constitution reading
+- **Progressive pressure** - More failures = lower score = more forced tool usage
+- **Transparent feedback** - AI can see its compliance score and consecutive failure count in real-time
+- **Score tracking** - Successes increase score (+1 to +2), failures decrease score (-5 to -15 depending on severity)
+
 #### Configuration
 - **Version bumped to 1.0.19**
 
