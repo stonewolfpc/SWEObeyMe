@@ -1,6 +1,6 @@
 # SWEObeyMe MCP Server
 
-> **v1.0.18 ARES 2026 Standards (April 2026):** Applied professional MCP extension standards including os.homedir() for cross-platform path resolution, path.resolve() for absolute path guarantees, surgical uninstall cleanup, and workspace detection to prevent path corruption. All 45 MCP tools tested and verified functional.
+> **v1.0.19 MCP Protocol Enforcement (April 2026):** Enhanced MCP Protocol's Built-In Enforcement with stronger tool descriptions emphasizing mandatory tool usage, improved parameter validation with actionable error messages, and clearer guidance for AI models to ensure tools cannot be ignored.
 
 A comprehensive Model Context Protocol (MCP) server designed specifically for SWE-1.5 and other AI models to enforce surgical coding standards and prevent technical debt.
 
@@ -491,6 +491,18 @@ See `CONTRIBUTING.md` for detailed guidelines.
 MIT License - see LICENSE file for details.
 
 ## Changelog
+
+### [1.0.19] - 2026-04-04
+
+#### MCP Protocol Built-In Enforcement
+- **Enhanced tool descriptions** - Added "MUST use this tool" and "ONLY way" language to critical tools (list_directory, enforce_surgical_rules, validate_change_before_apply, dry_run_write_file, verify_syntax, get_file_context) to emphasize mandatory usage
+- **Improved parameter validation** - Added explicit parameter type checking in handlers (obey_surgical_plan, read_file) with specific error messages
+- **Actionable error messages** - Enhanced error responses with specific guidance, examples, and next steps (e.g., "Use 'refactor_move_block' or 'extract_to_new_file' to reduce file size")
+- **Clearer tool discovery** - Tools now provide examples and context in descriptions to help AI models understand when and how to use them
+- **Error recovery guidance** - Error messages include specific tool suggestions and actionable next steps
+
+#### Configuration
+- **Version bumped to 1.0.19**
 
 ### [1.0.18] - 2026-04-04
 
