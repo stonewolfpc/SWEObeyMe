@@ -1,145 +1,33 @@
-# Dependencies - exclude only parts we don't need
-# Keep MCP dependencies and direct dependencies
-node_modules/@types/
-node_modules/.cache/
-node_modules/.bin/
-node_modules/@babel/
-node_modules/@eslint/
-node_modules/@jest/
-node_modules/@rollup/
-node_modules/@typescript-eslint/
-node_modules/commitlint/
-node_modules/conventional-changelog/
-node_modules/conventional-commits/
-node_modules/detect-indent/
-node_modules/detect-newline/
-node_modules/eslint/
-node_modules/husky/
-node_modules/jest/
-node_modules/lint-staged/
-node_modules/prettier/
-node_modules/rollup/
-node_modules/standard-version/
-node_modules/ts-jest/
-node_modules/tslib/
-node_modules/typescript/
-node_modules/vsce/
-
-# Test files
-test-*.js
-**/test-*.js
-**/*.test.ts
-**/*.test.js
-
-# Source maps
-**/*.map
-**/*.js.map
-
-# Development files
-tsconfig.json
-webpack.config.cjs
-webpack.config.js
-.eslintrc*
-.prettierrc*
-jest.config.*
-
-# Documentation and examples
-*.md
-!README.md
-
-# Configuration files
-*.json
+# Explicitly include required directories
+!lib/**
+!node_modules/**
+!utils/**
+!index.js
+!extension.js
+!quotes.js
+!icon.png
 !package.json
-!windsurf-mcp.json
+!package-lock.json
+!.sweignore
+!.sweobeyme-contract.md
 
-# Logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+# Exclude test files
+tests/
+__tests__/
+*.test.js
+*.spec.js
+**/test/**
+vscode/
+test-electron/
 
-# Runtime data
-pids
-*.pid
-*.seed
-*.pid.lock
-
-# Coverage directory used by tools like istanbul
-coverage/
-*.lcov
-
-# nyc test coverage
-.nyc_output
-
-# Dependency directories
-jspm_packages/
-
-# Optional npm cache directory
-.npm
-
-# Optional eslint cache
-.eslintcache
-
-# Output of 'npm pack'
-*.tgz
-
-# Yarn Integrity file
-.yarn-integrity
-
-# dotenv environment variables file
-.env
-.env.test
-
-# parcel-bundler cache (https://parceljs.org/)
-.cache
-.parcel-cache
-
-# next.js build output
-.next
-
-# nuxt.js build output
-.nuxt
-
-# vuepress build output
-.vuepress/dist
-
-# Serverless directories
-.serverless
-
-# FuseBox cache
-.fusebox/
-
-# DynamoDB Local files
-.dynamodb/
-
-# TernJS port file
-.tern-port
-
-# Temporary folders
-tmp/
-temp/
-
-# OS generated files
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
-
-# SWEObeyMe specific exclusions
+# Exclude git
 .git/
-.sweignore
-.sweobeyme-contract.md
-SWEObeyMe_Project_Dump*.txt
-create_project_dump.ps1
-DumpCode.ps1
-SWEObeyMe-v1.0.12.zip
-mcp_config.json
-stdout.txt
-stderr.txt
-EXTENSION_FIX.md
-INSTALLATION.md
-PUBLISH.md
-publish-ext/
+.gitignore
+.github/
+
+# Exclude documentation
+README.md
+LICENSE
+
+# Exclude development files
+.vscode/

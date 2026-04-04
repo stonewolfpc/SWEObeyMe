@@ -2,7 +2,7 @@
   "name": "swe-obey-me",
   "displayName": "SWEObeyMe - Surgical MCP Governor",
   "description": "The surgical MCP server that enforces architectural discipline on AI coding assistants. 700-line enforcement, auto-correction, sci-fi personality.",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "type": "module",
   "publisher": "stonewolfpc",
   "icon": "icon.png",
@@ -30,11 +30,6 @@
   "contributes": {
     "commands": [
       {
-        "command": "sweObeyMe.installMCP",
-        "title": "Install SWEObeyMe MCP Server",
-        "category": "SWEObeyMe"
-      },
-      {
         "command": "sweObeyMe.queryOracle",
         "title": "Query the Oracle",
         "category": "SWEObeyMe"
@@ -54,42 +49,10 @@
   "scripts": {
     "package": "vsce package",
     "publish": "vsce publish",
-    "start": "node index.js",
-    "build": "npx rollup -c rollup.config.mjs",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage",
-    "lint": "eslint . --ext .js,.ts",
-    "lint:fix": "eslint . --ext .js,.ts --fix",
-    "format": "prettier --write \"**/*.{js,ts,json,md}\"",
-    "format:check": "prettier --check \"**/*.{js,ts,json,md}\"",
-    "prepare": "husky install",
-    "release": "standard-version",
-    "release:minor": "standard-version --release-as minor",
-    "release:major": "standard-version --release-as major",
-    "release:patch": "standard-version --release-as patch",
-    "release:dry": "standard-version --dry-run",
-    "commit": "git-cz"
+    "start": "node index.js"
   },
   "devDependencies": {
-    "@commitlint/cli": "^19.0.0",
-    "@commitlint/config-conventional": "^19.0.0",
-    "@rollup/plugin-commonjs": "^29.0.2",
-    "@rollup/plugin-json": "^6.1.0",
-    "@rollup/plugin-node-resolve": "^16.0.3",
-    "@vercel/ncc": "^0.38.0",
-    "@vscode/vsce": "^2.15.0",
-    "commitizen": "^4.3.0",
-    "cz-conventional-changelog": "^3.3.0",
-    "eslint": "^8.56.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-prettier": "^5.1.0",
-    "husky": "^8.0.3",
-    "jest": "^29.7.0",
-    "lint-staged": "^15.2.0",
-    "prettier": "^3.2.0",
-    "rollup": "^4.60.1",
-    "standard-version": "^9.5.0"
+    "@vscode/vsce": "^2.15.0"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "latest",
@@ -101,12 +64,5 @@
     "type": "git",
     "url": "https://github.com/stonewolfpc/SWEObeyMe"
   },
-  "license": "MIT",
-  "windsurf": {
-    "activationEvents": [
-      "onStartupFinished",
-      "onLanguage:javascript",
-      "onLanguage:typescript"
-    ]
-  }
+  "license": "MIT"
 }

@@ -1,1 +1,0 @@
-namespace Test { class Program { void Main() { } } }

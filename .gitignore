@@ -14,6 +14,7 @@ test-*.js
 final-test.js
 simple-test.js
 test-with-content.js
+tests/
 
 # VSIX (we release this separately)
 *.vsix
@@ -35,6 +36,7 @@ stderr.txt
 SWEObeyMe_Project_Dump*.txt
 create_project_dump.ps1
 DumpCode.ps1
+dump*.txt
 
 # Old release artifacts
 SWEObeyMe-v1.0.12.zip
