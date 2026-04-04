@@ -31,3 +31,6 @@ LICENSE
 
 # Exclude development files
 .vscode/
+
+# Exclude dump files
+dump*.txt
