@@ -1,6 +1,6 @@
 # SWEObeyMe MCP Server
 
-> **v1.0.20 MCP Protocol Enforcement (April 2026):** Enhanced MCP Protocol's Built-In Enforcement with stronger tool descriptions emphasizing mandatory tool usage, improved parameter validation with actionable error messages, clearer guidance for AI models to ensure tools cannot be ignored, Surgical Integrity Score tracking, Error Feedback Loops, and enhanced Tool Response Design.
+> **v1.1.0 C# Bridge (April 2026):** Enhanced C# error detection with pattern-based analysis, Surgical Integrity Score throttling for AI awareness, diagnostic rainbow coloring, get_integrity_report tool, undo_last_surgical_edit rollback tool, and MCP integration for automatic error injection.
 
 A comprehensive Model Context Protocol (MCP) server designed specifically for SWE-1.5 and other AI models to enforce surgical coding standards and prevent technical debt.
 
@@ -491,6 +491,34 @@ See `CONTRIBUTING.md` for detailed guidelines.
 MIT License - see LICENSE file for details.
 
 ## Changelog
+
+### [1.1.0] - 2026-04-04
+
+#### C# Bridge with Pattern-Based Analysis
+- **C# Analysis Engine**: Pattern-based error detection for 11 error categories (missing using, empty catch, deep nesting, unhandled async, IDisposable leaks, string concatenation, null reference, async suffix, event handler leaks, static mutation, cross-thread access)
+- **Diagnostic Rainbow**: Severity-based coloring (Red=Critical, Orange=Warning, Cyan=Info, Magenta=Environmental Drift, Purple=Memory Leak, Silver=Ternary State)
+- **Environmental Drift Detection**: Ternary Math approach for architectural instability detection (not syntax-illegal but unstable)
+- **Edit, Don't Replace Rule**: Only returns broken nodes (line ranges), not entire file
+
+#### MCP Tools for AI Awareness
+- `get_csharp_errors`: Returns current errors in workspace with severity colors and line ranges
+- `get_csharp_errors_for_file`: Returns errors for specific file with line ranges
+- `get_integrity_report`: Returns detailed integrity report with error context in relation to high-value rules
+- `toggle_csharp_error_type`: Enable/disable specific error checks
+- `set_csharp_ai_informed`: Toggle "Keep AI Informed" feature
+- `undo_last_surgical_edit`: Revert file to last state with Integrity Score > 90
+
+#### Surgical Integrity Score Throttling
+- **Keep AI Informed**: Automatically injects C# errors into file reads based on severity
+- **High-severity (Red)**: Immediate injection into file reads
+- **Medium-severity (Orange)**: Inject if Integrity Score > 80
+- **Low-severity (Cyan/Silver)**: Wait for explicit tool call (no auto-injection)
+- Prevents context-flooding by prioritizing critical errors
+
+#### Configuration
+- **Activity Bar Icon**: Added activity bar contribution for C# Bridge settings
+- **Configuration Schema**: Added sweObeyMe.csharpBridge.enabled, sweObeyMe.csharpBridge.keepAiInformed, sweObeyMe.csharpBridge.severityThreshold
+- **Version bumped to 1.1.0**
 
 ### [1.0.20] - 2026-04-04
 
