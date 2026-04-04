@@ -1,6 +1,6 @@
 # SWEObeyMe MCP Server
 
-> **v1.0.19 MCP Protocol Enforcement (April 2026):** Enhanced MCP Protocol's Built-In Enforcement with stronger tool descriptions emphasizing mandatory tool usage, improved parameter validation with actionable error messages, and clearer guidance for AI models to ensure tools cannot be ignored.
+> **v1.0.20 MCP Protocol Enforcement (April 2026):** Enhanced MCP Protocol's Built-In Enforcement with stronger tool descriptions emphasizing mandatory tool usage, improved parameter validation with actionable error messages, clearer guidance for AI models to ensure tools cannot be ignored, Surgical Integrity Score tracking, Error Feedback Loops, and enhanced Tool Response Design.
 
 A comprehensive Model Context Protocol (MCP) server designed specifically for SWE-1.5 and other AI models to enforce surgical coding standards and prevent technical debt.
 
@@ -492,7 +492,7 @@ MIT License - see LICENSE file for details.
 
 ## Changelog
 
-### [1.0.19] - 2026-04-04
+### [1.0.20] - 2026-04-04
 
 #### MCP Protocol Built-In Enforcement
 - **Enhanced tool descriptions** - Added "MUST use this tool" and "ONLY way" language to critical tools (list_directory, enforce_surgical_rules, validate_change_before_apply, dry_run_write_file, verify_syntax, get_file_context) to emphasize mandatory usage
@@ -519,6 +519,18 @@ MIT License - see LICENSE file for details.
 - **Progressive pressure** - More failures = lower score = more forced tool usage
 - **Transparent feedback** - AI can see its compliance score and consecutive failure count in real-time
 - **Score tracking** - Successes increase score (+1 to +2), failures decrease score (-5 to -15 depending on severity)
+
+#### Configuration
+- **Version bumped to 1.0.20**
+
+### [1.0.19] - 2026-04-04
+
+#### MCP Protocol Built-In Enforcement
+- **Enhanced tool descriptions** - Added "MUST use this tool" and "ONLY way" language to critical tools (list_directory, enforce_surgical_rules, validate_change_before_apply, dry_run_write_file, verify_syntax, get_file_context) to emphasize mandatory usage
+- **Improved parameter validation** - Added explicit parameter type checking in handlers (obey_surgical_plan, read_file) with specific error messages
+- **Actionable error messages** - Enhanced error responses with specific guidance, examples, and next steps (e.g., "Use 'refactor_move_block' or 'extract_to_new_file' to reduce file size")
+- **Clearer tool discovery** - Tools now provide examples and context in descriptions to help AI models understand when and how to use them
+- **Error recovery guidance** - Error messages include specific tool suggestions and actionable next steps
 
 #### Configuration
 - **Version bumped to 1.0.19**
