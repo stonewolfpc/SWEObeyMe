@@ -492,6 +492,14 @@ MIT License - see LICENSE file for details.
 
 ## Changelog
 
+### [1.1.1] - 2026-04-04
+
+#### Bug Fixes
+- Fixed regex null check in listBackups function to handle malformed backup filenames
+- Fixed error.color undefined check in C# Bridge error injection
+- Fixed csharpAnalysis null check in Keep AI Informed feature
+- Added defensive checks for global.csharpAiInformed === true
+
 ### [1.1.0] - 2026-04-04
 
 #### C# Bridge with Pattern-Based Analysis
