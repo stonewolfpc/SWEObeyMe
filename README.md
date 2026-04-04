@@ -1,6 +1,6 @@
 # SWEObeyMe MCP Server
 
-> **v1.0.17 Major Update (April 2026):** Governor Pattern Implementation! The ultimate architectural enforcement system that forces AI models to obey your architectural vision. Intercepts all VS Code workspace operations (writeFile, rename, delete, applyEdit) and routes them through MCP surgical tools, ensuring AI models follow your blueprint exactly without deviation or hallucination. Perfect for developers who need reliable AI crews that won't break complex projects.
+> **v1.0.18 ARES 2026 Standards (April 2026):** Applied professional MCP extension standards including os.homedir() for cross-platform path resolution, path.resolve() for absolute path guarantees, surgical uninstall cleanup, and workspace detection to prevent path corruption. All 45 MCP tools tested and verified functional.
 
 A comprehensive Model Context Protocol (MCP) server designed specifically for SWE-1.5 and other AI models to enforce surgical coding standards and prevent technical debt.
 
@@ -491,6 +491,23 @@ See `CONTRIBUTING.md` for detailed guidelines.
 MIT License - see LICENSE file for details.
 
 ## Changelog
+
+### [1.0.18] - 2026-04-04
+
+#### ARES 2026 Professional Standards
+- **Applied os.homedir() for cross-platform path resolution** - Replaced process.env.USERPROFILE with os.homedir() for better cross-platform compatibility
+- **Added path.resolve() for absolute path guarantees** - Ensures all paths are absolute before file operations
+- **Implemented surgical uninstall cleanup** - Added deactivate() function to cleanly remove MCP server key from config on uninstall
+- **Added workspace detection** - Only auto-configures MCP when running from installed location (not workspace) to prevent path corruption
+- **Added console logging for path verification** - Logs resolved paths for debugging and verification
+- **All 45 MCP tools tested and verified functional** - Comprehensive testing completed on D:\MasterControl project
+- **Cleaned up repository** - Removed temp_vsix_check2 directory and old test files
+- **Updated .gitignore** - Added exclusions for tests/ directory and dump files
+
+#### Configuration
+- **Removed VS Code MCP API support** - Windsurf doesn't support vscode.lm.registerMcpServerDefinitionProvider API
+- **Reverted to config file approach** - Using atomic read-modify-write pattern for mcp_config.json
+- **Preserved atomic injection pattern** - Maintains user's other MCP servers in config
 
 ### [1.0.17] - 2026-04-02
 
