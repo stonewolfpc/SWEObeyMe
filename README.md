@@ -331,25 +331,38 @@ SWEObeyMe-restored/
 
 ### Scripts
 
-- `npm run build`: Build the project
-- `npm start`: Start the MCP server
-- `npm test`: Run tests
-- `npm run lint`: Lint the code
-- `npm run format`: Format the code
-- `npm run commit`: Interactive commit with Commitizen
-- `npm run release`: Create a new release with standard-version
+- `npm run package`: Package the extension as a .vsix file
+- `npm run publish`: Publish the extension to the VS Code Marketplace
+- `npm start`: Start the MCP server directly
+- `npm test`: Run all test suites (integration, protocol compliance, schema validation, C# bridge)
+- `npm run test:integration`: Run MCP integration tests
+- `npm run test:protocol`: Run MCP protocol compliance tests
+- `npm run test:schemas`: Run tool schema validation tests
+- `npm run test:csharp`: Run C# bridge tool registration tests
+- `npm run build`: Placeholder (no build step required for this project)
+- `npm run lint`: Placeholder (linting not yet configured)
+- `npm run format`: Placeholder (formatting not yet configured)
+
+### Testing
+
+The project includes integration-style tests that can be run manually:
+
+1. **Integration Tests** (`tests/mcp-integration.js`): Tests MCP server functionality including initialize, tool listing, surgical plan validation, and rule enforcement
+2. **Protocol Compliance Tests** (`tests/mcp-protocol-compliance.js`): Validates JSON-RPC 2.0 compliance against MCP 2024-11-05 specification
+3. **Schema Validation** (`test-tools/test-all-schemas.js`): Validates all tool definitions have proper inputSchema properties
+4. **C# Bridge Tests** (`test-tools/test-csharp-tools.js`): Verifies C# bridge tools are registered with handlers
+
+Run all tests with `npm test` or individual suites with the specific npm scripts.
 
 ### Professional Standards
 
 This project follows industry best practices for professional software development:
 
-- **Git Flow Branching Strategy**: main, develop, feature/*, fix/*, hotfix/*, release/*
-- **Conventional Commits**: Enforced with commitlint and Commitizen
-- **Automated CI/CD**: GitHub Actions for linting, testing, and releases
-- **Code Quality**: ESLint, Prettier, and pre-commit hooks
-- **Automated Testing**: Jest with coverage thresholds
-- **Semantic Versioning**: Automated with standard-version
-- **Documentation**: Comprehensive branching, hotfix, and contribution guides
+- **Automated CI/CD**: GitHub Actions for testing and packaging
+- **Integration Testing**: Manual test suites for MCP protocol compliance and tool validation
+- **Modular Architecture**: Clean separation of concerns with lib/ directory structure
+
+Note: Some professional development tools (ESLint, Prettier, commitlint, standard-version) are documented in the README but not yet configured in this project. These can be added as needed.
 
 See `BRANCHING.md`, `HOTFIX.md`, and `CONTRIBUTING.md` for details.
 
@@ -491,6 +504,24 @@ See `CONTRIBUTING.md` for detailed guidelines.
 MIT License - see LICENSE file for details.
 
 ## Changelog
+
+### [1.1.4] - 2026-04-05
+
+#### Enhanced C# Bridge with Confidence Scoring & Noise Control
+- **Confidence Scoring Pipeline**: Multi-factor scoring (0-100) based on pattern match strength, context analysis, code complexity, and severity
+- **Deduplication Service**: SHA256 signature-based grouping to prevent duplicate alerts
+- **Cooldown Mechanism**: Time-based throttling with configurable cooldown period (default 30s)
+- **Math Safety Detector**: New detector for division by zero risk and overflow patterns
+- **VS Code Settings Integration**: Real-time configuration via webview panel (confidence threshold, deduplication, cooldown, detector toggles)
+- **Modular UI**: Extracted HTML template for C# settings panel to reduce file line count
+- **Test Infrastructure**: Added Jest configuration, comprehensive npm test scripts, GitHub Actions CI workflow
+- **Documentation Updates**: Updated README scripts section, testing section, and professional standards
+
+#### Test Tooling Improvements
+- Added npm scripts: test, test:integration, test:protocol, test:schemas, test:csharp, build, lint, format, commit
+- Created Jest configuration for ESM mode
+- Fixed lib/testing.js helper (initialized warnings array, improved error handling)
+- Added GitHub Actions CI workflow for automated testing and packaging
 
 ### [1.1.3] - 2026-04-05
 

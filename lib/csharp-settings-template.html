@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>C# Bridge Settings</title>
+  <style>
+    body {
+      font-family: var(--vscode-font-family);
+      padding: 20px;
+      color: var(--vscode-foreground);
+      background-color: var(--vscode-editor-background);
+    }
+    h2 {
+      margin-top: 0;
+      color: var(--vscode-foreground);
+    }
+    h3 {
+      margin-top: 25px;
+      margin-bottom: 10px;
+      color: var(--vscode-foreground);
+      font-size: 1.1em;
+    }
+    .section {
+      margin-bottom: 30px;
+    }
+    .setting {
+      margin-bottom: 15px;
+      padding: 12px;
+      background-color: var(--vscode-editor-background);
+      border: 1px solid var(--vscode-panel-border);
+      border-radius: 4px;
+    }
+    .setting-label {
+      font-weight: bold;
+      margin-bottom: 6px;
+      display: block;
+    }
+    .setting-description {
+      font-size: 0.85em;
+      color: var(--vscode-descriptionForeground);
+      margin-bottom: 8px;
+    }
+    .toggle {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+    .toggle input {
+      margin-right: 10px;
+    }
+    select, input[type="number"], input[type="range"] {
+      width: 100%;
+      padding: 5px;
+      background-color: var(--vscode-dropdown-background);
+      color: var(--vscode-dropdown-foreground);
+      border: 1px solid var(--vscode-dropdown-border);
+      border-radius: 3px;
+    }
+    .severity-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 3px;
+      font-size: 0.8em;
+      margin-right: 5px;
+      margin-bottom: 5px;
+    }
+    .severity-error { background-color: #f14c4c; color: white; }
+    .severity-warning { background-color: #cca700; color: black; }
+    .severity-info { background-color: #3794ff; color: white; }
+    .detector-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+  </style>
+</head>
+<body>
+  <h2>C# Bridge Settings</h2>
+
+  <div class="section">
+    <h3>Live Monitoring</h3>
+    
+    <div class="setting">
+      <label class="setting-label">Turn the Bridge On/Off</label>
+      <div class="setting-description">Enable C# error detection and diagnostic highlighting</div>
+      <label class="toggle">
+        <input type="checkbox" id="enabled" ${enabled ? 'checked' : ''} onchange="toggleEnabled(this.checked)">
+        Enabled
+      </label>
+    </div>
+
+    <div class="setting">
+      <label class="setting-label">Keep AI Informed</label>
+      <div class="setting-description">Automatically push serious errors into the AI's context so it reacts immediately</div>
+      <label class="toggle">
+        <input type="checkbox" id="keepAiInformed" ${keepAiInformed ? 'checked' : ''} onchange="toggleKeepAiInformed(this.checked)">
+        Enabled
+      </label>
+    </div>
+
+    <div class="setting">
+      <label class="setting-label">Severity Threshold</label>
+      <div class="setting-description">Only show issues at or above this level</div>
+      <select id="severityThreshold" onchange="setSeverityThreshold(this.value)">
+        <option value="0" ${severityThreshold === 0 ? 'selected' : ''}>All (Info, Warning, Error)</option>
+        <option value="1" ${severityThreshold === 1 ? 'selected' : ''}>Warning & Error</option>
+        <option value="2" ${severityThreshold === 2 ? 'selected' : ''}>Error Only</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Error Categories (X-ray Filters)</h3>
+    
+    <div class="detector-grid">
+      <div class="setting">
+        <label class="setting-label">Missing Using</label>
+        <div class="setting-description">Find missing using statements for IDisposable</div>
+        <label class="toggle">
+          <input type="checkbox" id="detector-missingUsing" ${detectors.missingUsing ? 'checked' : ''} onchange="toggleDetector('missingUsing', this.checked)">
+          Watch
+        </label>
+      </div>
+
+      <div class="setting">
+        <label class="setting-label">Empty Catch</label>
+        <div class="setting-description">Detect empty catch blocks that swallow errors</div>
+        <label class="toggle">
+          <input type="checkbox" id="detector-emptyCatch" ${detectors.emptyCatch ? 'checked' : ''} onchange="toggleDetector('emptyCatch', this.checked)">
+          Watch
+        </label>
+      </div>
+
+      <div class="setting">
+        <label class="setting-label">Deep Nesting</label>
+        <div class="setting-description">Find excessively nested code blocks</div>
+        <label class="toggle">
+          <input type="checkbox" id="detector-deepNesting" ${detectors.deepNesting ? 'checked' : ''} onchange="toggleDetector('deepNesting', this.checked)">
+          Watch
+        </label>
+      </div>
+
+      <div class="setting">
+        <label class="setting-label">Async/Await</label>
+        <div class="setting-description">Find missing await when method is async</div>
+        <label class="toggle">
+          <input type="checkbox" id="detector-asyncAwait" ${detectors.asyncAwait ? 'checked' : ''} onchange="toggleDetector('asyncAwait', this.checked)">
+          Watch
+        </label>
+      </div>
+
+      <div class="setting">
+        <label class="setting-label">Resource Leaks</label>
+        <div class="setting-description">Detect IDisposable and event handler leaks</div>
+        <label class="toggle">
+          <input type="checkbox" id="detector-resourceLeaks" ${detectors.resourceLeaks ? 'checked' : ''} onchange="toggleDetector('resourceLeaks', this.checked)">
+          Watch
+        </label>
+      </div>
+
+      <div class="setting">
+        <label class="setting-label">Math Safety</label>
+        <div class="setting-description">Find overflow, division by zero risks</div>
+        <label class="toggle">
+          <input type="checkbox" id="detector-mathSafety" ${detectors.mathSafety ? 'checked' : ''} onchange="toggleDetector('mathSafety', this.checked)">
+          Watch
+        </label>
+      </div>
+
+      <div class="setting">
+        <label class="setting-label">Null Reference</label>
+        <div class="setting-description">Detect potential null reference risks</div>
+        <label class="toggle">
+          <input type="checkbox" id="detector-nullReference" ${detectors.nullReference ? 'checked' : ''} onchange="toggleDetector('nullReference', this.checked)">
+          Watch
+        </label>
+      </div>
+
+      <div class="setting">
+        <label class="setting-label">Static Mutation</label>
+        <div class="setting-description">Find unsafe static field mutations</div>
+        <label class="toggle">
+          <input type="checkbox" id="detector-staticMutation" ${detectors.staticMutation ? 'checked' : ''} onchange="toggleDetector('staticMutation', this.checked)">
+          Watch
+        </label>
+      </div>
+
+      <div class="setting">
+        <label class="setting-label">String Concatenation</label>
+        <div class="setting-description">Find inefficient string concatenation in loops</div>
+        <label class="toggle">
+          <input type="checkbox" id="detector-stringConcatenation" ${detectors.stringConcatenation ? 'checked' : ''} onchange="toggleDetector('stringConcatenation', this.checked)">
+          Watch
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Noise Control</h3>
+    
+    <div class="setting">
+      <label class="setting-label">Confidence Threshold: ${confidenceThreshold}%</label>
+      <div class="setting-description">Only show alerts when analysis confidence is above this percentage</div>
+      <input type="range" id="confidenceThreshold" min="0" max="100" value="${confidenceThreshold}" oninput="updateConfidenceLabel(this.value)" onchange="setConfidenceThreshold(this.value)">
+    </div>
+
+    <div class="setting">
+      <label class="setting-label">Deduplicate Similar Alerts</label>
+      <div class="setting-description">Group identical warnings so you see one message with a count</div>
+      <label class="toggle">
+        <input type="checkbox" id="deduplicateAlerts" ${deduplicateAlerts ? 'checked' : ''} onchange="toggleDeduplicate(this.checked)">
+        Enabled
+      </label>
+    </div>
+
+    <div class="setting">
+      <label class="setting-label">Alert Cooldown (seconds)</label>
+      <div class="setting-description">Prevent repeated pings for the same issue within this window</div>
+      <input type="number" id="alertCooldown" value="${alertCooldown}" min="0" max="300" onchange="setAlertCooldown(this.value)">
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Diagnostic Rainbow</h3>
+    <div class="setting-description">Severity-based coloring for C# errors</div>
+    <div>
+      <span class="severity-badge severity-error">Red</span> Critical (Error)
+    </div>
+    <div>
+      <span class="severity-badge severity-warning">Orange</span> Warning
+    </div>
+    <div>
+      <span class="severity-badge severity-warning">Magenta</span> Environmental Drift
+    </div>
+    <div>
+      <span class="severity-badge severity-warning">Purple</span> Memory Leak
+    </div>
+    <div>
+      <span class="severity-badge severity-info">Cyan</span> Info
+    </div>
+    <div>
+      <span class="severity-badge severity-info">Silver</span> Ternary State
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Telemetry & Logging</h3>
+    
+    <div class="setting">
+      <label class="setting-label">Log Verbosity</label>
+      <div class="setting-description">Controls what the bridge writes to the diagnostics log</div>
+      <select id="logVerbosity" onchange="setLogVerbosity(this.value)">
+        <option value="silent" ${logVerbosity === 'silent' ? 'selected' : ''}>Silent</option>
+        <option value="errors" ${logVerbosity === 'errors' ? 'selected' : ''}>Errors Only</option>
+        <option value="verbose" ${logVerbosity === 'verbose' ? 'selected' : ''}>Verbose</option>
+      </select>
+    </div>
+  </div>
+
+  <script>
+    const vscode = acquireVsCodeApi();
+
+    function toggleEnabled(value) {
+      vscode.postMessage({ command: 'toggleEnabled', value });
+    }
+
+    function toggleKeepAiInformed(value) {
+      vscode.postMessage({ command: 'toggleKeepAiInformed', value });
+    }
+
+    function setSeverityThreshold(value) {
+      vscode.postMessage({ command: 'setSeverityThreshold', value: parseInt(value) });
+    }
+
+    function toggleDetector(detector, value) {
+      vscode.postMessage({ command: 'toggleDetector', detector, value });
+    }
+
+    function updateConfidenceLabel(value) {
+      document.querySelector('label[for="confidenceThreshold"]').textContent = 'Confidence Threshold: ' + value + '%';
+    }
+
+    function setConfidenceThreshold(value) {
+      vscode.postMessage({ command: 'setConfidenceThreshold', value: parseInt(value) });
+    }
+
+    function toggleDeduplicate(value) {
+      vscode.postMessage({ command: 'toggleDeduplicate', value });
+    }
+
+    function setAlertCooldown(value) {
+      vscode.postMessage({ command: 'setAlertCooldown', value: parseInt(value) });
+    }
+
+    function setLogVerbosity(value) {
+      vscode.postMessage({ command: 'setLogVerbosity', value });
+    }
+  </script>
+</body>
+</html>

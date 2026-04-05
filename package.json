@@ -1,8 +1,8 @@
 {
   "name": "swe-obey-me",
-  "displayName": "SWEObeyMe - Surgical MCP Governor",
-  "description": "The surgical MCP server that enforces architectural discipline on AI coding assistants. 700-line enforcement, auto-correction, sci-fi personality.",
-  "version": "1.1.3",
+  "displayName": "SWEObeyMe",
+  "description": "Surgical software engineering governance with MCP protocol compliance",
+  "version": "1.1.4",
   "type": "module",
   "publisher": "stonewolfpc",
   "icon": "icon.png",
@@ -82,6 +82,42 @@
           "type": "number",
           "default": 0,
           "description": "Minimum severity level to report (0=Info, 1=Warning, 2=Error)"
+        },
+        "sweObeyMe.csharpBridge.confidenceThreshold": {
+          "type": "number",
+          "default": 70,
+          "description": "Minimum confidence percentage to show alerts (0-100)"
+        },
+        "sweObeyMe.csharpBridge.deduplicateAlerts": {
+          "type": "boolean",
+          "default": true,
+          "description": "Group identical warnings to reduce noise"
+        },
+        "sweObeyMe.csharpBridge.alertCooldown": {
+          "type": "number",
+          "default": 30,
+          "description": "Cooldown in seconds before repeating same alert"
+        },
+        "sweObeyMe.csharpBridge.logVerbosity": {
+          "type": "string",
+          "default": "errors",
+          "enum": ["silent", "errors", "verbose"],
+          "description": "Log verbosity level"
+        },
+        "sweObeyMe.csharpBridge.detectors": {
+          "type": "object",
+          "default": {
+            "missingUsing": true,
+            "emptyCatch": true,
+            "deepNesting": true,
+            "asyncAwait": true,
+            "resourceLeaks": true,
+            "mathSafety": true,
+            "nullReference": true,
+            "staticMutation": true,
+            "stringConcatenation": true
+          },
+          "description": "Enable/disable specific error detectors"
         }
       }
     }
@@ -89,10 +125,20 @@
   "scripts": {
     "package": "vsce package",
     "publish": "vsce publish",
-    "start": "node index.js"
+    "start": "node index.js",
+    "build": "echo 'No build step required for this project'",
+    "test": "npm run test:integration && npm run test:protocol && npm run test:schemas && npm run test:csharp",
+    "test:integration": "node tests/mcp-integration.js",
+    "test:protocol": "node tests/mcp-protocol-compliance.js",
+    "test:schemas": "node test-tools/test-all-schemas.js",
+    "test:csharp": "node test-tools/test-csharp-tools.js",
+    "lint": "echo 'Linting not configured'",
+    "format": "echo 'Formatting not configured'",
+    "commit": "echo 'Commit tool not configured'"
   },
   "devDependencies": {
-    "@vscode/vsce": "^2.15.0"
+    "@vscode/vsce": "^2.15.0",
+    "jest": "^29.7.0"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "latest",
