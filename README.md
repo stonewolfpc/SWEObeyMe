@@ -492,6 +492,11 @@ MIT License - see LICENSE file for details.
 
 ## Changelog
 
+### [1.1.3] - 2026-04-05
+
+#### Bug Fixes
+- Fixed obey_me_status missing inputSchema property
+
 ### [1.1.2] - 2026-04-05
 
 #### Bug Fixes
