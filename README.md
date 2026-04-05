@@ -499,6 +499,7 @@ MIT License - see LICENSE file for details.
 - Added missing v1.1.0 C# Bridge handlers to MCP server registration
 - Fixed fs import in csharp-bridge.js to use fs/promises for async/await
 - Fixed null reference errors in error rule check functions (all check functions now handle null matches)
+- Fixed invalid inputSchema for 7 MCP tools (get_architectural_directive, get_session_context, get_workflow_status, query_the_oracle, get_config, reset_config, get_config_schema)
 - All 6 C# Bridge tools now properly available and tested (get_csharp_errors, get_csharp_errors_for_file, get_integrity_report, toggle_csharp_error_type, set_csharp_ai_informed, undo_last_surgical_edit)
 
 ### [1.1.1] - 2026-04-04
