@@ -492,6 +492,13 @@ MIT License - see LICENSE file for details.
 
 ## Changelog
 
+### [1.1.2] - 2026-04-05
+
+#### Bug Fixes
+- Fixed C# Bridge handlers not being registered in toolHandlers object
+- Added missing v1.1.0 C# Bridge handlers to MCP server registration
+- All 6 C# Bridge tools now properly available (get_csharp_errors, get_csharp_errors_for_file, get_integrity_report, toggle_csharp_error_type, set_csharp_ai_informed, undo_last_surgical_edit)
+
 ### [1.1.1] - 2026-04-04
 
 #### Bug Fixes
