@@ -1,21 +1,92 @@
-MIT License
+# SWEObeyMe Dual License
 
-Copyright (c) 2026 Stone Wolf Systems
+SWEObeyMe is dual-licensed under the terms outlined below. You may choose to use this software under either license.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+---
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+## License A: SWEObeyMe Community License
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+**Free Use Permitted For:**
+- Individual developers
+- Independent developers / indie devs
+- Companies with annual revenue under $10M USD
+- Research and academic use
+- Educational institutions and students
+- Open source projects
+
+**Terms:**
+- Free to use, modify, and distribute
+- Attribution required: You must include the original license and copyright notice
+- No warranty provided (as-is)
+- Liability limitation applies
+
+**Restrictions:**
+- Cannot remove or alter license notices
+- Cannot claim ownership of the original software
+- Cannot use trademark without permission
+
+**Commercial Use:**
+- Allowed for companies under $10M annual revenue
+- Allowed for indie developers and small businesses
+- Commercial integration permitted under revenue threshold
+
+---
+
+## License B: SWEObeyMe Enterprise License
+
+**Required For:**
+- Companies with annual revenue over $10M USD
+- Enterprise deployments (large-scale internal use)
+- Commercial integration in enterprise products
+- Redistribution as part of commercial offerings
+- SaaS platforms using SWEObeyMe
+
+**Terms:**
+- Commercial license available for purchase
+- Contact: stonewolfpc@github.com for licensing details
+- Priority support included
+- Custom integration support available
+- No attribution requirement (negotiable)
+
+**Benefits:**
+- Full commercial rights
+- Priority bug fixes and features
+- Dedicated support channel
+- Custom SLA options
+- White-label options available
+
+---
+
+## How to Choose Your License
+
+**Use Community License (License A) if:**
+- You are an individual developer
+- Your company earns less than $10M annually
+- You are using SWEObeyMe for research or education
+- You are building an open source project
+
+**Use Enterprise License (License B) if:**
+- Your company earns $10M+ annually
+- You are deploying at enterprise scale
+- You are integrating SWEObeyMe into a commercial product
+- You need priority support or custom features
+
+---
+
+## Contact
+
+For Enterprise License inquiries:
+- Email: stonewolfpc@github.com
+- GitHub: https://github.com/stonewolfpc/SWEObeyMe
+
+---
+
+## Disclaimer
+
+THIS SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+---
+
+## Version
+
+This dual license applies to SWEObeyMe version 1.2.0 and later.

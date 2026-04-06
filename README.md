@@ -501,9 +501,79 @@ See `CONTRIBUTING.md` for detailed guidelines.
 
 ## License
 
-MIT License - see LICENSE file for details.
+SWEObeyMe is dual-licensed. You may choose to use this software under either license:
+
+### License A: SWEObeyMe Community License (Free)
+
+**Free Use Permitted For:**
+- Individual developers
+- Independent developers / indie devs
+- Companies with annual revenue under $10M USD
+- Research and academic use
+- Educational institutions and students
+- Open source projects
+
+**Terms:**
+- Free to use, modify, and distribute
+- Attribution required
+- No warranty provided (as-is)
+
+### License B: SWEObeyMe Enterprise License (Commercial)
+
+**Required For:**
+- Companies with annual revenue over $10M USD
+- Enterprise deployments (large-scale internal use)
+- Commercial integration in enterprise products
+- Redistribution as part of commercial offerings
+- SaaS platforms using SWEObeyMe
+
+**Contact for Enterprise License:**
+- Email: stonewolfpc@github.com
+- GitHub: https://github.com/stonewolfpc/SWEObeyMe
+
+See [LICENSE](LICENSE) file for complete details.
 
 ## Changelog
+
+### [1.2.1] - 2026-04-05
+
+#### AI First-Pass Success Enhancements
+- **Fixed validation correctness** - Replaced incorrect `fs.existsSync` with proper async `fs.access` in `validateImports` function
+- **Added preflight workflow tool** - New `preflight_change` tool orchestrates complete validation sequence (get_file_context → analyze_change_impact → verify_imports → check_test_coverage → dry_run_write_file) before file writes
+- **Enhanced read_file context injection** - Added compact project map, file dependency hints, and suggested next tools to every file read operation
+- **Added project AI index** - Created `AI_INDEX.md` providing instant orientation guide with entry points, core architecture, critical workflows, and common pitfalls
+- **Added golden regression tests** - Created `test-tools/golden-regression-tests.js` for testing expected success/failure outputs of critical tools
+- **Tightened tool guidance text** - Enhanced descriptions for key tools (obey_surgical_plan, read_file, write_file, get_file_context, analyze_change_impact) with decision-oriented guidance including "use this when", "do not use this if", and "best next tool"
+- **Total tools**: 63 MCP tools (up from 62 in v1.2.0)
+
+**Context**: These improvements enhance the AI's ability to perform tasks correctly on the first attempt by providing better context, mandatory validation workflows, and clearer decision-oriented tool guidance.
+
+### [1.2.0] - 2026-04-05
+
+#### Dual Licensing Model
+- **SWEObeyMe Community License (Free)**: Free for individuals, indie devs, companies under $10M revenue, research, and education
+- **SWEObeyMe Enterprise License (Commercial)**: Required for companies over $10M, enterprise deployments, commercial integration, and SaaS platforms
+- **License Change**: Transitioned from MIT to dual-licensing model to support sustainable development
+- **Contact**: Enterprise license inquiries at stonewolfpc@github.com
+
+### [1.1.5] - 2026-04-05
+
+#### Offline Documentation Suite for AI Development
+- **Llama.cpp Documentation**: Added LlamaCpp.net (.NET bindings) and LlamaCppUnity (Unity bindings) documentation with proper Apache 2.0 and MIT license attribution
+- **Mathematical Reference Library**: Comprehensive mathematical documentation for AI/ML programming including algorithm complexity, mathematical symbols, linear algebra, probability/statistics, and discrete mathematics
+- **Code Search Enhancement**: Added language-aware code search with 18 language support and importance-based ranking
+- **Dedicated Search Tools**: 
+  - `search_llama_docs` / `list_llama_docs` - Search and list llama.cpp documentation offline
+  - `search_math_docs` / `list_math_docs` - Search and list mathematical documentation offline
+  - `search_code_files` - Search code with language-aware ranking
+  - `get_code_language_stats` - Get project language distribution
+  - `search_code_pattern` - Regex pattern search by language
+  - `detect_file_language` - Detect language from file extension
+  - `find_code_files` - Find files by language
+- **Sample Code Examples**: Created example files for C++, Python, Java, Rust, Go, and TypeScript demonstrating language-specific patterns and anti-patterns
+- **Total Tools**: 62 MCP tools (up from 58 in v1.1.4)
+
+**Context**: This update provides comprehensive offline documentation for AI development, particularly for users building llama.cpp replacements or working with LLM integration in various programming environments.
 
 ### [1.1.4] - 2026-04-05
 

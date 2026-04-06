@@ -2,12 +2,16 @@
 !lib/**
 !node_modules/**
 !utils/**
+!docs/**
+!examples/**
 !index.js
 !extension.js
 !quotes.js
 !icon.png
 !package.json
 !package-lock.json
+!README.md
+!LICENSE
 !.sweignore
 !.sweobeyme-contract.md
 
@@ -24,10 +28,6 @@ test-electron/
 .git/
 .gitignore
 .github/
-
-# Exclude documentation
-README.md
-LICENSE
 
 # Exclude development files
 .vscode/

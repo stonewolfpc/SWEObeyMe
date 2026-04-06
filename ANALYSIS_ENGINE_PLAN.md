@@ -3,6 +3,8 @@
 > **Status**: Enhanced existing JavaScript-based analysis engine instead of .NET 10 implementation (v1.1.4 - 2026-04-05)
 >
 > **Note**: Due to environment limitations (no internet access for NuGet packages, .NET 10 SDK not installed), the analysis engine was enhanced using the existing JavaScript-based pattern matching system in `lib/csharp-bridge.js` with confidence scoring, deduplication, and cooldown mechanisms. This provides the same noise control benefits without requiring .NET infrastructure.
+>
+> **Latest Update (v1.1.5 - 2026-04-05)**: Added offline documentation suite for AI development including llama.cpp documentation and mathematical reference library. This supports users building llama.cpp replacements or working with LLM integration.
 
 ## Overview
 Build high-confidence C# and Java analysis engines for Windsurf X-ray vision using .NET 10, minimizing false positives through multi-layered confidence scoring.

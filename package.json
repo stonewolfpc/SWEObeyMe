@@ -1,8 +1,8 @@
 {
   "name": "swe-obey-me",
   "displayName": "SWEObeyMe",
-  "description": "Surgical software engineering governance with MCP protocol compliance",
-  "version": "1.1.4",
+  "description": "SWEObeyMe - Surgical governance system for VS Code with MCP server integration",
+  "version": "1.2.1",
   "type": "module",
   "publisher": "stonewolfpc",
   "icon": "icon.png",
@@ -146,9 +146,21 @@
     "jimp": "^1.6.0",
     "zod": "latest"
   },
+  "files": [
+    "lib/**",
+    "docs/**",
+    "examples/**",
+    "utils/**",
+    "index.js",
+    "extension.js",
+    "icon.png",
+    "README.md",
+    "LICENSE",
+    "package.json"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/stonewolfpc/SWEObeyMe"
   },
-  "license": "MIT"
+  "license": "SEE LICENSE IN LICENSE FILE"
 }
