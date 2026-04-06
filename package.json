@@ -146,18 +146,6 @@
     "jimp": "^1.6.0",
     "zod": "latest"
   },
-  "files": [
-    "lib/**",
-    "docs/**",
-    "examples/**",
-    "utils/**",
-    "index.js",
-    "extension.js",
-    "icon.png",
-    "README.md",
-    "LICENSE",
-    "package.json"
-  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/stonewolfpc/SWEObeyMe"
