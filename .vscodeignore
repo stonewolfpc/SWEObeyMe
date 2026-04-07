@@ -21,6 +21,7 @@ __tests__/
 *.test.js
 *.spec.js
 **/test/**
+test-tools/
 vscode/
 test-electron/
 
@@ -64,6 +65,10 @@ dump*.txt
 *.log
 *.bak
 *.swp
+
+# Exclude error logs (test artifacts)
+error_log.json
+error_patterns.json
 
 # Exclude backup directories
 project_registry/
