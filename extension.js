@@ -265,18 +265,23 @@ async function activate(context) {
 
   // Register command to show menu from status bar
   const showMenuCommand = vscode.commands.registerCommand('sweObeyMe.showMenu', async () => {
-    const options = [
-      { label: 'Query Oracle', description: 'Get surgical wisdom', command: 'sweObeyMe.queryOracle' },
-      { label: 'C# Bridge Settings', description: 'Configure C# analysis', command: 'sweObeyMe.csharpSettings' },
-      { label: 'Reload Window', description: 'Reload Windsurf to activate changes', command: 'workbench.action.reloadWindow' },
-    ];
+    try {
+      const options = [
+        { label: 'Query Oracle', description: 'Get surgical wisdom', command: 'sweObeyMe.queryOracle' },
+        { label: 'C# Bridge Settings', description: 'Configure C# analysis', command: 'sweObeyMe.csharpSettings' },
+        { label: 'Reload Window', description: 'Reload Windsurf to activate changes', command: 'workbench.action.reloadWindow' },
+      ];
 
-    const selected = await vscode.window.showQuickPick(options, {
-      placeHolder: 'Select SWEObeyMe action',
-    });
+      const selected = await vscode.window.showQuickPick(options, {
+        placeHolder: 'Select SWEObeyMe action',
+      });
 
-    if (selected) {
-      vscode.commands.executeCommand(selected.command);
+      if (selected) {
+        await vscode.commands.executeCommand(selected.command);
+      }
+    } catch (error) {
+      console.error('[SWEObeyMe] Error in showMenu:', error);
+      vscode.window.showErrorMessage(`Error: ${error.message}`);
     }
   });
   context.subscriptions.push(showMenuCommand);
@@ -305,11 +310,15 @@ async function activate(context) {
   context.subscriptions.push(csharpSettingsCommand);
 
   // Register C# Bridge settings webview provider
-  const { CSharpSettingsProvider } = await import(path.join(__dirname, 'lib', 'csharp-settings-provider.js'));
-  const csharpSettingsProvider = new CSharpSettingsProvider(context);
-  context.subscriptions.push(
-    vscode.window.registerWebviewViewProvider('sweObeyMe.csharpSettings', csharpSettingsProvider),
-  );
+  try {
+    const { CSharpSettingsProvider } = await import(path.join(__dirname, 'lib', 'csharp-settings-provider.js'));
+    const csharpSettingsProvider = new CSharpSettingsProvider(context);
+    context.subscriptions.push(
+      vscode.window.registerWebviewViewProvider('sweObeyMe.csharpSettings', csharpSettingsProvider),
+    );
+  } catch (error) {
+    console.error('[SWEObeyMe] Failed to register C# settings provider:', error);
+  }
 
   // Register CodeLens provider for C# files
   const csharpCodeLensProvider = vscode.languages.registerCodeLensProvider('csharp', {
