@@ -1,8 +1,8 @@
 {
   "name": "swe-obey-me",
   "displayName": "SWEObeyMe",
-  "description": "SWEObeyMe - Surgical governance system for VS Code with MCP server integration. v2.0.0-beta: Project Awareness & Context Switching Layer with automatic project detection, context switching, and project-specific rule enforcement.",
-  "version": "2.0.0-beta",
+  "description": "SWEObeyMe - Surgical governance system for VS Code with MCP server integration. v2.0.1-beta: Project Awareness & Context Switching Layer with automatic project detection, context switching, and project-specific rule enforcement. Optimized package size with improved .vscodeignore.",
+  "version": "2.0.1-beta",
   "type": "module",
   "publisher": "stonewolfpc",
   "icon": "icon.png",

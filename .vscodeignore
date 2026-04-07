@@ -32,5 +32,61 @@ test-electron/
 # Exclude development files
 .vscode/
 
-# Exclude dump files
+# Exclude node_modules
+node_modules/
+
+# Exclude documentation files
+ANTI_PATTERNS.md
+BEST_PRACTICES.md
+CODE_OF_CONDUCT.md
+COMMON_PATTERNS.md
+CONFIGURATION_EXAMPLES.md
+CONTRIBUTING.md
+DECISION_TREE.md
+FAQ.md
+PERFORMANCE_TIPS.md
+QUICKSTART.md
+SECURITY.md
+TROUBLESHOOTING.md
+docs/
+*.md
+!README.md
+
+# Exclude build artifacts
+dist/
+build/
+*.vsix
+*.tgz
+
+# Exclude temp and dump files
 dump*.txt
+*.tmp
+*.log
+*.bak
+*.swp
+
+# Exclude backup directories
+project_registry/
+backup/
+backups/
+
+# Exclude tool memory and corpus files
+tool-memory.json
+scripts/tool-memory.json
+math_corpus/
+godot_corpus/
+
+# Exclude configuration files
+.eslintrc.js
+.prettierrc
+.lintstagedrc.js
+.czrc
+.releaserc.json
+.husky/
+
+# Exclude workflows
+.windsurf/
+
+# Exclude schemas and project files
+project_map.schema.json
+project_map.json
