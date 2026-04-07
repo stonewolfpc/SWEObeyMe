@@ -1,0 +1,105 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2026-04-07T11:08:00.000Z",
+  "categories": [
+    {
+      "name": "calculus",
+      "path": "math_corpus/calculus",
+      "description": "Calculus references including limits, derivatives, integrals, and multivariate calculus",
+      "documents": []
+    },
+    {
+      "name": "linear_algebra",
+      "path": "math_corpus/linear_algebra",
+      "description": "Linear algebra references including matrices, vectors, linear transformations, and eigenvalues",
+      "documents": []
+    },
+    {
+      "name": "statistics",
+      "path": "math_corpus/statistics",
+      "description": "Statistics references including probability distributions, hypothesis testing, and regression",
+      "documents": []
+    },
+    {
+      "name": "probability",
+      "path": "math_corpus/probability",
+      "description": "Probability theory references including random variables, distributions, and stochastic processes",
+      "documents": []
+    },
+    {
+      "name": "discrete_math",
+      "path": "math_corpus/discrete_math",
+      "description": "Discrete mathematics references including combinatorics, graph theory, and number theory",
+      "documents": []
+    },
+    {
+      "name": "graph_theory",
+      "path": "math_corpus/graph_theory",
+      "description": "Graph theory references including graph algorithms, network flows, and graph properties",
+      "documents": []
+    },
+    {
+      "name": "geometry",
+      "path": "math_corpus/geometry",
+      "description": "Geometry references including Euclidean geometry, differential geometry, and topology",
+      "documents": []
+    },
+    {
+      "name": "numerical_methods",
+      "path": "math_corpus/numerical_methods",
+      "description": "Numerical methods references including numerical integration, optimization, and approximation",
+      "documents": []
+    },
+    {
+      "name": "optimization",
+      "path": "math_corpus/optimization",
+      "description": "Optimization references including linear programming, convex optimization, and gradient descent",
+      "documents": []
+    },
+    {
+      "name": "algorithms",
+      "path": "math_corpus/algorithms",
+      "description": "Algorithm references including sorting, searching, and algorithm analysis",
+      "documents": []
+    },
+    {
+      "name": "complexity",
+      "path": "math_corpus/complexity",
+      "description": "Computational complexity references including time/space complexity, complexity classes, and reduction",
+      "documents": []
+    },
+    {
+      "name": "physics_math",
+      "path": "math_corpus/physics_math",
+      "description": "Mathematical physics references including differential equations, quantum mechanics, and statistical physics",
+      "documents": []
+    },
+    {
+      "name": "misc_identities",
+      "path": "math_corpus/misc_identities",
+      "description": "Miscellaneous mathematical identities, formulas, and reference tables",
+      "documents": []
+    }
+  ],
+  "documents": [],
+  "metadata": {
+    "totalDocuments": 0,
+    "totalCategories": 13,
+    "supportedLicenses": [
+      "MIT",
+      "Apache-2.0",
+      "BSD-2-Clause",
+      "BSD-3-Clause",
+      "CC0",
+      "Public Domain",
+      "OpenStax",
+      "MIT OCW"
+    ]
+  },
+  "instructions": {
+    "addingDocuments": "Place open-license math references in the appropriate subfolder. Update this index.json with document metadata.",
+    "downloadingSources": "Download from MIT OCW, OpenStax, public domain sources, or university lecture notes with open licenses.",
+    "namingConvention": "Use clear filenames like: calculus_limits_openstax.pdf, linear_algebra_mit_ocw.pdf",
+    "licenseCompliance": "Only include documents with explicit open licenses or public domain status."
+  }
+}

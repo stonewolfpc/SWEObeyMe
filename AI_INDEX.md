@@ -8,13 +8,13 @@ SWEObeyMe is an MCP (Model Context Protocol) server that provides surgical gover
 
 ## Entry Points
 
-- **index.js**: Main MCP server entry point (62 tools available)
+- **index.js**: Main MCP server entry point (68 tools available)
 - **extension.js**: VSCode extension entry point
 - **package.json**: Configuration and dependencies
 
 ## Core Architecture
 
-### lib/tools/ (62 MCP Tools)
+### lib/tools/ (68 MCP Tools)
 - **handlers.js**: Main tool handler registry
 - **registry.js**: Tool definitions and schemas
 - **csharp-handlers.js**: C# Bridge error detection tools
@@ -25,6 +25,7 @@ SWEObeyMe is an MCP (Model Context Protocol) server that provides surgical gover
 - **config-handlers.js**: Configuration management
 - **feedback-handlers.js**: Error recovery and guidance
 - **project-integrity-handlers.js**: Project integrity checks
+- **project-memory-handlers.js**: Project memory and convention tracking (NEW in v1.3.0)
 
 ### lib/ (Core Systems)
 - **enforcement.js**: Surgical rule enforcement
@@ -38,6 +39,9 @@ SWEObeyMe is an MCP (Model Context Protocol) server that provides surgical gover
 - **math-safety.js**: Mathematical expression safety
 - **file-operation-audit.js**: Duplicate write detection
 - **file-registry.js**: File tracking and deduplication
+- **rule-engine.js**: Rule enforcement and compliance checking (NEW in v1.3.0)
+- **project-memory.js**: Persistent project structure and convention tracking (NEW in v1.3.0)
+- **fallback-system.js**: Intelligent fallback behavior for failures (NEW in v1.3.0)
 
 ### Configuration Files
 - **.sweignore**: Files excluded from AI context
@@ -64,8 +68,9 @@ SWEObeyMe is an MCP (Model Context Protocol) server that provides surgical gover
 - **surgical-compliance.js**: Surgical rule enforcement tests
 
 ### test-tools/
-- **test-all-schemas.js**: Schema validation for all 62 tools
+- **test-all-schemas.js**: Schema validation for all 68 tools
 - **test-csharp-tools.js**: C# Bridge tool registration tests
+- **golden-regression-tests.js**: Expected success/failure outputs for critical tools
 
 ## Key Rules for AI
 
@@ -74,6 +79,8 @@ SWEObeyMe is an MCP (Model Context Protocol) server that provides surgical gover
 3. **Use `preflight_change` for non-trivial changes** - Orchestrates full validation
 4. **Check .sweignore** - Protected files cannot be modified
 5. **Line count limit is 700** - Use `refactor_move_block` or `extract_to_new_file` if exceeded
+6. **Use project memory tools** - `index_project_structure` on first access, `suggest_file_location` for new files
+7. **Follow rule engine** - Search before edit, explain before act, tools before manual edits
 
 ## Critical Workflows
 
@@ -113,7 +120,8 @@ SWEObeyMe is an MCP (Model Context Protocol) server that provides surgical gover
 
 ## Version Information
 
-- Current version: 1.2.0
+- Current version: 1.3.0
 - License: Dual licensing (Community + Enterprise)
-- Total MCP tools: 62
+- Total MCP tools: 68
 - C# Bridge: Integrated with error detection
+- Workflow Automation: Rule engine, project memory, fallback system (NEW in v1.3.0)

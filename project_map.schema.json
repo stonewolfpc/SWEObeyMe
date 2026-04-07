@@ -1,0 +1,297 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Project Map Schema",
+  "description": "Schema for SWEObeyMe project_map.json - the source of truth for project structure",
+  "type": "object",
+  "required": ["version", "project", "structure", "conventions", "rules", "heuristics", "audit"],
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "Version of the project map schema"
+    },
+    "project": {
+      "type": "object",
+      "required": ["name", "description", "rootDomain"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Project name"
+        },
+        "description": {
+          "type": "string",
+          "description": "Project description"
+        },
+        "rootDomain": {
+          "type": "string",
+          "description": "Primary domain of the project"
+        }
+      }
+    },
+    "structure": {
+      "type": "object",
+      "required": ["folders", "files"],
+      "properties": {
+        "folders": {
+          "type": "object",
+          "description": "Map of folder paths to folder metadata",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "purpose": {
+                "type": "string",
+                "description": "Purpose of this folder"
+              },
+              "domain": {
+                "type": "string",
+                "description": "Domain this folder belongs to"
+              },
+              "createdAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "lastModified": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        },
+        "files": {
+          "type": "object",
+          "description": "Map of file paths to file metadata",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "purpose": {
+                "type": "string",
+                "description": "Purpose of this file"
+              },
+              "module": {
+                "type": "string",
+                "description": "Module this file belongs to"
+              },
+              "domain": {
+                "type": "string",
+                "description": "Domain this file belongs to"
+              },
+              "conceptualUnits": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Conceptual units contained in this file"
+              },
+              "dependencies": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Files this file depends on"
+              },
+              "lineCount": {
+                "type": "number",
+                "description": "Number of lines in the file"
+              },
+              "createdAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "lastModified": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        }
+      }
+    },
+    "conventions": {
+      "type": "object",
+      "required": ["naming", "domains", "architecturalBoundaries"],
+      "properties": {
+        "naming": {
+          "type": "object",
+          "properties": {
+            "files": {
+              "type": "object",
+              "description": "File naming conventions by type"
+            },
+            "folders": {
+              "type": "object",
+              "description": "Folder naming conventions by type"
+            },
+            "modules": {
+              "type": "object",
+              "description": "Module naming conventions"
+            }
+          }
+        },
+        "domains": {
+          "type": "object",
+          "description": "Domain definitions and conventions",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "folder": {
+                "type": "string",
+                "description": "Folder path for this domain"
+              },
+              "purpose": {
+                "type": "string",
+                "description": "Purpose of this domain"
+              },
+              "allowedFileTypes": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Allowed file types in this domain"
+              },
+              "testLocation": {
+                "type": "string",
+                "description": "Location of tests for this domain"
+              }
+            }
+          }
+        },
+        "architecturalBoundaries": {
+          "type": "object",
+          "description": "Architectural boundary rules",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "allowedItems": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Allowed items in this boundary"
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of this boundary"
+              }
+            }
+          }
+        }
+      }
+    },
+    "rules": {
+      "type": "object",
+      "properties": {
+        "separationOfConcerns": {
+          "type": "object",
+          "properties": {
+            "maxConceptualUnitsPerFile": {
+              "type": "number",
+              "description": "Maximum conceptual units allowed per file"
+            },
+            "maxLinesPerFile": {
+              "type": "number",
+              "description": "Maximum lines per file"
+            },
+            "minLinesForSplit": {
+              "type": "number",
+              "description": "Minimum lines before considering split"
+            },
+            "requireDistinctDomains": {
+              "type": "boolean",
+              "description": "Whether files must belong to distinct domains"
+            }
+          }
+        },
+        "naming": {
+          "type": "object",
+          "properties": {
+            "enforceCamelCase": {
+              "type": "boolean"
+            },
+            "enforcePascalCaseForClasses": {
+              "type": "boolean"
+            },
+            "enforceSnakeCaseForConstants": {
+              "type": "boolean"
+            },
+            "enforceKebabCaseForFiles": {
+              "type": "boolean"
+            }
+          }
+        },
+        "documentation": {
+          "type": "object",
+          "properties": {
+            "requireFilePurpose": {
+              "type": "boolean"
+            },
+            "requireModuleDomain": {
+              "type": "boolean"
+            },
+            "updateOnStructuralChange": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    "heuristics": {
+      "type": "object",
+      "properties": {
+        "conceptualUnitDetection": {
+          "type": "object",
+          "properties": {
+            "indicators": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "domainDetection": {
+          "type": "object",
+          "properties": {
+            "indicators": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "submoduleCreation": {
+          "type": "object",
+          "properties": {
+            "triggers": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "audit": {
+      "type": "object",
+      "properties": {
+        "lastUpdated": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "lastValidation": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "driftDetected": {
+          "type": "boolean"
+        },
+        "driftDetails": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

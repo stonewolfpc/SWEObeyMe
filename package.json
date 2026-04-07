@@ -1,8 +1,8 @@
 {
   "name": "swe-obey-me",
   "displayName": "SWEObeyMe",
-  "description": "SWEObeyMe - Surgical governance system for VS Code with MCP server integration",
-  "version": "1.2.1",
+  "description": "SWEObeyMe - Surgical governance system for VS Code with MCP server integration. v2.0.0-beta: Project Awareness & Context Switching Layer with automatic project detection, context switching, and project-specific rule enforcement.",
+  "version": "2.0.0-beta",
   "type": "module",
   "publisher": "stonewolfpc",
   "icon": "icon.png",
@@ -35,10 +35,46 @@
         "category": "SWEObeyMe"
       },
       {
-        "command": "sweObeyMe.openCSharpSettings",
-        "title": "C# Bridge Settings",
+        "command": "sweObeyMe.showMenu",
+        "title": "Show SWEObeyMe Menu",
+        "category": "SWEObeyMe",
+        "icon": "$(menu)"
+      },
+      {
+        "command": "sweObeyMe.csharpSettings",
+        "title": "Open C# Bridge Settings",
         "category": "SWEObeyMe",
         "icon": "$(settings-gear)"
+      },
+      {
+        "command": "sweObeyMe.analyzeCSharp",
+        "title": "Analyze Current C# File",
+        "category": "SWEObeyMe",
+        "icon": "$(search)"
+      },
+      {
+        "command": "sweObeyMe.showDiagnostics",
+        "title": "Show Diagnostics Panel",
+        "category": "SWEObeyMe",
+        "icon": "$(warning)"
+      },
+      {
+        "command": "sweObeyMe.openCSharpSettings",
+        "title": "SWEObeyMe Settings",
+        "category": "SWEObeyMe",
+        "icon": "$(settings-gear)"
+      },
+      {
+        "command": "sweObeyMe.gitStatus",
+        "title": "Show Git Status",
+        "category": "SWEObeyMe",
+        "icon": "$(git-branch)"
+      },
+      {
+        "command": "sweObeyMe.gitBranch",
+        "title": "Switch Git Branch",
+        "category": "SWEObeyMe",
+        "icon": "$(git-branch-create)"
       }
     ],
     "viewsContainers": {
@@ -55,7 +91,7 @@
         {
           "type": "webview",
           "id": "sweObeyMe.csharpSettings",
-          "name": "C# Bridge",
+          "name": "Settings",
           "when": "config.sweObeyMe.enabled"
         }
       ]
@@ -67,6 +103,11 @@
           "type": "boolean",
           "default": true,
           "description": "Enable SWEObeyMe MCP Server"
+        },
+        "sweObeyMe.backupPath": {
+          "type": "string",
+          "default": "",
+          "description": "Custom backup directory path (leave empty for default)"
         },
         "sweObeyMe.csharpBridge.enabled": {
           "type": "boolean",
@@ -118,6 +159,145 @@
             "stringConcatenation": true
           },
           "description": "Enable/disable specific error detectors"
+        },
+        "sweObeyMe.initialization.scanOnNewProject": {
+          "type": "boolean",
+          "default": true,
+          "description": "Always scan on new project"
+        },
+        "sweObeyMe.initialization.scanOnLoad": {
+          "type": "boolean",
+          "default": false,
+          "description": "Always scan on load"
+        },
+        "sweObeyMe.initialization.scanOnlyWhenAsked": {
+          "type": "boolean",
+          "default": false,
+          "description": "Scan only when asked"
+        },
+        "sweObeyMe.initialization.scanOnlyOnProjectMapChange": {
+          "type": "boolean",
+          "default": false,
+          "description": "Scan only when project map changes"
+        },
+        "sweObeyMe.initialization.neverScan": {
+          "type": "boolean",
+          "default": false,
+          "description": "Never scan"
+        },
+        "sweObeyMe.initialization.reportDetailLevel": {
+          "type": "string",
+          "default": "standard",
+          "enum": ["minimal", "standard", "full", "debug"],
+          "description": "Report detail level"
+        },
+        "sweObeyMe.initialization.digitalDebtThreshold": {
+          "type": "string",
+          "default": "20",
+          "enum": ["10", "20", "50", "always"],
+          "description": "Digital debt threshold for warnings"
+        },
+        "sweObeyMe.initialization.autoFixNaming": {
+          "type": "boolean",
+          "default": false,
+          "description": "Auto-fix naming inconsistencies"
+        },
+        "sweObeyMe.initialization.autoFixFolderStructure": {
+          "type": "boolean",
+          "default": false,
+          "description": "Auto-fix folder structure"
+        },
+        "sweObeyMe.initialization.autoFixDocumentation": {
+          "type": "boolean",
+          "default": false,
+          "description": "Auto-fix documentation"
+        },
+        "sweObeyMe.initialization.autoFixTests": {
+          "type": "boolean",
+          "default": false,
+          "description": "Auto-fix tests"
+        },
+        "sweObeyMe.initialization.autoFixDigitalDebt": {
+          "type": "boolean",
+          "default": false,
+          "description": "Auto-fix digital debt"
+        },
+        "sweObeyMe.initialization.neverAutoFix": {
+          "type": "boolean",
+          "default": true,
+          "description": "Never auto-fix"
+        },
+        "sweObeyMe.initialization.toolPriority": {
+          "type": "string",
+          "default": "mcp",
+          "enum": ["mcp", "windsurf", "none"],
+          "description": "Tool priority: MCP tools first, Windsurf tools second, or no built-in tools"
+        },
+        "sweObeyMe.initialization.transparencyMode": {
+          "type": "string",
+          "default": "major",
+          "enum": ["everything", "major", "silent"],
+          "description": "Transparency mode: explain everything, only major decisions, or silent"
+        },
+        "sweObeyMe.general.statusBarEnabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show SWEObeyMe status bar indicator"
+        },
+        "sweObeyMe.general.codeLensEnabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show CodeLens for quick actions on C# files"
+        },
+        "sweObeyMe.general.hotReloadEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable hot-reload for extension changes"
+        },
+        "sweObeyMe.mathCorpus.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable math corpus for mathematical reference"
+        },
+        "sweObeyMe.mathCorpus.autoLookup": {
+          "type": "boolean",
+          "default": false,
+          "description": "Automatically lookup math concepts when detected"
+        },
+        "sweObeyMe.godotIntegration.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable Godot project detection and enforcement"
+        },
+        "sweObeyMe.godotIntegration.strictMode": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable strict Godot project structure enforcement"
+        },
+        "sweObeyMe.godotIntegration.autoDetect": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically detect Godot projects on workspace open"
+        },
+        "sweObeyMe.notifications.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show SWEObeyMe notifications"
+        },
+        "sweObeyMe.notifications.soundEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Play notification sounds"
+        },
+        "sweObeyMe.advanced.debugMode": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable debug logging for troubleshooting"
+        },
+        "sweObeyMe.advanced.experimentalFeatures": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable experimental features (may be unstable)"
         }
       }
     }
@@ -132,13 +312,28 @@
     "test:protocol": "node tests/mcp-protocol-compliance.js",
     "test:schemas": "node test-tools/test-all-schemas.js",
     "test:csharp": "node test-tools/test-csharp-tools.js",
-    "lint": "echo 'Linting not configured'",
-    "format": "echo 'Formatting not configured'",
-    "commit": "echo 'Commit tool not configured'"
+    "lint": "eslint . --ext .js",
+    "lint:fix": "eslint . --ext .js --fix",
+    "format": "prettier --write \"**/*.{js,json,md}\"",
+    "format:check": "prettier --check \"**/*.{js,json,md}\"",
+    "prepare": "husky install",
+    "commit": "git-cz"
   },
   "devDependencies": {
     "@vscode/vsce": "^2.15.0",
-    "jest": "^29.7.0"
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^10.0.5",
+    "@semantic-release/npm": "^11.0.2",
+    "@semantic-release/commit-analyzer": "^11.1.0",
+    "@semantic-release/release-notes-generator": "^12.1.0",
+    "semantic-release": "^23.0.8",
+    "jest": "^29.7.0",
+    "eslint": "^8.57.0",
+    "prettier": "^3.2.5",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.2",
+    "commitizen": "^4.3.0"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "latest",

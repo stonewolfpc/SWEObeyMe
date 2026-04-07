@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="shield-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2563eb;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1d4ed8;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="check-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#22c55e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16a34a;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="64" cy="64" r="60" fill="url(#shield-gradient)" />
+  
+  <!-- Shield shape -->
+  <path d="M64 20 L92 32 L92 60 Q92 80 64 100 Q36 80 36 60 L36 32 Z" 
+        fill="none" 
+        stroke="white" 
+        stroke-width="4" 
+        stroke-linejoin="round"/>
+  
+  <!-- Checkmark inside shield -->
+  <path d="M48 60 L60 72 L80 48" 
+        fill="none" 
+        stroke="url(#check-gradient)" 
+        stroke-width="6" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"/>
+  
+  <!-- Small gear/surgical symbol at top -->
+  <circle cx="64" cy="28" r="6" fill="white" />
+  <path d="M64 22 L64 24 M64 32 L64 34 M58 28 L60 28 M68 28 L70 28" 
+        stroke="white" 
+        stroke-width="2" 
+        stroke-linecap="round"/>
+</svg>

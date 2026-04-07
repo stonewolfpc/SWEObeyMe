@@ -51,3 +51,11 @@ INSTALLATION.md
 
 # Coverage
 coverage/
+
+# Error logs (development artifacts)
+error_log.json
+error_patterns.json
+
+# Generated files (can be regenerated)
+project_map.json
+tool-memory.json

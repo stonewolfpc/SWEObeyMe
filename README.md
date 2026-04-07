@@ -1,6 +1,18 @@
 # SWEObeyMe MCP Server
 
-> **v1.1.0 C# Bridge (April 2026):** Enhanced C# error detection with pattern-based analysis, Surgical Integrity Score throttling for AI awareness, diagnostic rainbow coloring, get_integrity_report tool, undo_last_surgical_edit rollback tool, and MCP integration for automatic error injection.
+[![Version](https://img.shields.io/badge/version-2.0.0--beta-blue.svg)](https://github.com/stonewolfpc/SWEObeyMe)
+[![License](https://img.shields.io/badge/license-Dual--License-yellow.svg)](LICENSE)
+[![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-green.svg)](https://nodejs.org)
+[![VS Code](https://img.shields.io/badge/VS%20Code-Extension-purple.svg)](https://marketplace.visualstudio.com)
+[![Code Style](https://img.shields.io/badge/code%20style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
+
+[![Twitter](https://img.shields.io/badge/Twitter-@SWEObeyMe-blue.svg)](https://twitter.com/SWEObeyMe)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-SWEObeyMe-blue.svg)](https://linkedin.com/company/SWEObeyMe)
+[![Donate](https://img.shields.io/badge/Donate-PayPal-blue.svg)](https://www.paypal.com/donate/?business=9QSRV22WNLFS6&no_recurring=0&currency_code=USD)
+
+> **v2.0.0-beta Project Awareness (April 2026):** Automatic project detection, context switching, and project-specific rule enforcement. The Project Awareness & Context Switching Layer detects project switches, applies project-specific constraints, and maintains project state across sessions.
+
+> **⚠️ Important Usage Note:** SWEObeyMe is designed for use with **free AI models** and will function correctly on all models. However, due to its comprehensive validation, enforcement, and workflow automation features, it may result in **higher than normal credit consumption** on premium/paid models. The system performs extensive validation, maintains persistent project memory, and enforces strict discipline through multiple tool calls - all of which consume additional tokens. If you're using a paid model, be aware that credit usage may be significantly higher than with basic coding assistants.
 
 A comprehensive Model Context Protocol (MCP) server designed specifically for SWE-1.5 and other AI models to enforce surgical coding standards and prevent technical debt.
 
@@ -20,62 +32,90 @@ SWEObeyMe is a surgical governance system that integrates seamlessly with Windsu
 
 ## Features
 
-### 🏛️ Governor Pattern (NEW in v1.0.17)
+### 🏛️ Governor Pattern (v1.0.17)
+Intercepts all VS Code workspace operations and routes them through MCP tools, forcing AI to use surgical tools, validate changes, follow architectural blueprints, and maintain predictable execution. Zero-trust architecture prevents AI from bypassing governance.
 
-- **Workspace Operation Interception**: Overrides `vscode.workspace.fs.writeFile`, `vscode.workspace.fs.rename`, `vscode.workspace.fs.delete`, and `vscode.workspace.applyEdit`
-- **MCP Tool Routing**: Routes all operations through MCP surgical tools
-- **Architectural Enforcement**: Forces AI models to use your defined toolset
-- **Predictable Execution**: Prevents hallucination and deviation from architectural vision
-- **Zero Trust Architecture**: AI cannot bypass governance to directly modify files
+### 🤖 Workflow Automation (v1.3.0)
+- **Rule Engine**: 7 strict behavior rules (search-before-edit, explain-before-act, tools-before-manual, no-hallucination, maintain-project-map, follow-conventions, documentation-required)
+- **Persistent Project Memory**: Automatic structure indexing, convention detection, decision recording, file purpose tracking
+- **Fallback Behavior System**: Intelligent strategies for 7 failure types with context-aware suggestions
+- **Anti-Hallucination Protection**: Path verification, file existence checks, tool validation
+- **Tool Priority System**: SWEObeyMe tools ranked above Windsurf built-ins
+- **Proactive Tool Suggestions**: Context-aware recommendations in all responses
+- **5 Project Memory Tools**: index_project_structure, analyze_project_conventions, get_project_memory_summary, record_project_decision, suggest_file_location
 
-### 🔧 Core Surgical Governance Tools
+**Context**: Addresses AI agent complaints (hallucinations, ignoring toolchains, losing context, poor transparency, poor documentation, no structure enforcement, no self-correction) by enforcing strict discipline.
 
-- **Surgical Plan Validation**: Validates code changes against architectural rules before execution
-- **Smart File Operations**: Intelligent file management with automatic backups and validation
-- **Code Quality Enforcement**: Automatic detection and correction of forbidden patterns
-- **Backup System**: Atomic backup operations with verification and retention management
-- **Workflow Orchestration**: Multi-step surgical workflow management
-- **Architectural Drift Detection**: Monitors and alerts on code quality degradation
+### 🔧 Core Surgical Governance
+Surgical plan validation, smart file operations with automatic backups, code quality enforcement with forbidden pattern detection, atomic backup operations with verification, workflow orchestration, and architectural drift detection.
 
 ### 🚀 Advanced Capabilities
-
-- **Loop Detection**: Prevents repetitive operations on the same file
-- **Auto-Repair**: Automatically repairs common JSON and code formatting issues
-- **Session Memory**: Tracks all actions for accountability and audit
-- **Recovery Mode**: Resets session state when operations get stuck
-- **Refactoring Tools**: Move code blocks and extract modules while maintaining compliance
-- **Health Analysis**: Analyzes file health for code smells and complexity
+Loop detection, auto-repair of JSON/code formatting, session memory tracking, recovery mode for stuck operations, refactoring tools (move blocks, extract modules), and file health analysis for code smells.
 
 ### 🎯 C# .NET 8/10 Enhancements (v1.0.13)
+Bracket validation, complexity analysis, try-catch detection, async/await validation, resource management (missing using statements), math safety (overflow, division by zero), scope visualization, and comprehensive C# health scoring.
 
-- **Bracket Validation**: Detects bracket mismatches and missing closing braces
-- **Complexity Analysis**: Analyzes cyclomatic complexity and nesting depth
-- **Try-Catch Detection**: Identifies deeply nested try-catch blocks
-- **Async/Await Validation**: Ensures proper async/await patterns
-- **Resource Management**: Checks for missing using statements for IDisposable
-- **Math Safety**: Validates mathematical expressions for overflow, precision loss, and division by zero risks
-- **Scope Visualization**: Visualizes nesting depth with tree structure
-- **C# Health Check**: Comprehensive health scoring for C# files
+### 📁 File Management (v1.0.13)
+File registry system, duplicate detection, operation audit with time-based deduplication, reference validation, same-name detection, similar file detection, project integrity validation, and fast search across thousands of files.
 
-### 📁 File Management Enhancements (v1.0.13)
+### 📊 Tool Success Metrics & Implementation Philosophy (NEW)
+- **Tool Success Metrics**: Comprehensive tracking with `get_tool_metrics` tool (call counts, success rates, error types, performance metrics)
+- **Implementation Philosophy Rules**: 3 enforcement rules (IMPLEMENT_DIRECTLY, INFORM_AFTER_IMPLEMENT, NO_FAKE_IMPLEMENTATIONS) preventing stubs, placeholders, and unnecessary user prompts
+- **Implementation Decision Tree**: Guides AI on when to implement directly vs ask user
 
-- **File Registry System**: Comprehensive indexing of all project files
-- **Duplicate Detection**: Prevents creating duplicate files with identical content
-- **Operation Audit**: Tracks all file operations with time-based deduplication
-- **Reference Validation**: Ensures all imports/references exist before operations
-- **Same Name Detection**: Prevents creating files with same name in directory
-- **Similar File Detection**: Identifies potentially duplicate files by name similarity
-- **Project Integrity**: Comprehensive pre-write validation to prevent chaos
-- **Search & Indexing**: Fast file search across thousands of files
+### 📚 Comprehensive Documentation Suite (NEW)
+- **COMMON_PATTERNS.md**: 22 successful AI patterns
+- **ANTI_PATTERNS.md**: 25 common AI mistakes
+- **DECISION_TREE.md**: Visual decision trees for tool selection
+- **QUICKSTART.md**: 5-minute setup guide
+- **TROUBLESHOOTING.md**: Common issues and solutions
+- **BEST_PRACTICES.md**: Configuration guidelines
+- **CONFIGURATION_EXAMPLES.md**: Sample configurations
+- **FAQ.md**: Comprehensive FAQ
+- **PERFORMANCE_TIPS.md**: Optimization recommendations
 
-### 🏗️ Architecture Improvements (v1.0.13)
+## Roadmap
 
-- **Modular Code Structure**: Refactored from 944-line monolith to modular architecture
-- **Enhanced Backup System**: Atomic operations, hash verification, concurrent handling
-- **MCP Lifecycle Management**: PID tracking, duplicate detection, graceful shutdown
-- **Tool Compliance**: Comprehensive tool descriptions with dependencies and ordering guidance
-- **Enhanced Context Analysis**: Complexity metrics and scoring for all files
-- **Automatic Duplication Prevention**: Built into write_file handler
+```mermaid
+gantt
+    title SWEObeyMe Development Roadmap
+    dateFormat  YYYY-MM-DD
+    section Completed
+    Core MCP Server           :done, core, 2026-03-01, 2026-03-15
+    Surgical Governance       :done, surgical, 2026-03-15, 2026-04-01
+    C# Bridge Integration    :done, csharp, 2026-04-01, 2026-04-02
+    Governor Pattern          :done, governor, 2026-04-02, 2026-04-03
+    Workflow Automation       :done, workflow, 2026-04-03, 2026-04-05
+    Math Corpus Integration   :done, math, 2026-04-05, 2026-04-07
+    Godot Integration        :done, godot, 2026-04-07, 2026-04-09
+    VS Code Extension UI      :done, vscode, 2026-04-09, 2026-04-11
+    section In Progress
+    Semantic Release          :active, release, 2026-04-11, 2026-04-13
+    Docker Support           :active, docker, 2026-04-11, 2026-04-13
+    section Planned
+    Git Integration           :git, 2026-04-13, 2026-04-20
+    Plugin System            :plugin, 2026-04-20, 2026-05-01
+    Advanced Analytics       :analytics, 2026-05-01, 2026-05-15
+    Multi-language Support   :multilang, 2026-05-15, 2026-06-01
+```
+
+### Completed Features (v1.3.0)
+- ✅ Core MCP Server with surgical governance
+- ✅ C# Bridge integration with error detection
+- ✅ Governor Pattern for workspace operation interception
+- ✅ Workflow automation with rule engine
+- ✅ Math corpus with 13 open-license references
+- ✅ Godot project detection and enforcement
+- ✅ VS Code extension with status bar, CodeLens, and commands palette
+- ✅ Hot-reload capability and improved error messages
+- ✅ Semantic-release configuration
+- ✅ Docker support
+
+### Planned Features
+- 🔲 Git integration foundation (branch management, commit hooks)
+- 🔲 Plugin system for custom tool extensions
+- 🔲 Advanced analytics and metrics dashboard
+- 🔲 Multi-language support (Python, Java, Go, Rust)
 
 ## Installation
 
@@ -138,81 +178,25 @@ The VS Code extension automatically configures the MCP server on activation. Man
 
 ### Available Tools
 
-The server provides **65 surgical governance tools** organized into categories:
+The server provides **68 surgical governance tools** organized into categories:
 
-#### Core Surgical Tools (19)
-1. **obey_me_status** - Check server status and compliance
-2. **obey_surgical_plan** - Validate surgical plan before execution
-3. **enforce_surgical_rules** - Enforce code quality rules
-4. **auto_repair_submission** - Auto-repair common code issues
-5. **get_session_context** - Get current session context
-6. **get_workflow_status** - Check workflow status
-7. **get_architectural_directive** - Get architectural guidance
-8. **query_the_oracle** - Query the oracle for wisdom
-9. **read_file** - Read file with context
-10. **write_file** - Write file with validation (now includes duplication prevention)
-11. **list_directory** - List directory contents
-12. **dry_run_write_file** - Test write without committing
-13. **validate_change_before_apply** - Validate changes before applying
-14. **diff_changes** - Show diff between versions
-15. **get_file_context** - Get comprehensive file context (now includes complexity metrics)
-16. **verify_syntax** - Verify code syntax
-17. **analyze_change_impact** - Analyze impact of changes
-18. **get_symbol_references** - Find symbol references
-19. **enforce_strict_mode** - Enable strict enforcement
+- **Core Surgical Tools (19)**: obey_me_status, obey_surgical_plan, enforce_surgical_rules, auto_repair_submission, get_session_context, get_workflow_status, get_architectural_directive, query_the_oracle, read_file, write_file, list_directory, dry_run_write_file, validate_change_before_apply, diff_changes, get_file_context, verify_syntax, analyze_change_impact, get_symbol_references, enforce_strict_mode
 
-#### Configuration Tools (4)
-20. **get_config** - Get configuration values
-21. **set_config** - Set configuration values
-22. **reset_config** - Reset configuration to defaults
-23. **get_config_schema** - Get configuration schema
+- **Configuration Tools (4)**: get_config, set_config, reset_config, get_config_schema
 
-#### Validation Tools (4)
-24. **check_for_anti_patterns** - Check for code anti-patterns
-25. **validate_naming_conventions** - Validate naming conventions
-26. **verify_imports** - Verify import statements
-27. **check_for_repetitive_patterns** - Check for repetitive patterns
+- **Validation Tools (4)**: check_for_anti_patterns, validate_naming_conventions, verify_imports, check_for_repetitive_patterns
 
-#### Context Tools (2)
-28. **diff_changes** - Show diff between versions
-29. **get_file_context** - Get comprehensive file context
+- **Safety Tools (3)**: check_test_coverage, confirm_dangerous_operation, check_for_repetitive_patterns
 
-#### Safety Tools (3)
-30. **check_test_coverage** - Check test coverage
-31. **confirm_dangerous_operation** - Confirm dangerous operations
-32. **check_for_repetitive_patterns** - Check for repetitive patterns
+- **Feedback Tools (6)**: require_documentation, generate_change_summary, explain_rejection, suggest_alternatives, get_historical_context, get_operation_guidance
 
-#### Feedback Tools (4)
-33. **require_documentation** - Require documentation
-34. **generate_change_summary** - Generate change summary
-35. **explain_rejection** - Explain why an operation was rejected
-36. **suggest_alternatives** - Suggest alternatives to rejected operations
-37. **get_historical_context** - Get historical context
-38. **get_operation_guidance** - Get operation guidance
-39. **run_related_tests** - Run related tests
+- **C# .NET 8/10 Tools (10)**: validate_csharp_code, validate_csharp_brackets, analyze_csharp_complexity, detect_nested_try_catch, visualize_scope_depth, validate_math_safety, analyze_math_expressions, validate_csharp_math, suggest_math_improvements, csharp_health_check
 
-#### C# .NET 8/10 Tools (10) - NEW in v1.0.13
-40. **validate_csharp_code** - Comprehensive C# code validation
-41. **validate_csharp_brackets** - Validate bracket matching
-42. **analyze_csharp_complexity** - Analyze C# code complexity
-43. **detect_nested_try_catch** - Detect deeply nested try-catch blocks
-44. **visualize_scope_depth** - Visualize nesting depth
-45. **validate_math_safety** - Validate mathematical expressions
-46. **analyze_math_expressions** - Analyze math expressions
-47. **validate_csharp_math** - Validate C# math patterns
-48. **suggest_math_improvements** - Suggest math improvements
-49. **csharp_health_check** - Comprehensive C# health check
+- **Project Integrity Tools (9)**: index_project_files, check_file_duplicates, validate_file_references, check_recent_operations, validate_before_write, get_registry_stats, search_files, generate_audit_report, check_file_exists
 
-#### Project Integrity Tools (9) - NEW in v1.0.13
-50. **index_project_files** - Index all project files into registry
-51. **check_file_duplicates** - Check for duplicate files
-52. **validate_file_references** - Validate file references exist
-53. **check_recent_operations** - Check for recent/redundant operations
-54. **validate_before_write** - Comprehensive pre-write validation
-55. **get_registry_stats** - Get file registry statistics
-56. **search_files** - Search files in registry
-57. **generate_audit_report** - Generate operation audit report
-58. **check_file_exists** - Check if file exists in registry
+- **Project Memory Tools (5)**: index_project_structure, analyze_project_conventions, get_project_memory_summary, record_project_decision, suggest_file_location
+
+- **Tool Metrics (1)**: get_tool_metrics
 
 ### Surgical Rules
 
@@ -284,16 +268,19 @@ SWEObeyMe-restored/
 ├── index.js                 # Main entry point (156 lines, refactored)
 ├── extension.js             # VS Code extension with lifecycle management
 ├── lib/
-│   ├── utils.js            # Utility functions (URI normalization, backup dir)
+│   ├── utils.js            # Utility functions
 │   ├── backup.js           # Enhanced backup system (atomic, verified, concurrent)
 │   ├── enforcement.js      # Validation rules and enforcement logic
 │   ├── session.js          # Session memory and action recording
 │   ├── project.js          # Project configuration (contract, .sweignore)
 │   ├── workflow.js         # Workflow orchestration
+│   ├── rule-engine.js      # Rule enforcement and compliance checking
+│   ├── project-memory.js   # Persistent project structure and convention tracking
+│   ├── fallback-system.js  # Intelligent fallback behavior for failures
 │   ├── tools.js            # Tool initialization and quotes
 │   └── tools/
-│       ├── handlers.js     # Tool implementations (387 lines)
-│       └── registry.js     # Tool definitions with dependencies (222 lines)
+│       ├── handlers.js     # Tool implementations
+│       └── registry.js     # Tool definitions with dependencies
 ├── quotes.js               # Oracle quotes
 ├── .sweignore              # Default ignore patterns
 ├── package.json            # Dependencies and scripts
@@ -302,30 +289,10 @@ SWEObeyMe-restored/
 
 ### Key Improvements in v1.0.13
 
-**Modular Architecture**
-- Reduced index.js from 944 to 156 lines (83% reduction)
-- Extracted logical modules for maintainability
-- Single responsibility principle applied throughout
-
-**Enhanced Backup System**
-- Atomic file operations using temp files
-- SHA-256 hash verification for backup integrity
-- Concurrent operation handling with write locks
-- Automatic retention management (max 10 backups per file)
-- Comprehensive error logging
-
-**MCP Lifecycle Management**
-- PID file tracking for duplicate detection
-- Automatic cleanup of stale instances
-- Graceful shutdown without process.exit()
-- Extension reload support (no need to disable/uninstall)
-- Configuration change detection and auto-restart
-
-**Tool Compliance**
-- Comprehensive tool descriptions with dependencies
-- Ordering guidance (e.g., obey_surgical_plan before write_file)
-- Progressive enforcement hints
-- Recovery mechanisms for stuck sessions
+- **Modular Architecture**: Reduced index.js from 944 to 156 lines (83% reduction)
+- **Enhanced Backup System**: Atomic file operations, SHA-256 hash verification, concurrent handling
+- **MCP Lifecycle Management**: PID tracking, duplicate detection, graceful shutdown
+- **Tool Compliance**: Comprehensive tool descriptions with dependencies and ordering guidance
 
 ## Development
 
@@ -399,26 +366,13 @@ Check the following locations for logs:
 
 ## Support & Feedback
 
-### GitHub Repository
-For bug reports, feature requests, and general feedback, please visit:
-https://github.com/stonewolfpc/SWEObeyMe
+### Community & Support
+- **GitHub**: https://github.com/stonewolfpc/SWEObeyMe (issues, features, contributions)
+- **Patreon**: https://patreon.com/StoneWolfSystems (support development)
+- **Discord**: https://discord.com/channels/1480301729542308019/1488916795686392030 (community chat)
+- **Facebook**: [Stone Wolf Systems](https://facebook.com/stonewolfsystems)
 
-We encourage you to:
-- Report issues you encounter
-- Suggest new features or improvements
-- Share your success stories
-- Comment on what's working or not working
-- Contribute to the project
-
-### Support Development
-If you find SWEObeyMe valuable and would like to support continued development:
-https://patreon.com/StoneWolfSystems?utm_medium=unknown&utm_source=join_link&utm_campaign=creatorshare_creator&utm_content=copyLink
-
-Your support helps:
-- Maintain and improve the project
-- Add new features and capabilities
-- Fix bugs and issues
-- Keep the project free and open source
+Your support helps maintain and improve the project, add new features, fix bugs, and keep it free and open source.
 
 ## Future Work
 
@@ -534,6 +488,85 @@ SWEObeyMe is dual-licensed. You may choose to use this software under either lic
 See [LICENSE](LICENSE) file for complete details.
 
 ## Changelog
+
+### [1.4.0] - 2026-04-07
+
+#### Math Corpus & Professionalization (MAJOR UPDATE)
+- **Math Corpus System**: Created comprehensive math reference corpus with 13 category folders (calculus, linear_algebra, statistics, probability, discrete_math, graph_theory, geometry, numerical_methods, optimization, algorithms, complexity, physics_math, misc_identities) for offline mathematical reference lookup
+- **Math Lookup Tool**: Implemented `math_lookup` MCP tool (priority 90) for searching math corpus by keywords, formulas, algorithm names, math topics, and tags; returns relevant excerpts, file paths, summaries, definitions, formulas, and derivations
+- **Math Verify Tool**: Implemented `math_verify` MCP tool (priority 89) for verifying mathematical formulas and algorithms using symbolic checks, numerical tests, domain/range validation, invariants, monotonicity checks, and complexity sanity checks
+- **Math Workflow Rules**: Added 5 critical math workflow rules (math_lookup_before_code, math_verify_before_finalize, math_lookup_not_found_handling, forbid_math_guessing, math_test_cases_required) to ensure mathematical accuracy and prevent guessing
+- **Math Corpus Index**: Created `math_corpus/index.json` with category structure, document metadata, and search indexing capabilities
+- **Missing Topics Tracker**: Created `math_corpus/missing_topics.json` to track mathematical topics requested but not found in corpus, enabling continuous improvement
+
+- **JSDoc Documentation**: Added comprehensive JSDoc comments to all project-memory modules (core, utils, structure, conventions, detection, validation, location) with @module, @param, @returns, and @example tags for better IDE support and documentation generation
+
+- **Development Environment Standards**:
+  - **ESLint Configuration**: Created `.eslintrc.js` with code style rules for indentation, linebreaks, quotes, max line length, and spacing
+  - **Prettier Configuration**: Created `.prettierrc` with formatting options for semi-colons, trailing commas, single quotes, print width, tab width, and bracket spacing
+  - **Husky Pre-Commit Hooks**: Added `.husky/pre-commit` hook to run lint-staged on staged files before commit
+  - **Lint-Staged Configuration**: Created `.lintstagedrc.js` to run eslint and prettier on JavaScript, JSON, and Markdown files
+  - **Commitizen Configuration**: Created `.czrc` with conventional commit types (feat, fix, docs, style, refactor, test, chore) for standardized commit messages
+
+- **Project Documentation**:
+  - **CONTRIBUTING.md**: Created comprehensive contribution guidelines with code of conduct, getting started, development workflow, branching strategy, commit conventions, pre-commit hooks, coding standards, testing, and reporting issues
+  - **CODE_OF_CONDUCT.md**: Created Contributor Covenant v2.0 adapted code of conduct with pledge, standards, enforcement, scope, and attribution
+  - **SECURITY.md**: Created security policy with supported versions, vulnerability reporting process, response timeline, disclosure policy, and security best practices
+  - **Issue Templates**: Created `.github/ISSUE_TEMPLATE/bug_report.md` and `.github/ISSUE_TEMPLATE/feature_request.md` for standardized issue reporting
+  - **Pull Request Template**: Created `.github/PULL_REQUEST_TEMPLATE.md` with sections for description, type, testing, checklist, screenshots, and context
+
+- **Architecture Documentation**: Created `docs/ARCHITECTURE.md` with detailed Mermaid diagrams illustrating system overview, module architecture, tool execution flow, surgical governance flow, project memory, C# bridge, data flow, configuration, error handling, component relationships, deployment, and security layers
+
+- **README Enhancements**: Added badges for version, license, Node.js compatibility, VS Code extension, and code style at the top of README.md
+
+- **Total Tools**: 70 MCP tools (up from 68 in v1.3.0)
+
+**Context**: This update professionalizes the project with development environment standards, comprehensive documentation, and a math corpus system to ensure mathematical accuracy in AI-generated code. The math corpus addresses the critical need for verified mathematical references in AI-assisted programming, preventing common errors in algorithm implementation and formula usage.
+
+### [1.3.0] - 2026-04-07
+
+#### Workflow Automation System (MAJOR UPDATE)
+- **Rule Engine**: Implemented 7 strict behavior rules (search-before-edit, explain-before-act, tools-before-manual, no-hallucination, maintain-project-map, follow-conventions, documentation-required) with automatic compliance checking and violation tracking
+- **Persistent Project Memory**: Created comprehensive project memory system with automatic structure indexing, convention detection (naming patterns, folder organization), decision recording, and file purpose tracking
+- **Fallback Behavior System**: Implemented intelligent fallback strategies for 7 failure types (file-not-found, tool-failure, permission-denied, syntax-error, import-error, loop-detected, unknown-error) with automatic retry and context-aware suggestions
+- **Anti-Hallucination Protection**: Added path verification, file existence checks, and tool validation before all operations to prevent AI from inventing files or tools
+- **Tool Priority System**: Implemented priority-based tool ordering (priority 100 for critical tools, 95 for high-priority workflows, 80 for context tools, 50 for status tools, 10 default) to surface SWEObeyMe tools above Windsurf built-ins
+- **Proactive Tool Suggestions**: Added context-aware tool recommendations injected into all tool responses to guide AI toward proper tool usage
+- **5 New Project Memory Tools**:
+  - `index_project_structure` (priority 80) - Index entire project for anti-hallucination
+  - `analyze_project_conventions` (priority 75) - Detect naming and structure patterns
+  - `get_project_memory_summary` (priority 70) - View project state and decisions
+  - `record_project_decision` (priority 60) - Record architectural decisions
+  - `suggest_file_location` (priority 65) - Suggest appropriate file locations based on conventions
+- **Custom Windsurf Next Workflow**: Created `.windsurf/workflows/swe-obeyme-automation.md` defining automated workflow that enforces strict discipline
+- **Integration**: Rule compliance injected into read_file and write_file responses, project memory auto-initialized on first file read, fallback suggestions on errors
+- **Total Tools**: 68 MCP tools (up from 63 in v1.2.1)
+
+**Context**: Addresses common AI agent complaints from Reddit, GitHub, Discord, and dev forums (hallucinations, ignoring toolchains, losing context, poor transparency, poor documentation, no structure enforcement, no self-correction) by enforcing strict discipline through automated workflows. This is the most significant update since the Governor Pattern, fundamentally changing how AI agents interact with the codebase.
+
+#### Tool Success Metrics & Implementation Philosophy
+- **Tool Success Metrics**: Added comprehensive tool success metrics tracking with `get_tool_metrics` tool that tracks call counts, success rates, error types, and performance metrics per tool
+- **Implementation Philosophy Rules**: Added 3 new enforcement rules (IMPLEMENT_DIRECTLY, INFORM_AFTER_IMPLEMENT, NO_FAKE_IMPLEMENTATIONS) to prevent AI from creating stubs, placeholders, or asking when implementation is possible
+- **Implementation Decision Tree**: Added decision tree documentation to guide AI on when to implement directly vs when to ask the user
+
+#### Comprehensive Documentation Suite
+- **COMMON_PATTERNS.md**: 22 successful AI patterns including search-before-edit, validate-before-write, context-aware refactoring, and the new "Implement Directly" pattern
+- **ANTI_PATTERNS.md**: 25 common AI mistakes including edit-without-search, write-without-validation, ignore-line-count, and stub/placeholder creation
+- **DECISION_TREE.md**: Visual decision trees for tool selection across file operations, refactoring, validation, C# development, and implementation decisions
+- **QUICKSTART.md**: 5-minute setup guide with prerequisites, installation, common use cases, and verification steps
+- **TROUBLESHOOTING.md**: Common issues and solutions for MCP server, file operations, C# Bridge, configuration, and performance
+- **BEST_PRACTICES.md**: Configuration guidelines for production, rapid prototyping, large codebases, C# development, and teaching scenarios
+- **CONFIGURATION_EXAMPLES.md**: Sample configurations for various use cases and MCP server settings
+- **FAQ.md**: Comprehensive FAQ covering general info, installation, configuration, usage, C# Bridge, performance, troubleshooting, and licensing
+- **PERFORMANCE_TIPS.md**: Optimization recommendations for configuration, C# Bridge, surgical rules, and tool usage
+
+**Context**: These documentation files provide comprehensive guidance for both users and AI models, improving the overall experience and reducing common mistakes.
+
+#### New Modules
+- `lib/rule-engine.js` - Rule enforcement and compliance checking
+- `lib/project-memory.js` - Persistent project structure and convention tracking
+- `lib/fallback-system.js` - Intelligent fallback behavior for failures
+- `lib/tools/project-memory-handlers.js` - Handlers for project memory tools
 
 ### [1.2.1] - 2026-04-05
 

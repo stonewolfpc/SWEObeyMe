@@ -1,0 +1,29 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2026-04-07T11:08:00.000Z",
+  "missingTopics": [],
+  "metadata": {
+    "totalMissing": 0,
+    "categories": {
+      "calculus": [],
+      "linear_algebra": [],
+      "statistics": [],
+      "probability": [],
+      "discrete_math": [],
+      "graph_theory": [],
+      "geometry": [],
+      "numerical_methods": [],
+      "optimization": [],
+      "algorithms": [],
+      "complexity": [],
+      "physics_math": [],
+      "misc_identities": []
+    }
+  },
+  "instructions": {
+    "purpose": "This file tracks mathematical topics that were requested but not found in the math corpus.",
+    "usage": "When SWEObeyMe encounters missing math topics, it appends them here and notifies the user.",
+    "addingTopics": "To add a missing topic, append to the missingTopics array with topic name, category, and context.",
+    "resolvingTopics": "When a topic is added to the corpus, remove it from this file."
+  }
+}

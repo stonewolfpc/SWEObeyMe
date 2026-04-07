@@ -1,9 +1,9 @@
 # Explicitly include required directories
 !lib/**
-!node_modules/**
 !utils/**
 !docs/**
 !examples/**
+!scripts/**
 !index.js
 !extension.js
 !quotes.js

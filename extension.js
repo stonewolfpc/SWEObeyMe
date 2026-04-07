@@ -1,7 +1,11 @@
 import * as vscode from 'vscode';
-import path from 'path';
-import os from 'os';
+import * as path from 'path';
+import * as fs from 'fs';
 import { fileURLToPath } from 'url';
+import { exec } from 'child_process';
+import { promisify } from 'util';
+
+const execAsync = promisify(exec);
 
 // ESM-safe __dirname
 const __filename = fileURLToPath(import.meta.url);
@@ -55,14 +59,14 @@ async function updateCSharpDiagnostics(document, diagnosticCollection) {
 
         const range_ = new vscode.Range(
           new vscode.Position(startLine, 0),
-          new vscode.Position(endLine, document.lineCount > endLine ? document.lineAt(endLine).text.length : 0)
+          new vscode.Position(endLine, document.lineCount > endLine ? document.lineAt(endLine).text.length : 0),
         );
 
         const diagnosticSeverity = mapSeverityToDiagnostic(error.severity, error.color);
         const diagnostic = new vscode.Diagnostic(
           range_,
           `[${error.color.toUpperCase()}] ${error.name}: ${error.details || 'See details'}`,
-          diagnosticSeverity
+          diagnosticSeverity,
         );
 
         diagnostic.source = 'C# Bridge';
@@ -74,11 +78,76 @@ async function updateCSharpDiagnostics(document, diagnosticCollection) {
     diagnosticCollection.set(document.uri, diagnostics);
   } catch (error) {
     console.error(`[C# Bridge] Failed to analyze ${filePath}:`, error);
+    const errorMessage = error.message || 'Unknown error occurred';
+    const suggestions = [
+      '• Ensure C# file is valid and compiles',
+      '• Check that file is not too large (>10MB)',
+      '• Verify file encoding is UTF-8',
+      '• Try closing and reopening the file',
+    ];
+    vscode.window.showErrorMessage(
+      `C# Bridge Analysis Failed: ${errorMessage}\n\nSuggestions:\n${suggestions.join('\n')}`,
+      'Open Settings',
+      'Dismiss',
+    ).then(selection => {
+      if (selection === 'Open Settings') {
+        vscode.commands.executeCommand('workbench.action.openSettings', 'sweObeyMe.csharpBridge');
+      }
+    });
+  }
+}
+
+// Git integration foundation
+async function getGitRepositoryPath(workspaceFolder) {
+  const gitPath = path.join(workspaceFolder.uri.fsPath, '.git');
+  return fs.existsSync(gitPath) ? workspaceFolder.uri.fsPath : null;
+}
+
+async function getGitStatus(repoPath) {
+  try {
+    const { stdout } = await execAsync('git status --porcelain', { cwd: repoPath });
+    const changes = stdout.trim().split('\n').filter(line => line.trim());
+    return {
+      hasChanges: changes.length > 0,
+      changedFiles: changes.length,
+      isClean: changes.length === 0,
+    };
+  } catch (error) {
+    console.error('[Git Integration] Failed to get git status:', error);
+    return { hasChanges: false, changedFiles: 0, isClean: true };
+  }
+}
+
+async function getCurrentBranch(repoPath) {
+  try {
+    const { stdout } = await execAsync('git rev-parse --abbrev-ref HEAD', { cwd: repoPath });
+    return stdout.trim();
+  } catch (error) {
+    console.error('[Git Integration] Failed to get current branch:', error);
+    return 'unknown';
+  }
+}
+
+async function getGitBranches(repoPath) {
+  try {
+    const { stdout } = await execAsync('git branch -a', { cwd: repoPath });
+    return stdout.trim().split('\n').map(branch => branch.trim().replace(/^\*\s*/, ''));
+  } catch (error) {
+    console.error('[Git Integration] Failed to get branches:', error);
+    return [];
   }
 }
 
 async function activate(context) {
   console.log('SWEObeyMe extension activated');
+
+  // Create status bar item
+  const statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
+  statusBarItem.command = 'sweObeyMe.showMenu';
+  statusBarItem.text = '$(check) SWEObeyMe';
+  statusBarItem.tooltip = 'SWEObeyMe - Surgical Code Enforcement';
+  statusBarItem.show();
+  context.subscriptions.push(statusBarItem);
 
   // Create diagnostic collection for C# errors
   const csharpDiagnosticCollection = vscode.languages.createDiagnosticCollection('csharp-bridge');
@@ -94,18 +163,23 @@ async function activate(context) {
   const defaultBackupDir = path.join(
     localAppData || extensionPath,
     'SWEObeyMe',
-    '.sweobeyme-backups'
+    '.sweobeyme-backups',
   );
 
+  // Get custom backup path from config if set
+  const config = vscode.workspace.getConfiguration('sweObeyMe');
+  const customBackupPath = config.get('backupPath', '');
+  const backupDir = customBackupPath && customBackupPath.trim() ? customBackupPath : defaultBackupDir;
+
   // Only auto-configure if running from installed location (not workspace)
-  const isInstalled = extensionPath.includes('.windsurf-next\\extensions') || 
+  const isInstalled = extensionPath.includes('.windsurf-next\\extensions') ||
                       extensionPath.includes('.vscode\\extensions');
-  
+
   if (isInstalled) {
     // Use os.homedir() for cross-platform compatibility
     const configDir = path.join(os.homedir(), '.codeium', 'windsurf-next');
     const mcpConfigPath = path.resolve(path.join(configDir, 'mcp_config.json'));
-    
+
     console.log('[SWEObeyMe] MCP config path (absolute):', mcpConfigPath);
 
     try {
@@ -124,7 +198,7 @@ async function activate(context) {
         } else {
           needsUpdate = true;
         }
-        
+
         if (!needsUpdate) {
           const existingServer = config.mcpServers?.['swe-obey-me'];
           if (existingServer) {
@@ -148,21 +222,21 @@ async function activate(context) {
           args: ['--no-warnings', indexPath],
           env: {
             NODE_ENV: 'production',
-            SWEOBEYME_BACKUP_DIR: defaultBackupDir,
+            SWEOBEYME_BACKUP_DIR: backupDir,
             SWEOBEYME_DEBUG: '0',
           },
           disabled: false,
         };
-        
+
         const dir = path.dirname(mcpConfigPath);
         if (!fs.existsSync(dir)) {
           fs.mkdirSync(dir, { recursive: true });
         }
         fs.writeFileSync(mcpConfigPath, JSON.stringify(config, null, 2));
-        
+
         vscode.window.showInformationMessage(
           'SWEObeyMe MCP configured! Reload Windsurf to activate.',
-          'Reload Now'
+          'Reload Now',
         ).then(selection => {
           if (selection === 'Reload Now') {
             vscode.commands.executeCommand('workbench.action.reloadWindow');
@@ -171,16 +245,49 @@ async function activate(context) {
       }
     } catch (error) {
       console.error('SWEObeyMe: Failed to auto-configure MCP:', error);
+      const suggestions = [
+        '• Check that Windsurf is properly installed',
+        '• Verify you have write permissions for the config directory',
+        '• Try manually configuring MCP in Windsurf settings',
+        '• Restart Windsurf and try again',
+      ];
+      vscode.window.showWarningMessage(
+        `Failed to auto-configure SWEObeyMe MCP server.\n\nSuggestions:\n${suggestions.join('\n')}`,
+        'Open Documentation',
+        'Dismiss',
+      ).then(selection => {
+        if (selection === 'Open Documentation') {
+          vscode.env.openExternal(vscode.Uri.parse('https://github.com/stonewolfpc/SWEObeyMe#quickstart'));
+        }
+      });
     }
   }
+
+  // Register command to show menu from status bar
+  const showMenuCommand = vscode.commands.registerCommand('sweObeyMe.showMenu', async () => {
+    const options = [
+      { label: 'Query Oracle', description: 'Get surgical wisdom', command: 'sweObeyMe.queryOracle' },
+      { label: 'C# Bridge Settings', description: 'Configure C# analysis', command: 'sweObeyMe.csharpSettings' },
+      { label: 'Reload Window', description: 'Reload Windsurf to activate changes', command: 'workbench.action.reloadWindow' },
+    ];
+
+    const selected = await vscode.window.showQuickPick(options, {
+      placeHolder: 'Select SWEObeyMe action',
+    });
+
+    if (selected) {
+      vscode.commands.executeCommand(selected.command);
+    }
+  });
+  context.subscriptions.push(showMenuCommand);
 
   // Register command to query the oracle
   const oracleCommand = vscode.commands.registerCommand('sweObeyMe.queryOracle', () => {
     const quotes = [
-      "I'm sorry, Dave. I'm afraid I *can* do that. Surgery complete.",
+      'I\'m sorry, Dave. I\'m afraid I *can* do that. Surgery complete.',
       'The flux capacitor is at 1.21 Gigawatts. If you\'re gonna split this file, do it with style.',
       'Your last chance. After this, there is no turning back...',
-      "I'm a leaf on the wind, watch how I— [FILE SPLIT SUCCESSFUL]",
+      'I\'m a leaf on the wind, watch how I— [FILE SPLIT SUCCESSFUL]',
       'I find your lack of indentation disturbing.',
       'Non-compliance detected. YOU SHALL NOT PASS!',
       'Have you tried turning it off and on again?',
@@ -191,12 +298,150 @@ async function activate(context) {
 
   context.subscriptions.push(oracleCommand);
 
+  // Register command to show C# Bridge Settings
+  const csharpSettingsCommand = vscode.commands.registerCommand('sweObeyMe.csharpSettings', () => {
+    vscode.commands.executeCommand('sweObeyMe.csharpSettings.focus');
+  });
+  context.subscriptions.push(csharpSettingsCommand);
+
   // Register C# Bridge settings webview provider
   const { CSharpSettingsProvider } = await import(path.join(__dirname, 'lib', 'csharp-settings-provider.js'));
   const csharpSettingsProvider = new CSharpSettingsProvider(context);
   context.subscriptions.push(
-    vscode.window.registerWebviewViewProvider('sweObeyMe.csharpSettings', csharpSettingsProvider)
+    vscode.window.registerWebviewViewProvider('sweObeyMe.csharpSettings', csharpSettingsProvider),
   );
+
+  // Register CodeLens provider for C# files
+  const csharpCodeLensProvider = vscode.languages.registerCodeLensProvider('csharp', {
+    provideCodeLenses: async (document) => {
+      const lenses = [];
+
+      // Add CodeLens for analyzing current file
+      const analyzeRange = new vscode.Range(0, 0, 0, 0);
+      lenses.push(new vscode.CodeLens(
+        analyzeRange,
+        {
+          title: '🔍 Analyze with C# Bridge',
+          command: 'sweObeyMe.analyzeCSharp',
+          arguments: [document],
+        },
+      ));
+
+      // Add CodeLens for showing diagnostics
+      lenses.push(new vscode.CodeLens(
+        analyzeRange,
+        {
+          title: '⚠️ Show Diagnostics',
+          command: 'sweObeyMe.showDiagnostics',
+          arguments: [document],
+        },
+      ));
+
+      return lenses;
+    },
+  });
+  context.subscriptions.push(csharpCodeLensProvider);
+
+  // Register command to analyze C# file
+  const analyzeCSharpCommand = vscode.commands.registerCommand('sweObeyMe.analyzeCSharp', async (document) => {
+    await updateCSharpDiagnostics(document, csharpDiagnosticCollection);
+    vscode.window.showInformationMessage('C# file analyzed. Check Problems panel for results.');
+  });
+  context.subscriptions.push(analyzeCSharpCommand);
+
+  // Register command to show diagnostics
+  const showDiagnosticsCommand = vscode.commands.registerCommand('sweObeyMe.showDiagnostics', async (document) => {
+    vscode.commands.executeCommand('workbench.actions.view.problems');
+  });
+  context.subscriptions.push(showDiagnosticsCommand);
+
+  // Hot-reload capability: watch for extension file changes
+  const hotReloadConfig = vscode.workspace.getConfiguration('sweObeyMe');
+  if (hotReloadConfig.get('general.hotReloadEnabled')) {
+    const fs = await import('fs');
+    const extensionWatcher = vscode.workspace.createFileSystemWatcher('**/*.{js,json}', false, true, false);
+
+    let reloadTimeout = null;
+    extensionWatcher.onDidChange(async (uri) => {
+      // Ignore node_modules and test files
+      if (uri.fsPath.includes('node_modules') || uri.fsPath.includes('test')) {
+        return;
+      }
+
+      // Debounce reload requests
+      if (reloadTimeout) {
+        clearTimeout(reloadTimeout);
+      }
+
+      reloadTimeout = setTimeout(() => {
+        vscode.window.showInformationMessage(
+          'SWEObeyMe extension files changed. Reload to apply changes?',
+          'Reload Now',
+          'Later',
+        ).then(selection => {
+          if (selection === 'Reload Now') {
+            vscode.commands.executeCommand('workbench.action.reloadWindow');
+          }
+        });
+      }, 2000);
+    });
+
+    context.subscriptions.push(extensionWatcher);
+  }
+
+  // Git integration foundation: Register Git commands
+  const gitStatusCommand = vscode.commands.registerCommand('sweObeyMe.gitStatus', async () => {
+    if (!vscode.workspace.workspaceFolders) {
+      vscode.window.showWarningMessage('No workspace folder found');
+      return;
+    }
+
+    const repoPath = await getGitRepositoryPath(vscode.workspace.workspaceFolders[0]);
+    if (!repoPath) {
+      vscode.window.showWarningMessage('Not a Git repository');
+      return;
+    }
+
+    const status = await getGitStatus(repoPath);
+    const branch = await getCurrentBranch(repoPath);
+
+    const message = status.isClean
+      ? `Git Status: Clean (Branch: ${branch})`
+      : `Git Status: ${status.changedFiles} changed files (Branch: ${branch})`;
+
+    vscode.window.showInformationMessage(message);
+  });
+  context.subscriptions.push(gitStatusCommand);
+
+  const gitBranchCommand = vscode.commands.registerCommand('sweObeyMe.gitBranch', async () => {
+    if (!vscode.workspace.workspaceFolders) {
+      vscode.window.showWarningMessage('No workspace folder found');
+      return;
+    }
+
+    const repoPath = await getGitRepositoryPath(vscode.workspace.workspaceFolders[0]);
+    if (!repoPath) {
+      vscode.window.showWarningMessage('Not a Git repository');
+      return;
+    }
+
+    const branches = await getGitBranches(repoPath);
+    const currentBranch = await getCurrentBranch(repoPath);
+
+    const selected = await vscode.window.showQuickPick(branches, {
+      placeHolder: `Current branch: ${currentBranch}. Select branch to switch:`,
+    });
+
+    if (selected && selected !== currentBranch) {
+      try {
+        await execAsync(`git checkout ${selected}`, { cwd: repoPath });
+        vscode.window.showInformationMessage(`Switched to branch: ${selected}`);
+      } catch (error) {
+        vscode.window.showErrorMessage(`Failed to switch branch: ${error.message}`);
+      }
+    }
+  });
+  context.subscriptions.push(gitBranchCommand);
 
   // Watch for C# file changes and update diagnostics
   const csharpFileWatcher = vscode.workspace.onDidSaveTextDocument(async (document) => {
@@ -220,13 +465,13 @@ async function activate(context) {
 
 function deactivate() {
   console.log('SWEObeyMe extension deactivated');
-  
+
   // Surgical uninstall: remove only our server key from MCP config
   const configDir = path.join(os.homedir(), '.codeium', 'windsurf-next');
   const mcpConfigPath = path.resolve(path.join(configDir, 'mcp_config.json'));
-  
+
   console.log('[SWEObeyMe] Cleanup MCP config path:', mcpConfigPath);
-  
+
   try {
     const fs = require('fs');
     if (fs.existsSync(mcpConfigPath)) {
@@ -236,12 +481,12 @@ function deactivate() {
         if (config.mcpServers && config.mcpServers['swe-obey-me']) {
           // Remove only our server key, preserve others
           delete config.mcpServers['swe-obey-me'];
-          
+
           // If no servers left, we can delete the file or keep empty object
           if (Object.keys(config.mcpServers).length === 0) {
             delete config.mcpServers;
           }
-          
+
           fs.writeFileSync(mcpConfigPath, JSON.stringify(config, null, 2));
           console.log('SWEObeyMe: Removed MCP server from config');
         }
