@@ -336,10 +336,10 @@
     "commitizen": "^4.3.0"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "latest",
+    "@modelcontextprotocol/sdk": "^1.0.4",
     "fs-extra": "^11.3.4",
     "jimp": "^1.6.0",
-    "zod": "latest"
+    "zod": "^3.23.8"
   },
   "repository": {
     "type": "git",
