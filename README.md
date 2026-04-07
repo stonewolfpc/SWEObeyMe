@@ -1,6 +1,6 @@
 # SWEObeyMe MCP Server
 
-[![Version](https://img.shields.io/badge/version-2.0.3--beta-blue.svg)](https://github.com/stonewolfpc/SWEObeyMe)
+[![Version](https://img.shields.io/badge/version-2.0.4--beta-blue.svg)](https://github.com/stonewolfpc/SWEObeyMe)
 [![License](https://img.shields.io/badge/license-Dual--License-yellow.svg)](LICENSE)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-green.svg)](https://nodejs.org)
 [![VS Code](https://img.shields.io/badge/VS%20Code-Extension-purple.svg)](https://marketplace.visualstudio.com)
@@ -10,7 +10,7 @@
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-SWEObeyMe-blue.svg)](https://linkedin.com/company/SWEObeyMe)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-blue.svg)](https://www.paypal.com/donate/?business=9QSRV22WNLFS6&no_recurring=0&currency_code=USD)
 
-> **v2.0.3-beta Project Awareness (April 2026):** Automatic project detection, context switching, and project-specific rule enforcement. The Project Awareness & Context Switching Layer detects project switches, applies project-specific constraints, and maintains project state across sessions. Optimized package size with improved .vscodeignore. Fixed oracle handler registration. Added error handling to prevent webview loading hang.
+> **v2.0.4-beta Project Awareness (April 2026):** Automatic project detection, context switching, and project-specific rule enforcement. The Project Awareness & Context Switching Layer detects project switches, applies project-specific constraints, and maintains project state across sessions. Optimized package size with improved .vscodeignore. Fixed oracle handler registration. Added error handling to prevent webview loading hang. Cleared test artifacts from error log to prevent red MCP status.
 
 > **⚠️ Important Usage Note:** SWEObeyMe is designed for use with **free AI models** and will function correctly on all models. However, due to its comprehensive validation, enforcement, and workflow automation features, it may result in **higher than normal credit consumption** on premium/paid models. The system performs extensive validation, maintains persistent project memory, and enforces strict discipline through multiple tool calls - all of which consume additional tokens. If you're using a paid model, be aware that credit usage may be significantly higher than with basic coding assistants.
 

@@ -1,8 +1,8 @@
 {
   "name": "swe-obey-me",
   "displayName": "SWEObeyMe",
-  "description": "SWEObeyMe - Surgical governance system for VS Code with MCP server integration. v2.0.3-beta: Project Awareness & Context Switching Layer with automatic project detection, context switching, and project-specific rule enforcement. Optimized package size with improved .vscodeignore. Fixed oracle handler registration. Added error handling to prevent webview loading hang.",
-  "version": "2.0.3-beta",
+  "description": "SWEObeyMe - Surgical governance system for VS Code with MCP server integration. v2.0.4-beta: Project Awareness & Context Switching Layer with automatic project detection, context switching, and project-specific rule enforcement. Optimized package size with improved .vscodeignore. Fixed oracle handler registration. Added error handling to prevent webview loading hang. Cleared test artifacts from error log to prevent red MCP status.",
+  "version": "2.0.4-beta",
   "type": "module",
   "publisher": "stonewolfpc",
   "icon": "icon.png",
