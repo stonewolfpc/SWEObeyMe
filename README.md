@@ -1,6 +1,6 @@
 # SWEObeyMe MCP Server
 
-[![Version](https://img.shields.io/badge/version-2.0.4--beta-blue.svg)](https://github.com/stonewolfpc/SWEObeyMe)
+[![Version](https://img.shields.io/badge/version-2.0.5--beta-blue.svg)](https://github.com/stonewolfpc/SWEObeyMe)
 [![License](https://img.shields.io/badge/license-Dual--License-yellow.svg)](LICENSE)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-green.svg)](https://nodejs.org)
 [![VS Code](https://img.shields.io/badge/VS%20Code-Extension-purple.svg)](https://marketplace.visualstudio.com)
@@ -9,6 +9,54 @@
 [![Twitter](https://img.shields.io/badge/Twitter-@SWEObeyMe-blue.svg)](https://twitter.com/SWEObeyMe)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-SWEObeyMe-blue.svg)](https://linkedin.com/company/SWEObeyMe)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-blue.svg)](https://www.paypal.com/donate/?business=9QSRV22WNLFS6&no_recurring=0&currency_code=USD)
+
+## Quick Start
+
+### Installation (Open VSX Marketplace)
+
+1. Open VS Code or Windsurf
+2. Navigate to Extensions view (Ctrl+Shift+X)
+3. Search for "SWEObeyMe"
+4. Click Install
+
+### Installation (Windsurf-Next)
+
+1. Ensure Windsurf-Next (Phoenix Alpha Fast) or later is installed
+2. Clone or download this repository
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
+4. The extension will automatically configure the MCP server on activation
+
+### Prerequisites
+
+- Node.js 18.0.0 or higher
+- Windsurf Next (Phoenix Alpha Fast) or later with ESM support
+- Git (for some features)
+
+### First Steps
+
+After installation, SWEObeyMe automatically configures the MCP server. The extension will:
+
+- Automatically write MCP configuration to `~/.codeium/mcp_config.json`
+- Enable surgical governance tools for AI models
+- Start enforcing architectural rules on file operations
+- Provide C# diagnostics for .NET projects
+
+### Basic Usage
+
+SWEObeyMe works transparently with AI models. The system automatically:
+
+- Validates file operations before execution
+- Enforces line count limits (max 700 lines per file)
+- Prevents forbidden patterns (console.log, TODO, debugger)
+- Maintains automatic backups before file writes
+- Provides real-time C# error detection
+
+No manual configuration is required for basic usage.
+
+---
 
 > **⚠️ Important Usage Note:** SWEObeyMe is designed for use with **free AI models** and will function correctly on all models. However, due to its comprehensive validation, enforcement, and workflow automation features, it may result in **higher than normal credit consumption** on premium/paid models. The system performs extensive validation, maintains persistent project memory, and enforces strict discipline through multiple tool calls - all of which consume additional tokens. If you're using a paid model, be aware that credit usage may be significantly higher than with basic coding assistants.
 
