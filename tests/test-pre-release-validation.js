@@ -113,7 +113,8 @@ try {
   const vscodeignore = readFileSync(join(projectRoot, '.vscodeignore'), 'utf8');
   
   // dist/ should be INCLUDED in the package (bundled output)
-  assert(vscodeignore.includes('!dist/**') || vscodeignore.includes('dist/'), '.vscodeignore includes dist/ (for bundled output)');
+  // Must check for include pattern '!dist/**' not exclusion pattern 'dist/'
+  assert(vscodeignore.includes('!dist/**'), '.vscodeignore includes dist/ with include pattern !dist/** (for bundled output)');
   assert(vscodeignore.includes('node_modules/'), '.vscodeignore excludes node_modules/');
   assert(vscodeignore.includes('.git/'), '.vscodeignore excludes .git/');
   assert(vscodeignore.includes('*.vsix'), '.vscodeignore excludes .vsix files');
