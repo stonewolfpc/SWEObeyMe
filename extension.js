@@ -383,11 +383,14 @@ async function activate(context) {
   });
   context.subscriptions.push(openCSharpSettingsCommand);
 
-  // Inline webview provider — no external file dependencies, works in bundled VSIX
+  // Inline webview provider - no external file dependencies, works in bundled VSIX
   function makeWebviewProvider(getHtml) {
     return {
       resolveWebviewView(webviewView) {
-        webviewView.webview.options = { enableScripts: true };
+        webviewView.webview.options = { 
+          enableScripts: true,
+          localResourceRoots: [vscode.Uri.joinPath(context.extensionUri, 'dist')]
+        };
         webviewView.webview.html = getHtml(webviewView.webview);
         webviewView.webview.onDidReceiveMessage(async (msg) => {
           try {
@@ -412,154 +415,368 @@ async function activate(context) {
     };
   }
 
-  function getSettingsHtml() {
+  function getSettingsHtml(webview) {
     const cfg = vscode.workspace.getConfiguration('sweObeyMe');
-    const version = '2.0.7-beta';
-    return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SWEObeyMe Settings</title>
-<style>
-  body{font-family:var(--vscode-font-family);color:var(--vscode-foreground);background:var(--vscode-sideBar-background);padding:12px;margin:0;font-size:13px}
-  h2{font-size:14px;font-weight:600;margin:0 0 12px;color:var(--vscode-sideBarTitle-foreground)}
-  .badge{display:inline-block;background:var(--vscode-badge-background);color:var(--vscode-badge-foreground);padding:1px 6px;border-radius:10px;font-size:11px;margin-left:6px}
-  .row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--vscode-panel-border)}
-  .row:last-child{border-bottom:none}
-  label{flex:1;cursor:pointer}
-  .desc{font-size:11px;color:var(--vscode-descriptionForeground);margin-top:2px}
-  button{background:var(--vscode-button-background);color:var(--vscode-button-foreground);border:none;padding:5px 12px;cursor:pointer;border-radius:2px;font-size:12px;margin-top:12px;width:100%}
-  button:hover{background:var(--vscode-button-hoverBackground)}
-  .status{padding:8px;background:var(--vscode-inputValidation-infoBackground);border-left:3px solid var(--vscode-inputValidation-infoBorder);margin-bottom:12px;font-size:12px}
-</style></head><body>
-<h2>SWEObeyMe <span class="badge">${version}</span></h2>
-<div class="status">✅ MCP server active — registered via contributes.mcpServers</div>
-<div class="row">
-  <div><label>Enable SWEObeyMe</label><div class="desc">Master switch for all enforcement</div></div>
-  <input type="checkbox" id="enabled" ${cfg.get('enabled', true) ? 'checked' : ''} onchange="send('updateConfig','sweObeyMe.enabled',this.checked)">
-</div>
-<div class="row">
-  <div><label>Show Inline Tips</label><div class="desc">Show helpful tips on activation</div></div>
-  <input type="checkbox" id="tips" ${cfg.get('showInlineTip', true) ? 'checked' : ''} onchange="send('updateConfig','sweObeyMe.showInlineTip',this.checked)">
-</div>
-<div class="row">
-  <div><label>C# Bridge</label><div class="desc">Real-time C# error detection</div></div>
-  <input type="checkbox" id="csharp" ${vscode.workspace.getConfiguration('sweObeyMe.csharpBridge').get('enabled', true) ? 'checked' : ''} onchange="send('updateConfig','sweObeyMe.csharpBridge.enabled',this.checked)">
-</div>
-<button onclick="send('openSettings')">Open Full Settings</button>
-<script>
-const vscApi=acquireVsCodeApi();
-function send(cmd,key,value){vscApi.postMessage({command:cmd,key,value});}
-window.addEventListener('message',e=>{if(e.data.command==='configUpdated'){console.log('Updated:',e.data.key);}});
-</script></body></html>`;
+    const version = '2.1.3';
+    const nonce = webview?.cspNonce;
+    const useNonce = nonce && nonce.length > 0;
+    const cspStyle = useNonce ? `'nonce-${nonce}'` : `'unsafe-inline'`;
+    const cspScript = useNonce ? `'nonce-${nonce}'` : `'unsafe-inline'`;
+    const nonceAttr = useNonce ? `nonce="${nonce}"` : '';
+    
+    // Create HTML without inline event handlers to avoid TrustedScript violations
+    const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${cspStyle}; script-src ${cspScript};">
+  <title>SWEObeyMe Settings</title>
+  <style nonce="${nonce}">
+    body{font-family:var(--vscode-font-family);color:var(--vscode-foreground);background:var(--vscode-sideBar-background);padding:12px;margin:0;font-size:13px}
+    h2{font-size:14px;font-weight:600;margin:0 0 12px;color:var(--vscode-sideBarTitle-foreground)}
+    .badge{display:inline-block;background:var(--vscode-badge-background);color:var(--vscode-badge-foreground);padding:1px 6px;border-radius:10px;font-size:11px;margin-left:6px}
+    .row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--vscode-panel-border)}
+    .row:last-child{border-bottom:none}
+    label{flex:1;cursor:pointer}
+    .desc{font-size:11px;color:var(--vscode-descriptionForeground);margin-top:2px}
+    button{background:var(--vscode-button-background);color:var(--vscode-button-foreground);border:none;padding:5px 12px;cursor:pointer;border-radius:2px;font-size:12px;margin-top:12px;width:100%}
+    button:hover{background:var(--vscode-button-hoverBackground)}
+    .status{padding:8px;background:var(--vscode-inputValidation-infoBackground);border-left:3px solid var(--vscode-inputValidation-infoBorder);margin-bottom:12px;font-size:12px}
+  </style>
+</head>
+<body>
+  <h2>SWEObeyMe <span class="badge">${version}</span></h2>
+  <div class="status">MCP server active</div>
+  <div class="row">
+    <div><label for="enabled">Enable SWEObeyMe</label><div class="desc">Master switch for all enforcement</div></div>
+    <input type="checkbox" id="enabled" ${cfg.get('enabled', true) ? 'checked' : ''}>
+  </div>
+  <div class="row">
+    <div><label for="tips">Show Inline Tips</label><div class="desc">Show helpful tips on activation</div></div>
+    <input type="checkbox" id="tips" ${cfg.get('showInlineTip', true) ? 'checked' : ''}>
+  </div>
+  <div class="row">
+    <div><label for="csharp">C# Bridge</label><div class="desc">Real-time C# error detection</div></div>
+    <input type="checkbox" id="csharp" ${vscode.workspace.getConfiguration('sweObeyMe.csharpBridge').get('enabled', true) ? 'checked' : ''}>
+  </div>
+  <button id="openSettings">Open Full Settings</button>
+  <script nonce="${nonce}">
+    const vscApi=acquireVsCodeApi();
+    function send(cmd,key,value){vscApi.postMessage({command:cmd,key:key,value:value});}
+    
+    // Add event listeners instead of inline handlers
+    document.addEventListener('DOMContentLoaded', function() {
+      const enabled = document.getElementById('enabled');
+      const tips = document.getElementById('tips');
+      const csharp = document.getElementById('csharp');
+      const openSettings = document.getElementById('openSettings');
+      
+      enabled.addEventListener('change', function() {
+        send('updateConfig','sweObeyMe.enabled', this.checked);
+      });
+      
+      tips.addEventListener('change', function() {
+        send('updateConfig','sweObeyMe.showInlineTip', this.checked);
+      });
+      
+      csharp.addEventListener('change', function() {
+        send('updateConfig','sweObeyMe.csharpBridge.enabled', this.checked);
+      });
+      
+      openSettings.addEventListener('click', function() {
+        send('openSettings');
+      });
+    });
+    
+    window.addEventListener('message',e=>{if(e.data.command==='configUpdated'){console.log('Updated:',e.data.key);}});
+  </script>
+</body>
+</html>`;
+    
+    return html;
   }
 
-  function getCSharpBridgeHtml() {
+  function getCSharpBridgeHtml(webview) {
     const cfg = vscode.workspace.getConfiguration('sweObeyMe.csharpBridge');
     const detectors = cfg.get('detectors', {});
     const detectorList = ['missing_using','empty_catch','deep_nesting','async_void','resource_leak','math_safety','null_reference','static_mutation','string_concatenation'];
-    const detectorRows = detectorList.map(d =>
-      `<div class="row"><label>${d.replace(/_/g,' ')}</label><input type="checkbox" ${detectors[d] !== false ? 'checked' : ''} onchange="send('updateConfig','sweObeyMe.csharpBridge.detectors.${d}',this.checked)"></div>`
-    ).join('');
-    return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>C# Bridge Settings</title>
-<style>
-  body{font-family:var(--vscode-font-family);color:var(--vscode-foreground);background:var(--vscode-sideBar-background);padding:12px;margin:0;font-size:13px}
-  h2{font-size:14px;font-weight:600;margin:0 0 12px}
-  .row{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--vscode-panel-border)}
-  .row:last-child{border-bottom:none}
-  label{flex:1;text-transform:capitalize}
-  .section{font-size:11px;font-weight:700;color:var(--vscode-descriptionForeground);text-transform:uppercase;margin:12px 0 4px;letter-spacing:.5px}
-  input[type=range]{width:120px}
-  span.val{font-size:11px;min-width:28px;text-align:right}
-  button{background:var(--vscode-button-background);color:var(--vscode-button-foreground);border:none;padding:5px 12px;cursor:pointer;border-radius:2px;font-size:12px;margin-top:12px;width:100%}
-  button:hover{background:var(--vscode-button-hoverBackground)}
-</style></head><body>
-<h2>C# Bridge Settings</h2>
-<div class="row">
-  <label><b>Enabled</b></label>
-  <input type="checkbox" ${cfg.get('enabled', true) ? 'checked' : ''} onchange="send('updateConfig','sweObeyMe.csharpBridge.enabled',this.checked)">
-</div>
-<div class="row">
-  <label>Keep AI Informed</label>
-  <input type="checkbox" ${cfg.get('keepAiInformed', true) ? 'checked' : ''} onchange="send('updateConfig','sweObeyMe.csharpBridge.keepAiInformed',this.checked)">
-</div>
-<div class="row">
-  <label>Deduplicate Alerts</label>
-  <input type="checkbox" ${cfg.get('deduplicateAlerts', true) ? 'checked' : ''} onchange="send('updateConfig','sweObeyMe.csharpBridge.deduplicateAlerts',this.checked)">
-</div>
-<div class="row">
-  <label>Severity Threshold</label>
-  <input type="range" min="0" max="2" value="${cfg.get('severityThreshold', 0)}" oninput="this.nextSibling.textContent=['Info','Warn','Error'][+this.value];send('updateConfig','sweObeyMe.csharpBridge.severityThreshold',+this.value)">
-  <span class="val">${['Info','Warn','Error'][cfg.get('severityThreshold', 0)]}</span>
-</div>
-<div class="row">
-  <label>Confidence %</label>
-  <input type="range" min="0" max="100" value="${cfg.get('confidenceThreshold', 70)}" oninput="this.nextSibling.textContent=this.value+'%';send('updateConfig','sweObeyMe.csharpBridge.confidenceThreshold',+this.value)">
-  <span class="val">${cfg.get('confidenceThreshold', 70)}%</span>
-</div>
-<div class="section">Detectors</div>
-${detectorRows}
-<button onclick="send('openSettings')">Open Full Settings</button>
-<script>
-const vscApi=acquireVsCodeApi();
-function send(cmd,key,value){vscApi.postMessage({command:cmd,key,value});}
-</script></body></html>`;
+    const nonce = webview?.cspNonce;
+    const useNonce = nonce && nonce.length > 0;
+    const cspStyle = useNonce ? `'nonce-${nonce}'` : `'unsafe-inline'`;
+    const cspScript = useNonce ? `'nonce-${nonce}'` : `'unsafe-inline'`;
+    
+    // Create HTML without inline event handlers to avoid TrustedScript violations
+    const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${cspStyle}; script-src ${cspScript};">
+  <title>C# Bridge Settings</title>
+  <style nonce="${nonce}">
+    body{font-family:var(--vscode-font-family);color:var(--vscode-foreground);background:var(--vscode-sideBar-background);padding:12px;margin:0;font-size:13px}
+    h2{font-size:14px;font-weight:600;margin:0 0 12px}
+    .row{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--vscode-panel-border)}
+    .row:last-child{border-bottom:none}
+    label{flex:1;text-transform:capitalize}
+    .section{font-size:11px;font-weight:700;color:var(--vscode-descriptionForeground);text-transform:uppercase;margin:12px 0 4px;letter-spacing:.5px}
+    input[type=range]{width:120px}
+    span.val{font-size:11px;min-width:28px;text-align:right}
+    button{background:var(--vscode-button-background);color:var(--vscode-button-foreground);border:none;padding:5px 12px;cursor:pointer;border-radius:2px;font-size:12px;margin-top:12px;width:100%}
+    button:hover{background:var(--vscode-button-hoverBackground)}
+  </style>
+</head>
+<body>
+  <h2>C# Bridge Settings</h2>
+  <div class="row">
+    <label for="csharpEnabled"><b>Enabled</b></label>
+    <input type="checkbox" id="csharpEnabled" ${cfg.get('enabled', true) ? 'checked' : ''}>
+  </div>
+  <div class="row">
+    <label for="keepAiInformed">Keep AI Informed</label>
+    <input type="checkbox" id="keepAiInformed" ${cfg.get('keepAiInformed', true) ? 'checked' : ''}>
+  </div>
+  <div class="row">
+    <label for="deduplicateAlerts">Deduplicate Alerts</label>
+    <input type="checkbox" id="deduplicateAlerts" ${cfg.get('deduplicateAlerts', true) ? 'checked' : ''}>
+  </div>
+  <div class="row">
+    <label for="severityThreshold">Severity Threshold</label>
+    <input type="range" id="severityThreshold" min="0" max="2" value="${cfg.get('severityThreshold', 0)}">
+    <span class="val" id="severityValue">${['Info','Warn','Error'][cfg.get('severityThreshold', 0)]}</span>
+  </div>
+  <div class="row">
+    <label for="confidenceThreshold">Confidence %</label>
+    <input type="range" id="confidenceThreshold" min="0" max="100" value="${cfg.get('confidenceThreshold', 70)}">
+    <span class="val" id="confidenceValue">${cfg.get('confidenceThreshold', 70)}%</span>
+  </div>
+  <div class="section">Detectors</div>
+  ${detectorList.map(d => 
+    `<div class="row"><label for="detector_${d}">${d.replace(/_/g,' ')}</label><input type="checkbox" id="detector_${d}" ${detectors[d] !== false ? 'checked' : ''}></div>`
+  ).join('')}
+  <button id="openCSharpSettings">Open Full Settings</button>
+  <script nonce="${nonce}">
+    const vscApi=acquireVsCodeApi();
+    function send(cmd,key,value){vscApi.postMessage({command:cmd,key:key,value:value});}
+    
+    // Add event listeners instead of inline handlers
+    document.addEventListener('DOMContentLoaded', function() {
+      const csharpEnabled = document.getElementById('csharpEnabled');
+      const keepAiInformed = document.getElementById('keepAiInformed');
+      const deduplicateAlerts = document.getElementById('deduplicateAlerts');
+      const severityThreshold = document.getElementById('severityThreshold');
+      const confidenceThreshold = document.getElementById('confidenceThreshold');
+      const openCSharpSettings = document.getElementById('openCSharpSettings');
+      const severityValue = document.getElementById('severityValue');
+      const confidenceValue = document.getElementById('confidenceValue');
+      
+      csharpEnabled.addEventListener('change', function() {
+        send('updateConfig','sweObeyMe.csharpBridge.enabled', this.checked);
+      });
+      
+      keepAiInformed.addEventListener('change', function() {
+        send('updateConfig','sweObeyMe.csharpBridge.keepAiInformed', this.checked);
+      });
+      
+      deduplicateAlerts.addEventListener('change', function() {
+        send('updateConfig','sweObeyMe.csharpBridge.deduplicateAlerts', this.checked);
+      });
+      
+      severityThreshold.addEventListener('input', function() {
+        const labels = ['Info','Warn','Error'];
+        severityValue.textContent = labels[+this.value];
+        send('updateConfig','sweObeyMe.csharpBridge.severityThreshold', +this.value);
+      });
+      
+      confidenceThreshold.addEventListener('input', function() {
+        confidenceValue.textContent = this.value + '%';
+        send('updateConfig','sweObeyMe.csharpBridge.confidenceThreshold', +this.value);
+      });
+      
+      openCSharpSettings.addEventListener('click', function() {
+        send('openSettings');
+      });
+      
+      // Add event listeners for detectors
+      ${detectorList.map(d => 
+        `document.getElementById('detector_${d}').addEventListener('change', function() {
+          send('updateConfig','sweObeyMe.csharpBridge.detectors.${d}', this.checked);
+        });`
+      ).join('\n      ')}
+    });
+  </script>
+</body>
+</html>`;
+    
+    return html;
   }
 
-  function getAdminDashboardHtml() {
+  function getAdminDashboardHtml(webview) {
     let mcpCfg = {};
     try { mcpCfg = JSON.parse(fs.readFileSync(path.join(os.homedir(), '.sweobeyme-config.json'), 'utf8')); } catch {}
-    const rows = Object.entries({
-      maxLines: [mcpCfg.maxLines ?? 700, 'Max Lines Per File', 100, 2000],
-      warningThreshold: [mcpCfg.warningThreshold ?? 600, 'Warning Threshold', 100, 2000],
-      maxBackupsPerFile: [mcpCfg.maxBackupsPerFile ?? 10, 'Max Backups Per File', 1, 50],
-      maxLoopAttempts: [mcpCfg.maxLoopAttempts ?? 3, 'Max Loop Attempts', 1, 10],
-    }).map(([k,[v,label,min,max]]) =>
-      `<div class="row"><label>${label}</label><input type="number" min="${min}" max="${max}" value="${v}" style="width:60px;background:var(--vscode-input-background);color:var(--vscode-input-foreground);border:1px solid var(--vscode-input-border);padding:2px 4px" onchange="send('updateMcpConfig','${k}',+this.value)"></div>`
-    ).join('');
-    const toggles = Object.entries({
-      enableAutoCorrection: [mcpCfg.enableAutoCorrection !== false, 'Auto-Correction'],
-      enableLoopDetection: [mcpCfg.enableLoopDetection !== false, 'Loop Detection'],
-      enableWorkflowOrchestration: [mcpCfg.enableWorkflowOrchestration !== false, 'Workflow Orchestration'],
-      enableSessionMemory: [mcpCfg.enableSessionMemory !== false, 'Session Memory'],
-      enableOracle: [mcpCfg.enableOracle !== false, 'Oracle'],
-      debugLogs: [mcpCfg.debugLogs === true, 'Debug Logs'],
-    }).map(([k,[v,label]]) =>
-      `<div class="row"><label>${label}</label><input type="checkbox" ${v ? 'checked' : ''} onchange="send('updateMcpConfig','${k}',this.checked)"></div>`
-    ).join('');
-    return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Admin Dashboard</title>
-<style>
-  body{font-family:var(--vscode-font-family);color:var(--vscode-foreground);background:var(--vscode-sideBar-background);padding:12px;margin:0;font-size:13px}
-  h2{font-size:14px;font-weight:600;margin:0 0 12px}
-  .section{font-size:11px;font-weight:700;color:var(--vscode-descriptionForeground);text-transform:uppercase;margin:12px 0 4px;letter-spacing:.5px}
-  .row{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--vscode-panel-border)}
-  .row:last-child{border-bottom:none}
-  label{flex:1}
-  button{background:var(--vscode-button-background);color:var(--vscode-button-foreground);border:none;padding:5px 12px;cursor:pointer;border-radius:2px;font-size:12px;margin-top:12px;width:100%}
-  button:hover{background:var(--vscode-button-hoverBackground)}
-  #status{font-size:11px;color:var(--vscode-descriptionForeground);margin-top:8px;text-align:center}
-</style></head><body>
-<h2>Admin Dashboard</h2>
-<div class="section">MCP Governance Config (~/.sweobeyme-config.json)</div>
-${rows}
-<div class="section">Feature Toggles</div>
-${toggles}
-<button onclick="vscApi.postMessage({command:'openSettings'})">Open VS Code Settings</button>
-<div id="status"></div>
-<script>
-const vscApi=acquireVsCodeApi();
-function send(cmd,key,value){vscApi.postMessage({command:cmd,key,value});document.getElementById('status').textContent='Saved \u2713';}
-window.addEventListener('message',e=>{if(e.data.command==='error')document.getElementById('status').textContent='Error: '+e.data.message;});
-</script></body></html>`;
+    const nonce = webview?.cspNonce;
+    const useNonce = nonce && nonce.length > 0;
+    const cspStyle = useNonce ? `'nonce-${nonce}'` : `'unsafe-inline'`;
+    const cspScript = useNonce ? `'nonce-${nonce}'` : `'unsafe-inline'`;
+    
+    // Define config values
+    const configValues = {
+      maxLines: mcpCfg.maxLines ?? 700,
+      warningThreshold: mcpCfg.warningThreshold ?? 600,
+      maxBackupsPerFile: mcpCfg.maxBackupsPerFile ?? 10,
+      maxLoopAttempts: mcpCfg.maxLoopAttempts ?? 3,
+      enableAutoCorrection: mcpCfg.enableAutoCorrection !== false,
+      enableLoopDetection: mcpCfg.enableLoopDetection !== false,
+      enableWorkflowOrchestration: mcpCfg.enableWorkflowOrchestration !== false,
+      enableSessionMemory: mcpCfg.enableSessionMemory !== false,
+      enableOracle: mcpCfg.enableOracle !== false,
+      debugLogs: mcpCfg.debugLogs === true,
+    };
+    
+    // Create HTML without inline event handlers to avoid TrustedScript violations
+    const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${cspStyle}; script-src ${cspScript};">
+  <title>Admin Dashboard</title>
+  <style nonce="${nonce}">
+    body{font-family:var(--vscode-font-family);color:var(--vscode-foreground);background:var(--vscode-sideBar-background);padding:12px;margin:0;font-size:13px}
+    h2{font-size:14px;font-weight:600;margin:0 0 12px}
+    .section{font-size:11px;font-weight:700;color:var(--vscode-descriptionForeground);text-transform:uppercase;margin:12px 0 4px;letter-spacing:.5px}
+    .row{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--vscode-panel-border)}
+    .row:last-child{border-bottom:none}
+    label{flex:1}
+    button{background:var(--vscode-button-background);color:var(--vscode-button-foreground);border:none;padding:5px 12px;cursor:pointer;border-radius:2px;font-size:12px;margin-top:12px;width:100%}
+    button:hover{background:var(--vscode-button-hoverBackground)}
+    #status{font-size:11px;color:var(--vscode-descriptionForeground);margin-top:8px;text-align:center}
+    input[type=number]{width:60px;background:var(--vscode-input-background);color:var(--vscode-input-foreground);border:1px solid var(--vscode-input-border);padding:2px 4px}
+  </style>
+</head>
+<body>
+  <h2>Admin Dashboard</h2>
+  <div class="section">MCP Governance Config</div>
+  <div class="row">
+    <label for="maxLines">Max Lines Per File</label>
+    <input type="number" id="maxLines" min="100" max="2000" value="${configValues.maxLines}">
+  </div>
+  <div class="row">
+    <label for="warningThreshold">Warning Threshold</label>
+    <input type="number" id="warningThreshold" min="100" max="2000" value="${configValues.warningThreshold}">
+  </div>
+  <div class="row">
+    <label for="maxBackupsPerFile">Max Backups Per File</label>
+    <input type="number" id="maxBackupsPerFile" min="1" max="50" value="${configValues.maxBackupsPerFile}">
+  </div>
+  <div class="row">
+    <label for="maxLoopAttempts">Max Loop Attempts</label>
+    <input type="number" id="maxLoopAttempts" min="1" max="10" value="${configValues.maxLoopAttempts}">
+  </div>
+  <div class="section">Feature Toggles</div>
+  <div class="row">
+    <label for="enableAutoCorrection">Auto-Correction</label>
+    <input type="checkbox" id="enableAutoCorrection" ${configValues.enableAutoCorrection ? 'checked' : ''}>
+  </div>
+  <div class="row">
+    <label for="enableLoopDetection">Loop Detection</label>
+    <input type="checkbox" id="enableLoopDetection" ${configValues.enableLoopDetection ? 'checked' : ''}>
+  </div>
+  <div class="row">
+    <label for="enableWorkflowOrchestration">Workflow Orchestration</label>
+    <input type="checkbox" id="enableWorkflowOrchestration" ${configValues.enableWorkflowOrchestration ? 'checked' : ''}>
+  </div>
+  <div class="row">
+    <label for="enableSessionMemory">Session Memory</label>
+    <input type="checkbox" id="enableSessionMemory" ${configValues.enableSessionMemory ? 'checked' : ''}>
+  </div>
+  <div class="row">
+    <label for="enableOracle">Oracle</label>
+    <input type="checkbox" id="enableOracle" ${configValues.enableOracle ? 'checked' : ''}>
+  </div>
+  <div class="row">
+    <label for="debugLogs">Debug Logs</label>
+    <input type="checkbox" id="debugLogs" ${configValues.debugLogs ? 'checked' : ''}>
+  </div>
+  <button id="openAdminSettings">Open VS Code Settings</button>
+  <div id="status"></div>
+  <script nonce="${nonce}">
+    const vscApi=acquireVsCodeApi();
+    function send(cmd,key,value){vscApi.postMessage({command:cmd,key:key,value:value});document.getElementById('status').textContent='Saved \u2713';}
+    
+    // Add event listeners instead of inline handlers
+    document.addEventListener('DOMContentLoaded', function() {
+      const maxLines = document.getElementById('maxLines');
+      const warningThreshold = document.getElementById('warningThreshold');
+      const maxBackupsPerFile = document.getElementById('maxBackupsPerFile');
+      const maxLoopAttempts = document.getElementById('maxLoopAttempts');
+      const enableAutoCorrection = document.getElementById('enableAutoCorrection');
+      const enableLoopDetection = document.getElementById('enableLoopDetection');
+      const enableWorkflowOrchestration = document.getElementById('enableWorkflowOrchestration');
+      const enableSessionMemory = document.getElementById('enableSessionMemory');
+      const enableOracle = document.getElementById('enableOracle');
+      const debugLogs = document.getElementById('debugLogs');
+      const openAdminSettings = document.getElementById('openAdminSettings');
+      
+      maxLines.addEventListener('change', function() {
+        send('updateMcpConfig','maxLines', +this.value);
+      });
+      
+      warningThreshold.addEventListener('change', function() {
+        send('updateMcpConfig','warningThreshold', +this.value);
+      });
+      
+      maxBackupsPerFile.addEventListener('change', function() {
+        send('updateMcpConfig','maxBackupsPerFile', +this.value);
+      });
+      
+      maxLoopAttempts.addEventListener('change', function() {
+        send('updateMcpConfig','maxLoopAttempts', +this.value);
+      });
+      
+      enableAutoCorrection.addEventListener('change', function() {
+        send('updateMcpConfig','enableAutoCorrection', this.checked);
+      });
+      
+      enableLoopDetection.addEventListener('change', function() {
+        send('updateMcpConfig','enableLoopDetection', this.checked);
+      });
+      
+      enableWorkflowOrchestration.addEventListener('change', function() {
+        send('updateMcpConfig','enableWorkflowOrchestration', this.checked);
+      });
+      
+      enableSessionMemory.addEventListener('change', function() {
+        send('updateMcpConfig','enableSessionMemory', this.checked);
+      });
+      
+      enableOracle.addEventListener('change', function() {
+        send('updateMcpConfig','enableOracle', this.checked);
+      });
+      
+      debugLogs.addEventListener('change', function() {
+        send('updateMcpConfig','debugLogs', this.checked);
+      });
+      
+      openAdminSettings.addEventListener('click', function() {
+        send('openSettings');
+      });
+    });
+    
+    window.addEventListener('message',e=>{if(e.data.command==='error')document.getElementById('status').textContent='Error: '+e.data.message;});
+  </script>
+</body>
+</html>`;
+    
+    return html;
   }
 
   // Register providers for all three views
   context.subscriptions.push(
-    vscode.window.registerWebviewViewProvider('sweObeyMe.csharpSettings', makeWebviewProvider(() => getSettingsHtml())),
-    vscode.window.registerWebviewViewProvider('sweObeyMe.csharpSettingsView', makeWebviewProvider(() => getCSharpBridgeHtml())),
-    vscode.window.registerWebviewViewProvider('sweObeyMe.adminDashboard', makeWebviewProvider(() => getAdminDashboardHtml())),
+    vscode.window.registerWebviewViewProvider('sweObeyMe.csharpSettings', makeWebviewProvider((webview) => getSettingsHtml(webview))),
+    vscode.window.registerWebviewViewProvider('sweObeyMe.csharpSettingsView', makeWebviewProvider((webview) => getCSharpBridgeHtml(webview))),
+    vscode.window.registerWebviewViewProvider('sweObeyMe.adminDashboard', makeWebviewProvider((webview) => getAdminDashboardHtml(webview))),
   );
 
   // Register CodeLens provider for C# files
@@ -942,7 +1159,33 @@ window.addEventListener('message',e=>{if(e.data.command==='error')document.getEl
 
 function deactivate() {
   console.log('SWEObeyMe extension deactivated');
-  // MCP server lifecycle is managed by Windsurf via contributes.mcpServers — no cleanup needed.
+  
+  // Clean up managers (if they have been initialized and have a dispose method)
+  try {
+    if (typeof diffReviewManager?.dispose === 'function') {
+      diffReviewManager.dispose();
+    }
+    if (typeof permissionManager?.dispose === 'function') {
+      permissionManager.dispose();
+    }
+    if (typeof skillsMarketplaceManager?.dispose === 'function') {
+      skillsMarketplaceManager.dispose();
+    }
+    if (typeof policyAsCodeManager?.dispose === 'function') {
+      policyAsCodeManager.dispose();
+    }
+    if (typeof metricsManager?.dispose === 'function') {
+      metricsManager.dispose();
+    }
+    if (typeof healthCheckManager?.dispose === 'function') {
+      healthCheckManager.dispose();
+    }
+  } catch (error) {
+    console.error('[SWEObeyMe] Error during deactivation:', error);
+  }
+  
+  // MCP server lifecycle is managed by Windsurf via contributes.mcpServers - no cleanup needed.
+  // Diagnostic collections are automatically disposed by VS Code when extension deactivates.
 }
 
 export { activate, deactivate };

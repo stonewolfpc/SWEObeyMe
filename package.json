@@ -1,14 +1,14 @@
 {
   "name": "swe-obey-me",
   "displayName": "SWEObeyMe",
-  "description": "SWEObeyMe - Surgical governance system for VS Code with MCP server integration. v2.1.1-beta: Fixed duplicate tools, Unix file:// URL handling, and enhanced test suite.",
-  "version": "2.1.2-beta",
+  "description": "SWEObeyMe - Surgical governance system for VS Code with MCP server integration. v2.1.4-beta: Fixed empty UI panels, MCP config installation, TrustedScript violations, and runtime warnings.",
+  "version": "2.1.4-beta",
   "type": "module",
   "publisher": "stonewolfpc",
   "icon": "icon.png",
   "main": "dist/extension.js",
   "engines": {
-    "vscode": "^1.60.0"
+    "vscode": "^1.61.0"
   },
   "categories": [
     "Other",
@@ -139,7 +139,6 @@
           "type": "webview",
           "id": "sweObeyMe.csharpSettings",
           "name": "Settings",
-          "when": "config.sweObeyMe.enabled",
           "icon": "$(settings-gear)"
         },
         {
