@@ -114,82 +114,38 @@ function testPathNormalization(config) {
 
 /**
  * Test 6: Verify no absolute user-specific paths
+ * (Skipped since we now use native contributes.mcpServers)
  */
 function testNoAbsoluteUserPaths(config) {
   const testName = 'No absolute user-specific paths in config';
-  
-  if (!config || !config.mcpServers || !config.mcpServers['swe-obey-me']) {
-    recordTest(testName, false, 'Server config not found');
-    return;
-  }
-  
-  const serverConfig = config.mcpServers['swe-obey-me'];
-  const args = serverConfig.args || [];
-  const env = serverConfig.env || {};
-  
-  // Check for paths that look like they might be user-specific
-  const userPathPatterns = [
-    /C:\\Users\\[^\\]+/, // Windows user paths
-    /\/home\/[^\/]+/, // Linux user paths
-    /\/Users\/[^\/]+/, // Mac user paths
-  ];
-  
-  const hasUserPaths = args.some(arg => userPathPatterns.some(pattern => pattern.test(arg))) ||
-                      Object.values(env).some(val => val && userPathPatterns.some(pattern => pattern.test(val)));
-  
-  recordTest(testName, !hasUserPaths, hasUserPaths ? 'Found user-specific absolute paths' : '');
+  // Skip this test since we removed manual config writing
+  log(`⚠ ${testName} - Skipped (using native contributes.mcpServers)`, 'warn');
+  results.skipped++;
+  results.tests.push({ name: testName, passed: null, message: 'Skipped - using native contributes.mcpServers' });
 }
 
 /**
  * Test 7: Verify environment variables are set
+ * (Skipped since we now use native contributes.mcpServers)
  */
 function testEnvironmentVariables(config) {
   const testName = 'Required environment variables are set';
-  
-  if (!config || !config.mcpServers || !config.mcpServers['swe-obey-me']) {
-    recordTest(testName, false, 'Server config not found');
-    return;
-  }
-  
-  const serverConfig = config.mcpServers['swe-obey-me'];
-  const env = serverConfig.env || {};
-  
-  const hasNodeEnv = env.NODE_ENV === 'production';
-  const hasBackupDir = env.SWEOBEYME_BACKUP_DIR && typeof env.SWEOBEYME_BACKUP_DIR === 'string';
-  const hasDebug = env.SWEOBEYME_DEBUG === '0';
-  
-  const allChecks = hasNodeEnv && hasBackupDir && hasDebug;
-  recordTest(testName, allChecks, allChecks ? '' : 'Missing required environment variables');
+  // Skip this test since we removed manual config writing
+  log(`⚠ ${testName} - Skipped (using native contributes.mcpServers)`, 'warn');
+  results.skipped++;
+  results.tests.push({ name: testName, passed: null, message: 'Skipped - using native contributes.mcpServers' });
 }
 
 /**
  * Test 8: Verify config is not corrupted (atomic write)
+ * (Skipped since we now use native contributes.mcpServers)
  */
-function testConfigIntegrity(configPath) {
+function testConfigIntegrity() {
   const testName = 'Config file integrity (no corruption from partial writes)';
-  
-  if (!fs.existsSync(configPath)) {
-    // Skip with warning instead of failing (CI/CD compatibility)
-    log(`⚠ ${testName} - Config file does not exist (skipping - extension not activated)`, 'warn');
-    results.skipped++;
-    results.tests.push({ name: testName, passed: null, message: 'Skipped - config file does not exist' });
-    return;
-  }
-  
-  try {
-    const content = fs.readFileSync(configPath, 'utf8');
-    const config = JSON.parse(content);
-    
-    // Verify it's a valid object
-    const isValidObject = typeof config === 'object' && config !== null;
-    
-    // Verify no trailing commas or other JSON issues
-    const hasValidStructure = content.trim().endsWith('}');
-    
-    recordTest(testName, isValidObject && hasValidStructure, 'Config may be corrupted');
-  } catch (error) {
-    recordTest(testName, false, `Config integrity check failed: ${error.message}`);
-  }
+  // Skip this test since we removed manual config writing
+  log(`⚠ ${testName} - Skipped (using native contributes.mcpServers)`, 'warn');
+  results.skipped++;
+  results.tests.push({ name: testName, passed: null, message: 'Skipped - using native contributes.mcpServers' });
 }
 
 /**
@@ -230,11 +186,11 @@ function testDeactivatePathConsistency() {
 function runAllTests() {
   log('\n=== MCP Configuration Test Suite ===\n', 'info');
   
-  // Test 1: Config path
-  const configPath = testConfigPath();
+  // Test 1: Config path (native contributes.mcpServers)
+  testConfigPath();
   
-  // Test 2: Config exists and valid
-  const config = testConfigExists(configPath);
+  // Test 2: Config exists and valid (skipped for native approach)
+  const config = testConfigExists();
   
   if (config) {
     // Test 3: Config structure
@@ -253,8 +209,8 @@ function runAllTests() {
     testEnvironmentVariables(config);
   }
   
-  // Test 8: Config integrity
-  testConfigIntegrity(configPath);
+  // Test 8: Config integrity (skipped for native approach)
+  testConfigIntegrity();
   
   // Test 9: Cross-platform paths
   testCrossPlatformPaths();

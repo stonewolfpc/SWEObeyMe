@@ -40,6 +40,13 @@ console.log('║     SWEObeyMe RELEASE VALIDATION - FINAL GATE             ║')
 console.log('║     100% Certainty Before Release - No Excuses            ║');
 console.log('╚════════════════════════════════════════════════════════════╝\n');
 
+// Debug paths
+console.log('📁 Debug paths:');
+console.log(`   __dirname: ${__dirname}`);
+console.log(`   projectRoot: ${projectRoot}`);
+console.log(`   scriptsDir: ${scriptsDir}`);
+console.log('');
+
 // Test configuration - order matters!
 const tests = [
   {
@@ -93,9 +100,14 @@ async function runTest(test, index) {
   console.log(`${'─'.repeat(60)}`);
   
   const scriptPath = path.join(scriptsDir, test.script);
+  const exists = fs.existsSync(scriptPath);
   
-  if (!fs.existsSync(scriptPath)) {
+  console.log(`   🔍 Checking: ${scriptPath}`);
+  console.log(`   📄 Exists: ${exists}`);
+  
+  if (!exists) {
     console.error(`❌ Test script not found: ${test.script}`);
+    console.error(`   Expected at: ${scriptPath}`);
     results.push({ test: test.name, status: 'SCRIPT_MISSING', critical: test.critical });
     if (test.critical) criticalFailures++;
     return false;
