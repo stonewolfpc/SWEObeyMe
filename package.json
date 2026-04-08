@@ -885,6 +885,7 @@
   "scripts": {
     "package": "vsce package",
     "publish": "vsce publish",
+    "compile": "npm run build",
     "start": "node index.js",
     "build": "node esbuild.config.js",
     "build:public": "NODE_ENV=production BUILD_MODE=public node esbuild.config.js",

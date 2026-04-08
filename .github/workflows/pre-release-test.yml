@@ -80,8 +80,13 @@ jobs:
           Write-Host "✅ package.json correctly placed in dist/mcp/"
       
       - name: Test MCP Server Startup
-        run: echo "TODO: Implement test-mcp-startup.js script"
-        # run: node .github/scripts/test-mcp-startup.js  # Uncomment when script exists
+        run: node .github/scripts/test-mcp-startup.js
+
+      - name: Test Config Generation
+        run: node .github/scripts/test-config-generation.js
+
+      - name: Test MCP Compliance
+        run: node .github/scripts/test-mcp-compliance.js
 
   # ============================================
   # JOB 3: macOS Tests
