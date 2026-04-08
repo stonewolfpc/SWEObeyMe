@@ -28,9 +28,9 @@ const toFileUrl = (p) => {
     // Fallback: manually construct file:// URL for Windows
     if (process.platform === 'win32' && path.isAbsolute(p)) {
       const normalized = p.replace(/\\/g, '/');
-      // Ensure path starts with / for file:// URL (C:/path -> /C:/path)
-      const withLeadingSlash = normalized.startsWith('/') ? normalized : `/${normalized}`;
-      return `file://${withLeadingSlash}`;
+      // Windows file:// URLs require three slashes: file:///C:/path
+      // The third slash represents the empty host portion
+      return `file:///${normalized}`;
     }
     // Unix fallback
     return `file://${p}`;
