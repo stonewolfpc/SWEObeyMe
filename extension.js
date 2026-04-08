@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
 import * as os from 'os';
-import { fileURLToPath } from 'url';
+import { fileURLToPath, pathToFileURL } from 'url';
 import { exec } from 'child_process';
 import { promisify } from 'util';
 
@@ -11,6 +11,9 @@ const execAsync = promisify(exec);
 // ESM-safe __dirname
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// Convert a filesystem path to a file:// URL string for dynamic import() on Windows
+const toFileUrl = p => pathToFileURL(p).href;
 
 // Import checkpoint manager
 let checkpointManager = null;
@@ -59,7 +62,7 @@ async function updateCSharpDiagnostics(document, diagnosticCollection) {
   try {
     // Import C# bridge analysis
     const csharpBridgePath = path.join(__dirname, 'lib', 'csharp-bridge.js');
-    const { analyzeCSharpFile } = await import(csharpBridgePath);
+    const { analyzeCSharpFile } = await import(toFileUrl(csharpBridgePath));
 
     const analysis = await analyzeCSharpFile(filePath);
     const severityThreshold = config.get('severityThreshold', 0);
@@ -164,36 +167,36 @@ async function activate(context) {
   console.log('SWEObeyMe extension activated');
 
   // Initialize checkpoint manager
-  const { CheckpointManager } = await import(path.join(__dirname, 'lib', 'checkpoint-manager.js'));
+  const { CheckpointManager } = await import(toFileUrl(path.join(__dirname, 'lib', 'checkpoint-manager.js')));
   checkpointManager = new CheckpointManager(context);
 
   // Initialize provider manager
-  const { ProviderManager } = await import(path.join(__dirname, 'lib', 'provider-manager.js'));
+  const { ProviderManager } = await import(toFileUrl(path.join(__dirname, 'lib', 'provider-manager.js')));
   providerManager = new ProviderManager();
 
   // Refresh provider status on activation
   await providerManager.refreshProviderStatus();
 
   // Initialize diff review manager
-  const { DiffReviewManager } = await import(path.join(__dirname, 'lib', 'diff-review-manager.js'));
+  const { DiffReviewManager } = await import(toFileUrl(path.join(__dirname, 'lib', 'diff-review-manager.js')));
   diffReviewManager = new DiffReviewManager();
 
   // Initialize permission manager
-  const { PermissionManager } = await import(path.join(__dirname, 'lib', 'permission-manager.js'));
+  const { PermissionManager } = await import(toFileUrl(path.join(__dirname, 'lib', 'permission-manager.js')));
   permissionManager = new PermissionManager();
 
   // Initialize skills marketplace manager
-  const { SkillsMarketplaceManager } = await import(path.join(__dirname, 'lib', 'skills-marketplace-manager.js'));
+  const { SkillsMarketplaceManager } = await import(toFileUrl(path.join(__dirname, 'lib', 'skills-marketplace-manager.js')));
   skillsMarketplaceManager = new SkillsMarketplaceManager(context);
 
   // Advanced managers are disabled in public build
 
   // Initialize policy-as-code manager
-  const { PolicyAsCodeManager } = await import(path.join(__dirname, 'lib', 'policy-as-code-manager.js'));
+  const { PolicyAsCodeManager } = await import(toFileUrl(path.join(__dirname, 'lib', 'policy-as-code-manager.js')));
   policyAsCodeManager = new PolicyAsCodeManager();
 
   // Initialize metrics manager
-  const { MetricsManager, HealthCheckManager } = await import(path.join(__dirname, 'lib', 'metrics-manager.js'));
+  const { MetricsManager, HealthCheckManager } = await import(toFileUrl(path.join(__dirname, 'lib', 'metrics-manager.js')));
   metricsManager = new MetricsManager();
   healthCheckManager = new HealthCheckManager();
 

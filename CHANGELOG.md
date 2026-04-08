@@ -2,6 +2,11 @@
 
 All notable changes to SWEObeyMe will be documented in this file.
 
+## [2.0.9-beta] - 2026-04-08
+
+### Bug Fixes
+- **Fixed Windows ESM activation crash** — `dynamic import()` requires `file://` URLs on Windows; bare `C:\...` paths throw "Only URLs with a scheme in: file, data, node, and electron are supported". All `await import(path.join(...))` calls now use `pathToFileURL(p).href` via a `toFileUrl` helper.
+
 ## [2.0.8-beta] - 2026-04-08
 
 ### Bug Fixes
