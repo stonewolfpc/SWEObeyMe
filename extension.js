@@ -176,16 +176,21 @@ async function activate(context) {
                       extensionPath.includes('.vscode\\extensions');
 
   if (isInstalled) {
-    // Use os.homedir() for cross-platform compatibility
-    const configDir = path.join(os.homedir(), '.codeium', 'windsurf-next');
-    const mcpConfigPath = path.resolve(path.join(configDir, 'mcp_config.json'));
+    // Windsurf-Next uses %APPDATA%\Windsurf\mcp.json for MCP configuration
+    const windsurfConfigDir = path.join(localAppData || path.join(process.env.USERPROFILE || '', 'AppData', 'Local'), 'Windsurf');
+    const mcpConfigPath = path.join(windsurfConfigDir, 'mcp.json');
 
-    console.log('[SWEObeyMe] MCP config path (absolute):', mcpConfigPath);
+    console.log('[SWEObeyMe] MCP config path:', mcpConfigPath);
 
     try {
       const fs = await import('fs');
       let needsUpdate = false;
       let config = {};
+
+      // Ensure directory exists
+      if (!fs.existsSync(windsurfConfigDir)) {
+        fs.mkdirSync(windsurfConfigDir, { recursive: true });
+      }
 
       if (fs.existsSync(mcpConfigPath)) {
         const raw = fs.readFileSync(mcpConfigPath, 'utf8');
@@ -194,6 +199,7 @@ async function activate(context) {
             config = JSON.parse(raw);
           } catch (e) {
             needsUpdate = true;
+            console.error('[SWEObeyMe] Failed to parse existing mcp.json:', e);
           }
         } else {
           needsUpdate = true;
@@ -203,23 +209,29 @@ async function activate(context) {
           const existingServer = config.mcpServers?.['swe-obey-me'];
           if (existingServer) {
             const existingPath = existingServer.args?.[existingServer.args.length - 1];
-            const configuredPath = existingPath?.replace(/\//g, '\\');
-            if (configuredPath && !fs.existsSync(configuredPath)) {
+            // Check if path exists and is valid
+            if (existingPath && !fs.existsSync(existingPath)) {
               needsUpdate = true;
+              console.log('[SWEObeyMe] Existing MCP config path does not exist, updating...');
             }
           } else {
             needsUpdate = true;
+            console.log('[SWEObeyMe] MCP server not configured, adding...');
           }
         }
       } else {
         needsUpdate = true;
+        console.log('[SWEObeyMe] mcp.json does not exist, creating...');
       }
 
       if (needsUpdate) {
+        // Normalize path to forward slashes for cross-platform compatibility
+        const normalizedIndexPath = indexPath.replace(/\\/g, '/');
+
         config.mcpServers = config.mcpServers || {};
         config.mcpServers['swe-obey-me'] = {
           command: 'node',
-          args: ['--no-warnings', indexPath],
+          args: ['--no-warnings', normalizedIndexPath],
           env: {
             NODE_ENV: 'production',
             SWEOBEYME_BACKUP_DIR: backupDir,
@@ -228,11 +240,8 @@ async function activate(context) {
           disabled: false,
         };
 
-        const dir = path.dirname(mcpConfigPath);
-        if (!fs.existsSync(dir)) {
-          fs.mkdirSync(dir, { recursive: true });
-        }
         fs.writeFileSync(mcpConfigPath, JSON.stringify(config, null, 2));
+        console.log('[SWEObeyMe] MCP config written successfully');
 
         vscode.window.showInformationMessage(
           'SWEObeyMe MCP configured! Reload Windsurf to activate.',
@@ -242,9 +251,11 @@ async function activate(context) {
             vscode.commands.executeCommand('workbench.action.reloadWindow');
           }
         });
+      } else {
+        console.log('[SWEObeyMe] MCP config already valid');
       }
     } catch (error) {
-      console.error('SWEObeyMe: Failed to auto-configure MCP:', error);
+      console.error('[SWEObeyMe] Failed to auto-configure MCP:', error);
       const suggestions = [
         '• Check that Windsurf is properly installed',
         '• Verify you have write permissions for the config directory',

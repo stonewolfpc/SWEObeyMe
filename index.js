@@ -29,6 +29,12 @@ const log = msg => {
 
 // Main async initialization
 (async () => {
+  // Startup banner to stderr (not stdout) for diagnostics
+  process.stderr.write(`[SWEObeyMe] MCP server starting: ${__filename}\n`);
+  process.stderr.write(`[SWEObeyMe] Version: ${VERSION}\n`);
+  process.stderr.write(`[SWEObeyMe] Platform: ${process.platform}\n`);
+  process.stderr.write(`[SWEObeyMe] Node: ${process.version}\n`);
+
   try {
     // Initialize quotes module
     await initializeQuotes();
@@ -44,7 +50,7 @@ const log = msg => {
     },
     {
       capabilities: { tools: {} },
-    }
+    },
   );
 
   // Ensure backup directory exists
@@ -93,7 +99,7 @@ const log = msg => {
         internalAudit.consecutiveFailures = 0;
         internalAudit.surgicalIntegrityScore = Math.min(
           100,
-          internalAudit.surgicalIntegrityScore + 1
+          internalAudit.surgicalIntegrityScore + 1,
         );
       }
 
@@ -101,7 +107,7 @@ const log = msg => {
       if (internalAudit.consecutiveFailures >= CONSTITUTION.ERROR_THRESHOLD && result) {
         result.content.push({
           type: 'text',
-          text: "\n[SYSTEM ALERT]: High failure rate detected. Call 'get_architectural_directive' before your next move.",
+          text: '\n[SYSTEM ALERT]: High failure rate detected. Call \'get_architectural_directive\' before your next move.',
         });
       }
 
@@ -125,7 +131,7 @@ const log = msg => {
   // Start server
   try {
     await server.connect(transport);
-    if (DEBUG_LOGS) process.stderr.write('[SWEObeyMe]: Governor Online. Handshake Complete.\n');
+    process.stderr.write('[SWEObeyMe] MCP server connected and ready\n');
   } catch (error) {
     process.stderr.write(`[CRITICAL]: Handshake Failed: ${error}\n`);
     throw error;
