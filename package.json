@@ -1,8 +1,8 @@
 {
   "name": "swe-obey-me",
   "displayName": "SWEObeyMe",
-  "description": "SWEObeyMe - Surgical governance system for VS Code with MCP server integration. v2.0.5-beta: Comprehensive validation, enforcement, and workflow automation features for AI-assisted software engineering.",
-  "version": "2.0.5-beta",
+  "description": "SWEObeyMe - Surgical governance system for VS Code with MCP server integration. v2.0.6-beta: Comprehensive validation, enforcement, and workflow automation features for AI-assisted software engineering.",
+  "version": "2.0.6-beta",
   "type": "module",
   "publisher": "stonewolfpc",
   "icon": "icon.png",
