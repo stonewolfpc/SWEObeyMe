@@ -10,7 +10,10 @@ build/
 .swe-memory/
 
 # Test files (individual test files, but keep tests/ directory for CI/CD)
+# Note: test-tools/ is included for schema validation tests
 test-*.js
+!test-tools/test-all-schemas.js
+!test-tools/test-csharp-tools.js
 final-test.js
 simple-test.js
 test-with-content.js
