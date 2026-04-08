@@ -115,7 +115,8 @@ try {
   // dist/ should be INCLUDED in the package (bundled output)
   // Must check for include pattern '!dist/**' and ensure no 'dist/' exclusion pattern
   assert(vscodeignore.includes('!dist/**'), '.vscodeignore includes dist/ with include pattern !dist/** (for bundled output)');
-  assert(!vscodeignore.includes('\ndist/\n') && !vscodeignore.match(/\ndist\/[^\n]/), '.vscodeignore does NOT have dist/ exclusion pattern (would override include)');
+  // Check for dist/ as a standalone line (would override include pattern)
+  assert(!vscodeignore.match(/^\s*dist\/\s*$/m), '.vscodeignore does NOT have dist/ exclusion pattern (would override include)');
   assert(vscodeignore.includes('node_modules/'), '.vscodeignore excludes node_modules/');
   assert(vscodeignore.includes('.git/'), '.vscodeignore excludes .git/');
   assert(vscodeignore.includes('*.vsix'), '.vscodeignore excludes .vsix files');
