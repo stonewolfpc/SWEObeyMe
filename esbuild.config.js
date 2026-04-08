@@ -1,6 +1,7 @@
 import esbuild from 'esbuild';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+import fs from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -25,6 +26,20 @@ const enterpriseModules = [
   'lib/tools/patreon-handlers.js',
   'lib/tools/registry-patreon.js',
 ];
+
+// Helper function to copy package.json to dist/mcp/
+function copyPackageJson() {
+  const sourcePackageJson = join(__dirname, 'package.json');
+  const targetPackageJson = join(__dirname, 'dist', 'mcp', 'package.json');
+  
+  try {
+    fs.copyFileSync(sourcePackageJson, targetPackageJson);
+    console.log('Copied package.json to dist/mcp/package.json');
+  } catch (error) {
+    console.error('Failed to copy package.json:', error);
+    throw error;
+  }
+}
 
 const commonConfig = {
   platform: 'node',
@@ -84,6 +99,9 @@ async function buildPublic() {
     ],
   });
   
+  // Copy package.json for MCP server
+  copyPackageJson();
+  
   console.log('Public bundle built successfully!');
 }
 
@@ -93,6 +111,9 @@ async function buildEnterprise() {
   
   await esbuild.build(extensionConfig);
   await esbuild.build(mcpConfig);
+  
+  // Copy package.json for MCP server
+  copyPackageJson();
   
   console.log('Enterprise bundle built successfully!');
 }
@@ -112,6 +133,9 @@ async function buildDev() {
     sourcemap: true,
     minify: false,
   });
+  
+  // Copy package.json for MCP server
+  copyPackageJson();
   
   console.log('Dev bundle built successfully!');
 }

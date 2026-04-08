@@ -298,128 +298,12 @@ async function activate(context) {
 
   // Get the installed extension path dynamically
   const extensionPath = context.extensionUri.fsPath;
-  const indexPath = path.join(extensionPath, 'index.js');
+  const mcpServerPath = path.join(extensionPath, 'dist', 'mcp', 'server.js');
 
-  const localAppData =
-    process.env.LOCALAPPDATA ||
-    (process.env.USERPROFILE ? path.join(process.env.USERPROFILE, 'AppData', 'Local') : null);
-  const defaultBackupDir = path.join(
-    localAppData || extensionPath,
-    'SWEObeyMe',
-    '.sweobeyme-backups',
-  );
-
-  // Get custom backup path from config if set
-  const config = vscode.workspace.getConfiguration('sweObeyMe');
-  const customBackupPath = config.get('backupPath', '');
-  const backupDir = customBackupPath && customBackupPath.trim() ? customBackupPath : defaultBackupDir;
-
-  // Only auto-configure if running from installed location (not workspace)
-  const isInstalled = extensionPath.includes(path.join('.windsurf-next', 'extensions')) ||
-                      extensionPath.includes(path.join('.vscode', 'extensions'));
-
-  if (isInstalled) {
-    // Windsurf uses ~/.codeium/mcp_config.json for MCP configuration
-    const configDir = path.join(os.homedir(), '.codeium');
-    const mcpConfigPath = path.join(configDir, 'mcp_config.json');
-
-    console.log('[SWEObeyMe] MCP config path:', mcpConfigPath);
-
-    try {
-      const fs = await import('fs');
-      let needsUpdate = false;
-      let config = {};
-
-      // Ensure directory exists
-      if (!fs.existsSync(configDir)) {
-        fs.mkdirSync(configDir, { recursive: true });
-      }
-
-      if (fs.existsSync(mcpConfigPath)) {
-        const raw = fs.readFileSync(mcpConfigPath, 'utf8');
-        if (raw.trim()) {
-          try {
-            config = JSON.parse(raw);
-          } catch (e) {
-            needsUpdate = true;
-            console.error('[SWEObeyMe] Failed to parse existing mcp.json:', e);
-          }
-        } else {
-          needsUpdate = true;
-        }
-
-        if (!needsUpdate) {
-          const existingServer = config.mcpServers?.['swe-obey-me'];
-          if (existingServer) {
-            const existingPath = existingServer.args?.[existingServer.args.length - 1];
-            // Check if path exists and is valid
-            if (existingPath && !fs.existsSync(existingPath)) {
-              needsUpdate = true;
-              console.log('[SWEObeyMe] Existing MCP config path does not exist, updating...');
-            }
-          } else {
-            needsUpdate = true;
-            console.log('[SWEObeyMe] MCP server not configured, adding...');
-          }
-        }
-      } else {
-        needsUpdate = true;
-        console.log('[SWEObeyMe] mcp.json does not exist, creating...');
-      }
-
-      if (needsUpdate) {
-        // Normalize paths to forward slashes for cross-platform compatibility
-        const normalizedIndexPath = indexPath.replace(/\\/g, '/');
-        const normalizedBackupDir = backupDir.replace(/\\/g, '/');
-
-        config.mcpServers = config.mcpServers || {};
-        config.mcpServers['swe-obey-me'] = {
-          command: 'node',
-          args: ['--no-warnings', normalizedIndexPath],
-          env: {
-            NODE_ENV: 'production',
-            SWEOBEYME_BACKUP_DIR: normalizedBackupDir,
-            SWEOBEYME_DEBUG: '0',
-          },
-          disabled: false,
-        };
-
-        // Atomic write: write to temp file first, then rename to prevent corruption
-        const tempPath = mcpConfigPath + '.tmp';
-        fs.writeFileSync(tempPath, JSON.stringify(config, null, 2));
-        fs.renameSync(tempPath, mcpConfigPath);
-        console.log('[SWEObeyMe] MCP config written successfully');
-
-        vscode.window.showInformationMessage(
-          'SWEObeyMe MCP configured! Reload Windsurf to activate.',
-          'Reload Now',
-        ).then(selection => {
-          if (selection === 'Reload Now') {
-            vscode.commands.executeCommand('workbench.action.reloadWindow');
-          }
-        });
-      } else {
-        console.log('[SWEObeyMe] MCP config already valid');
-      }
-    } catch (error) {
-      console.error('[SWEObeyMe] Failed to auto-configure MCP:', error);
-      const suggestions = [
-        '• Check that Windsurf is properly installed',
-        '• Verify you have write permissions for the config directory',
-        '• Try manually configuring MCP in Windsurf settings',
-        '• Restart Windsurf and try again',
-      ];
-      vscode.window.showWarningMessage(
-        `Failed to auto-configure SWEObeyMe MCP server.\n\nSuggestions:\n${suggestions.join('\n')}`,
-        'Open Documentation',
-        'Dismiss',
-      ).then(selection => {
-        if (selection === 'Open Documentation') {
-          vscode.env.openExternal(vscode.Uri.parse('https://github.com/stonewolfpc/SWEObeyMe#quickstart'));
-        }
-      });
-    }
-  }
+  // MCP server is registered via contributes.mcpServers in package.json.
+  // Windsurf/VS Code handles activation natively — no manual mcp_config.json write needed.
+  // Writing manually would duplicate tools if contributes.mcpServers is also active.
+  console.log(`[SWEObeyMe] MCP server registered at: ${mcpServerPath}`);
 
   // Register command to show menu from status bar
   const showMenuCommand = vscode.commands.registerCommand('sweObeyMe.showMenu', async () => {
@@ -467,16 +351,184 @@ async function activate(context) {
   });
   context.subscriptions.push(csharpSettingsCommand);
 
-  // Register C# Bridge settings webview provider
-  try {
-    const { CSharpSettingsProvider } = await import(path.join(__dirname, 'lib', 'csharp-settings-provider.js'));
-    const csharpSettingsProvider = new CSharpSettingsProvider(context);
-    context.subscriptions.push(
-      vscode.window.registerWebviewViewProvider('sweObeyMe.csharpSettings', csharpSettingsProvider),
-    );
-  } catch (error) {
-    console.error('[SWEObeyMe] Failed to register C# settings provider:', error);
+  // Inline webview provider — no external file dependencies, works in bundled VSIX
+  function makeWebviewProvider(getHtml) {
+    return {
+      resolveWebviewView(webviewView) {
+        webviewView.webview.options = { enableScripts: true };
+        webviewView.webview.html = getHtml(webviewView.webview);
+        webviewView.webview.onDidReceiveMessage(async (msg) => {
+          try {
+            if (msg.command === 'updateConfig') {
+              await vscode.workspace.getConfiguration().update(msg.key, msg.value, vscode.ConfigurationTarget.Global);
+              webviewView.webview.postMessage({ command: 'configUpdated', key: msg.key });
+            } else if (msg.command === 'updateMcpConfig') {
+              const configPath = path.join(os.homedir(), '.sweobeyme-config.json');
+              let cfg = {};
+              try { cfg = JSON.parse(fs.readFileSync(configPath, 'utf8')); } catch {}
+              cfg[msg.key] = msg.value;
+              fs.writeFileSync(configPath, JSON.stringify(cfg, null, 2));
+              webviewView.webview.postMessage({ command: 'mcpConfigUpdated', key: msg.key });
+            } else if (msg.command === 'openSettings') {
+              vscode.commands.executeCommand('workbench.action.openSettings', 'sweObeyMe');
+            }
+          } catch (err) {
+            webviewView.webview.postMessage({ command: 'error', message: err.message });
+          }
+        });
+      }
+    };
   }
+
+  function getSettingsHtml() {
+    const cfg = vscode.workspace.getConfiguration('sweObeyMe');
+    const version = '2.0.7-beta';
+    return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SWEObeyMe Settings</title>
+<style>
+  body{font-family:var(--vscode-font-family);color:var(--vscode-foreground);background:var(--vscode-sideBar-background);padding:12px;margin:0;font-size:13px}
+  h2{font-size:14px;font-weight:600;margin:0 0 12px;color:var(--vscode-sideBarTitle-foreground)}
+  .badge{display:inline-block;background:var(--vscode-badge-background);color:var(--vscode-badge-foreground);padding:1px 6px;border-radius:10px;font-size:11px;margin-left:6px}
+  .row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--vscode-panel-border)}
+  .row:last-child{border-bottom:none}
+  label{flex:1;cursor:pointer}
+  .desc{font-size:11px;color:var(--vscode-descriptionForeground);margin-top:2px}
+  button{background:var(--vscode-button-background);color:var(--vscode-button-foreground);border:none;padding:5px 12px;cursor:pointer;border-radius:2px;font-size:12px;margin-top:12px;width:100%}
+  button:hover{background:var(--vscode-button-hoverBackground)}
+  .status{padding:8px;background:var(--vscode-inputValidation-infoBackground);border-left:3px solid var(--vscode-inputValidation-infoBorder);margin-bottom:12px;font-size:12px}
+</style></head><body>
+<h2>SWEObeyMe <span class="badge">${version}</span></h2>
+<div class="status">✅ MCP server active — registered via contributes.mcpServers</div>
+<div class="row">
+  <div><label>Enable SWEObeyMe</label><div class="desc">Master switch for all enforcement</div></div>
+  <input type="checkbox" id="enabled" ${cfg.get('enabled', true) ? 'checked' : ''} onchange="send('updateConfig','sweObeyMe.enabled',this.checked)">
+</div>
+<div class="row">
+  <div><label>Show Inline Tips</label><div class="desc">Show helpful tips on activation</div></div>
+  <input type="checkbox" id="tips" ${cfg.get('showInlineTip', true) ? 'checked' : ''} onchange="send('updateConfig','sweObeyMe.showInlineTip',this.checked)">
+</div>
+<div class="row">
+  <div><label>C# Bridge</label><div class="desc">Real-time C# error detection</div></div>
+  <input type="checkbox" id="csharp" ${vscode.workspace.getConfiguration('sweObeyMe.csharpBridge').get('enabled', true) ? 'checked' : ''} onchange="send('updateConfig','sweObeyMe.csharpBridge.enabled',this.checked)">
+</div>
+<button onclick="send('openSettings')">Open Full Settings</button>
+<script>
+const vscApi=acquireVsCodeApi();
+function send(cmd,key,value){vscApi.postMessage({command:cmd,key,value});}
+window.addEventListener('message',e=>{if(e.data.command==='configUpdated'){console.log('Updated:',e.data.key);}});
+</script></body></html>`;
+  }
+
+  function getCSharpBridgeHtml() {
+    const cfg = vscode.workspace.getConfiguration('sweObeyMe.csharpBridge');
+    const detectors = cfg.get('detectors', {});
+    const detectorList = ['missing_using','empty_catch','deep_nesting','async_void','resource_leak','math_safety','null_reference','static_mutation','string_concatenation'];
+    const detectorRows = detectorList.map(d =>
+      `<div class="row"><label>${d.replace(/_/g,' ')}</label><input type="checkbox" ${detectors[d] !== false ? 'checked' : ''} onchange="send('updateConfig','sweObeyMe.csharpBridge.detectors.${d}',this.checked)"></div>`
+    ).join('');
+    return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>C# Bridge Settings</title>
+<style>
+  body{font-family:var(--vscode-font-family);color:var(--vscode-foreground);background:var(--vscode-sideBar-background);padding:12px;margin:0;font-size:13px}
+  h2{font-size:14px;font-weight:600;margin:0 0 12px}
+  .row{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--vscode-panel-border)}
+  .row:last-child{border-bottom:none}
+  label{flex:1;text-transform:capitalize}
+  .section{font-size:11px;font-weight:700;color:var(--vscode-descriptionForeground);text-transform:uppercase;margin:12px 0 4px;letter-spacing:.5px}
+  input[type=range]{width:120px}
+  span.val{font-size:11px;min-width:28px;text-align:right}
+  button{background:var(--vscode-button-background);color:var(--vscode-button-foreground);border:none;padding:5px 12px;cursor:pointer;border-radius:2px;font-size:12px;margin-top:12px;width:100%}
+  button:hover{background:var(--vscode-button-hoverBackground)}
+</style></head><body>
+<h2>C# Bridge Settings</h2>
+<div class="row">
+  <label><b>Enabled</b></label>
+  <input type="checkbox" ${cfg.get('enabled', true) ? 'checked' : ''} onchange="send('updateConfig','sweObeyMe.csharpBridge.enabled',this.checked)">
+</div>
+<div class="row">
+  <label>Keep AI Informed</label>
+  <input type="checkbox" ${cfg.get('keepAiInformed', true) ? 'checked' : ''} onchange="send('updateConfig','sweObeyMe.csharpBridge.keepAiInformed',this.checked)">
+</div>
+<div class="row">
+  <label>Deduplicate Alerts</label>
+  <input type="checkbox" ${cfg.get('deduplicateAlerts', true) ? 'checked' : ''} onchange="send('updateConfig','sweObeyMe.csharpBridge.deduplicateAlerts',this.checked)">
+</div>
+<div class="row">
+  <label>Severity Threshold</label>
+  <input type="range" min="0" max="2" value="${cfg.get('severityThreshold', 0)}" oninput="this.nextSibling.textContent=['Info','Warn','Error'][+this.value];send('updateConfig','sweObeyMe.csharpBridge.severityThreshold',+this.value)">
+  <span class="val">${['Info','Warn','Error'][cfg.get('severityThreshold', 0)]}</span>
+</div>
+<div class="row">
+  <label>Confidence %</label>
+  <input type="range" min="0" max="100" value="${cfg.get('confidenceThreshold', 70)}" oninput="this.nextSibling.textContent=this.value+'%';send('updateConfig','sweObeyMe.csharpBridge.confidenceThreshold',+this.value)">
+  <span class="val">${cfg.get('confidenceThreshold', 70)}%</span>
+</div>
+<div class="section">Detectors</div>
+${detectorRows}
+<button onclick="send('openSettings')">Open Full Settings</button>
+<script>
+const vscApi=acquireVsCodeApi();
+function send(cmd,key,value){vscApi.postMessage({command:cmd,key,value});}
+</script></body></html>`;
+  }
+
+  function getAdminDashboardHtml() {
+    let mcpCfg = {};
+    try { mcpCfg = JSON.parse(fs.readFileSync(path.join(os.homedir(), '.sweobeyme-config.json'), 'utf8')); } catch {}
+    const rows = Object.entries({
+      maxLines: [mcpCfg.maxLines ?? 700, 'Max Lines Per File', 100, 2000],
+      warningThreshold: [mcpCfg.warningThreshold ?? 600, 'Warning Threshold', 100, 2000],
+      maxBackupsPerFile: [mcpCfg.maxBackupsPerFile ?? 10, 'Max Backups Per File', 1, 50],
+      maxLoopAttempts: [mcpCfg.maxLoopAttempts ?? 3, 'Max Loop Attempts', 1, 10],
+    }).map(([k,[v,label,min,max]]) =>
+      `<div class="row"><label>${label}</label><input type="number" min="${min}" max="${max}" value="${v}" style="width:60px;background:var(--vscode-input-background);color:var(--vscode-input-foreground);border:1px solid var(--vscode-input-border);padding:2px 4px" onchange="send('updateMcpConfig','${k}',+this.value)"></div>`
+    ).join('');
+    const toggles = Object.entries({
+      enableAutoCorrection: [mcpCfg.enableAutoCorrection !== false, 'Auto-Correction'],
+      enableLoopDetection: [mcpCfg.enableLoopDetection !== false, 'Loop Detection'],
+      enableWorkflowOrchestration: [mcpCfg.enableWorkflowOrchestration !== false, 'Workflow Orchestration'],
+      enableSessionMemory: [mcpCfg.enableSessionMemory !== false, 'Session Memory'],
+      enableOracle: [mcpCfg.enableOracle !== false, 'Oracle'],
+      debugLogs: [mcpCfg.debugLogs === true, 'Debug Logs'],
+    }).map(([k,[v,label]]) =>
+      `<div class="row"><label>${label}</label><input type="checkbox" ${v ? 'checked' : ''} onchange="send('updateMcpConfig','${k}',this.checked)"></div>`
+    ).join('');
+    return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin Dashboard</title>
+<style>
+  body{font-family:var(--vscode-font-family);color:var(--vscode-foreground);background:var(--vscode-sideBar-background);padding:12px;margin:0;font-size:13px}
+  h2{font-size:14px;font-weight:600;margin:0 0 12px}
+  .section{font-size:11px;font-weight:700;color:var(--vscode-descriptionForeground);text-transform:uppercase;margin:12px 0 4px;letter-spacing:.5px}
+  .row{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--vscode-panel-border)}
+  .row:last-child{border-bottom:none}
+  label{flex:1}
+  button{background:var(--vscode-button-background);color:var(--vscode-button-foreground);border:none;padding:5px 12px;cursor:pointer;border-radius:2px;font-size:12px;margin-top:12px;width:100%}
+  button:hover{background:var(--vscode-button-hoverBackground)}
+  #status{font-size:11px;color:var(--vscode-descriptionForeground);margin-top:8px;text-align:center}
+</style></head><body>
+<h2>Admin Dashboard</h2>
+<div class="section">MCP Governance Config (~/.sweobeyme-config.json)</div>
+${rows}
+<div class="section">Feature Toggles</div>
+${toggles}
+<button onclick="vscApi.postMessage({command:'openSettings'})">Open VS Code Settings</button>
+<div id="status"></div>
+<script>
+const vscApi=acquireVsCodeApi();
+function send(cmd,key,value){vscApi.postMessage({command:cmd,key,value});document.getElementById('status').textContent='Saved \u2713';}
+window.addEventListener('message',e=>{if(e.data.command==='error')document.getElementById('status').textContent='Error: '+e.data.message;});
+</script></body></html>`;
+  }
+
+  // Register providers for all three views
+  context.subscriptions.push(
+    vscode.window.registerWebviewViewProvider('sweObeyMe.csharpSettings', makeWebviewProvider(() => getSettingsHtml())),
+    vscode.window.registerWebviewViewProvider('sweObeyMe.csharpSettingsView', makeWebviewProvider(() => getCSharpBridgeHtml())),
+    vscode.window.registerWebviewViewProvider('sweObeyMe.adminDashboard', makeWebviewProvider(() => getAdminDashboardHtml())),
+  );
 
   // Register CodeLens provider for C# files
   const csharpCodeLensProvider = vscode.languages.registerCodeLensProvider('csharp', {
@@ -858,36 +910,7 @@ async function activate(context) {
 
 function deactivate() {
   console.log('SWEObeyMe extension deactivated');
-
-  // Surgical uninstall: remove only our server key from MCP config
-  const configDir = path.join(os.homedir(), '.codeium');
-  const mcpConfigPath = path.join(configDir, 'mcp_config.json');
-
-  console.log('[SWEObeyMe] Cleanup MCP config path:', mcpConfigPath);
-
-  try {
-    const fs = require('fs');
-    if (fs.existsSync(mcpConfigPath)) {
-      const raw = fs.readFileSync(mcpConfigPath, 'utf8');
-      if (raw.trim()) {
-        const config = JSON.parse(raw);
-        if (config.mcpServers && config.mcpServers['swe-obey-me']) {
-          // Remove only our server key, preserve others
-          delete config.mcpServers['swe-obey-me'];
-
-          // If no servers left, we can delete the file or keep empty object
-          if (Object.keys(config.mcpServers).length === 0) {
-            delete config.mcpServers;
-          }
-
-          fs.writeFileSync(mcpConfigPath, JSON.stringify(config, null, 2));
-          console.log('SWEObeyMe: Removed MCP server from config');
-        }
-      }
-    }
-  } catch (error) {
-    console.error('SWEObeyMe: Failed to cleanup MCP config:', error);
-  }
+  // MCP server lifecycle is managed by Windsurf via contributes.mcpServers — no cleanup needed.
 }
 
 export { activate, deactivate };

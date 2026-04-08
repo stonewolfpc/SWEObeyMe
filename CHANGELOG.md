@@ -2,6 +2,26 @@
 
 All notable changes to SWEObeyMe will be documented in this file.
 
+## [2.0.8-beta] - 2026-04-08
+
+### Bug Fixes
+- **Fixed blank sidebar panels** — All three sidebar webview panels (Settings, C# Bridge Settings, Admin Dashboard) were empty due to broken dynamic imports in the bundled VSIX. Replaced with self-contained inline providers that have no external file dependencies.
+- **Eliminated tool duplication** — Root cause identified: extension was writing to `~/.codeium/mcp_config.json` manually *and* declaring `contributes.mcpServers` in `package.json`. Windsurf registered it twice, causing duplicate tools. Removed the manual write; Windsurf now handles MCP registration natively via `contributes.mcpServers`.
+- **Fixed `require()` crash in ESM module** — `deactivate()` was calling `require('fs')` inside a `"type": "module"` package, which throws at runtime. Simplified `deactivate()` to a no-op since Windsurf manages MCP server lifecycle.
+
+### UI Improvements
+- **Settings panel** — Shows version badge, MCP active status, master enable/disable, inline tips toggle, C# Bridge toggle, and link to full settings.
+- **C# Bridge Settings panel** — Full controls: enable/disable, Keep AI Informed, deduplication, severity threshold slider, confidence % slider, and individual detector toggles for all 9 detectors.
+- **Admin Dashboard panel** — MCP governance config editor (max lines, warning threshold, backup count, loop attempts) and feature toggles (auto-correction, loop detection, workflow orchestration, session memory, oracle, debug logs) with live save to `~/.sweobeyme-config.json`.
+
+## [2.0.7-beta] - 2026-04-08
+
+### Bug Fixes
+- **Fixed `package.json` not copied to `dist/mcp/`** — MCP server crashed at startup with ENOENT because it reads its own `package.json` for version info. Updated `esbuild.config.js` to copy `package.json` to `dist/mcp/` on every build.
+- **Fixed MCP server path** — `indexPath` was pointing to `index.js` at the extension root instead of the bundled `dist/mcp/server.js`.
+- **Fixed `.windsurf` installation detection** — `isInstalled` check was missing the `.windsurf` directory (only had `.windsurf-next` and `.vscode`).
+- **Updated README version badge** to `2.0.7-beta`.
+
 ## [2.0.0-beta] - 2026-04-07
 
 ### 🚀 Major Release - Project Awareness & Context Switching Layer

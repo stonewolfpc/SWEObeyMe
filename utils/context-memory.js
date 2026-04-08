@@ -54,7 +54,7 @@ class ContextMemory {
               arguments: { entities: [entity] },
             },
           },
-          CallToolRequestSchema
+          CallToolRequestSchema,
         );
         console.error(`[ContextMemory] Entity created: ${name} (${entityType})`);
       } catch (error) {
@@ -83,7 +83,7 @@ class ContextMemory {
               arguments: { relations: [relation] },
             },
           },
-          CallToolRequestSchema
+          CallToolRequestSchema,
         );
         console.error(`[ContextMemory] Relation created: ${from} -> ${to} (${relationType})`);
       } catch (error) {
@@ -106,7 +106,7 @@ class ContextMemory {
               arguments: { query },
             },
           },
-          CallToolRequestSchema
+          CallToolRequestSchema,
         );
         return result.content[0]?.text ? JSON.parse(result.content[0].text) : [];
       } catch (error) {

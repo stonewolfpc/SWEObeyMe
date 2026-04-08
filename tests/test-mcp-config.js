@@ -97,7 +97,7 @@ function testConfigStructure(config) {
     return;
   }
   
-  const hasMcpServers = config.mcpServers && typeof config.mcpServers === 'object';
+  const hasMcpServers = !!(config.mcpServers && typeof config.mcpServers === 'object');
   recordTest(testName, hasMcpServers, hasMcpServers ? '' : 'Missing mcpServers object');
 }
 

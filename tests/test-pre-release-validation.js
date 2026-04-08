@@ -75,6 +75,7 @@ try {
   const packageJson = JSON.parse(readFileSync(join(projectRoot, 'package.json'), 'utf8'));
   const esbuildConfig = readFileSync(join(projectRoot, 'esbuild.config.js'), 'utf8');
   
+
   assert(packageJson.main === 'dist/extension.js', 'package.json main points to dist/extension.js');
   assert(esbuildConfig.includes('extension.js'), 'esbuild config includes extension bundle');
   assert(esbuildConfig.includes('index.js'), 'esbuild config includes MCP server bundle');
