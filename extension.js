@@ -8,12 +8,34 @@ import { promisify } from 'util';
 
 const execAsync = promisify(exec);
 
-// ESM-safe __dirname
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// ESM-safe __dirname with Windows path handling
+// On Windows, VS Code may pass invalid file:// URLs to ESM loader, so we need fallback
+let __dirname;
+try {
+  const __filename = fileURLToPath(import.meta.url);
+  __dirname = path.dirname(__filename);
+} catch (e) {
+  // Fallback: use process.cwd() or vscode extension path if available
+  __dirname = process.cwd();
+}
 
 // Convert a filesystem path to a file:// URL string for dynamic import() on Windows
-const toFileUrl = p => pathToFileURL(p).href;
+// Handles both Windows (file:///C:/path) and Unix (file:///path) formats
+const toFileUrl = (p) => {
+  try {
+    return pathToFileURL(p).href;
+  } catch (e) {
+    // Fallback: manually construct file:// URL for Windows
+    if (process.platform === 'win32' && path.isAbsolute(p)) {
+      const normalized = p.replace(/\\/g, '/');
+      // Ensure path starts with / for file:// URL (C:/path -> /C:/path)
+      const withLeadingSlash = normalized.startsWith('/') ? normalized : `/${normalized}`;
+      return `file://${withLeadingSlash}`;
+    }
+    // Unix fallback
+    return `file://${p}`;
+  }
+};
 
 // Import checkpoint manager
 let checkpointManager = null;
@@ -329,7 +351,12 @@ async function activate(context) {
     // Always ensure windsurf-next dir gets the config (primary target)
     dirsToWrite.add(path.join(home, '.codeium', 'windsurf-next'));
 
-    const normalizedServerPath = mcpServerPath.replace(/\\/g, '/');
+    // For Windows, keep original backslash paths or use file:// URL
+    // The d:/path format looks like a URL with 'd:' as scheme, causing ESM loader errors
+    // Node.js on Windows handles both backslashes and forward slashes correctly
+    const normalizedServerPath = process.platform === 'win32'
+      ? mcpServerPath  // Keep backslashes on Windows: C:\path\to\server.js
+      : mcpServerPath.replace(/\\/g, '/');  // Unix: forward slashes
 
     for (const configDir of dirsToWrite) {
       try {
