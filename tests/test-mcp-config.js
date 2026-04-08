@@ -47,108 +47,69 @@ function recordTest(name, passed, message = '') {
 }
 
 /**
- * Test 1: Verify MCP config path matches Windsurf documentation
+ * Test 1: Verify MCP config is handled via native contributes.mcpServers
+ * (No manual config writing needed)
  */
 function testConfigPath() {
-  const expectedPath = path.join(os.homedir(), '.codeium', 'mcp_config.json');
-  const testName = 'MCP config path matches Windsurf documentation (~/.codeium/mcp_config.json)';
+  const testName = 'MCP config uses native contributes.mcpServers (no manual config)';
   
-  // Check if the path follows the expected pattern
-  const pathPattern = /\.codeium[\/\\]mcp_config\.json$/;
-  const matches = pathPattern.test(expectedPath);
+  // Since we removed manual config writing, this test now just verifies
+  // that the extension declares the MCP server in package.json
+  const packageJsonPath = path.join(process.cwd(), 'package.json');
+  const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
   
-  recordTest(testName, matches, `Expected: ${expectedPath}`);
-  return expectedPath;
+  const hasMcpServers = packageJson.contributes?.mcpServers?.length > 0;
+  
+  recordTest(testName, hasMcpServers, hasMcpServers ? 'Native MCP server declaration found' : 'Missing contributes.mcpServers');
 }
 
 /**
  * Test 2: Verify config file exists and is valid JSON
+ * (Skipped since we now use native contributes.mcpServers)
  */
-function testConfigExists(configPath) {
+function testConfigExists() {
   const testName = 'MCP config file exists and is valid JSON';
-  
-  if (!fs.existsSync(configPath)) {
-    // Skip with warning instead of failing (CI/CD compatibility)
-    log(`⚠ ${testName} - Config file does not exist (skipping - extension not activated)`, 'warn');
-    results.skipped++;
-    results.tests.push({ name: testName, passed: null, message: 'Skipped - config file does not exist' });
-    return null;
-  }
-  
-  try {
-    const content = fs.readFileSync(configPath, 'utf8');
-    const config = JSON.parse(content);
-    recordTest(testName, true);
-    return config;
-  } catch (error) {
-    recordTest(testName, false, `Failed to parse config: ${error.message}`);
-    return null;
-  }
+  // Skip this test since we removed manual config writing
+  log(`⚠ ${testName} - Skipped (using native contributes.mcpServers)`, 'warn');
+  results.skipped++;
+  results.tests.push({ name: testName, passed: null, message: 'Skipped - using native contributes.mcpServers' });
+  return null;
 }
 
 /**
  * Test 3: Verify config structure matches Windsurf format
+ * (Skipped since we now use native contributes.mcpServers)
  */
 function testConfigStructure(config) {
   const testName = 'Config structure matches Windsurf mcpServers format';
-  
-  if (!config) {
-    recordTest(testName, false, 'Config is null or undefined');
-    return;
-  }
-  
-  const hasMcpServers = !!(config.mcpServers && typeof config.mcpServers === 'object');
-  recordTest(testName, hasMcpServers, hasMcpServers ? '' : 'Missing mcpServers object');
+  // Skip this test since we removed manual config writing
+  log(`⚠ ${testName} - Skipped (using native contributes.mcpServers)`, 'warn');
+  results.skipped++;
+  results.tests.push({ name: testName, passed: null, message: 'Skipped - using native contributes.mcpServers' });
 }
 
 /**
  * Test 4: Verify SWEObeyMe server configuration
+ * (Skipped since we now use native contributes.mcpServers)
  */
 function testServerConfig(config) {
   const testName = 'SWEObeyMe server configuration is present';
-  
-  if (!config || !config.mcpServers) {
-    recordTest(testName, false, 'Config or mcpServers is missing');
-    return;
-  }
-  
-  const serverConfig = config.mcpServers['swe-obey-me'];
-  const hasServer = serverConfig && typeof serverConfig === 'object';
-  
-  if (!hasServer) {
-    recordTest(testName, false, 'swe-obey-me server not found in config');
-    return;
-  }
-  
-  const hasCommand = serverConfig.command === 'node';
-  const hasArgs = Array.isArray(serverConfig.args) && serverConfig.args.length > 0;
-  const hasEnv = serverConfig.env && typeof serverConfig.env === 'object';
-  const notDisabled = serverConfig.disabled === false;
-  
-  const allChecks = hasCommand && hasArgs && hasEnv && notDisabled;
-  recordTest(testName, allChecks, allChecks ? '' : 'Missing required fields');
+  // Skip this test since we removed manual config writing
+  log(`⚠ ${testName} - Skipped (using native contributes.mcpServers)`, 'warn');
+  results.skipped++;
+  results.tests.push({ name: testName, passed: null, message: 'Skipped - using native contributes.mcpServers' });
 }
 
 /**
  * Test 5: Verify paths are normalized to forward slashes
+ * (Skipped since we now use native contributes.mcpServers)
  */
 function testPathNormalization(config) {
   const testName = 'Paths are normalized to forward slashes';
-  
-  if (!config || !config.mcpServers || !config.mcpServers['swe-obey-me']) {
-    recordTest(testName, false, 'Server config not found');
-    return;
-  }
-  
-  const serverConfig = config.mcpServers['swe-obey-me'];
-  const args = serverConfig.args || [];
-  const env = serverConfig.env || {};
-  
-  // Check for backslashes in paths
-  const hasBackslashes = args.some(arg => arg.includes('\\')) ||
-                        Object.values(env).some(val => val && val.includes('\\'));
-  
-  recordTest(testName, !hasBackslashes, hasBackslashes ? 'Found backslashes in paths' : '');
+  // Skip this test since we removed manual config writing
+  log(`⚠ ${testName} - Skipped (using native contributes.mcpServers)`, 'warn');
+  results.skipped++;
+  results.tests.push({ name: testName, passed: null, message: 'Skipped - using native contributes.mcpServers' });
 }
 
 /**
@@ -243,7 +204,7 @@ function testCrossPlatformPaths() {
   const windowsNormalized = !normalizedWindows.includes('\\');
   
   // Test Unix path (should remain unchanged)
-  const unixPath = '/home/test/.codeium/index.js';
+  const unixPath = '/home/test/extension/index.js';
   const normalizedUnix = unixPath.replace(/\\/g, '/');
   const unixUnchanged = normalizedUnix === unixPath;
   
@@ -253,15 +214,14 @@ function testCrossPlatformPaths() {
 
 /**
  * Test 10: Verify deactivate uses same path as activate
+ * (Skipped since we now use native contributes.mcpServers)
  */
 function testDeactivatePathConsistency() {
-  const testName = 'deactivate() uses same MCP config path as activate()';
-  
-  const activatePath = path.join(os.homedir(), '.codeium', 'mcp_config.json');
-  const deactivatePath = path.join(os.homedir(), '.codeium', 'mcp_config.json');
-  
-  const pathsMatch = activatePath === deactivatePath;
-  recordTest(testName, pathsMatch, pathsMatch ? '' : 'Paths do not match');
+  const testName = 'deactivate() uses same MCP config path as activate';
+  // Skip this test since we removed manual config writing
+  log(`⚠ ${testName} - Skipped (using native contributes.mcpServers)`, 'warn');
+  results.skipped++;
+  results.tests.push({ name: testName, passed: null, message: 'Skipped - using native contributes.mcpServers' });
 }
 
 /**
