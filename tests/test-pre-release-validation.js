@@ -134,7 +134,7 @@ try {
   // Skip bundle validation if files don't exist (e.g., before build)
   if (!existsSync(distExtension) || !existsSync(distMcp)) {
     console.log('  ⚠ Bundle files not found (skipping - run build first)');
-    warn(true, 'Bundle output validation skipped - run build first');
+    warn(false, 'Bundle output validation skipped - run build first');
   } else {
     assert(existsSync(distExtension), 'dist/extension.js exists');
     assert(existsSync(distMcp), 'dist/mcp/server.js exists');
