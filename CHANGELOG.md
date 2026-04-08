@@ -7,6 +7,8 @@ All notable changes to SWEObeyMe will be documented in this file.
 ### Bug Fixes
 - **Fixed duplicate tool definitions** — Removed duplicate `get_file_context` and `analyze_change_impact` tools from `registry-core.js` that were causing WindSurf MCP server rejection. Now 98 unique tools.
 - **Fixed Unix file:// URL handling** — Corrected Unix fallback in `toFileUrl()` to properly handle relative paths by converting them to absolute paths first.
+- **Fixed MCP auto-configuration** — Removed manual config writing code (85 lines) that was conflicting with native `contributes.mcpServers`. Now uses VS Code/Windsurf native auto-registration like Puppeteer and other MCP servers.
+- **Fixed README.md version badge** — Updated version badge from 2.0.10-beta to 2.1.1-beta to match package.json.
 
 ### Testing
 - **Enhanced comprehensive test suite** — Added 10 automated tests including:

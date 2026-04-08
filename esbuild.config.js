@@ -41,6 +41,43 @@ function copyPackageJson() {
   }
 }
 
+// Helper function to copy lib folder to dist/lib for dynamic imports
+function copyLibFolder() {
+  const sourceLib = join(__dirname, 'lib');
+  const targetLib = join(__dirname, 'dist', 'lib');
+  
+  try {
+    if (!fs.existsSync(targetLib)) {
+      fs.mkdirSync(targetLib, { recursive: true });
+    }
+    
+    // Copy all files from lib to dist/lib
+    function copyRecursive(src, dest) {
+      const entries = fs.readdirSync(src, { withFileTypes: true });
+      
+      for (const entry of entries) {
+        const srcPath = join(src, entry.name);
+        const destPath = join(dest, entry.name);
+        
+        if (entry.isDirectory()) {
+          if (!fs.existsSync(destPath)) {
+            fs.mkdirSync(destPath, { recursive: true });
+          }
+          copyRecursive(srcPath, destPath);
+        } else {
+          fs.copyFileSync(srcPath, destPath);
+        }
+      }
+    }
+    
+    copyRecursive(sourceLib, targetLib);
+    console.log('Copied lib folder to dist/lib/');
+  } catch (error) {
+    console.error('Failed to copy lib folder:', error);
+    throw error;
+  }
+}
+
 const commonConfig = {
   platform: 'node',
   target: 'node18',
@@ -102,6 +139,9 @@ async function buildPublic() {
   // Copy package.json for MCP server
   copyPackageJson();
   
+  // Copy lib folder for dynamic imports
+  copyLibFolder();
+  
   console.log('Public bundle built successfully!');
 }
 
@@ -114,6 +154,9 @@ async function buildEnterprise() {
   
   // Copy package.json for MCP server
   copyPackageJson();
+  
+  // Copy lib folder for dynamic imports
+  copyLibFolder();
   
   console.log('Enterprise bundle built successfully!');
 }
@@ -136,6 +179,9 @@ async function buildDev() {
   
   // Copy package.json for MCP server
   copyPackageJson();
+  
+  // Copy lib folder for dynamic imports
+  copyLibFolder();
   
   console.log('Dev bundle built successfully!');
 }
@@ -161,6 +207,9 @@ async function buildWatch() {
   
   // Copy package.json for MCP server
   copyPackageJson();
+  
+  // Copy lib folder for dynamic imports
+  copyLibFolder();
   
   console.log('Watching for changes...');
 }
