@@ -35,14 +35,15 @@ function log(message, type = 'info') {
 
 function recordTest(name, passed, message = '') {
   results.tests.push({ name, passed, message });
-  if (passed) {
+  if (passed === true) {
     results.passed++;
     log(`✓ ${name}`, 'pass');
-  } else {
+  } else if (passed === false) {
     results.failed++;
     log(`✗ ${name}`, 'fail');
     if (message) log(`  ${message}`, 'warn');
   }
+  // passed === null means skipped, already counted elsewhere
 }
 
 /**
