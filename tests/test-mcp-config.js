@@ -70,7 +70,7 @@ function testConfigExists(configPath) {
     // Skip with warning instead of failing (CI/CD compatibility)
     log(`⚠ ${testName} - Config file does not exist (skipping - extension not activated)`, 'warn');
     results.skipped++;
-    results.tests.push({ name: testName, passed: false, message: 'Skipped - config file does not exist' });
+    results.tests.push({ name: testName, passed: null, message: 'Skipped - config file does not exist' });
     return null;
   }
   
@@ -210,7 +210,7 @@ function testConfigIntegrity(configPath) {
     // Skip with warning instead of failing (CI/CD compatibility)
     log(`⚠ ${testName} - Config file does not exist (skipping - extension not activated)`, 'warn');
     results.skipped++;
-    results.tests.push({ name: testName, passed: false, message: 'Skipped - config file does not exist' });
+    results.tests.push({ name: testName, passed: null, message: 'Skipped - config file does not exist' });
     return;
   }
   
@@ -308,7 +308,9 @@ function runAllTests() {
   log(`Failed: ${results.failed}`, 'fail');
   log(`Skipped: ${results.skipped}`, 'warn');
   
-  const successRate = ((results.passed / results.tests.length) * 100).toFixed(1);
+  // Calculate success rate excluding skipped tests
+  const totalRan = results.tests.length - results.skipped;
+  const successRate = totalRan > 0 ? ((results.passed / totalRan) * 100).toFixed(1) : '0.0';
   log(`Success Rate: ${successRate}%\n`, results.failed === 0 ? 'pass' : 'fail');
   
   // Exit with appropriate code
