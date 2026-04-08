@@ -2,6 +2,11 @@
 
 All notable changes to SWEObeyMe will be documented in this file.
 
+## [2.0.10-beta] - 2026-04-08
+
+### Bug Fixes
+- **Fixed MCP config not propagating** — Windsurf-Next uses `~/.codeium/windsurf-next/mcp_config.json`, not `~/.codeium/mcp_config.json`. Extension now writes to all known locations (`windsurf-next`, `windsurf`, `.codeium`) that exist, always creating the `windsurf-next` directory. Only updates if the entry is missing or the path changed — prevents unnecessary rewrites.
+
 ## [2.0.9-beta] - 2026-04-08
 
 ### Bug Fixes

@@ -1,8 +1,8 @@
 {
   "name": "swe-obey-me",
   "displayName": "SWEObeyMe",
-  "description": "SWEObeyMe - Surgical governance system for VS Code with MCP server integration. v2.0.9-beta: Fixed Windows ESM activation crash (dynamic import paths must be file:// URLs on Windows).",
-  "version": "2.0.9-beta",
+  "description": "SWEObeyMe - Surgical governance system for VS Code with MCP server integration. v2.0.10-beta: Fixed MCP config auto-propagation to correct windsurf-next path (~/.codeium/windsurf-next/mcp_config.json).",
+  "version": "2.0.10-beta",
   "type": "module",
   "publisher": "stonewolfpc",
   "icon": "icon.png",

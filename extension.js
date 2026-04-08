@@ -303,10 +303,88 @@ async function activate(context) {
   const extensionPath = context.extensionUri.fsPath;
   const mcpServerPath = path.join(extensionPath, 'dist', 'mcp', 'server.js');
 
-  // MCP server is registered via contributes.mcpServers in package.json.
-  // Windsurf/VS Code handles activation natively — no manual mcp_config.json write needed.
-  // Writing manually would duplicate tools if contributes.mcpServers is also active.
-  console.log(`[SWEObeyMe] MCP server registered at: ${mcpServerPath}`);
+  console.log(`[SWEObeyMe] MCP server path: ${mcpServerPath}`);
+
+  // Auto-configure mcp_config.json for Windsurf/Windsurf-Next/VS Code
+  // Try all known config locations in priority order and write to all that exist
+  try {
+    const home = os.homedir();
+
+    // Windsurf-Next uses ~/.codeium/windsurf-next/mcp_config.json
+    // Windsurf stable uses ~/.codeium/mcp_config.json
+    // Both may coexist — write to whichever directories exist
+    const configCandidates = [
+      path.join(home, '.codeium', 'windsurf-next'),
+      path.join(home, '.codeium', 'windsurf'),
+      path.join(home, '.codeium'),
+    ];
+
+    // Deduplicate: only write to dirs that actually exist OR are windsurf-next (create it)
+    const dirsToWrite = new Set();
+    for (const dir of configCandidates) {
+      if (fs.existsSync(dir)) {
+        dirsToWrite.add(dir);
+      }
+    }
+    // Always ensure windsurf-next dir gets the config (primary target)
+    dirsToWrite.add(path.join(home, '.codeium', 'windsurf-next'));
+
+    const normalizedServerPath = mcpServerPath.replace(/\\/g, '/');
+
+    for (const configDir of dirsToWrite) {
+      try {
+        if (!fs.existsSync(configDir)) {
+          fs.mkdirSync(configDir, { recursive: true });
+        }
+
+        const mcpConfigPath = path.join(configDir, 'mcp_config.json');
+        let config = {};
+
+        if (fs.existsSync(mcpConfigPath)) {
+          try {
+            const raw = fs.readFileSync(mcpConfigPath, 'utf8');
+            if (raw.trim()) config = JSON.parse(raw);
+          } catch {}
+        }
+
+        config.mcpServers = config.mcpServers || {};
+        const existing = config.mcpServers['swe-obey-me'];
+
+        // Only update if missing or pointing to wrong path
+        if (!existing || existing.args?.[existing.args.length - 1] !== normalizedServerPath) {
+          config.mcpServers['swe-obey-me'] = {
+            command: 'node',
+            args: ['--no-warnings', normalizedServerPath],
+            env: {
+              NODE_ENV: 'production',
+              SWEOBEYME_DEBUG: '0',
+            },
+            disabled: false,
+          };
+
+          const tempPath = mcpConfigPath + '.tmp';
+          fs.writeFileSync(tempPath, JSON.stringify(config, null, 2), 'utf8');
+          fs.renameSync(tempPath, mcpConfigPath);
+          console.log(`[SWEObeyMe] MCP config written to: ${mcpConfigPath}`);
+        } else {
+          console.log(`[SWEObeyMe] MCP config already current at: ${mcpConfigPath}`);
+        }
+      } catch (dirErr) {
+        console.error(`[SWEObeyMe] Failed to write config to ${configDir}:`, dirErr.message);
+      }
+    }
+
+    vscode.window.showInformationMessage(
+      'SWEObeyMe MCP configured! Reload Windsurf to activate.',
+      'Reload Now',
+    ).then(selection => {
+      if (selection === 'Reload Now') {
+        vscode.commands.executeCommand('workbench.action.reloadWindow');
+      }
+    });
+  } catch (error) {
+    console.error('[SWEObeyMe] Failed to auto-configure MCP:', error.message);
+  }
 
   // Register command to show menu from status bar
   const showMenuCommand = vscode.commands.registerCommand('sweObeyMe.showMenu', async () => {
