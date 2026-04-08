@@ -191,6 +191,7 @@ try {
   assert(existsSync(join(projectRoot, 'esbuild.config.js')), 'esbuild.config.js exists');
   assert(existsSync(join(projectRoot, '.vscodeignore')), '.vscodeignore exists');
   assert(existsSync(join(projectRoot, '.gitignore')), '.gitignore exists');
+  assert(existsSync(join(projectRoot, 'test-tools')), 'test-tools directory exists (for schema validation)');
   
 } catch (error) {
   assert(false, 'Critical file existence', error.message);
