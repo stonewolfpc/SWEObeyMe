@@ -47,9 +47,9 @@ function recordTest(name, passed, message = '') {
 /**
  * Simulate the MCP config writing logic from extension.js
  */
-function simulateConfigWrite(extensionPath, backupDir) {
-  const configDir = path.join(os.homedir(), '.codeium');
-  const mcpConfigPath = path.join(configDir, 'mcp_config.json');
+function simulateConfigWrite(extensionPath, backupDir, configPath = null) {
+  const configDir = configPath ? path.dirname(configPath) : path.join(os.homedir(), '.codeium');
+  const mcpConfigPath = configPath || path.join(configDir, 'mcp_config.json');
   
   // Ensure directory exists
   if (!fs.existsSync(configDir)) {
@@ -104,7 +104,11 @@ function testWindowsInstallation() {
     const extensionPath = 'C:\\Users\\test\\.windsurf-next\\extensions\\stonewolfpc.swe-obey-me-2.0.5\\index.js';
     const backupDir = 'C:\\Users\\test\\AppData\\Local\\SWEObeyMe\\.sweobeyme-backups';
     
-    const { mcpConfigPath, config } = simulateConfigWrite(extensionPath, backupDir);
+    // Use temporary directory for CI/CD compatibility
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'mcp-config-test-'));
+    const tempConfigPath = path.join(tempDir, 'mcp_config.json');
+    
+    const { mcpConfigPath, config } = simulateConfigWrite(extensionPath, backupDir, tempConfigPath);
     
     // Verify config was written
     const configExists = fs.existsSync(mcpConfigPath);
@@ -117,6 +121,7 @@ function testWindowsInstallation() {
     
     // Cleanup
     if (fs.existsSync(mcpConfigPath)) fs.unlinkSync(mcpConfigPath);
+    fs.rmdirSync(tempDir);
   } catch (error) {
     recordTest(testName, false, error.message);
   }
@@ -132,7 +137,11 @@ function testLinuxInstallation() {
     const extensionPath = '/home/test/.windsurf-next/extensions/stonewolfpc.swe-obey-me-2.0.5/index.js';
     const backupDir = '/home/test/.local/SWEObeyMe/.sweobeyme-backups';
     
-    const { mcpConfigPath, config } = simulateConfigWrite(extensionPath, backupDir);
+    // Use temporary directory for CI/CD compatibility
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'mcp-config-test-'));
+    const tempConfigPath = path.join(tempDir, 'mcp_config.json');
+    
+    const { mcpConfigPath, config } = simulateConfigWrite(extensionPath, backupDir, tempConfigPath);
     
     // Verify config was written
     const configExists = fs.existsSync(mcpConfigPath);
@@ -146,6 +155,7 @@ function testLinuxInstallation() {
     
     // Cleanup
     if (fs.existsSync(mcpConfigPath)) fs.unlinkSync(mcpConfigPath);
+    fs.rmdirSync(tempDir);
   } catch (error) {
     recordTest(testName, false, error.message);
   }
@@ -161,7 +171,11 @@ function testMacInstallation() {
     const extensionPath = '/Users/test/.windsurf-next/extensions/stonewolfpc.swe-obey-me-2.0.5/index.js';
     const backupDir = '/Users/test/Library/Application Support/SWEObeyMe/.sweobeyme-backups';
     
-    const { mcpConfigPath, config } = simulateConfigWrite(extensionPath, backupDir);
+    // Use temporary directory for CI/CD compatibility
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'mcp-config-test-'));
+    const tempConfigPath = path.join(tempDir, 'mcp_config.json');
+    
+    const { mcpConfigPath, config } = simulateConfigWrite(extensionPath, backupDir, tempConfigPath);
     
     // Verify config was written
     const configExists = fs.existsSync(mcpConfigPath);
@@ -175,6 +189,7 @@ function testMacInstallation() {
     
     // Cleanup
     if (fs.existsSync(mcpConfigPath)) fs.unlinkSync(mcpConfigPath);
+    fs.rmdirSync(tempDir);
   } catch (error) {
     recordTest(testName, false, error.message);
   }
@@ -190,7 +205,11 @@ function testAtomicWrite() {
     const extensionPath = '/test/path/index.js';
     const backupDir = '/test/backups';
     
-    const { mcpConfigPath } = simulateConfigWrite(extensionPath, backupDir);
+    // Use temporary directory for CI/CD compatibility
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'mcp-config-test-'));
+    const tempConfigPath = path.join(tempDir, 'mcp_config.json');
+    
+    const { mcpConfigPath } = simulateConfigWrite(extensionPath, backupDir, tempConfigPath);
     
     // Verify temp file was cleaned up
     const tempFileExists = fs.existsSync(mcpConfigPath + '.tmp');
@@ -204,6 +223,7 @@ function testAtomicWrite() {
     
     // Cleanup
     if (fs.existsSync(mcpConfigPath)) fs.unlinkSync(mcpConfigPath);
+    fs.rmdirSync(tempDir);
   } catch (error) {
     recordTest(testName, false, error.message);
   }
@@ -244,7 +264,11 @@ function testEnvironmentVariables() {
     const extensionPath = '/test/index.js';
     const backupDir = '/test/backups';
     
-    const { mcpConfigPath, config } = simulateConfigWrite(extensionPath, backupDir);
+    // Use temporary directory for CI/CD compatibility
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'mcp-config-test-'));
+    const tempConfigPath = path.join(tempDir, 'mcp_config.json');
+    
+    const { mcpConfigPath, config } = simulateConfigWrite(extensionPath, backupDir, tempConfigPath);
     
     const serverConfig = config.mcpServers['swe-obey-me'];
     const env = serverConfig.env;
@@ -258,6 +282,7 @@ function testEnvironmentVariables() {
     
     // Cleanup
     if (fs.existsSync(mcpConfigPath)) fs.unlinkSync(mcpConfigPath);
+    fs.rmdirSync(tempDir);
   } catch (error) {
     recordTest(testName, false, error.message);
   }
