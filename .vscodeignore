@@ -1,5 +1,4 @@
 # Explicitly include required directories
-!dist/**
 !lib/**
 !utils/**
 !docs/**
@@ -97,3 +96,6 @@ scripts/tool-memory.json
 # Exclude schemas and project files
 # Note: project_map.json is included as it's referenced by code
 project_map.schema.json
+
+# Include dist/ for bundled output (must be at end to override exclusions)
+!dist/**
