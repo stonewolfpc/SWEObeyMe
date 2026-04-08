@@ -113,7 +113,7 @@ function testWindowsInstallation() {
     // Verify config was written
     const configExists = fs.existsSync(mcpConfigPath);
     const hasServer = config.mcpServers && config.mcpServers['swe-obey-me'];
-    const pathNormalized = !config.mcpServers['swe-obey-me'].args[0].includes('\\');
+    const pathNormalized = !config.mcpServers['swe-obey-me'].args[1].includes('\\');
     const backupNormalized = !config.mcpServers['swe-obey-me'].env.SWEOBEYME_BACKUP_DIR.includes('\\');
     
     const allChecks = configExists && hasServer && pathNormalized && backupNormalized;
@@ -147,7 +147,7 @@ function testLinuxInstallation() {
     const configExists = fs.existsSync(mcpConfigPath);
     const hasServer = config.mcpServers && config.mcpServers['swe-obey-me'];
     // For Linux/Mac, check that path is normalized (no backslashes)
-    const pathNormalized = !config.mcpServers['swe-obey-me'].args[0].includes('\\');
+    const pathNormalized = !config.mcpServers['swe-obey-me'].args[1].includes('\\');
     const backupNormalized = !config.mcpServers['swe-obey-me'].env.SWEOBEYME_BACKUP_DIR.includes('\\');
     
     const allChecks = configExists && hasServer && pathNormalized && backupNormalized;
@@ -181,7 +181,7 @@ function testMacInstallation() {
     const configExists = fs.existsSync(mcpConfigPath);
     const hasServer = config.mcpServers && config.mcpServers['swe-obey-me'];
     // For Linux/Mac, check that path is normalized (no backslashes)
-    const pathNormalized = !config.mcpServers['swe-obey-me'].args[0].includes('\\');
+    const pathNormalized = !config.mcpServers['swe-obey-me'].args[1].includes('\\');
     const backupNormalized = !config.mcpServers['swe-obey-me'].env.SWEOBEYME_BACKUP_DIR.includes('\\');
     
     const allChecks = configExists && hasServer && pathNormalized && backupNormalized;
