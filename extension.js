@@ -377,6 +377,12 @@ async function activate(context) {
   });
   context.subscriptions.push(csharpSettingsCommand);
 
+  // Register command to open SWEObeyMe Settings
+  const openCSharpSettingsCommand = vscode.commands.registerCommand('sweObeyMe.openCSharpSettings', () => {
+    vscode.commands.executeCommand('workbench.action.openSettings', 'sweObeyMe');
+  });
+  context.subscriptions.push(openCSharpSettingsCommand);
+
   // Inline webview provider — no external file dependencies, works in bundled VSIX
   function makeWebviewProvider(getHtml) {
     return {
