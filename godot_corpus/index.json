@@ -1,0 +1,187 @@
+{
+  "name": "Godot Best Practices Corpus",
+  "version": "1.0.0",
+  "license": "CC BY 3.0",
+  "license_url": "https://creativecommons.org/licenses/by/3.0/",
+  "source": "https://docs.godotengine.org/en/stable/tutorials/best_practices/",
+  "description": "Official Godot Engine best practices documentation for enforcing coding standards and architectural patterns in Godot projects.",
+  "categories": [
+    {
+      "name": "introduction",
+      "description": "Introduction to Godot best practices series",
+      "documents": [
+        {
+          "name": "Introduction",
+          "url": "https://docs.godotengine.org/en/stable/tutorials/best_practices/introduction_best_practices.html",
+          "description": "Overview of the best practices series and its purpose"
+        }
+      ]
+    },
+    {
+      "name": "object_oriented_principles",
+      "description": "Applying object-oriented principles in Godot",
+      "documents": [
+        {
+          "name": "Applying object-oriented principles in Godot",
+          "url": "https://docs.godotengine.org/en/stable/tutorials/best_practices/what_are_godot_classes.html",
+          "description": "How Godot's nodes and scenes relate to classes and objects in OOP"
+        }
+      ]
+    },
+    {
+      "name": "scene_organization",
+      "description": "Scene organization best practices",
+      "documents": [
+        {
+          "name": "Scene organization",
+          "url": "https://docs.godotengine.org/en/stable/tutorials/best_practices/scene_organization.html",
+          "description": "How to organize scenes effectively"
+        }
+      ]
+    },
+    {
+      "name": "scenes_vs_scripts",
+      "description": "When to use scenes versus scripts",
+      "documents": [
+        {
+          "name": "When to use scenes versus scripts",
+          "url": "https://docs.godotengine.org/en/stable/tutorials/best_practices/scenes_versus_scripts.html",
+          "description": "Guidelines for choosing between scenes and scripts"
+        }
+      ]
+    },
+    {
+      "name": "autoloads",
+      "description": "Autoloads versus regular nodes",
+      "documents": [
+        {
+          "name": "Autoloads versus regular nodes",
+          "url": "https://docs.godotengine.org/en/stable/tutorials/best_practices/autoloads_versus_internal_nodes.html",
+          "description": "When to use autoloads vs regular nodes"
+        }
+      ]
+    },
+    {
+      "name": "node_alternatives",
+      "description": "When and how to avoid using nodes for everything",
+      "documents": [
+        {
+          "name": "When and how to avoid using nodes for everything",
+          "url": "https://docs.godotengine.org/en/stable/tutorials/best_practices/node_alternatives.html",
+          "description": "Alternatives to using nodes for everything"
+        }
+      ]
+    },
+    {
+      "name": "interfaces",
+      "description": "Godot interfaces",
+      "documents": [
+        {
+          "name": "Godot interfaces",
+          "url": "https://docs.godotengine.org/en/stable/tutorials/best_practices/godot_interfaces.html",
+          "description": "Using interfaces in Godot"
+        }
+      ]
+    },
+    {
+      "name": "notifications",
+      "description": "Godot notifications",
+      "documents": [
+        {
+          "name": "Godot notifications",
+          "url": "https://docs.godotengine.org/en/stable/tutorials/best_practices/godot_notifications.html",
+          "description": "Understanding and using Godot notifications"
+        }
+      ]
+    },
+    {
+      "name": "data_preferences",
+      "description": "Data preferences",
+      "documents": [
+        {
+          "name": "Data preferences",
+          "url": "https://docs.godotengine.org/en/stable/tutorials/best_practices/data_preferences.html",
+          "description": "Best practices for data storage and handling"
+        }
+      ]
+    },
+    {
+      "name": "logic_preferences",
+      "description": "Logic preferences",
+      "documents": [
+        {
+          "name": "Logic preferences",
+          "url": "https://docs.godotengine.org/en/stable/tutorials/best_practices/logic_preferences.html",
+          "description": "Best practices for game logic implementation"
+        }
+      ]
+    },
+    {
+      "name": "project_organization",
+      "description": "Project organization",
+      "documents": [
+        {
+          "name": "Project organization",
+          "url": "https://docs.godotengine.org/en/stable/tutorials/best_practices/project_organization.html",
+          "description": "How to organize Godot projects"
+        }
+      ]
+    },
+    {
+      "name": "version_control",
+      "description": "Version control systems",
+      "documents": [
+        {
+          "name": "Version control systems",
+          "url": "https://docs.godotengine.org/en/stable/tutorials/best_practices/version_control_systems.html",
+          "description": "Version control best practices for Godot projects"
+        }
+      ]
+    }
+  ],
+  "enforcement_rules": {
+    "single_responsibility": "Each scene/script should have a single, well-defined responsibility",
+    "encapsulation": "Keep internal state private and expose only necessary methods",
+    "composition_over_inheritance": "Prefer composition (scenes) over deep inheritance",
+    "autoload_minimization": "Use autoloads sparingly, only for global singletons",
+    "node_hierarchy_depth": "Keep scene tree depth reasonable (avoid excessive nesting)",
+    "resource_management": "Use Resource types for data that doesn't need node functionality",
+    "signal_usage": "Use signals for decoupled communication between nodes",
+    "script_organization": "Keep scripts focused and under reasonable line limits",
+    "naming_conventions": "Follow Godot naming conventions (snake_case for files, PascalCase for classes)"
+  },
+  "critical_enforcement": {
+    "scene_tree_immutable": "CRITICAL: Scene tree hierarchy, node names, and parent-child relationships are immutable. Modifying them destroys the project.",
+    "script_node_name_matching": "CRITICAL: Script filenames must match their attached node names exactly. Mismatched names break script attachment.",
+    "script_paths_immutable": "CRITICAL: Never move or rename existing script files. Godot stores script references by absolute path. Moving breaks all references.",
+    "autoload_configuration_immutable": "CRITICAL: Never add, remove, or modify autoloads. Autoloads are global singletons loaded at startup. Modifying breaks global state.",
+    "folder_structure_immutable": "CRITICAL: Never reorganize, rename, or move project folders. Godot uses relative paths extensively. Reorganization breaks all resource references.",
+    "resource_path_validation": "CRITICAL: Validate all resource references (res:// paths) before use. Invalid paths cause load errors.",
+    "signal_connections_immutable": "CRITICAL: Never modify or delete signal connections. Signals are the primary communication mechanism. Breaking them destroys node communication.",
+    "scene_files_read_only": "CRITICAL: Never directly edit .tscn scene files. Scene files have complex structure. Direct editing corrupts scenes. Use Godot editor."
+  },
+  "godot_mode_activation": {
+    "trigger": "Detection of project.godot file or .godot folder",
+    "behavior": "AI enters strict 'Godot Mode' with critical enforcement of project structure integrity",
+    "protections": [
+      "Scene tree stability enforcement",
+      "Script-to-node name matching validation",
+      "Autoload integrity protection",
+      "Resource path validation",
+      "Signal connection preservation",
+      "Folder structure immutability",
+      "Scene file read-only enforcement"
+    ],
+    "failure_prevention": "Prevents AI from breaking Godot projects by enforcing strict structure rules before any modification"
+  },
+  "common_ai_failures_prevented": [
+    "Breaking scene trees by renaming nodes or changing hierarchy",
+    "Moving scripts and breaking all script references",
+    "Deleting or modifying autoloads and breaking global state",
+    "Reorganizing folders and breaking all resource paths",
+    "Directly editing .tscn files and corrupting scenes",
+    "Breaking signal connections and destroying node communication",
+    "Creating scripts with names that don't match nodes",
+    "Using unvalidated resource paths causing load errors"
+  ]
+}

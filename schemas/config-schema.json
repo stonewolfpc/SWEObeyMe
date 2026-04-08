@@ -1,0 +1,42 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SWEObeyMe Configuration",
+  "description": "Configuration schema for SWEObeyMe surgical code enforcement",
+  "type": "object",
+  "properties": {
+    "backupPath": {
+      "description": "Custom backup directory path",
+      "type": "string"
+    },
+    "csharpBridge": {
+      "description": "C# Bridge configuration",
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "description": "Enable C# Bridge analysis",
+          "type": "boolean",
+          "default": true
+        },
+        "severityThreshold": {
+          "description": "Minimum severity level to report (0=Info, 1=Warning, 2=Error)",
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2,
+          "default": 0
+        }
+      }
+    },
+    "general": {
+      "description": "General extension settings",
+      "type": "object",
+      "properties": {
+        "hotReloadEnabled": {
+          "description": "Enable hot-reload of extension files",
+          "type": "boolean",
+          "default": false
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

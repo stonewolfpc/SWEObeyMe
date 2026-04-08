@@ -1,0 +1,261 @@
+{
+  "name": "Open-License Math Reference Sources",
+  "version": "1.0.0",
+  "description": "Verified open-license math reference sources that can be legally distributed",
+  "last_updated": "2026-04-07",
+  "sources": [
+    {
+      "name": "OpenStax",
+      "url": "https://openstax.org/subjects/math",
+      "license": "Creative Commons Attribution 4.0 International (CC BY 4.0)",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "distribution_allowed": true,
+      "attribution_required": true,
+      "commercial_use_allowed": true,
+      "modification_allowed": true,
+      "description": "Free, peer-reviewed, openly licensed college textbooks",
+      "available_titles": [
+        "Prealgebra 2e",
+        "Elementary Algebra 2e",
+        "Intermediate Algebra 2e",
+        "College Algebra",
+        "Algebra and Trigonometry 2e",
+        "Precalculus 2e",
+        "Calculus Volume 1",
+        "Calculus Volume 2",
+        "Calculus Volume 3",
+        "Introductory Statistics"
+      ],
+      "download_format": "PDF",
+      "recommended_for": ["algebra", "calculus", "statistics", "precalculus"]
+    },
+    {
+      "name": "MIT OpenCourseWare",
+      "url": "https://ocw.mit.edu/courses/mathematics/",
+      "license": "Creative Commons Attribution-NonCommercial-ShareAlike 4.0 (CC BY-NC-SA 4.0)",
+      "license_url": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+      "distribution_allowed": true,
+      "attribution_required": true,
+      "commercial_use_allowed": false,
+      "modification_allowed": true,
+      "share_alike_required": true,
+      "description": "MIT course materials including lecture notes, textbooks, and problem sets",
+      "available_courses": [
+        "18.01 Single Variable Calculus",
+        "18.02 Multivariable Calculus",
+        "18.03 Differential Equations",
+        "18.06 Linear Algebra",
+        "18.06SC Linear Algebra",
+        "18.700 Linear Algebra",
+        "18.086 Mathematical Methods for Engineers II",
+        "18.304 Complex Variables with Applications",
+        "18.319 Geometric Combinatorics",
+        "18.330 Introduction to Numerical Analysis"
+      ],
+      "download_format": "PDF, lecture notes, problem sets",
+      "recommended_for": ["calculus", "linear_algebra", "differential_equations", "complex_analysis", "numerical_methods"]
+    },
+    {
+      "name": "Cornell University Historical Math Monographs",
+      "url": "http://collections.library.cornell.edu/math/",
+      "license": "Public Domain",
+      "license_url": "http://collections.library.cornell.edu/math/guidelines.html",
+      "distribution_allowed": true,
+      "attribution_required": false,
+      "commercial_use_allowed": true,
+      "modification_allowed": true,
+      "description": "Historical mathematics monographs from the 19th and early 20th centuries",
+      "notes": "These are out-of-copyright works, fully in the public domain",
+      "recommended_for": ["historical_math", "classical_mathematics", "math_history"]
+    },
+    {
+      "name": "Project Gutenberg Mathematics",
+      "url": "https://www.gutenberg.org/ebooks/subject/22",
+      "license": "Public Domain",
+      "license_url": "https://www.gutenberg.org/policy/license.html",
+      "distribution_allowed": true,
+      "attribution_required": false,
+      "commercial_use_allowed": true,
+      "modification_allowed": true,
+      "description": "Public domain mathematics books and textbooks",
+      "notable_works": [
+        "A History of Mathematics by Florian Cajori",
+        "On the Study and Difficulties of Mathematics by Augustus De Morgan",
+        "A Scrap-Book of Elementary Mathematics by William Frank White",
+        "Mathematical Monographs by Various Authors"
+      ],
+      "download_format": "PDF, EPUB, Kindle, plain text",
+      "recommended_for": ["math_history", "classical_mathematics", "foundational_concepts"]
+    },
+    {
+      "name": "American Mathematical Society (AMS) Books",
+      "url": "https://www.ams.org/books",
+      "license": "Varies by book - check individual book license",
+      "distribution_allowed": "varies",
+      "attribution_required": "varies",
+      "commercial_use_allowed": "varies",
+      "modification_allowed": "varies",
+      "description": "Some AMS books are available for free download with varying licenses",
+      "notes": "Must check license for each individual book before distribution",
+      "recommended_for": ["advanced_mathematics", "research_level"]
+    },
+    {
+      "name": "Wikibooks Mathematics",
+      "url": "https://en.wikibooks.org/wiki/Subject:Mathematics",
+      "license": "Creative Commons Attribution-ShareAlike 3.0 (CC BY-SA 3.0)",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "distribution_allowed": true,
+      "attribution_required": true,
+      "commercial_use_allowed": true,
+      "modification_allowed": true,
+      "share_alike_required": true,
+      "description": "Open-content textbooks maintained by the Wikibooks community",
+      "available_titles": [
+        "Calculus",
+        "Linear Algebra",
+        "Abstract Algebra",
+        "Real Analysis",
+        "Complex Analysis",
+        "Differential Equations",
+        "Number Theory",
+        "Geometry"
+      ],
+      "download_format": "PDF, HTML",
+      "notes": "Quality varies as content is community-maintained",
+      "recommended_for": ["various", "supplementary_material"]
+    },
+    {
+      "name": "Paul's Online Math Notes",
+      "url": "https://tutorial.math.lamar.edu/",
+      "license": "Creative Commons Attribution-NonCommercial-ShareAlike 2.5 (CC BY-NC-SA 2.5)",
+      "license_url": "https://creativecommons.org/licenses/by-nc-sa/2.5/",
+      "distribution_allowed": true,
+      "attribution_required": true,
+      "commercial_use_allowed": false,
+      "modification_allowed": true,
+      "share_alike_required": true,
+      "description": "Comprehensive notes for calculus, algebra, and differential equations",
+      "available_topics": [
+        "Algebra",
+        "Calculus I",
+        "Calculus II",
+        "Calculus III",
+        "Differential Equations",
+        "Complex Variables"
+      ],
+      "download_format": "PDF",
+      "recommended_for": ["calculus", "algebra", "differential_equations"]
+    },
+    {
+      "name": "Jim Hefferon's Linear Algebra",
+      "url": "https://hefferon.net/linearalgebra/",
+      "license": "GNU Free Documentation License (GFDL)",
+      "license_url": "https://www.gnu.org/licenses/fdl.html",
+      "distribution_allowed": true,
+      "attribution_required": false,
+      "commercial_use_allowed": true,
+      "modification_allowed": true,
+      "description": "A free textbook covering linear algebra",
+      "download_format": "PDF",
+      "recommended_for": ["linear_algebra"]
+    },
+    {
+      "name": "A First Course in Linear Algebra (Beezer)",
+      "url": "http://linear.ups.edu/",
+      "license": "GNU Free Documentation License (GFDL)",
+      "license_url": "https://www.gnu.org/licenses/fdl.html",
+      "distribution_allowed": true,
+      "attribution_required": false,
+      "commercial_use_allowed": true,
+      "modification_allowed": true,
+      "description": "Open textbook on linear algebra by Robert Beezer",
+      "download_format": "PDF",
+      "recommended_for": ["linear_algebra"]
+    },
+    {
+      "name": "Street-Fighting Mathematics",
+      "url": "https://ocw.mit.edu/resources/res-6-012-introduction-to-algorithms-sma-5503-fall-2005/",
+      "license": "Creative Commons Attribution-NonCommercial-ShareAlike 4.0 (CC BY-NC-SA 4.0)",
+      "license_url": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+      "distribution_allowed": true,
+      "attribution_required": true,
+      "commercial_use_allowed": false,
+      "modification_allowed": true,
+      "share_alike_required": true,
+      "description": "Art of approximating problems by Sanjoy Mahajan",
+      "download_format": "PDF",
+      "recommended_for": ["problem_solving", "approximation_methods"]
+    }
+  ],
+  "licensing_summary": {
+    "public_domain": {
+      "count": 2,
+      "sources": ["Cornell University Historical Math Monographs", "Project Gutenberg Mathematics"],
+      "notes": "No attribution required, full commercial use allowed"
+    },
+    "cc_by": {
+      "count": 1,
+      "sources": ["OpenStax"],
+      "notes": "Attribution required, commercial use allowed"
+    },
+    "cc_by_nc_sa": {
+      "count": 3,
+      "sources": ["MIT OpenCourseWare", "Paul's Online Math Notes", "Street-Fighting Mathematics"],
+      "notes": "Attribution required, no commercial use, share-alike required"
+    },
+    "cc_by_sa": {
+      "count": 1,
+      "sources": ["Wikibooks Mathematics"],
+      "notes": "Attribution required, commercial use allowed, share-alike required"
+    },
+    "gfdl": {
+      "count": 2,
+      "sources": ["Jim Hefferon's Linear Algebra", "A First Course in Linear Algebra"],
+      "notes": "No attribution required, commercial use allowed"
+    },
+    "varies": {
+      "count": 1,
+      "sources": ["American Mathematical Society (AMS) Books"],
+      "notes": "Must check individual book license"
+    }
+  },
+  "download_recommendations": {
+    "highest_priority": [
+      {
+        "source": "OpenStax",
+        "reason": "Modern, peer-reviewed textbooks with clear CC BY license allowing commercial use",
+        "titles": ["Calculus Volume 1-3", "Linear Algebra", "Introductory Statistics"]
+      },
+      {
+        "source": "Project Gutenberg",
+        "reason": "Public domain, no restrictions, excellent historical context",
+        "titles": ["A History of Mathematics", "On the Study and Difficulties of Mathematics"]
+      }
+    ],
+    "medium_priority": [
+      {
+        "source": "MIT OCW",
+        "reason": "High-quality course materials, but non-commercial restriction",
+        "titles": ["18.01 Single Variable Calculus", "18.06 Linear Algebra"]
+      },
+      {
+        "source": "Cornell Historical Monographs",
+        "reason": "Public domain historical works, good for classical mathematics",
+        "titles": ["Various 19th/early 20th century monographs"]
+      }
+    ],
+    "supplementary": [
+      {
+        "source": "Wikibooks",
+        "reason": "Good for supplementary material, quality varies",
+        "titles": ["Various community-maintained textbooks"]
+      },
+      {
+        "source": "Paul's Online Math Notes",
+        "reason": "Excellent explanations, but non-commercial restriction",
+        "titles": ["Calculus I-III", "Differential Equations"]
+      }
+    ]
+  },
+  "attribution_template": "This material is sourced from {source_name} and is licensed under {license_name} ({license_url}). Original source: {source_url}"
+}

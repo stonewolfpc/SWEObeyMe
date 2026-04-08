@@ -1,0 +1,228 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2026-04-07T14:31:00.000Z",
+  "tools": {
+    "read_file": {
+      "name": "read_file",
+      "category": "file_operations",
+      "domain": "io",
+      "priority": 100,
+      "description": "READ_FILE IS THE ONLY WAY TO READ FILES - DO NOT USE DIRECT FILE ACCESS",
+      "arguments": ["path"],
+      "usage_example": "Read index.js to see it has 156 lines and any surgical warnings",
+      "fallback": null,
+      "conflicts": [],
+      "required_for": ["get_file_context", "obey_surgical_plan"],
+      "best_next_tool": ["get_file_context", "obey_surgical_plan"],
+      "triggers": ["need to see file contents", "understand file context", "check file size"]
+    },
+    "write_file": {
+      "name": "write_file",
+      "category": "file_operations",
+      "domain": "io",
+      "priority": 100,
+      "description": "WRITE_FILE IS THE ONLY WAY TO WRITE FILES - DO NOT USE DIRECT FILE EDITING",
+      "arguments": ["path", "content"],
+      "usage_example": "Write to index.js after obey_surgical_plan approval",
+      "fallback": "edit",
+      "conflicts": ["manual_edit", "direct_write"],
+      "required_for": [],
+      "best_next_tool": ["run_related_tests"],
+      "prerequisite": "obey_surgical_plan",
+      "triggers": ["writing new code", "modifying existing files", "creating files"]
+    },
+    "obey_surgical_plan": {
+      "name": "obey_surgical_plan",
+      "category": "governance",
+      "domain": "validation",
+      "priority": 95,
+      "description": "CRITICAL: MUST call this BEFORE using write_file to validate your surgical plan",
+      "arguments": ["target_file", "current_line_count", "estimated_addition"],
+      "usage_example": "Call with current_line_count=650 and estimated_addition=100 to check if adding 100 lines to a 650-line file is safe",
+      "fallback": null,
+      "conflicts": [],
+      "required_for": ["write_file"],
+      "best_next_tool": ["write_file", "refactor_move_block", "extract_to_new_file"],
+      "triggers": ["modifying any file", "adding code", "refactoring"]
+    },
+    "preflight_change": {
+      "name": "preflight_change",
+      "category": "governance",
+      "domain": "validation",
+      "priority": 95,
+      "description": "CRITICAL: MUST call this BEFORE write_file for non-trivial changes",
+      "arguments": ["path", "content"],
+      "usage_example": "Validate a refactoring before applying changes",
+      "fallback": "obey_surgical_plan",
+      "conflicts": [],
+      "required_for": ["write_file"],
+      "best_next_tool": ["write_file"],
+      "triggers": ["making significant changes", "modifying core files"]
+    },
+    "get_file_context": {
+      "name": "get_file_context",
+      "category": "analysis",
+      "domain": "context",
+      "priority": 90,
+      "description": "MUST use this tool BEFORE refactoring - this is the ONLY way to get comprehensive file context",
+      "arguments": ["path"],
+      "usage_example": "Get context for a file before refactoring to understand what depends on it",
+      "fallback": null,
+      "conflicts": [],
+      "required_for": ["refactor_move_block", "extract_to_new_file"],
+      "best_next_tool": ["analyze_change_impact"],
+      "triggers": ["planning refactoring", "understanding dependencies"]
+    },
+    "analyze_change_impact": {
+      "name": "analyze_change_impact",
+      "category": "analysis",
+      "domain": "impact",
+      "priority": 90,
+      "description": "Analyze the impact of proposed changes on the codebase",
+      "arguments": ["path", "changes"],
+      "usage_example": "Analyze impact before refactoring to see what depends on it",
+      "fallback": null,
+      "conflicts": [],
+      "required_for": ["refactor_move_block", "extract_to_new_file"],
+      "best_next_tool": ["refactor_move_block", "extract_to_new_file"],
+      "triggers": ["planning refactoring", "modifying shared utilities"]
+    },
+    "list_directory": {
+      "name": "list_directory",
+      "category": "exploration",
+      "domain": "io",
+      "priority": 80,
+      "description": "List files and directories in a given path",
+      "arguments": ["path"],
+      "usage_example": "Explore project structure before making changes",
+      "fallback": "find_code_files",
+      "conflicts": [],
+      "required_for": [],
+      "best_next_tool": ["read_file", "get_code_language_stats"],
+      "triggers": ["exploring project structure", "finding files"]
+    },
+    "search_code_files": {
+      "name": "search_code_files",
+      "category": "search",
+      "domain": "code",
+      "priority": 85,
+      "description": "Search code files for a pattern with language-aware ranking",
+      "arguments": ["query", "directory"],
+      "usage_example": "Search for 'function' to find function definitions across all supported languages",
+      "fallback": "search_code_pattern",
+      "conflicts": [],
+      "required_for": [],
+      "best_next_tool": ["read_file"],
+      "triggers": ["finding code", "searching for patterns"]
+    },
+    "refactor_move_block": {
+      "name": "refactor_move_block",
+      "category": "refactoring",
+      "domain": "code",
+      "priority": 90,
+      "description": "Move a code block from one file to another while maintaining surgical compliance",
+      "arguments": ["source_path", "target_path", "code_block"],
+      "usage_example": "Move a 200-line function from index.js to utils.js to keep index.js under the limit",
+      "fallback": "extract_to_new_file",
+      "conflicts": [],
+      "required_for": [],
+      "best_next_tool": ["write_file"],
+      "triggers": ["file exceeds line limit", "need to reduce file size"]
+    },
+    "extract_to_new_file": {
+      "name": "extract_to_new_file",
+      "category": "refactoring",
+      "domain": "code",
+      "priority": 90,
+      "description": "Extract a code block to a new file while maintaining surgical compliance",
+      "arguments": ["source_path", "new_file_path", "code_block", "description"],
+      "usage_example": "Extract a large class to a new file to reduce source file size",
+      "fallback": "refactor_move_block",
+      "conflicts": [],
+      "required_for": [],
+      "best_next_tool": ["write_file"],
+      "triggers": ["file exceeds line limit", "need to split large files"]
+    },
+    "enforce_surgical_rules": {
+      "name": "enforce_surgical_rules",
+      "category": "governance",
+      "domain": "validation",
+      "priority": 95,
+      "description": "MUST call this tool BEFORE write_file - this is the ONLY way to validate your code against surgical rules",
+      "arguments": ["code", "path"],
+      "usage_example": "Validate code before writing to check for forbidden patterns",
+      "fallback": "obey_surgical_plan",
+      "conflicts": [],
+      "required_for": ["write_file"],
+      "best_next_tool": ["write_file"],
+      "triggers": ["writing code", "modifying files"]
+    }
+  },
+  "categories": {
+    "file_operations": {
+      "description": "Tools for reading and writing files",
+      "priority_weight": 1.5
+    },
+    "governance": {
+      "description": "Tools for enforcing architectural rules and validation",
+      "priority_weight": 2.0
+    },
+    "analysis": {
+      "description": "Tools for analyzing code structure and dependencies",
+      "priority_weight": 1.2
+    },
+    "exploration": {
+      "description": "Tools for exploring project structure",
+      "priority_weight": 0.8
+    },
+    "search": {
+      "description": "Tools for searching code and patterns",
+      "priority_weight": 1.0
+    },
+    "refactoring": {
+      "description": "Tools for refactoring and code organization",
+      "priority_weight": 1.3
+    }
+  },
+  "domains": {
+    "io": {
+      "description": "Input/output operations",
+      "tools": ["read_file", "write_file", "list_directory"]
+    },
+    "validation": {
+      "description": "Validation and rule enforcement",
+      "tools": ["obey_surgical_plan", "preflight_change", "enforce_surgical_rules"]
+    },
+    "context": {
+      "description": "Context and dependency analysis",
+      "tools": ["get_file_context"]
+    },
+    "impact": {
+      "description": "Change impact analysis",
+      "tools": ["analyze_change_impact"]
+    },
+    "code": {
+      "description": "Code manipulation and refactoring",
+      "tools": ["search_code_files", "refactor_move_block", "extract_to_new_file"]
+    }
+  },
+  "heuristics": {
+    "primary": "If a tool exists for the task, use it",
+    "secondary": "If multiple tools exist, choose the highest-priority one",
+    "tertiary": "If the tool fails, retry with context",
+    "fallback": "If it fails again, use fallback tool",
+    "never": "Never hallucinate a tool or manually edit when a tool exists"
+  },
+  "conflicts": [
+    {
+      "tool": "write_file",
+      "conflicts_with": ["manual_edit", "direct_write"],
+      "reason": "Write_file enforces surgical rules and creates backups"
+    },
+    {
+      "tool": "read_file",
+      "conflicts_with": ["direct_file_access"],
+      "reason": "Read_file enforces .sweignore rules and injects architectural context"
+    }
+  ]
+}

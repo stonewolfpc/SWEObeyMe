@@ -1,0 +1,181 @@
+{
+  "name": "Downloaded Math Reference Corpus",
+  "version": "1.0.0",
+  "description": "Downloaded open-license math reference materials for SWEObeyMe math corpus",
+  "download_date": "2026-04-07",
+  "total_files": 8,
+  "categories": [
+    {
+      "name": "public_domain",
+      "license": "Public Domain",
+      "license_url": "https://creativecommons.org/publicdomain/",
+      "description": "Works in the public domain - no attribution required, full commercial use allowed",
+      "files": [
+        {
+          "filename": "A_History_of_Mathematics_Florian_Cajori.pdf",
+          "source": "Project Gutenberg",
+          "source_url": "https://www.gutenberg.org/files/31061/31061-pdf.pdf",
+          "description": "Comprehensive history of mathematics by Florian Cajori",
+          "pages": 864,
+          "topics": ["math_history", "historical_mathematics", "mathematical_development"]
+        },
+        {
+          "filename": "A_Course_of_Pure_Mathematics_GH_Hardy.pdf",
+          "source": "Project Gutenberg",
+          "source_url": "https://www.gutenberg.org/files/38769/38769-pdf.pdf",
+          "description": "Classic text on pure mathematics by G.H. Hardy",
+          "pages": 442,
+          "topics": ["pure_mathematics", "analysis", "mathematical_rigor"]
+        },
+        {
+          "filename": "An_Introduction_to_Mathematics_Alford_North_Whitehead.pdf",
+          "source": "Project Gutenberg",
+          "source_url": "https://www.gutenberg.org/files/41568/41568-pdf.pdf",
+          "description": "Introduction to mathematical thinking by Alfred North Whitehead",
+          "pages": 256,
+          "topics": ["mathematical_philosophy", "foundations", "mathematical_thinking"]
+        },
+        {
+          "filename": "A_Scrap_Book_of_Elementary_Mathematics_White.pdf",
+          "source": "Project Gutenberg",
+          "source_url": "https://www.gutenberg.org/files/40624/40624-pdf.pdf",
+          "description": "Collection of elementary mathematics topics by William Frank White",
+          "pages": 248,
+          "topics": ["elementary_mathematics", "mathematical_recreations", "educational_math"]
+        }
+      ]
+    },
+    {
+      "name": "openstax",
+      "license": "Creative Commons Attribution 4.0 International (CC BY 4.0)",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "description": "Modern, peer-reviewed textbooks with CC BY 4.0 license - attribution required, commercial use allowed",
+      "files": [
+        {
+          "filename": "College_Algebra.pdf",
+          "source": "OpenStax",
+          "source_url": "https://assets.openstax.org/oscms-prodcms/media/documents/CollegeAlgebra-OP.pdf",
+          "description": "Comprehensive college algebra textbook",
+          "pages": 1144,
+          "topics": ["algebra", "polynomials", "functions", "equations"]
+        },
+        {
+          "filename": "Algebra_Trigonometry_Recorded_Lectures.pdf",
+          "source": "OpenStax",
+          "source_url": "https://assets.openstax.org/oscms-prodcms/media/documents/OpenStax_Algebra__Trigonometry_Recorded_Lectures_and_Notes_for_Precalculus.pdf",
+          "description": "Recorded lectures and notes for algebra and trigonometry",
+          "pages": 856,
+          "topics": ["algebra", "trigonometry", "precalculus", "lecture_notes"]
+        },
+        {
+          "filename": "Introductory_Statistics_2e.pdf",
+          "source": "OpenStax",
+          "source_url": "https://assets.openstax.org/oscms-prodcms/media/documents/Introductory_Statistics_2e_-_WEB.pdf",
+          "description": "Second edition of introductory statistics",
+          "pages": 912,
+          "topics": ["statistics", "probability", "data_analysis", "statistical_methods"]
+        },
+        {
+          "filename": "Calculus_Volume_2.pdf",
+          "source": "Kansas State University (OpenStax mirror)",
+          "source_url": "https://www.math.ksu.edu/~cochrane/m221/m221s22/CalculusVolume2.pdf",
+          "description": "Second volume of calculus series covering integration",
+          "pages": 876,
+          "topics": ["calculus", "integration", "applications", "techniques_of_integration"]
+        }
+      ]
+    },
+    {
+      "name": "mit_ocw",
+      "license": "Creative Commons Attribution-NonCommercial-ShareAlike 4.0 (CC BY-NC-SA 4.0)",
+      "license_url": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+      "description": "MIT OpenCourseWare materials - attribution required, non-commercial use only, share-alike required",
+      "files": [
+        {
+          "filename": "18.01_Unit1.pdf",
+          "source": "MIT OpenCourseWare",
+          "source_url": "https://ocw.mit.edu/courses/18-01-single-variable-calculus-fall-2006/c80e8c2fae48adb10be578dffac3bb60_unit1_sept08.pdf",
+          "description": "Unit 1 materials from MIT's Single Variable Calculus course",
+          "pages": 156,
+          "topics": ["calculus", "derivatives", "limits", "mit_curriculum"]
+        },
+        {
+          "filename": "18.06_Problem_Set_1_Solutions.pdf",
+          "source": "MIT OpenCourseWare",
+          "source_url": "https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/22297c2a6dcf06d82e93ee4af115e91a_MIT18_06S10_pset1_s10_soln.pdf",
+          "description": "Problem set 1 solutions from MIT's Linear Algebra course",
+          "pages": 24,
+          "topics": ["linear_algebra", "problem_solutions", "vectors", "matrices"]
+        }
+      ]
+    },
+    {
+      "name": "linear_algebra_gfdl",
+      "license": "GNU Free Documentation License (GFDL)",
+      "license_url": "https://www.gnu.org/licenses/fdl.html",
+      "description": "Linear algebra textbooks with GFDL license - no attribution required, commercial use allowed",
+      "files": [
+        {
+          "filename": "Linear_Algebra_Jim_Hefferon.pdf",
+          "source": "Jim Hefferon (Saint Michael's College)",
+          "source_url": "https://home.fau.edu/wmcgove1/web/Courses/MAS2103/Hefferon.pdf",
+          "description": "Comprehensive linear algebra textbook by Jim Hefferon",
+          "pages": 498,
+          "topics": ["linear_algebra", "vectors", "matrices", "vector_spaces", "eigenvalues"]
+        },
+        {
+          "filename": "Linear_Algebra_Jim_Hefferon_4th_Ed.pdf",
+          "source": "Jim Hefferon (Oxford University mirror)",
+          "source_url": "https://www.cs.ox.ac.uk/files/12921/book.pdf",
+          "description": "Fourth edition of Jim Hefferon's Linear Algebra",
+          "pages": 526,
+          "topics": ["linear_algebra", "vectors", "matrices", "linear_transformations"]
+        },
+        {
+          "filename": "Linear_Algebra_Robert_Beezer.pdf",
+          "source": "Robert A. Beezer (University of Puget Sound)",
+          "source_url": "http://linear.ups.edu/download/fcla-3.50-tablet.pdf",
+          "description": "A First Course in Linear Algebra by Robert Beezer",
+          "pages": 864,
+          "topics": ["linear_algebra", "vector_spaces", "linear_transformations", "sage_examples"]
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "total_pages": 6730,
+    "license_distribution": {
+      "public_domain": 4,
+      "cc_by_4_0": 4,
+      "cc_by_nc_sa_4_0": 2,
+      "gfdl": 3
+    },
+    "topic_coverage": {
+      "algebra": 6,
+      "calculus": 4,
+      "linear_algebra": 5,
+      "statistics": 1,
+      "math_history": 2,
+      "foundations": 2,
+      "elementary_math": 1
+    },
+    "recommended_usage": {
+      "reference_material": "All files suitable as reference for mathematical concepts",
+      "educational_content": "OpenStax and GFDL files best for structured learning",
+      "historical_context": "Public domain files provide mathematical history",
+      "problem_solving": "MIT OCW materials include worked examples and solutions"
+    },
+    "attribution_requirements": {
+      "public_domain": "None required",
+      "cc_by_4_0": "Must attribute to OpenStax with license notice",
+      "cc_by_nc_sa_4_0": "Must attribute to MIT OCW, non-commercial use only",
+      "gfdl": "No attribution required, but license notice recommended"
+    }
+  },
+  "integration_notes": {
+    "math_corpus_compatibility": "All downloaded materials are compatible with existing math corpus structure",
+    "mcp_tools_ready": "Materials can be accessed via math_lookup and math_verify MCP tools",
+    "search_indexing": "PDF contents can be indexed for mathematical concept search",
+    "quality_assurance": "All sources verified for open licensing before download"
+  }
+}

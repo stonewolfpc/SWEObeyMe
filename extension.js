@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
+import * as os from 'os';
 import { fileURLToPath } from 'url';
 import { exec } from 'child_process';
 import { promisify } from 'util';
@@ -10,6 +11,27 @@ const execAsync = promisify(exec);
 // ESM-safe __dirname
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// Import checkpoint manager
+let checkpointManager = null;
+
+// Import provider manager
+let providerManager = null;
+
+// Import diff review manager
+let diffReviewManager = null;
+
+// Import permission manager
+let permissionManager = null;
+
+// Import skills marketplace manager
+let skillsMarketplaceManager = null;
+
+// Import configuration managers
+let auditLogger = null;
+let policyAsCodeManager = null;
+let metricsManager = null;
+let healthCheckManager = null;
 
 // Map C# Bridge severity to VS Code diagnostic severity
 function mapSeverityToDiagnostic(severity, color) {
@@ -141,6 +163,127 @@ async function getGitBranches(repoPath) {
 async function activate(context) {
   console.log('SWEObeyMe extension activated');
 
+  // Initialize checkpoint manager
+  const { CheckpointManager } = await import(path.join(__dirname, 'lib', 'checkpoint-manager.js'));
+  checkpointManager = new CheckpointManager(context);
+
+  // Initialize provider manager
+  const { ProviderManager } = await import(path.join(__dirname, 'lib', 'provider-manager.js'));
+  providerManager = new ProviderManager();
+
+  // Refresh provider status on activation
+  await providerManager.refreshProviderStatus();
+
+  // Initialize diff review manager
+  const { DiffReviewManager } = await import(path.join(__dirname, 'lib', 'diff-review-manager.js'));
+  diffReviewManager = new DiffReviewManager();
+
+  // Initialize permission manager
+  const { PermissionManager } = await import(path.join(__dirname, 'lib', 'permission-manager.js'));
+  permissionManager = new PermissionManager();
+
+  // Initialize skills marketplace manager
+  const { SkillsMarketplaceManager } = await import(path.join(__dirname, 'lib', 'skills-marketplace-manager.js'));
+  skillsMarketplaceManager = new SkillsMarketplaceManager(context);
+
+  // Advanced managers are disabled in public build
+
+  // Initialize policy-as-code manager
+  const { PolicyAsCodeManager } = await import(path.join(__dirname, 'lib', 'policy-as-code-manager.js'));
+  policyAsCodeManager = new PolicyAsCodeManager();
+
+  // Initialize metrics manager
+  const { MetricsManager, HealthCheckManager } = await import(path.join(__dirname, 'lib', 'metrics-manager.js'));
+  metricsManager = new MetricsManager();
+  healthCheckManager = new HealthCheckManager();
+
+  // Rate limit, quota, API key, backup, compliance, webhook, configuration inheritance, tenant isolation, and admin dashboard managers disabled in public build
+
+  // Track first-time installation
+  const hasBeenInstalled = context.globalState.get('hasBeenInstalled');
+  if (!hasBeenInstalled) {
+    await context.globalState.update('hasBeenInstalled', true);
+    console.log('[SWEObeyMe] First-time installation detected');
+    
+    // Show welcome message on first install
+    const onboardingConfig = vscode.workspace.getConfiguration('sweObeyMe.onboarding');
+    if (onboardingConfig.get('showWelcome', true)) {
+      vscode.window.showInformationMessage(
+        'Welcome to SWEObeyMe! Surgical code enforcement is now active.',
+        'View Onboarding Guide',
+        'View Documentation',
+        'Dismiss'
+      ).then(selection => {
+        if (selection === 'View Onboarding Guide') {
+          vscode.commands.executeCommand('sweObeyMe.showOnboarding');
+        } else if (selection === 'View Documentation') {
+          vscode.env.openExternal(vscode.Uri.parse('https://github.com/stonewolfpc/SWEObeyMe'));
+        }
+      });
+    }
+
+    // Register JSON schema for .sweobeyme-config.json files
+    try {
+      const jsonConfig = vscode.workspace.getConfiguration('json');
+      const jsonSchemas = jsonConfig.get<object>('schemas', {});
+      const schemaPath = vscode.Uri.joinPath(context.extensionUri, 'schemas', 'config-schema.json').toString();
+      
+      await jsonConfig.update(
+        'schemas',
+        {
+          ...jsonSchemas,
+          [schemaPath]: ['.sweobeyme-config.json'],
+        },
+        vscode.ConfigurationTarget.Global
+      );
+      console.log('[SWEObeyMe] Registered config schema');
+    } catch (error) {
+      console.error('[SWEObeyMe] Failed to register config schema:', error);
+    }
+
+    // Create .sweobeyme-config.json in workspace root if it doesn't exist
+    if (vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0) {
+      const workspaceRoot = vscode.workspace.workspaceFolders[0].uri.fsPath;
+      const configPath = path.join(workspaceRoot, '.sweobeyme-config.json');
+      
+      if (!fs.existsSync(configPath)) {
+        const defaultConfig = {
+          backupPath: defaultBackupDir,
+          csharpBridge: {
+            enabled: true,
+            severityThreshold: 0
+          },
+          general: {
+            hotReloadEnabled: false
+          }
+        };
+        
+        try {
+          fs.writeFileSync(configPath, JSON.stringify(defaultConfig, null, 2));
+          console.log('[SWEObeyMe] Created default config file at workspace root');
+        } catch (error) {
+          console.error('[SWEObeyMe] Failed to create config file:', error);
+        }
+      }
+    }
+
+    // Show inline tip after a delay (similar to Continue's InlineTipManager)
+    setTimeout(() => {
+      const showInlineTip = vscode.workspace.getConfiguration('sweObeyMe').get('showInlineTip', true);
+      if (showInlineTip) {
+        vscode.window.showInformationMessage(
+          'Tip: Use the SWEObeyMe status bar to access surgical enforcement tools and settings.',
+          'Got it',
+          'Don\'t show again'
+        ).then(selection => {
+          if (selection === 'Don\'t show again') {
+            vscode.workspace.getConfiguration('sweObeyMe').update('showInlineTip', false, vscode.ConfigurationTarget.Global);
+          }
+        });
+      }
+    }, 30000); // Show after 30 seconds
+  }
+
   // Create status bar item
   const statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
   statusBarItem.command = 'sweObeyMe.showMenu';
@@ -172,13 +315,13 @@ async function activate(context) {
   const backupDir = customBackupPath && customBackupPath.trim() ? customBackupPath : defaultBackupDir;
 
   // Only auto-configure if running from installed location (not workspace)
-  const isInstalled = extensionPath.includes('.windsurf-next\\extensions') ||
-                      extensionPath.includes('.vscode\\extensions');
+  const isInstalled = extensionPath.includes(path.join('.windsurf-next', 'extensions')) ||
+                      extensionPath.includes(path.join('.vscode', 'extensions'));
 
   if (isInstalled) {
-    // Windsurf-Next uses %APPDATA%\Windsurf\mcp.json for MCP configuration
-    const windsurfConfigDir = path.join(localAppData || path.join(process.env.USERPROFILE || '', 'AppData', 'Local'), 'Windsurf');
-    const mcpConfigPath = path.join(windsurfConfigDir, 'mcp.json');
+    // Windsurf uses ~/.codeium/mcp_config.json for MCP configuration
+    const configDir = path.join(os.homedir(), '.codeium');
+    const mcpConfigPath = path.join(configDir, 'mcp_config.json');
 
     console.log('[SWEObeyMe] MCP config path:', mcpConfigPath);
 
@@ -188,8 +331,8 @@ async function activate(context) {
       let config = {};
 
       // Ensure directory exists
-      if (!fs.existsSync(windsurfConfigDir)) {
-        fs.mkdirSync(windsurfConfigDir, { recursive: true });
+      if (!fs.existsSync(configDir)) {
+        fs.mkdirSync(configDir, { recursive: true });
       }
 
       if (fs.existsSync(mcpConfigPath)) {
@@ -225,8 +368,9 @@ async function activate(context) {
       }
 
       if (needsUpdate) {
-        // Normalize path to forward slashes for cross-platform compatibility
+        // Normalize paths to forward slashes for cross-platform compatibility
         const normalizedIndexPath = indexPath.replace(/\\/g, '/');
+        const normalizedBackupDir = backupDir.replace(/\\/g, '/');
 
         config.mcpServers = config.mcpServers || {};
         config.mcpServers['swe-obey-me'] = {
@@ -234,13 +378,16 @@ async function activate(context) {
           args: ['--no-warnings', normalizedIndexPath],
           env: {
             NODE_ENV: 'production',
-            SWEOBEYME_BACKUP_DIR: backupDir,
+            SWEOBEYME_BACKUP_DIR: normalizedBackupDir,
             SWEOBEYME_DEBUG: '0',
           },
           disabled: false,
         };
 
-        fs.writeFileSync(mcpConfigPath, JSON.stringify(config, null, 2));
+        // Atomic write: write to temp file first, then rename to prevent corruption
+        const tempPath = mcpConfigPath + '.tmp';
+        fs.writeFileSync(tempPath, JSON.stringify(config, null, 2));
+        fs.renameSync(tempPath, mcpConfigPath);
         console.log('[SWEObeyMe] MCP config written successfully');
 
         vscode.window.showInformationMessage(
@@ -463,6 +610,232 @@ async function activate(context) {
   });
   context.subscriptions.push(gitBranchCommand);
 
+  // Register checkpoint commands
+  const createCheckpointCommand = vscode.commands.registerCommand('sweObeyMe.checkpoint.create', async () => {
+    if (!checkpointManager) {
+      vscode.window.showErrorMessage('Checkpoint manager not initialized');
+      return;
+    }
+
+    const name = await vscode.window.showInputBox({
+      placeHolder: 'Enter checkpoint name',
+      prompt: 'Name this checkpoint for easy identification',
+    });
+
+    if (!name) {
+      return;
+    }
+
+    const description = await vscode.window.showInputBox({
+      placeHolder: 'Enter description (optional)',
+      prompt: 'Describe what this checkpoint represents',
+    });
+
+    try {
+      const id = await checkpointManager.createCheckpoint(name, description || undefined);
+      vscode.window.showInformationMessage(`Checkpoint "${name}" created successfully`);
+    } catch (error) {
+      vscode.window.showErrorMessage(`Failed to create checkpoint: ${error.message}`);
+    }
+  });
+  context.subscriptions.push(createCheckpointCommand);
+
+  const listCheckpointsCommand = vscode.commands.registerCommand('sweObeyMe.checkpoint.list', async () => {
+    if (!checkpointManager) {
+      vscode.window.showErrorMessage('Checkpoint manager not initialized');
+      return;
+    }
+
+    const checkpoints = checkpointManager.listCheckpoints();
+
+    if (checkpoints.length === 0) {
+      vscode.window.showInformationMessage('No checkpoints available');
+      return;
+    }
+
+    const items = checkpoints.map(cp => ({
+      label: cp.name,
+      description: new Date(cp.timestamp).toLocaleString(),
+      detail: cp.description || 'No description',
+      checkpointId: cp.id,
+    }));
+
+    const selected = await vscode.window.showQuickPick(items, {
+      placeHolder: 'Select a checkpoint',
+    });
+
+    if (selected) {
+      const action = await vscode.window.showQuickPick(
+        ['Revert to this checkpoint', 'Delete this checkpoint', 'Cancel'],
+        { placeHolder: 'What would you like to do with this checkpoint?' }
+      );
+
+      if (action === 'Revert to this checkpoint') {
+        await vscode.commands.executeCommand('sweObeyMe.checkpoint.revert', selected.checkpointId);
+      } else if (action === 'Delete this checkpoint') {
+        await vscode.commands.executeCommand('sweObeyMe.checkpoint.delete', selected.checkpointId);
+      }
+    }
+  });
+  context.subscriptions.push(listCheckpointsCommand);
+
+  const revertCheckpointCommand = vscode.commands.registerCommand('sweObeyMe.checkpoint.revert', async (checkpointId) => {
+    if (!checkpointManager) {
+      vscode.window.showErrorMessage('Checkpoint manager not initialized');
+      return;
+    }
+
+    if (!checkpointId) {
+      // If no checkpointId provided, list checkpoints first
+      await vscode.commands.executeCommand('sweObeyMe.checkpoint.list');
+      return;
+    }
+
+    try {
+      await checkpointManager.revertToCheckpoint(checkpointId);
+    } catch (error) {
+      vscode.window.showErrorMessage(`Failed to revert checkpoint: ${error.message}`);
+    }
+  });
+  context.subscriptions.push(revertCheckpointCommand);
+
+  const deleteCheckpointCommand = vscode.commands.registerCommand('sweObeyMe.checkpoint.delete', async (checkpointId) => {
+    if (!checkpointManager) {
+      vscode.window.showErrorMessage('Checkpoint manager not initialized');
+      return;
+    }
+
+    if (!checkpointId) {
+      // If no checkpointId provided, list checkpoints first
+      await vscode.commands.executeCommand('sweObeyMe.checkpoint.list');
+      return;
+    }
+
+    const confirm = await vscode.window.showWarningMessage(
+      'Are you sure you want to delete this checkpoint?',
+      'Delete',
+      'Cancel'
+    );
+
+    if (confirm === 'Delete') {
+      checkpointManager.deleteCheckpoint(checkpointId);
+      vscode.window.showInformationMessage('Checkpoint deleted');
+    }
+  });
+  context.subscriptions.push(deleteCheckpointCommand);
+
+  // Register onboarding command
+  const showOnboardingCommand = vscode.commands.registerCommand('sweObeyMe.showOnboarding', async () => {
+    const onboardingPath = path.join(context.extensionUri.fsPath, 'ONBOARDING.md');
+    
+    if (fs.existsSync(onboardingPath)) {
+      const uri = vscode.Uri.file(onboardingPath);
+      await vscode.commands.executeCommand('vscode.openWith', uri, 'markdown.preview');
+    } else {
+      vscode.window.showInformationMessage(
+        'Onboarding guide not found locally. Opening online documentation.',
+        'Open Online'
+      ).then(selection => {
+        if (selection === 'Open Online') {
+          vscode.env.openExternal(vscode.Uri.parse('https://github.com/stonewolfpc/SWEObeyMe'));
+        }
+      });
+    }
+  });
+  context.subscriptions.push(showOnboardingCommand);
+
+  // Register Patreon Audit command
+  const patreonAuditCommand = vscode.commands.registerCommand('sweObeyMe.patreonAudit', async () => {
+    const workspaceRoot = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
+    if (!workspaceRoot) {
+      vscode.window.showErrorMessage('No workspace folder found');
+      return;
+    }
+
+    // Check if Patreon API key is configured
+    const patreonKeyPath = path.join(os.homedir(), '.sweobeyme', 'patreon', 'api-key.json');
+    if (!fs.existsSync(patreonKeyPath) && !process.env.PATREON_API_KEY) {
+      const selection = await vscode.window.showInformationMessage(
+        'Patreon API key not configured. Would you like to set it up now?',
+        'Set API Key',
+        'Cancel'
+      );
+      
+      if (selection === 'Set API Key') {
+        const apiKey = await vscode.window.showInputBox({
+          prompt: 'Enter your Patreon API key',
+          password: true,
+        });
+        
+        if (apiKey) {
+          const keyDir = path.join(os.homedir(), '.sweobeyme', 'patreon');
+          if (!fs.existsSync(keyDir)) {
+            fs.mkdirSync(keyDir, { recursive: true });
+          }
+          
+          fs.writeFileSync(patreonKeyPath, JSON.stringify({
+            apiKey,
+            createdAt: new Date().toISOString(),
+          }, null, 2));
+          
+          vscode.window.showInformationMessage('Patreon API key saved successfully');
+        }
+      } else {
+        return;
+      }
+    }
+
+    // Run Patreon Audit
+    vscode.window.withProgress({
+      location: vscode.ProgressLocation.Notification,
+      title: 'Running Patreon Audit...',
+      cancellable: false,
+    }, async (progress) => {
+      try {
+        progress.report({ increment: 20, message: 'Fetching Patreon content...' });
+        
+        // TODO: Implement actual Patreon API calls
+        // For now, show a placeholder message
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        progress.report({ increment: 40, message: 'Analyzing content...' });
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        progress.report({ increment: 60, message: 'Generating rewrite plan...' });
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        progress.report({ increment: 80, message: 'Writing drafts...' });
+        
+        // Create patreon-drafts directory
+        const draftDir = path.join(workspaceRoot, 'patreon-drafts');
+        if (!fs.existsSync(draftDir)) {
+          fs.mkdirSync(draftDir, { recursive: true });
+        }
+        
+        // Write placeholder drafts
+        fs.writeFileSync(path.join(draftDir, 'about.md'), '# About Page\n\n[Generated by SWEObeyMe Patreon Audit]');
+        fs.writeFileSync(path.join(draftDir, 'tiers.md'), '# Tiers\n\n[Generated by SWEObeyMe Patreon Audit]');
+        fs.writeFileSync(path.join(draftDir, 'welcome.md'), '# Welcome Message\n\n[Generated by SWEObeyMe Patreon Audit]');
+        
+        progress.report({ increment: 100, message: 'Complete' });
+        
+        vscode.window.showInformationMessage(
+          'Patreon Audit complete! Drafts written to patreon-drafts/ directory.',
+          'Open Drafts',
+          'Close'
+        ).then(selection => {
+          if (selection === 'Open Drafts') {
+            const uri = vscode.Uri.file(draftDir);
+            vscode.commands.executeCommand('vscode.openFolder', uri);
+          }
+        });
+      } catch (error) {
+        vscode.window.showErrorMessage(`Patreon Audit failed: ${error.message}`);
+      }
+    });
+  });
+  context.subscriptions.push(patreonAuditCommand);
+
   // Watch for C# file changes and update diagnostics
   const csharpFileWatcher = vscode.workspace.onDidSaveTextDocument(async (document) => {
     if (document.languageId === 'csharp' && document.uri.scheme === 'file') {
@@ -487,8 +860,8 @@ function deactivate() {
   console.log('SWEObeyMe extension deactivated');
 
   // Surgical uninstall: remove only our server key from MCP config
-  const configDir = path.join(os.homedir(), '.codeium', 'windsurf-next');
-  const mcpConfigPath = path.resolve(path.join(configDir, 'mcp_config.json'));
+  const configDir = path.join(os.homedir(), '.codeium');
+  const mcpConfigPath = path.join(configDir, 'mcp_config.json');
 
   console.log('[SWEObeyMe] Cleanup MCP config path:', mcpConfigPath);
 

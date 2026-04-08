@@ -133,7 +133,7 @@ async function runAllGoldenTests() {
   for (const test of TESTS) {
     const result = await runGoldenTest(test);
     results.push(result);
-    
+
     if (result.passed) {
       console.log(`✓ ${result.name}`);
     } else {
@@ -146,7 +146,7 @@ async function runAllGoldenTests() {
   const passed = results.filter((r) => r.passed).length;
   const total = results.length;
 
-  console.log(`\n=== RESULTS ===`);
+  console.log('\n=== RESULTS ===');
   console.log(`Passed: ${passed}/${total}`);
   console.log(`Success Rate: ${((passed / total) * 100).toFixed(1)}%`);
 

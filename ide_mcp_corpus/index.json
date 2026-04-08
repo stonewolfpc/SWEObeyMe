@@ -1,0 +1,210 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2026-04-07T19:05:00.000Z",
+  "categories": [
+    {
+      "name": "windsurf",
+      "path": "ide_mcp_corpus/windsurf",
+      "description": "Windsurf IDE documentation including MCP integration, configuration, and admin controls",
+      "documents": [
+        {
+          "name": "mcp_overview",
+          "path": "ide_mcp_corpus/windsurf/mcp_overview.md",
+          "description": "Overview of MCP (Model Context Protocol) integration in Windsurf Cascade",
+          "source": "https://docs.windsurf.com/plugins/cascade/mcp",
+          "license": "Proprietary"
+        },
+        {
+          "name": "mcp_config",
+          "path": "ide_mcp_corpus/windsurf/mcp_config.md",
+          "description": "How to configure MCP servers in Windsurf using mcp_config.json",
+          "source": "https://docs.windsurf.com/plugins/cascade/mcp",
+          "license": "Proprietary"
+        },
+        {
+          "name": "mcp_remote_http",
+          "path": "ide_mcp_corpus/windsurf/mcp_remote_http.md",
+          "description": "Remote HTTP MCP configuration and environment variable interpolation",
+          "source": "https://docs.windsurf.com/plugins/cascade/mcp",
+          "license": "Proprietary"
+        },
+        {
+          "name": "mcp_admin_controls",
+          "path": "ide_mcp_corpus/windsurf/mcp_admin_controls.md",
+          "description": "Admin controls for Teams and Enterprises including server whitelisting and regex pattern matching",
+          "source": "https://docs.windsurf.com/plugins/cascade/mcp",
+          "license": "Proprietary"
+        }
+      ]
+    },
+    {
+      "name": "mcp_spec",
+      "path": "ide_mcp_corpus/mcp_spec",
+      "description": "Model Context Protocol (MCP) specification including transports, server concepts, and implementation guides",
+      "documents": [
+        {
+          "name": "introduction",
+          "path": "ide_mcp_corpus/mcp_spec/introduction.md",
+          "description": "Introduction to MCP (Model Context Protocol) - an open-source standard for connecting AI applications to external systems",
+          "source": "https://modelcontextprotocol.io/docs/getting-started/intro",
+          "license": "MIT"
+        },
+        {
+          "name": "server_concepts",
+          "path": "ide_mcp_corpus/mcp_spec/server_concepts.md",
+          "description": "MCP server concepts including tools, resources, and prompts",
+          "source": "https://modelcontextprotocol.io/docs/learn/server-concepts",
+          "license": "MIT"
+        },
+        {
+          "name": "transports",
+          "path": "ide_mcp_corpus/mcp_spec/transports.md",
+          "description": "MCP transport mechanisms including stdio and Streamable HTTP with security requirements",
+          "source": "https://modelcontextprotocol.io/specification/2025-11-25/basic/transports",
+          "license": "MIT"
+        },
+        {
+          "name": "tools",
+          "path": "ide_mcp_corpus/mcp_spec/tools.md",
+          "description": "MCP tools specification for exposing functions that language models can invoke",
+          "source": "https://modelcontextprotocol.io/specification/2025-11-25/server/tools",
+          "license": "MIT"
+        },
+        {
+          "name": "build_server",
+          "path": "ide_mcp_corpus/mcp_spec/build_server.md",
+          "description": "Tutorial on building an MCP server with example tools",
+          "source": "https://modelcontextprotocol.io/docs/develop/build-server",
+          "license": "MIT"
+        }
+      ]
+    },
+    {
+      "name": "vscode",
+      "path": "ide_mcp_corpus/vscode",
+      "description": "Visual Studio Code extension API documentation for building VS Code extensions",
+      "documents": [
+        {
+          "name": "extension_api_overview",
+          "path": "ide_mcp_corpus/vscode/extension_api_overview.md",
+          "description": "Overview of VS Code Extension API including capabilities, guides, and references",
+          "source": "https://code.visualstudio.com/api",
+          "license": "MIT"
+        }
+      ]
+    },
+    {
+      "name": "continue",
+      "path": "ide_mcp_corpus/continue",
+      "description": "Continue documentation for AI-powered code review and checks",
+      "documents": [
+        {
+          "name": "overview",
+          "path": "ide_mcp_corpus/continue/overview.md",
+          "description": "Overview of Continue and how it works for running checks on pull requests",
+          "source": "https://docs.continue.dev/index",
+          "license": "Proprietary"
+        }
+      ]
+    },
+    {
+      "name": "openvsx",
+      "path": "ide_mcp_corpus/openvsx",
+      "description": "Open VSX registry documentation for publishing and managing VS Code extensions",
+      "documents": [
+        {
+          "name": "publishing_extensions",
+          "path": "ide_mcp_corpus/openvsx/publishing_extensions.md",
+          "description": "How to publish VS Code extensions to the Open VSX registry",
+          "source": "https://github.com/EclipseFdn/open-vsx.org/wiki/Publishing-Extensions",
+          "license": "EPL-2.0"
+        },
+        {
+          "name": "auto_publishing_extensions",
+          "path": "ide_mcp_corpus/openvsx/auto_publishing_extensions.md",
+          "description": "How to auto-publish extensions from VS Marketplace to Open VSX",
+          "source": "https://github.com/EclipseFdn/open-vsx.org/wiki/Auto-Publishing-Extensions",
+          "license": "EPL-2.0"
+        },
+        {
+          "name": "managing_extensions",
+          "path": "ide_mcp_corpus/openvsx/managing_extensions.md",
+          "description": "How to delete, deprecate, rename, and move extensions in Open VSX",
+          "source": "https://github.com/EclipseFdn/open-vsx.org/wiki/Managing-Extensions",
+          "license": "EPL-2.0"
+        },
+        {
+          "name": "managing_namespaces",
+          "path": "ide_mcp_corpus/openvsx/managing_namespaces.md",
+          "description": "Guidelines for managing namespaces in Open VSX",
+          "source": "https://github.com/EclipseFdn/open-vsx.org/wiki/Managing-Namespaces",
+          "license": "EPL-2.0"
+        },
+        {
+          "name": "using_openvsx_in_vscode",
+          "path": "ide_mcp_corpus/openvsx/using_openvsx_in_vscode.md",
+          "description": "How to configure VS Code to use Open VSX registry instead of VS Marketplace",
+          "source": "https://github.com/eclipse/openvsx/wiki/Using-Open-VSX-in-VS-Code",
+          "license": "EPL-2.0"
+        }
+      ]
+    }
+  ],
+  "documents": [],
+  "metadata": {
+    "totalDocuments": 14,
+    "totalCategories": 5,
+    "supportedLicenses": [
+      "MIT",
+      "Apache-2.0",
+      "BSD-2-Clause",
+      "BSD-3-Clause",
+      "CC0",
+      "Public Domain",
+      "Proprietary",
+      "EPL-2.0"
+    ],
+    "focusAreas": [
+      "MCP servers",
+      "Windsurf-Next",
+      "VS Code extensions",
+      "Continue",
+      "Model Context Protocol",
+      "Open VSX registry"
+    ]
+  },
+  "instructions": {
+    "addingDocuments": "Place IDE and MCP documentation in the appropriate subfolder. Update this index.json with document metadata.",
+    "downloadingSources": "Download from official documentation sites including docs.windsurf.com, modelcontextprotocol.io, code.visualstudio.com, and docs.continue.dev.",
+    "namingConvention": "Use clear filenames like: mcp_config.md, server_concepts.md, extension_api_overview.md",
+    "licenseCompliance": "Include license information for each document. Most official docs are MIT or proprietary.",
+    "guardRails": "When retrieving documentation, prioritize MCP server and Windsurf-Next specific content. Use this corpus when answering questions about IDE extensions, MCP protocol, Windsurf configuration, or VS Code extension development."
+  },
+  "retrievalRules": {
+    "mcpServers": {
+      "priority": "HIGH",
+      "categories": ["mcp_spec", "windsurf"],
+      "keywords": ["MCP", "Model Context Protocol", "server", "transport", "stdio", "HTTP", "tools", "resources"]
+    },
+    "windsurfNext": {
+      "priority": "HIGH",
+      "categories": ["windsurf"],
+      "keywords": ["Windsurf", "Cascade", "mcp_config", "admin", "whitelist", "regex"]
+    },
+    "vscodeExtensions": {
+      "priority": "MEDIUM",
+      "categories": ["vscode"],
+      "keywords": ["VS Code", "extension", "API", "contribution points", "webview"]
+    },
+    "continue": {
+      "priority": "MEDIUM",
+      "categories": ["continue"],
+      "keywords": ["Continue", "checks", "review", "pull request"]
+    },
+    "openvsx": {
+      "priority": "MEDIUM",
+      "categories": ["openvsx"],
+      "keywords": ["Open VSX", "publish", "registry", "marketplace", "namespace", "extension"]
+    }
+  }
+}

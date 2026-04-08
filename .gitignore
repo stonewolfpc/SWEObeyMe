@@ -9,12 +9,11 @@ build/
 .sweobeyme-backups/
 .swe-memory/
 
-# Test files
+# Test files (individual test files, but keep tests/ directory for CI/CD)
 test-*.js
 final-test.js
 simple-test.js
 test-with-content.js
-tests/
 
 # VSIX (we release this separately)
 *.vsix
@@ -57,5 +56,7 @@ error_log.json
 error_patterns.json
 
 # Generated files (can be regenerated)
-project_map.json
-tool-memory.json
+# Note: project_map.json and tool-memory.json are committed as they are referenced by code
+
+# Code dump directory (development artifacts)
+.code-dumps/

@@ -23,9 +23,9 @@ async function generateToolMemory() {
       secondary: 'If multiple tools exist, choose the highest-priority one',
       tertiary: 'If the tool fails, retry with context',
       fallback: 'If it fails again, use fallback tool',
-      never: 'Never hallucinate a tool or manually edit when a tool exists'
+      never: 'Never hallucinate a tool or manually edit when a tool exists',
     },
-    conflicts: []
+    conflicts: [],
   };
 
   // Process each tool
@@ -46,14 +46,14 @@ async function generateToolMemory() {
       conflicts: determineConflicts(tool.name),
       required_for: determineRequiredFor(tool.name),
       best_next_tool: determineBestNext(tool.description),
-      triggers
+      triggers,
     };
 
     // Build category map
     if (!toolMemory.categories[category]) {
       toolMemory.categories[category] = {
         description: getCategoryDescription(category),
-        priority_weight: getCategoryWeight(category)
+        priority_weight: getCategoryWeight(category),
       };
     }
 
@@ -61,7 +61,7 @@ async function generateToolMemory() {
     if (!toolMemory.domains[domain]) {
       toolMemory.domains[domain] = {
         description: getDomainDescription(domain),
-        tools: []
+        tools: [],
       };
     }
     if (!toolMemory.domains[domain].tools.includes(tool.name)) {
@@ -74,13 +74,13 @@ async function generateToolMemory() {
     {
       tool: 'write_file',
       conflicts_with: ['manual_edit', 'direct_write'],
-      reason: 'Write_file enforces surgical rules and creates backups'
+      reason: 'Write_file enforces surgical rules and creates backups',
     },
     {
       tool: 'read_file',
       conflicts_with: ['direct_file_access'],
-      reason: 'Read_file enforces .sweignore rules and injects architectural context'
-    }
+      reason: 'Read_file enforces .sweignore rules and injects architectural context',
+    },
   ];
 
   // Write to file
@@ -107,7 +107,7 @@ function categorizeTool(toolName) {
     recovery: ['auto_repair_submission', 'request_surgical_recovery'],
     feedback: ['check_for_anti_patterns', 'check_for_repetitive_patterns', 'explain_rejection', 'suggest_alternatives'],
     memory: ['record_decision', 'get_historical_context', 'get_operation_guidance'],
-    testing: ['run_related_tests']
+    testing: ['run_related_tests'],
   };
 
   for (const [category, tools] of Object.entries(categories)) {
@@ -131,7 +131,7 @@ function categorizeDomain(toolName) {
     workflow: ['initiate_surgical_workflow', 'get_workflow_status'],
     csharp: ['get_csharp_errors', 'get_csharp_errors_for_file', 'get_integrity_report'],
     docs: ['search_llama_docs', 'list_llama_docs', 'search_math_docs', 'list_math_docs'],
-    safety: ['confirm_dangerous_operation', 'sanitize_request']
+    safety: ['confirm_dangerous_operation', 'sanitize_request'],
   };
 
   for (const [domain, tools] of Object.entries(domains)) {
@@ -146,7 +146,7 @@ function categorizeDomain(toolName) {
 function extractTriggers(description) {
   const triggerPatterns = [
     /use this when: (.*?)\.?/i,
-    /when: (.*?)\.?/i
+    /when: (.*?)\.?/i,
   ];
 
   const triggers = [];
@@ -178,7 +178,7 @@ function determineFallback(toolName) {
     read_file: 'list_directory',
     search_code_files: 'search_code_pattern',
     obey_surgical_plan: 'preflight_change',
-    refactor_move_block: 'extract_to_new_file'
+    refactor_move_block: 'extract_to_new_file',
   };
   return fallbacks[toolName] || null;
 }
@@ -186,7 +186,7 @@ function determineFallback(toolName) {
 function determineConflicts(toolName) {
   const conflicts = {
     write_file: ['manual_edit', 'direct_write'],
-    read_file: ['direct_file_access']
+    read_file: ['direct_file_access'],
   };
   return conflicts[toolName] || [];
 }
@@ -196,7 +196,7 @@ function determineRequiredFor(toolName) {
     obey_surgical_plan: ['write_file'],
     preflight_change: ['write_file'],
     get_file_context: ['refactor_move_block', 'extract_to_new_file'],
-    analyze_change_impact: ['refactor_move_block', 'extract_to_new_file']
+    analyze_change_impact: ['refactor_move_block', 'extract_to_new_file'],
   };
   return requiredFor[toolName] || [];
 }
@@ -229,7 +229,7 @@ function getCategoryDescription(category) {
     feedback: 'Tools for providing feedback and guidance',
     memory: 'Tools for session and historical memory',
     testing: 'Tools for running tests',
-    general: 'General purpose tools'
+    general: 'General purpose tools',
   };
   return descriptions[category] || 'General tools';
 }
@@ -253,7 +253,7 @@ function getCategoryWeight(category) {
     feedback: 0.8,
     memory: 0.9,
     testing: 1.1,
-    general: 1.0
+    general: 1.0,
   };
   return weights[category] || 1.0;
 }
@@ -271,7 +271,7 @@ function getDomainDescription(domain) {
     csharp: 'C# diagnostics and error detection',
     docs: 'Documentation access',
     safety: 'Safety and permission checks',
-    general: 'General operations'
+    general: 'General operations',
   };
   return descriptions[domain] || 'General operations';
 }

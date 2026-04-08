@@ -1,0 +1,126 @@
+{
+  "$schema": "./project_map.schema.json",
+  "version": "1.0.0",
+  "project": {
+    "name": "",
+    "description": "",
+    "rootDomain": ""
+  },
+  "structure": {
+    "folders": {},
+    "files": {}
+  },
+  "conventions": {
+    "naming": {
+      "files": {},
+      "folders": {},
+      "modules": {}
+    },
+    "domains": {
+      "auth": {
+        "folder": "auth/",
+        "purpose": "Authentication and authorization logic",
+        "allowedFileTypes": ["service", "controller", "model", "middleware"],
+        "testLocation": "tests/auth/"
+      },
+      "database": {
+        "folder": "database/",
+        "purpose": "Database connections, migrations, and queries",
+        "allowedFileTypes": ["migration", "seed", "connection", "repository"],
+        "testLocation": "tests/database/"
+      },
+      "models": {
+        "folder": "models/",
+        "purpose": "Data models and schemas",
+        "allowedFileTypes": ["model", "schema", "interface"],
+        "testLocation": "tests/models/"
+      },
+      "services": {
+        "folder": "services/",
+        "purpose": "Business logic and service layer",
+        "allowedFileTypes": ["service", "manager", "handler"],
+        "testLocation": "tests/services/"
+      },
+      "controllers": {
+        "folder": "controllers/",
+        "purpose": "HTTP request handlers and routing",
+        "allowedFileTypes": ["controller", "router", "endpoint"],
+        "testLocation": "tests/controllers/"
+      },
+      "utils": {
+        "folder": "utils/",
+        "purpose": "Utility functions and helpers",
+        "allowedFileTypes": ["util", "helper", "constant"],
+        "testLocation": "tests/utils/"
+      },
+      "interfaces": {
+        "folder": "interfaces/",
+        "purpose": "API contracts and type definitions",
+        "allowedFileTypes": ["interface", "type", "contract"],
+        "testLocation": "tests/interfaces/"
+      }
+    },
+    "architecturalBoundaries": {
+      "root": {
+        "allowedItems": ["README", "LICENSE", "project_map.json", "package.json", ".gitignore", ".env"],
+        "description": "Root directory may only contain configuration and documentation"
+      },
+      "src": {
+        "allowedItems": ["lib/", "src/", "dist/", "build/", "tests/", "docs/"],
+        "description": "Source code organization"
+      }
+    }
+  },
+  "rules": {
+    "separationOfConcerns": {
+      "maxConceptualUnitsPerFile": 1,
+      "maxLinesPerFile": 700,
+      "minLinesForSplit": 200,
+      "requireDistinctDomains": true
+    },
+    "naming": {
+      "enforceCamelCase": true,
+      "enforcePascalCaseForClasses": true,
+      "enforceSnakeCaseForConstants": true,
+      "enforceKebabCaseForFiles": true
+    },
+    "documentation": {
+      "requireFilePurpose": true,
+      "requireModuleDomain": true,
+      "updateOnStructuralChange": true
+    }
+  },
+  "heuristics": {
+    "conceptualUnitDetection": {
+      "indicators": [
+        "class definitions",
+        "interface definitions",
+        "function groups with distinct purposes",
+        "data structures",
+        "configuration blocks"
+      ]
+    },
+    "domainDetection": {
+      "indicators": [
+        "auth-related keywords (login, user, session, token)",
+        "database-related keywords (query, migration, schema, connection)",
+        "http-related keywords (request, response, controller, router)",
+        "business-logic keywords (service, manager, handler)"
+      ]
+    },
+    "submoduleCreation": {
+      "triggers": [
+        "file exceeds 500 lines",
+        "module has more than 10 related files",
+        "domain complexity increases",
+        "circular dependencies detected"
+      ]
+    }
+  },
+  "audit": {
+    "lastUpdated": "",
+    "lastValidation": "",
+    "driftDetected": false,
+    "driftDetails": []
+  }
+}

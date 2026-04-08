@@ -64,7 +64,7 @@ const log = msg => {
     loadSweIgnore().catch(() => {});
 
     return {
-      protocolVersion: '2024-11-05',
+      protocolVersion: '2025-11-25',
       capabilities: { tools: {} },
       serverInfo: { name: 'SWEObeyMe', version: VERSION },
     };

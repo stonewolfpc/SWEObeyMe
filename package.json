@@ -1,8 +1,8 @@
 {
   "name": "swe-obey-me",
   "displayName": "SWEObeyMe",
-  "description": "SWEObeyMe - Surgical governance system for VS Code with MCP server integration. v2.0.5-beta: Project Awareness & Context Switching Layer with automatic project detection, context switching, and project-specific rule enforcement. Optimized package size with improved .vscodeignore. Fixed oracle handler registration. Added error handling to prevent webview loading hang. Cleared test artifacts from error log to prevent red MCP status. Fixed MCP config distribution with proper path normalization and fallback config writer for reliable cross-machine installation.",
-  "version": "2.0.5-beta",
+  "description": "SWEObeyMe - Surgical governance system for VS Code with MCP server integration. v2.0.4-beta: Comprehensive validation, enforcement, and workflow automation features for AI-assisted software engineering.",
+  "version": "2.0.4-beta",
   "type": "module",
   "publisher": "stonewolfpc",
   "icon": "icon.png",
@@ -75,6 +75,42 @@
         "title": "Switch Git Branch",
         "category": "SWEObeyMe",
         "icon": "$(git-branch-create)"
+      },
+      {
+        "command": "sweObeyMe.checkpoint.create",
+        "title": "Create Checkpoint",
+        "category": "SWEObeyMe",
+        "icon": "$(save)"
+      },
+      {
+        "command": "sweObeyMe.checkpoint.list",
+        "title": "List Checkpoints",
+        "category": "SWEObeyMe",
+        "icon": "$(list-tree)"
+      },
+      {
+        "command": "sweObeyMe.checkpoint.revert",
+        "title": "Revert to Checkpoint",
+        "category": "SWEObeyMe",
+        "icon": "$(discard)"
+      },
+      {
+        "command": "sweObeyMe.checkpoint.delete",
+        "title": "Delete Checkpoint",
+        "category": "SWEObeyMe",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "sweObeyMe.showOnboarding",
+        "title": "Show Onboarding Guide",
+        "category": "SWEObeyMe",
+        "icon": "$(book)"
+      },
+      {
+        "command": "sweObeyMe.patreonAudit",
+        "title": "Patreon Audit",
+        "category": "SWEObeyMe",
+        "icon": "$(search)"
       }
     ],
     "viewsContainers": {
@@ -92,10 +128,67 @@
           "type": "webview",
           "id": "sweObeyMe.csharpSettings",
           "name": "Settings",
-          "when": "config.sweObeyMe.enabled"
+          "when": "config.sweObeyMe.enabled",
+          "icon": "$(settings-gear)"
+        },
+        {
+          "type": "webview",
+          "id": "sweObeyMe.csharpSettingsView",
+          "name": "C# Bridge Settings",
+          "icon": "$(settings-gear)"
+        },
+        {
+          "type": "webview",
+          "id": "sweObeyMe.adminDashboard",
+          "name": "SWEObeyMe Admin Dashboard",
+          "icon": "$(shield)"
         }
       ]
     },
+    "keybindings": [
+      {
+        "command": "sweObeyMe.queryOracle",
+        "key": "ctrl+shift+o",
+        "mac": "cmd+shift+o",
+        "when": "config.sweObeyMe.enabled"
+      },
+      {
+        "command": "sweObeyMe.showMenu",
+        "key": "ctrl+shift+m",
+        "mac": "cmd+shift+m",
+        "when": "config.sweObeyMe.enabled"
+      },
+      {
+        "command": "sweObeyMe.csharpSettings",
+        "key": "ctrl+shift+s",
+        "mac": "cmd+shift+s",
+        "when": "config.sweObeyMe.enabled"
+      },
+      {
+        "command": "sweObeyMe.analyzeCSharp",
+        "key": "ctrl+shift+a",
+        "mac": "cmd+shift+a",
+        "when": "config.sweObeyMe.enabled && editorLangId == 'csharp'"
+      },
+      {
+        "command": "sweObeyMe.showDiagnostics",
+        "key": "ctrl+shift+d",
+        "mac": "cmd+shift+d",
+        "when": "config.sweObeyMe.enabled"
+      },
+      {
+        "command": "sweObeyMe.gitStatus",
+        "key": "ctrl+shift+g",
+        "mac": "cmd+shift+g",
+        "when": "config.sweObeyMe.enabled"
+      },
+      {
+        "command": "sweObeyMe.gitBranch",
+        "key": "ctrl+shift+b",
+        "mac": "cmd+shift+b",
+        "when": "config.sweObeyMe.enabled"
+      }
+    ],
     "configuration": {
       "title": "SWEObeyMe",
       "properties": {
@@ -298,6 +391,411 @@
           "type": "boolean",
           "default": false,
           "description": "Enable experimental features (may be unstable)"
+        },
+        "sweObeyMe.providers.ollama.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable local Ollama provider support"
+        },
+        "sweObeyMe.providers.ollama.endpoint": {
+          "type": "string",
+          "default": "http://localhost:11434",
+          "description": "Ollama API endpoint URL"
+        },
+        "sweObeyMe.providers.ollama.models": {
+          "type": "array",
+          "default": [],
+          "description": "Available Ollama models (e.g., [\"llama2\", \"codellama\"])"
+        },
+        "sweObeyMe.providers.openai.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable OpenAI provider support"
+        },
+        "sweObeyMe.providers.openai.apiKey": {
+          "type": "string",
+          "default": "",
+          "description": "OpenAI API key (leave empty to use environment variable)"
+        },
+        "sweObeyMe.providers.anthropic.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable Anthropic provider support"
+        },
+        "sweObeyMe.providers.anthropic.apiKey": {
+          "type": "string",
+          "default": "",
+          "description": "Anthropic API key (leave empty to use environment variable)"
+        },
+        "sweObeyMe.checkpoints.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable named checkpoints and revert functionality"
+        },
+        "sweObeyMe.checkpoints.maxCount": {
+          "type": "number",
+          "default": 10,
+          "description": "Maximum number of checkpoints to retain"
+        },
+        "sweObeyMe.checkpoints.autoCreate": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically create checkpoint before major operations"
+        },
+        "sweObeyMe.diffReview.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable diff review before approval"
+        },
+        "sweObeyMe.diffReview.showSideBySide": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show diff in side-by-side view"
+        },
+        "sweObeyMe.diffReview.requireApproval": {
+          "type": "boolean",
+          "default": true,
+          "description": "Require user approval before applying changes"
+        },
+        "sweObeyMe.toolControls.perAgent": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable per-agent tool control permissions"
+        },
+        "sweObeyMe.toolControls.fileAccess": {
+          "type": "string",
+          "default": "ask",
+          "enum": ["allow", "ask", "deny"],
+          "description": "File access permission level: allow, ask, or deny"
+        },
+        "sweObeyMe.toolControls.terminalAccess": {
+          "type": "string",
+          "default": "ask",
+          "enum": ["allow", "ask", "deny"],
+          "description": "Terminal access permission level: allow, ask, or deny"
+        },
+        "sweObeyMe.toolControls.networkAccess": {
+          "type": "string",
+          "default": "ask",
+          "enum": ["allow", "ask", "deny"],
+          "description": "Network access permission level: allow, ask, or deny"
+        },
+        "sweObeyMe.onboarding.showWelcome": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show welcome guide on first activation"
+        },
+        "sweObeyMe.onboarding.showTips": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show inline tips for first-time users"
+        },
+        "sweObeyMe.onboarding.tutorialEnabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable interactive tutorial"
+        },
+        "sweObeyMe.enterprise.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable enterprise-grade features"
+        },
+        "sweObeyMe.enterprise.organizationId": {
+          "type": "string",
+          "default": "",
+          "description": "Organization ID for enterprise deployments"
+        },
+        "sweObeyMe.enterprise.tenantId": {
+          "type": "string",
+          "default": "",
+          "description": "Tenant ID for multi-tenant deployments"
+        },
+        "sweObeyMe.enterprise.rbac.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable Role-Based Access Control"
+        },
+        "sweObeyMe.enterprise.rbac.defaultRole": {
+          "type": "string",
+          "default": "user",
+          "enum": ["admin", "user", "readonly"],
+          "description": "Default role for new users"
+        },
+        "sweObeyMe.enterprise.rbac.permissions": {
+          "type": "object",
+          "default": {},
+          "description": "Custom role permissions configuration"
+        },
+        "sweObeyMe.enterprise.sso.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable Single Sign-On"
+        },
+        "sweObeyMe.enterprise.sso.provider": {
+          "type": "string",
+          "default": "",
+          "enum": ["google", "azure", "okta", "saml", "oidc"],
+          "description": "SSO provider"
+        },
+        "sweObeyMe.enterprise.sso.ssoUrl": {
+          "type": "string",
+          "default": "",
+          "description": "SSO URL from identity provider"
+        },
+        "sweObeyMe.enterprise.sso.entityId": {
+          "type": "string",
+          "default": "",
+          "description": "IdP Entity ID"
+        },
+        "sweObeyMe.enterprise.sso.certificate": {
+          "type": "string",
+          "default": "",
+          "description": "X509 Certificate for SAML"
+        },
+        "sweObeyMe.enterprise.sso.callbackUrl": {
+          "type": "string",
+          "default": "",
+          "description": "Callback URL for SSO"
+        },
+        "sweObeyMe.enterprise.sso.spEntityId": {
+          "type": "string",
+          "default": "",
+          "description": "SP Entity ID"
+        },
+        "sweObeyMe.enterprise.scim.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable SCIM provisioning"
+        },
+        "sweObeyMe.enterprise.scim.endpoint": {
+          "type": "string",
+          "default": "",
+          "description": "SCIM endpoint URL"
+        },
+        "sweObeyMe.enterprise.scim.accessToken": {
+          "type": "string",
+          "default": "",
+          "description": "SCIM access token"
+        },
+        "sweObeyMe.enterprise.systemRules.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable system-level rules"
+        },
+        "sweObeyMe.enterprise.systemRules.directory": {
+          "type": "string",
+          "default": "",
+          "description": "Directory for system-level rules (OS-specific)"
+        },
+        "sweObeyMe.enterprise.systemWorkflows.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable system-level workflows"
+        },
+        "sweObeyMe.enterprise.systemWorkflows.directory": {
+          "type": "string",
+          "default": "",
+          "description": "Directory for system-level workflows (OS-specific)"
+        },
+        "sweObeyMe.enterprise.systemSkills.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable system-level skills"
+        },
+        "sweObeyMe.enterprise.systemSkills.directory": {
+          "type": "string",
+          "default": "",
+          "description": "Directory for system-level skills (OS-specific)"
+        },
+        "sweObeyMe.enterprise.auditLogging.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable audit logging for all operations"
+        },
+        "sweObeyMe.enterprise.auditLogging.directory": {
+          "type": "string",
+          "default": "",
+          "description": "Directory for audit logs"
+        },
+        "sweObeyMe.enterprise.auditLogging.retentionDays": {
+          "type": "number",
+          "default": 90,
+          "description": "Retention period for audit logs in days"
+        },
+        "sweObeyMe.enterprise.auditLogging.logLevel": {
+          "type": "string",
+          "default": "info",
+          "enum": ["debug", "info", "warn", "error"],
+          "description": "Log level for audit logs"
+        },
+        "sweObeyMe.enterprise.analytics.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable analytics collection"
+        },
+        "sweObeyMe.enterprise.analytics.endpoint": {
+          "type": "string",
+          "default": "",
+          "description": "Analytics endpoint URL"
+        },
+        "sweObeyMe.enterprise.analytics.apiKey": {
+          "type": "string",
+          "default": "",
+          "description": "Analytics API key"
+        },
+        "sweObeyMe.enterprise.quotas.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable quota-based usage limits"
+        },
+        "sweObeyMe.enterprise.quotas.maxOperationsPerDay": {
+          "type": "number",
+          "default": 1000,
+          "description": "Maximum operations per day"
+        },
+        "sweObeyMe.enterprise.quotas.maxOperationsPerHour": {
+          "type": "number",
+          "default": 100,
+          "description": "Maximum operations per hour"
+        },
+        "sweObeyMe.enterprise.quotas.maxCheckpoints": {
+          "type": "number",
+          "default": 50,
+          "description": "Maximum checkpoints per workspace"
+        },
+        "sweObeyMe.enterprise.rateLimiting.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable rate limiting"
+        },
+        "sweObeyMe.enterprise.rateLimiting.requestsPerMinute": {
+          "type": "number",
+          "default": 60,
+          "description": "Requests per minute limit"
+        },
+        "sweObeyMe.enterprise.encryption.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable encryption for sensitive data"
+        },
+        "sweObeyMe.enterprise.encryption.algorithm": {
+          "type": "string",
+          "default": "aes-256-gcm",
+          "description": "Encryption algorithm"
+        },
+        "sweObeyMe.enterprise.encryption.keyRotationDays": {
+          "type": "number",
+          "default": 90,
+          "description": "Key rotation period in days"
+        },
+        "sweObeyMe.enterprise.apiKeys.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable API key management"
+        },
+        "sweObeyMe.enterprise.apiKeys.rotationDays": {
+          "type": "number",
+          "default": 30,
+          "description": "API key rotation period in days"
+        },
+        "sweObeyMe.enterprise.domainVerification.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable domain verification"
+        },
+        "sweObeyMe.enterprise.domainVerification.verifiedDomains": {
+          "type": "array",
+          "default": [],
+          "description": "List of verified domains"
+        },
+        "sweObeyMe.enterprise.webhooks.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable webhook notifications"
+        },
+        "sweObeyMe.enterprise.webhooks.endpoints": {
+          "type": "array",
+          "default": [],
+          "description": "Webhook endpoint configurations"
+        },
+        "sweObeyMe.enterprise.compliance.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable compliance reporting"
+        },
+        "sweObeyMe.enterprise.compliance.standards": {
+          "type": "array",
+          "default": [],
+          "description": "Compliance standards (SOC2, GDPR, HIPAA, etc.)"
+        },
+        "sweObeyMe.enterprise.compliance.reportSchedule": {
+          "type": "string",
+          "default": "monthly",
+          "enum": ["daily", "weekly", "monthly", "quarterly"],
+          "description": "Compliance report generation schedule"
+        },
+        "sweObeyMe.enterprise.multiTenant.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable multi-tenant isolation"
+        },
+        "sweObeyMe.enterprise.multiTenant.isolationLevel": {
+          "type": "string",
+          "default": "workspace",
+          "enum": ["workspace", "organization", "user"],
+          "description": "Isolation level for multi-tenant"
+        },
+        "sweObeyMe.enterprise.configurationInheritance.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable configuration inheritance"
+        },
+        "sweObeyMe.enterprise.configurationInheritance.precedence": {
+          "type": "array",
+          "default": ["system", "organization", "workspace", "user"],
+          "description": "Configuration precedence order"
+        },
+        "sweObeyMe.enterprise.disasterRecovery.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable disaster recovery procedures"
+        },
+        "sweObeyMe.enterprise.disasterRecovery.backupSchedule": {
+          "type": "string",
+          "default": "daily",
+          "enum": ["hourly", "daily", "weekly"],
+          "description": "Backup schedule"
+        },
+        "sweObeyMe.enterprise.disasterRecovery.retentionDays": {
+          "type": "number",
+          "default": 30,
+          "description": "Backup retention period in days"
+        },
+        "sweObeyMe.enterprise.healthChecks.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable health checks"
+        },
+        "sweObeyMe.enterprise.healthChecks.intervalSeconds": {
+          "type": "number",
+          "default": 60,
+          "description": "Health check interval in seconds"
+        },
+        "sweObeyMe.enterprise.metrics.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable metrics collection"
+        },
+        "sweObeyMe.enterprise.metrics.endpoint": {
+          "type": "string",
+          "default": "",
+          "description": "Metrics endpoint URL"
+        },
+        "sweObeyMe.enterprise.metrics.format": {
+          "type": "string",
+          "default": "prometheus",
+          "enum": ["prometheus", "json", "influxdb"],
+          "description": "Metrics export format"
         }
       }
     }
@@ -307,7 +805,9 @@
     "publish": "vsce publish",
     "start": "node index.js",
     "build": "echo 'No build step required for this project'",
-    "test": "npm run test:integration && npm run test:protocol && npm run test:schemas && npm run test:csharp",
+    "test": "npm run test:mcp-config-simulation && npm run test:mcp-config && npm run test:integration && npm run test:protocol && npm run test:schemas && npm run test:csharp",
+    "test:mcp-config-simulation": "node tests/test-mcp-config-simulation.js",
+    "test:mcp-config": "node tests/test-mcp-config.js",
     "test:integration": "node tests/mcp-integration.js",
     "test:protocol": "node tests/mcp-protocol-compliance.js",
     "test:schemas": "node test-tools/test-all-schemas.js",

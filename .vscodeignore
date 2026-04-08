@@ -13,7 +13,6 @@
 !README.md
 !LICENSE
 !.sweignore
-!.sweobeyme-contract.md
 
 # Exclude test files
 tests/
@@ -76,10 +75,9 @@ backup/
 backups/
 
 # Exclude tool memory and corpus files
-tool-memory.json
+# Note: tool-memory.json is included as it's referenced by code
+# Note: math_corpus and godot_corpus are included as they are referenced by code
 scripts/tool-memory.json
-math_corpus/
-godot_corpus/
 
 # Exclude configuration files
 .eslintrc.js
@@ -93,5 +91,5 @@ godot_corpus/
 .windsurf/
 
 # Exclude schemas and project files
+# Note: project_map.json is included as it's referenced by code
 project_map.schema.json
-project_map.json
