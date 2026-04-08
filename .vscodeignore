@@ -1,4 +1,5 @@
 # Explicitly include required directories
+!dist/**
 !lib/**
 !utils/**
 !docs/**

@@ -6,7 +6,7 @@
   "type": "module",
   "publisher": "stonewolfpc",
   "icon": "icon.png",
-  "main": "./extension.js",
+  "main": "./dist/extension.js",
   "engines": {
     "vscode": "^1.60.0"
   },
@@ -28,6 +28,15 @@
     "onStartupFinished"
   ],
   "contributes": {
+    "mcpServers": [
+      {
+        "id": "sweobeyme",
+        "command": "node",
+        "args": ["./dist/mcp/server.js"],
+        "name": "SWEObeyMe",
+        "description": "Surgical governance system for AI-assisted software engineering"
+      }
+    ],
     "commands": [
       {
         "command": "sweObeyMe.queryOracle",
@@ -235,7 +244,11 @@
         "sweObeyMe.csharpBridge.logVerbosity": {
           "type": "string",
           "default": "errors",
-          "enum": ["silent", "errors", "verbose"],
+          "enum": [
+            "silent",
+            "errors",
+            "verbose"
+          ],
           "description": "Log verbosity level"
         },
         "sweObeyMe.csharpBridge.detectors": {
@@ -281,13 +294,23 @@
         "sweObeyMe.initialization.reportDetailLevel": {
           "type": "string",
           "default": "standard",
-          "enum": ["minimal", "standard", "full", "debug"],
+          "enum": [
+            "minimal",
+            "standard",
+            "full",
+            "debug"
+          ],
           "description": "Report detail level"
         },
         "sweObeyMe.initialization.digitalDebtThreshold": {
           "type": "string",
           "default": "20",
-          "enum": ["10", "20", "50", "always"],
+          "enum": [
+            "10",
+            "20",
+            "50",
+            "always"
+          ],
           "description": "Digital debt threshold for warnings"
         },
         "sweObeyMe.initialization.autoFixNaming": {
@@ -323,13 +346,21 @@
         "sweObeyMe.initialization.toolPriority": {
           "type": "string",
           "default": "mcp",
-          "enum": ["mcp", "windsurf", "none"],
+          "enum": [
+            "mcp",
+            "windsurf",
+            "none"
+          ],
           "description": "Tool priority: MCP tools first, Windsurf tools second, or no built-in tools"
         },
         "sweObeyMe.initialization.transparencyMode": {
           "type": "string",
           "default": "major",
-          "enum": ["everything", "major", "silent"],
+          "enum": [
+            "everything",
+            "major",
+            "silent"
+          ],
           "description": "Transparency mode: explain everything, only major decisions, or silent"
         },
         "sweObeyMe.general.statusBarEnabled": {
@@ -465,19 +496,31 @@
         "sweObeyMe.toolControls.fileAccess": {
           "type": "string",
           "default": "ask",
-          "enum": ["allow", "ask", "deny"],
+          "enum": [
+            "allow",
+            "ask",
+            "deny"
+          ],
           "description": "File access permission level: allow, ask, or deny"
         },
         "sweObeyMe.toolControls.terminalAccess": {
           "type": "string",
           "default": "ask",
-          "enum": ["allow", "ask", "deny"],
+          "enum": [
+            "allow",
+            "ask",
+            "deny"
+          ],
           "description": "Terminal access permission level: allow, ask, or deny"
         },
         "sweObeyMe.toolControls.networkAccess": {
           "type": "string",
           "default": "ask",
-          "enum": ["allow", "ask", "deny"],
+          "enum": [
+            "allow",
+            "ask",
+            "deny"
+          ],
           "description": "Network access permission level: allow, ask, or deny"
         },
         "sweObeyMe.onboarding.showWelcome": {
@@ -518,7 +561,11 @@
         "sweObeyMe.enterprise.rbac.defaultRole": {
           "type": "string",
           "default": "user",
-          "enum": ["admin", "user", "readonly"],
+          "enum": [
+            "admin",
+            "user",
+            "readonly"
+          ],
           "description": "Default role for new users"
         },
         "sweObeyMe.enterprise.rbac.permissions": {
@@ -534,7 +581,13 @@
         "sweObeyMe.enterprise.sso.provider": {
           "type": "string",
           "default": "",
-          "enum": ["google", "azure", "okta", "saml", "oidc"],
+          "enum": [
+            "google",
+            "azure",
+            "okta",
+            "saml",
+            "oidc"
+          ],
           "description": "SSO provider"
         },
         "sweObeyMe.enterprise.sso.ssoUrl": {
@@ -625,7 +678,12 @@
         "sweObeyMe.enterprise.auditLogging.logLevel": {
           "type": "string",
           "default": "info",
-          "enum": ["debug", "info", "warn", "error"],
+          "enum": [
+            "debug",
+            "info",
+            "warn",
+            "error"
+          ],
           "description": "Log level for audit logs"
         },
         "sweObeyMe.enterprise.analytics.enabled": {
@@ -731,7 +789,12 @@
         "sweObeyMe.enterprise.compliance.reportSchedule": {
           "type": "string",
           "default": "monthly",
-          "enum": ["daily", "weekly", "monthly", "quarterly"],
+          "enum": [
+            "daily",
+            "weekly",
+            "monthly",
+            "quarterly"
+          ],
           "description": "Compliance report generation schedule"
         },
         "sweObeyMe.enterprise.multiTenant.enabled": {
@@ -742,7 +805,11 @@
         "sweObeyMe.enterprise.multiTenant.isolationLevel": {
           "type": "string",
           "default": "workspace",
-          "enum": ["workspace", "organization", "user"],
+          "enum": [
+            "workspace",
+            "organization",
+            "user"
+          ],
           "description": "Isolation level for multi-tenant"
         },
         "sweObeyMe.enterprise.configurationInheritance.enabled": {
@@ -752,7 +819,12 @@
         },
         "sweObeyMe.enterprise.configurationInheritance.precedence": {
           "type": "array",
-          "default": ["system", "organization", "workspace", "user"],
+          "default": [
+            "system",
+            "organization",
+            "workspace",
+            "user"
+          ],
           "description": "Configuration precedence order"
         },
         "sweObeyMe.enterprise.disasterRecovery.enabled": {
@@ -763,7 +835,11 @@
         "sweObeyMe.enterprise.disasterRecovery.backupSchedule": {
           "type": "string",
           "default": "daily",
-          "enum": ["hourly", "daily", "weekly"],
+          "enum": [
+            "hourly",
+            "daily",
+            "weekly"
+          ],
           "description": "Backup schedule"
         },
         "sweObeyMe.enterprise.disasterRecovery.retentionDays": {
@@ -794,7 +870,11 @@
         "sweObeyMe.enterprise.metrics.format": {
           "type": "string",
           "default": "prometheus",
-          "enum": ["prometheus", "json", "influxdb"],
+          "enum": [
+            "prometheus",
+            "json",
+            "influxdb"
+          ],
           "description": "Metrics export format"
         }
       }
@@ -804,7 +884,11 @@
     "package": "vsce package",
     "publish": "vsce publish",
     "start": "node index.js",
-    "build": "echo 'No build step required for this project'",
+    "build": "node esbuild.config.js",
+    "build:public": "NODE_ENV=production BUILD_MODE=public node esbuild.config.js",
+    "build:enterprise": "NODE_ENV=production BUILD_MODE=enterprise node esbuild.config.js",
+    "build:dev": "BUILD_MODE=dev node esbuild.config.js",
+    "build:watch": "BUILD_MODE=dev node esbuild.config.js --watch",
     "test": "npm run test:mcp-config-simulation && npm run test:mcp-config && npm run test:integration && npm run test:protocol && npm run test:schemas && npm run test:csharp",
     "test:mcp-config-simulation": "node tests/test-mcp-config-simulation.js",
     "test:mcp-config": "node tests/test-mcp-config.js",
@@ -820,20 +904,21 @@
     "commit": "git-cz"
   },
   "devDependencies": {
-    "@vscode/vsce": "^2.15.0",
     "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/commit-analyzer": "^11.1.0",
     "@semantic-release/git": "^10.0.1",
     "@semantic-release/github": "^10.0.5",
     "@semantic-release/npm": "^11.0.2",
-    "@semantic-release/commit-analyzer": "^11.1.0",
     "@semantic-release/release-notes-generator": "^12.1.0",
-    "semantic-release": "^23.0.8",
-    "jest": "^29.7.0",
+    "@vscode/vsce": "^2.15.0",
+    "commitizen": "^4.3.0",
+    "esbuild": "^0.28.0",
     "eslint": "^8.57.0",
-    "prettier": "^3.2.5",
     "husky": "^9.0.11",
+    "jest": "^29.7.0",
     "lint-staged": "^15.2.2",
-    "commitizen": "^4.3.0"
+    "prettier": "^3.2.5",
+    "semantic-release": "^23.0.8"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^0.5.0",
