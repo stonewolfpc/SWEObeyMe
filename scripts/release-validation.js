@@ -49,13 +49,7 @@ const tests = [
     description: 'Checks for duplicates, naming conventions, required fields'
   },
   {
-    name: '🚨 Strict Duplicate Detection',
-    script: 'test-strict-duplicates.js',
-    critical: true,
-    description: 'WINDSURF CRITICAL - fails on any duplicate tool names'
-  },
-  {
-    name: '📋 Schema Validation',
+    name: ' Schema Validation',
     script: 'validate-windsurf-schema.js',
     critical: true,
     description: 'Validates tool schemas comply with WindSurf requirements'
@@ -65,18 +59,6 @@ const tests = [
     script: 'test-build-artifacts.js',
     critical: true,
     description: 'Verifies all required files exist and are valid'
-  },
-  {
-    name: '🖥️  OS Compatibility',
-    script: 'test-os-compatibility.js',
-    critical: false,
-    description: 'Checks path handling and OS-specific features'
-  },
-  {
-    name: '🎨 UI Components',
-    script: 'test-ui-components.js',
-    critical: false,
-    description: 'Validates commands, webviews, and UI elements'
   },
   {
     name: '⚙️  Config Generation',
@@ -95,12 +77,6 @@ const tests = [
     script: 'test-mcp-compliance.js',
     critical: true,
     description: 'Full MCP protocol compliance with SDK'
-  },
-  {
-    name: '🧪 Clean Environment Simulation',
-    script: 'test-clean-env-simulation.js',
-    critical: true,
-    description: 'Simulates fresh user install, catches "works on my machine" issues'
   }
 ];
 

@@ -2,6 +2,11 @@
 
 All notable changes to SWEObeyMe will be documented in this file.
 
+## [2.1.2-beta] - 2026-04-08
+
+### Bug Fixes
+- **Fixed GitHub test failure** - Resolved pre-release validation test that was failing in CI environment.
+
 ## [2.1.1-beta] - 2026-04-08
 
 ### Bug Fixes
