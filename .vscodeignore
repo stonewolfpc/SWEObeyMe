@@ -54,7 +54,6 @@ docs/
 !README.md
 
 # Exclude build artifacts
-dist/
 build/
 *.vsix
 *.tgz
