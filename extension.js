@@ -32,8 +32,11 @@ const toFileUrl = (p) => {
       // The third slash represents the empty host portion
       return `file:///${normalized}`;
     }
-    // Unix fallback
-    return `file://${p}`;
+    // Unix fallback: ensure absolute paths get file:/// format (3 slashes)
+    // For relative paths, we need to resolve them first
+    const absolutePath = path.isAbsolute(p) ? p : path.resolve(p);
+    // Unix paths start with /, so file:// + /path = file:///path (correct!)
+    return `file://${absolutePath}`;
   }
 };
 

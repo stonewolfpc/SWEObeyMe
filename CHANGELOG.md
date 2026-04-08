@@ -2,6 +2,24 @@
 
 All notable changes to SWEObeyMe will be documented in this file.
 
+## [2.1.1-beta] - 2026-04-08
+
+### Bug Fixes
+- **Fixed duplicate tool definitions** — Removed duplicate `get_file_context` and `analyze_change_impact` tools from `registry-core.js` that were causing WindSurf MCP server rejection. Now 98 unique tools.
+- **Fixed Unix file:// URL handling** — Corrected Unix fallback in `toFileUrl()` to properly handle relative paths by converting them to absolute paths first.
+
+### Testing
+- **Enhanced comprehensive test suite** — Added 10 automated tests including:
+  - Strict duplicate detection (line numbers, cross-file analysis)
+  - MCP server startup validation
+  - MCP protocol compliance testing
+  - Clean environment simulation (fresh install test)
+  - Build artifacts validation
+  - OS compatibility checks
+  - UI components validation
+- **Master validation script** — `npm run test:all` runs all tests in sequence for 100% certainty before release
+- **Git-governor integration** — Added enterprise leak scanning, dependency isolation, and feature exclusion checks
+
 ## [2.0.10-beta] - 2026-04-08
 
 ### Bug Fixes

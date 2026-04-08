@@ -1,0 +1,478 @@
+{
+  "metadata": {
+    "governorVersion": "1.0.0",
+    "timestamp": "2026-04-08T01:57:24.581Z",
+    "duration": 4000,
+    "options": {
+      "check": "all",
+      "override": [],
+      "verbose": false,
+      "all": true
+    }
+  },
+  "summary": {
+    "totalTests": 64,
+    "passed": 47,
+    "failed": 17,
+    "skipped": 0,
+    "passRate": "73.44"
+  },
+  "checks": {
+    "feature-exclusion": {
+      "tests": [
+        {
+          "id": "scan-forbidden-paths",
+          "name": "Feature Exclusion - scan-forbidden-paths",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "check-for-enterprise-files",
+          "name": "Feature Exclusion - check-for-enterprise-files",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "check-for-enterprise-imports",
+          "name": "Feature Exclusion - check-for-enterprise-imports",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "validate-forbidden-modules",
+          "name": "Feature Exclusion - validate-forbidden-modules",
+          "passed": true,
+          "error": null
+        }
+      ],
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0,
+      "startTime": 1775613440584,
+      "endTime": 1775613440588
+    },
+    "mcp-config-validator": {
+      "tests": [
+        {
+          "id": "check-config-path",
+          "name": "MCP Config Validator - check-config-path",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "validate-json",
+          "name": "MCP Config Validator - validate-json",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "validate-schema",
+          "name": "MCP Config Validator - validate-schema",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "check-forward-slashes",
+          "name": "MCP Config Validator - check-forward-slashes",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "check-lowercase-drives",
+          "name": "MCP Config Validator - check-lowercase-drives",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "check-no-backslashes",
+          "name": "MCP Config Validator - check-no-backslashes",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "check-no-trailing-slashes",
+          "name": "MCP Config Validator - check-no-trailing-slashes",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "check-no-unknown-keys",
+          "name": "MCP Config Validator - check-no-unknown-keys",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "validate-tool-definitions",
+          "name": "MCP Config Validator - validate-tool-definitions",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "validate-command-paths",
+          "name": "MCP Config Validator - validate-command-paths",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "validate-args",
+          "name": "MCP Config Validator - validate-args",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "validate-transport",
+          "name": "MCP Config Validator - validate-transport",
+          "passed": true,
+          "error": null
+        }
+      ],
+      "passed": 12,
+      "failed": 0,
+      "skipped": 0,
+      "startTime": 1775613440588,
+      "endTime": 1775613440592
+    },
+    "mcp-server-startup": {
+      "tests": [
+        {
+          "id": "server-spawn",
+          "name": "MCP Server Startup - server-spawn",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "no-stdout-pollution",
+          "name": "MCP Server Startup - no-stdout-pollution",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "initialize-request",
+          "name": "MCP Server Startup - initialize-request",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "validate-response",
+          "name": "MCP Server Startup - validate-response",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "tool-registration",
+          "name": "MCP Server Startup - tool-registration",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "capabilities-check",
+          "name": "MCP Server Startup - capabilities-check",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "serverinfo-check",
+          "name": "MCP Server Startup - serverinfo-check",
+          "passed": true,
+          "error": null
+        }
+      ],
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0,
+      "startTime": 1775613440592,
+      "endTime": 1775613443619
+    },
+    "tool-arbitration-fuzzer": {
+      "tests": [
+        {
+          "id": "malformed-tool-calls",
+          "name": "Tool Arbitration Fuzzer - malformed-tool-calls",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "missing-params",
+          "name": "Tool Arbitration Fuzzer - missing-params",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "extra-params",
+          "name": "Tool Arbitration Fuzzer - extra-params",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "wrong-types",
+          "name": "Tool Arbitration Fuzzer - wrong-types",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "empty-objects",
+          "name": "Tool Arbitration Fuzzer - empty-objects",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "invalid-json",
+          "name": "Tool Arbitration Fuzzer - invalid-json",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "hallucinated-tool-names",
+          "name": "Tool Arbitration Fuzzer - hallucinated-tool-names",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "arbitration-catch",
+          "name": "Tool Arbitration Fuzzer - arbitration-catch",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "arbitration-correct",
+          "name": "Tool Arbitration Fuzzer - arbitration-correct",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "arbitration-reject",
+          "name": "Tool Arbitration Fuzzer - arbitration-reject",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "arbitration-warn",
+          "name": "Tool Arbitration Fuzzer - arbitration-warn",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "arbitration-log",
+          "name": "Tool Arbitration Fuzzer - arbitration-log",
+          "passed": true,
+          "error": null
+        }
+      ],
+      "passed": 12,
+      "failed": 0,
+      "skipped": 0,
+      "startTime": 1775613443619,
+      "endTime": 1775613443622
+    },
+    "path-normalization": {
+      "tests": [
+        {
+          "id": "scan-backslashes",
+          "name": "Path Normalization - scan-backslashes",
+          "passed": false,
+          "error": "Test failed: issues found"
+        },
+        {
+          "id": "scan-uppercase-drives",
+          "name": "Path Normalization - scan-uppercase-drives",
+          "passed": false,
+          "error": "Test failed: issues found"
+        },
+        {
+          "id": "scan-double-dots",
+          "name": "Path Normalization - scan-double-dots",
+          "passed": false,
+          "error": "Test failed: issues found"
+        },
+        {
+          "id": "scan-double-slashes",
+          "name": "Path Normalization - scan-double-slashes",
+          "passed": false,
+          "error": "Test failed: issues found"
+        },
+        {
+          "id": "scan-trailing-slashes",
+          "name": "Path Normalization - scan-trailing-slashes",
+          "passed": false,
+          "error": "Test failed: issues found"
+        },
+        {
+          "id": "check-config-files",
+          "name": "Path Normalization - check-config-files",
+          "passed": false,
+          "error": "Test failed: issues found"
+        },
+        {
+          "id": "check-lib-files",
+          "name": "Path Normalization - check-lib-files",
+          "passed": false,
+          "error": "Test failed: issues found"
+        }
+      ],
+      "passed": 0,
+      "failed": 7,
+      "skipped": 0,
+      "startTime": 1775613443622,
+      "endTime": 1775613443843
+    },
+    "dependency-isolation": {
+      "tests": [
+        {
+          "id": "scan-extension-js",
+          "name": "Dependency Isolation - scan-extension-js",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "scan-index-js",
+          "name": "Dependency Isolation - scan-index-js",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "scan-mcp-server",
+          "name": "Dependency Isolation - scan-mcp-server",
+          "passed": false,
+          "error": "Test failed: enterprise imports found"
+        },
+        {
+          "id": "scan-provider-manager",
+          "name": "Dependency Isolation - scan-provider-manager",
+          "passed": false,
+          "error": "Test failed: enterprise imports found"
+        },
+        {
+          "id": "scan-config-writer",
+          "name": "Dependency Isolation - scan-config-writer",
+          "passed": false,
+          "error": "Test failed: enterprise imports found"
+        },
+        {
+          "id": "check-enterprise-imports",
+          "name": "Dependency Isolation - check-enterprise-imports",
+          "passed": false,
+          "error": "Test failed: enterprise imports found"
+        },
+        {
+          "id": "validate-isolation",
+          "name": "Dependency Isolation - validate-isolation",
+          "passed": true,
+          "error": null
+        }
+      ],
+      "passed": 3,
+      "failed": 4,
+      "skipped": 0,
+      "startTime": 1775613443843,
+      "endTime": 1775613443848
+    },
+    "public-build": {
+      "tests": [
+        {
+          "id": "exclude-enterprise-modules",
+          "name": "Public Build - exclude-enterprise-modules",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "exclude-enterprise-configs",
+          "name": "Public Build - exclude-enterprise-configs",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "exclude-enterprise-docs",
+          "name": "Public Build - exclude-enterprise-docs",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "exclude-enterprise-dashboards",
+          "name": "Public Build - exclude-enterprise-dashboards",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "exclude-enterprise-sso",
+          "name": "Public Build - exclude-enterprise-sso",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "exclude-enterprise-rbac",
+          "name": "Public Build - exclude-enterprise-rbac",
+          "passed": false,
+          "error": "Test failed: enterprise files found in build"
+        },
+        {
+          "id": "exclude-enterprise-encryption",
+          "name": "Public Build - exclude-enterprise-encryption",
+          "passed": false,
+          "error": "Test failed: enterprise files found in build"
+        },
+        {
+          "id": "exclude-enterprise-policy-engine",
+          "name": "Public Build - exclude-enterprise-policy-engine",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "validate-build",
+          "name": "Public Build - validate-build",
+          "passed": false,
+          "error": "Test failed: enterprise files found in build"
+        }
+      ],
+      "passed": 6,
+      "failed": 3,
+      "skipped": 0,
+      "startTime": 1775613443848,
+      "endTime": 1775613443851
+    },
+    "enterprise-leak-scanner": {
+      "tests": [
+        {
+          "id": "scan-todos",
+          "name": "Enterprise Leak Scanner - scan-todos",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "scan-comments",
+          "name": "Enterprise Leak Scanner - scan-comments",
+          "passed": false,
+          "error": "Test failed: enterprise leaks found"
+        },
+        {
+          "id": "scan-imports",
+          "name": "Enterprise Leak Scanner - scan-imports",
+          "passed": false,
+          "error": "Test failed: enterprise leaks found"
+        },
+        {
+          "id": "scan-configs",
+          "name": "Enterprise Leak Scanner - scan-configs",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "scan-docs",
+          "name": "Enterprise Leak Scanner - scan-docs",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "validate-no-leaks",
+          "name": "Enterprise Leak Scanner - validate-no-leaks",
+          "passed": false,
+          "error": "Test failed: enterprise leaks found"
+        }
+      ],
+      "passed": 3,
+      "failed": 3,
+      "skipped": 0,
+      "startTime": 1775613443851,
+      "endTime": 1775613444581
+    }
+  }
+}

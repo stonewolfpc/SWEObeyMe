@@ -1,0 +1,114 @@
+{
+  "metadata": {
+    "rigVersion": "1.0.0",
+    "timestamp": "2026-04-08T01:14:24.350Z",
+    "duration": 12,
+    "options": {
+      "layer": "all",
+      "os": "all",
+      "editor": "all",
+      "report": false,
+      "verbose": false,
+      "all": true
+    }
+  },
+  "summary": {
+    "totalTests": 0,
+    "passed": 0,
+    "failed": 10,
+    "skipped": 0,
+    "passRate": 0
+  },
+  "layers": {
+    "editor-simulation": {
+      "tests": [],
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "startTime": 1775610864347,
+      "endTime": null,
+      "error": "Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'd:'"
+    },
+    "os-simulation": {
+      "tests": [],
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "startTime": 1775610864347,
+      "endTime": null,
+      "error": "Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'd:'"
+    },
+    "mcp-loader-stress": {
+      "tests": [],
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "startTime": 1775610864348,
+      "endTime": null,
+      "error": "Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'd:'"
+    },
+    "tool-arbitration": {
+      "tests": [],
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "startTime": 1775610864348,
+      "endTime": null,
+      "error": "Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'd:'"
+    },
+    "fs-chaos": {
+      "tests": [],
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "startTime": 1775610864348,
+      "endTime": null,
+      "error": "Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'd:'"
+    },
+    "workspace-awareness": {
+      "tests": [],
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "startTime": 1775610864348,
+      "endTime": null,
+      "error": "Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'd:'"
+    },
+    "provider-failure": {
+      "tests": [],
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "startTime": 1775610864349,
+      "endTime": null,
+      "error": "Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'd:'"
+    },
+    "webview-failure": {
+      "tests": [],
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "startTime": 1775610864349,
+      "endTime": null,
+      "error": "Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'd:'"
+    },
+    "checkpoint-stress": {
+      "tests": [],
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "startTime": 1775610864349,
+      "endTime": null,
+      "error": "Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'd:'"
+    },
+    "e2e-software-factory": {
+      "tests": [],
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "startTime": 1775610864350,
+      "endTime": null,
+      "error": "Only URLs with a scheme in: file, data, and node are supported by the default ESM loader. On Windows, absolute paths must be valid file:// URLs. Received protocol 'd:'"
+    }
+  }
+}

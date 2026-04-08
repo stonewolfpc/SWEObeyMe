@@ -1,0 +1,262 @@
+name: Pre-Release Validation
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  # ============================================
+  # JOB 1: Validate Tool Registry (All OS)
+  # ============================================
+  validate-tools:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Validate Tool Registry
+        run: node .github/scripts/validate-tools.js
+      
+      - name: Check for Duplicate Tools
+        run: node .github/scripts/check-duplicates.js
+      
+      - name: Validate WindSurf Schema Compliance
+        run: node .github/scripts/validate-windsurf-schema.js
+
+  # ============================================
+  # JOB 2: Windows Tests (The Critical One)
+  # ============================================
+  test-windows:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        node-location: ['in-path', 'not-in-path', 'default-location', 'custom-location']
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js (conditional)
+        if: matrix.node-location != 'not-in-path'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Test WITHOUT Node in PATH
+        if: matrix.node-location == 'not-in-path'
+        run: |
+          # Uninstall Node from PATH to simulate user environment
+          $env:PATH = ($env:PATH -split ';' | Where-Object { $_ -notmatch 'nodejs|npm|nvm' }) -join ';'
+          node --version 2>&1 || echo "Node not in PATH (expected)"
+      
+      - name: Install Extension Dependencies
+        run: npm ci
+      
+      - name: Build Extension
+        run: npm run compile
+      
+      - name: Package Extension
+        run: |
+          npm install -g @vscode/vsce
+          vsce package --out swe-obey-me-test.vsix
+      
+      - name: Verify package.json copied to dist/mcp/
+        run: |
+          if (!(Test-Path "dist/mcp/package.json")) {
+            Write-Error "CRITICAL: package.json not found in dist/mcp/ - build script is broken!"
+            exit 1
+          }
+          Write-Host "✅ package.json correctly placed in dist/mcp/"
+      
+      - name: Test MCP Server Startup
+        run: node .github/scripts/test-mcp-startup.js
+
+  # ============================================
+  # JOB 3: macOS Tests
+  # ============================================
+  test-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Build
+        run: npm run compile
+      
+      - name: Package Extension
+        run: |
+          npm install -g @vscode/vsce
+          vsce package --out swe-obey-me-test.vsix
+      
+      - name: Verify package.json in dist/mcp
+        run: |
+          if [ ! -f "dist/mcp/package.json" ]; then
+            echo "ERROR: package.json missing from dist/mcp/"
+            exit 1
+          fi
+          echo "✅ package.json found"
+      
+      - name: Test MCP Server
+        run: node .github/scripts/test-mcp-startup.js
+      
+      - name: Test Config Auto-Generation
+        run: node .github/scripts/test-config-generation.js
+
+  # ============================================
+  # JOB 4: Linux Tests
+  # ============================================
+  test-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Build
+        run: npm run compile
+      
+      - name: Package Extension
+        run: |
+          npm install -g @vscode/vsce
+          vsce package --out swe-obey-me-test.vsix
+      
+      - name: Verify package.json in dist/mcp
+        run: |
+          if [ ! -f "dist/mcp/package.json" ]; then
+            echo "ERROR: package.json missing from dist/mcp/"
+            exit 1
+          fi
+          echo "✅ package.json found"
+      
+      - name: Test MCP Server
+        run: node .github/scripts/test-mcp-startup.js
+      
+      - name: Test MCP Compliance
+        run: node .github/scripts/test-mcp-compliance.js
+
+  # ============================================
+  # JOB 5: Clean Environment Simulation (Docker)
+  # ============================================
+  test-clean-environment:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Build Extension
+        run: |
+          npm ci
+          npm run compile
+          npm install -g @vscode/vsce
+          vsce package --out swe-obey-me-test.vsix
+      
+      - name: Test in Clean Container
+        run: |
+          docker run --rm -v "$PWD:/workspace" -w /workspace node:20-alpine \
+            sh -c "
+              # Install vsce in container
+              npm install -g @vscode/vsce
+              
+              # Unzip the extension to simulate fresh install
+              mkdir -p /tmp/extension-test
+              cd /tmp/extension-test
+              unzip -q /workspace/swe-obey-me-test.vsix
+              
+              # Check if package.json exists in dist/mcp/
+              if [ ! -f 'extension/dist/mcp/package.json' ]; then
+                echo 'ERROR: package.json missing from dist/mcp/'
+                exit 1
+              fi
+              
+              # Try to start the server
+              node extension/dist/mcp/server.js &
+              SERVER_PID=\$!
+              sleep 2
+              
+              # Check if process is still running
+              if ! kill -0 \$SERVER_PID 2>/dev/null; then
+                echo 'ERROR: MCP server crashed on startup'
+                exit 1
+              fi
+              
+              kill \$SERVER_PID
+              echo '✅ Server starts successfully in clean environment'
+            "
+
+  # ============================================
+  # JOB 6: MCP Protocol Compliance Test
+  # ============================================
+  test-mcp-compliance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Build Extension
+        run: |
+          npm ci
+          npm run compile
+          npm install -g @vscode/vsce
+          vsce package --out swe-obey-me-test.vsix
+      
+      - name: Run MCP Compliance Tests
+        run: node .github/scripts/test-mcp-compliance.js
+
+  # ============================================
+  # JOB 7: Final Release Gate
+  # ============================================
+  release-gate:
+    needs: [validate-tools, test-windows, test-macos, test-linux, test-clean-environment, test-mcp-compliance]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Check All Tests Passed
+        run: |
+          echo "Validating all jobs passed..."
+          
+          # Map needs context to check results
+          results="${{ toJson(needs) }}"
+          
+          failed_jobs=""
+          
+          # Check each job result
+          for job in validate-tools test-windows test-macos test-linux test-clean-environment test-mcp-compliance; do
+            result=$(echo "$results" | grep -o '"'$job'":{[^}]*}' | grep -o '"result":"[^"]*"' | cut -d'"' -f4)
+            if [ "$result" != "success" ]; then
+              failed_jobs="$failed_jobs $job"
+            fi
+          done
+          
+          if [ -n "$failed_jobs" ]; then
+            echo "❌ Failed jobs:$failed_jobs"
+            exit 1
+          fi
+          
+          echo "✅ All tests passed! Extension is ready for release."

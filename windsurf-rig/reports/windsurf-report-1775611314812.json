@@ -1,0 +1,483 @@
+{
+  "metadata": {
+    "rigVersion": "1.0.0",
+    "timestamp": "2026-04-08T01:21:54.811Z",
+    "duration": 6081,
+    "options": {
+      "layer": "all",
+      "verbose": false,
+      "all": true
+    }
+  },
+  "summary": {
+    "totalTests": 66,
+    "passed": 64,
+    "failed": 2,
+    "skipped": 0,
+    "passRate": "96.97"
+  },
+  "layers": {
+    "config-loader": {
+      "tests": [
+        {
+          "id": "load-generated-config",
+          "name": "Config Loader - load-generated-config",
+          "passed": {
+            "passed": true,
+            "error": "Config file not found (expected in dev)"
+          },
+          "error": null
+        },
+        {
+          "id": "validate-schema",
+          "name": "Config Loader - validate-schema",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "normalize-paths",
+          "name": "Config Loader - normalize-paths",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "reject-backslashes",
+          "name": "Config Loader - reject-backslashes",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "reject-uppercase-drives",
+          "name": "Config Loader - reject-uppercase-drives",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "reject-invalid-json",
+          "name": "Config Loader - reject-invalid-json",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "reject-partial-writes",
+          "name": "Config Loader - reject-partial-writes",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "reject-unknown-keys",
+          "name": "Config Loader - reject-unknown-keys",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "reject-slow-startup",
+          "name": "Config Loader - reject-slow-startup",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "reject-stdout-pollution",
+          "name": "Config Loader - reject-stdout-pollution",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "reject-missing-tools-array",
+          "name": "Config Loader - reject-missing-tools-array",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "reject-missing-name",
+          "name": "Config Loader - reject-missing-name",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "reject-missing-command",
+          "name": "Config Loader - reject-missing-command",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "reject-missing-args",
+          "name": "Config Loader - reject-missing-args",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "reject-missing-transport",
+          "name": "Config Loader - reject-missing-transport",
+          "passed": true,
+          "error": null
+        }
+      ],
+      "passed": 15,
+      "failed": 0,
+      "skipped": 0,
+      "startTime": 1775611308733,
+      "endTime": 1775611308737
+    },
+    "server-startup": {
+      "tests": [
+        {
+          "id": "instant-startup",
+          "name": "Server Startup - instant-startup",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "no-stdout",
+          "name": "Server Startup - no-stdout",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "stderr-allowed",
+          "name": "Server Startup - stderr-allowed",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "valid-handshake",
+          "name": "Server Startup - valid-handshake",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "correct-initialize-response",
+          "name": "Server Startup - correct-initialize-response",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "correct-tools-schema",
+          "name": "Server Startup - correct-tools-schema",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "correct-serverInfo",
+          "name": "Server Startup - correct-serverInfo",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "correct-capabilities",
+          "name": "Server Startup - correct-capabilities",
+          "passed": true,
+          "error": null
+        }
+      ],
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0,
+      "startTime": 1775611308737,
+      "endTime": 1775611312769
+    },
+    "tool-schema": {
+      "tests": [
+        {
+          "id": "missing-inputSchema",
+          "name": "Tool Schema - missing-inputSchema",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "missing-required-fields",
+          "name": "Tool Schema - missing-required-fields",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "invalid-json-schema",
+          "name": "Tool Schema - invalid-json-schema",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "unknown-schema-keywords",
+          "name": "Tool Schema - unknown-schema-keywords",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "circular-references",
+          "name": "Tool Schema - circular-references",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "empty-tool-arrays",
+          "name": "Tool Schema - empty-tool-arrays",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "parameter-types",
+          "name": "Tool Schema - parameter-types",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "descriptions",
+          "name": "Tool Schema - descriptions",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "fallback-behavior",
+          "name": "Tool Schema - fallback-behavior",
+          "passed": true,
+          "error": null
+        }
+      ],
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "startTime": 1775611312769,
+      "endTime": 1775611312772
+    },
+    "path-normalization": {
+      "tests": [
+        {
+          "id": "reject-backslashes",
+          "name": "Path Normalization - reject-backslashes",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "reject-uppercase-drives",
+          "name": "Path Normalization - reject-uppercase-drives",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "reject-double-dots",
+          "name": "Path Normalization - reject-double-dots",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "reject-trailing-slashes",
+          "name": "Path Normalization - reject-trailing-slashes",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "reject-double-slashes",
+          "name": "Path Normalization - reject-double-slashes",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "normalize-forward-slashes",
+          "name": "Path Normalization - normalize-forward-slashes",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "normalize-drive-letters",
+          "name": "Path Normalization - normalize-drive-letters",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "scan-config-paths",
+          "name": "Path Normalization - scan-config-paths",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "compare-normalized",
+          "name": "Path Normalization - compare-normalized",
+          "passed": true,
+          "error": null
+        }
+      ],
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "startTime": 1775611312772,
+      "endTime": 1775611312775
+    },
+    "race-conditions": {
+      "tests": [
+        {
+          "id": "concurrent-writes",
+          "name": "Race Conditions - concurrent-writes",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "partial-writes",
+          "name": "Race Conditions - partial-writes",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "corrupted-writes",
+          "name": "Race Conditions - corrupted-writes",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "rollback",
+          "name": "Race Conditions - rollback",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "atomic-writer",
+          "name": "Race Conditions - atomic-writer",
+          "passed": true,
+          "error": null
+        }
+      ],
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0,
+      "startTime": 1775611312775,
+      "endTime": 1775611312789
+    },
+    "tool-invocation": {
+      "tests": [
+        {
+          "id": "real-tool-calls",
+          "name": "Tool Invocation - real-tool-calls",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "malformed-tool-calls",
+          "name": "Tool Invocation - malformed-tool-calls",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "missing-parameters",
+          "name": "Tool Invocation - missing-parameters",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "extra-parameters",
+          "name": "Tool Invocation - extra-parameters",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "wrong-types",
+          "name": "Tool Invocation - wrong-types",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "empty-objects",
+          "name": "Tool Invocation - empty-objects",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "actionable-errors",
+          "name": "Tool Invocation - actionable-errors",
+          "passed": false,
+          "error": null
+        }
+      ],
+      "passed": 6,
+      "failed": 1,
+      "skipped": 0,
+      "startTime": 1775611312789,
+      "endTime": 1775611312791
+    },
+    "startup-sequence": {
+      "tests": [
+        {
+          "id": "editor-startup",
+          "name": "Startup Sequence - editor-startup",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "extension-activation",
+          "name": "Startup Sequence - extension-activation",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "mcp-config-load",
+          "name": "Startup Sequence - mcp-config-load",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "mcp-server-spawn",
+          "name": "Startup Sequence - mcp-server-spawn",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "handshake",
+          "name": "Startup Sequence - handshake",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "tool-registration",
+          "name": "Startup Sequence - tool-registration",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "arbitration-initialization",
+          "name": "Startup Sequence - arbitration-initialization",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "first-tool-call",
+          "name": "Startup Sequence - first-tool-call",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "first-error",
+          "name": "Startup Sequence - first-error",
+          "passed": false,
+          "error": null
+        },
+        {
+          "id": "first-recovery",
+          "name": "Startup Sequence - first-recovery",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "first-diff",
+          "name": "Startup Sequence - first-diff",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "first-checkpoint",
+          "name": "Startup Sequence - first-checkpoint",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "first-permission-request",
+          "name": "Startup Sequence - first-permission-request",
+          "passed": true,
+          "error": null
+        }
+      ],
+      "passed": 12,
+      "failed": 1,
+      "skipped": 0,
+      "startTime": 1775611312791,
+      "endTime": 1775611314811
+    }
+  }
+}

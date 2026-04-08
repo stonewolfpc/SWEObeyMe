@@ -1,0 +1,294 @@
+{
+  "metadata": {
+    "rigVersion": "1.0.0",
+    "timestamp": "2026-04-08T01:14:40.400Z",
+    "duration": 3291,
+    "options": {
+      "layer": "all",
+      "os": "all",
+      "editor": "all",
+      "report": false,
+      "verbose": false,
+      "all": true
+    }
+  },
+  "summary": {
+    "totalTests": 30,
+    "passed": 20,
+    "failed": 19,
+    "skipped": 0,
+    "passRate": "66.67"
+  },
+  "layers": {
+    "editor-simulation": {
+      "tests": [
+        {
+          "id": "windsurf-activation-timing",
+          "name": "windsurf - activation-timing",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "windsurf-config-loading",
+          "name": "windsurf - config-loading",
+          "passed": false,
+          "error": null
+        },
+        {
+          "id": "windsurf-path-normalization",
+          "name": "windsurf - path-normalization",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "windsurf-mcp-startup",
+          "name": "windsurf - mcp-startup",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "windsurf-error-handling",
+          "name": "windsurf - error-handling",
+          "passed": false,
+          "error": null
+        },
+        {
+          "id": "windsurf-next-activation-timing",
+          "name": "windsurf-next - activation-timing",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "windsurf-next-config-loading",
+          "name": "windsurf-next - config-loading",
+          "passed": false,
+          "error": null
+        },
+        {
+          "id": "windsurf-next-path-normalization",
+          "name": "windsurf-next - path-normalization",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "windsurf-next-mcp-startup",
+          "name": "windsurf-next - mcp-startup",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "windsurf-next-error-handling",
+          "name": "windsurf-next - error-handling",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "vscode-activation-timing",
+          "name": "vscode - activation-timing",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "vscode-config-loading",
+          "name": "vscode - config-loading",
+          "passed": false,
+          "error": null
+        },
+        {
+          "id": "vscode-path-normalization",
+          "name": "vscode - path-normalization",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "vscode-mcp-startup",
+          "name": "vscode - mcp-startup",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "vscode-error-handling",
+          "name": "vscode - error-handling",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "continue-vscode-activation-timing",
+          "name": "continue-vscode - activation-timing",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "continue-vscode-config-loading",
+          "name": "continue-vscode - config-loading",
+          "passed": false,
+          "error": null
+        },
+        {
+          "id": "continue-vscode-path-normalization",
+          "name": "continue-vscode - path-normalization",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "continue-vscode-mcp-startup",
+          "name": "continue-vscode - mcp-startup",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "continue-vscode-error-handling",
+          "name": "continue-vscode - error-handling",
+          "passed": false,
+          "error": null
+        },
+        {
+          "id": "continue-windsurf-activation-timing",
+          "name": "continue-windsurf - activation-timing",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "continue-windsurf-config-loading",
+          "name": "continue-windsurf - config-loading",
+          "passed": false,
+          "error": null
+        },
+        {
+          "id": "continue-windsurf-path-normalization",
+          "name": "continue-windsurf - path-normalization",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "continue-windsurf-mcp-startup",
+          "name": "continue-windsurf - mcp-startup",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "continue-windsurf-error-handling",
+          "name": "continue-windsurf - error-handling",
+          "passed": false,
+          "error": null
+        },
+        {
+          "id": "cursor-activation-timing",
+          "name": "cursor - activation-timing",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "cursor-config-loading",
+          "name": "cursor - config-loading",
+          "passed": false,
+          "error": null
+        },
+        {
+          "id": "cursor-path-normalization",
+          "name": "cursor - path-normalization",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "cursor-mcp-startup",
+          "name": "cursor - mcp-startup",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "cursor-error-handling",
+          "name": "cursor - error-handling",
+          "passed": false,
+          "error": null
+        }
+      ],
+      "passed": 20,
+      "failed": 10,
+      "skipped": 0,
+      "startTime": 1775610877113,
+      "endTime": 1775610880387
+    },
+    "os-simulation": {
+      "tests": [],
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "startTime": 1775610880387,
+      "endTime": null,
+      "error": "__dirname is not defined"
+    },
+    "mcp-loader-stress": {
+      "tests": [],
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "startTime": 1775610880389,
+      "endTime": null,
+      "error": "__dirname is not defined"
+    },
+    "tool-arbitration": {
+      "tests": [],
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "startTime": 1775610880390,
+      "endTime": null,
+      "error": "__dirname is not defined"
+    },
+    "fs-chaos": {
+      "tests": [],
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "startTime": 1775610880392,
+      "endTime": null,
+      "error": "__dirname is not defined"
+    },
+    "workspace-awareness": {
+      "tests": [],
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "startTime": 1775610880393,
+      "endTime": null,
+      "error": "__dirname is not defined"
+    },
+    "provider-failure": {
+      "tests": [],
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "startTime": 1775610880394,
+      "endTime": null,
+      "error": "__dirname is not defined"
+    },
+    "webview-failure": {
+      "tests": [],
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "startTime": 1775610880396,
+      "endTime": null,
+      "error": "__dirname is not defined"
+    },
+    "checkpoint-stress": {
+      "tests": [],
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "startTime": 1775610880397,
+      "endTime": null,
+      "error": "__dirname is not defined"
+    },
+    "e2e-software-factory": {
+      "tests": [],
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "startTime": 1775610880399,
+      "endTime": null,
+      "error": "__dirname is not defined"
+    }
+  }
+}

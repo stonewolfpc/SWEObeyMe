@@ -159,6 +159,9 @@ async function buildWatch() {
   await ctxExtension.watch();
   await ctxMcp.watch();
   
+  // Copy package.json for MCP server
+  copyPackageJson();
+  
   console.log('Watching for changes...');
 }
 
