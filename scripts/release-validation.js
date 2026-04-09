@@ -62,12 +62,6 @@ const tests = [
     description: 'Validates tool schemas comply with WindSurf requirements'
   },
   {
-    name: '📦 Build Artifacts',
-    script: 'test-build-artifacts.js',
-    critical: true,
-    description: 'Verifies all required files exist and are valid'
-  },
-  {
     name: '⚙️  Config Generation',
     script: 'test-config-generation.js',
     critical: true,

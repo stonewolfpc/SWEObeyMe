@@ -79,8 +79,24 @@ backups/
 
 # Exclude tool memory and corpus files
 # Note: tool-memory.json is included as it's referenced by code
-# Note: math_corpus and godot_corpus are included as they are referenced by code
 scripts/tool-memory.json
+math_corpus/
+fdq_corpus/
+training_corpus/
+csharp_dotnet_corpus/
+cpp_corpus/
+git_corpus/
+enterprise_security_corpus/
+ide_mcp_corpus/
+mcp_implementation_corpus/
+nodejs_runtime_corpus/
+performance_profiling_corpus/
+security_csp_corpus/
+testing_qa_corpus/
+typescript_javascript_corpus/
+vscode_extension_corpus/
+web_development_corpus/
+build_deployment_corpus/
 
 # Exclude configuration files
 .eslintrc.js
