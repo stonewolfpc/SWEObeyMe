@@ -1,0 +1,2049 @@
+ <!DOCTYPE html>
+		<html
+			class="layout layout-holy-grail   show-table-of-contents conceptual show-breadcrumb default-focus"
+			lang="en-us"
+			dir="ltr"
+			data-authenticated="false"
+			data-auth-status-determined="false"
+			data-target="docs"
+			x-ms-format-detection="none"
+		>
+			
+		<head>
+			<title>.NET Coding Conventions - C# | Microsoft Learn</title>
+			<meta charset="utf-8" />
+			<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+			<meta name="color-scheme" content="light dark" />
+
+			<meta name="description" content="Learn about commonly used coding conventions in C#. Coding conventions create a consistent look to the code and facilitate copying, changing, and maintaining the code. This article also includes the docs repo coding guidelines" />
+			<link rel="canonical" href="https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions" /> 
+
+			<!-- Non-customizable open graph and sharing-related metadata -->
+			<meta name="twitter:card" content="summary" />
+			<meta name="twitter:site" content="@MicrosoftLearn" />
+			<meta property="og:type" content="website" />
+			<meta property="og:image:alt" content=".NET Coding Conventions - C# | Microsoft Learn" />
+			<meta property="og:image" content="https://learn.microsoft.com/dotnet/media/logo_csharp.png" />
+			<!-- Page specific open graph and sharing-related metadata -->
+			<meta property="og:title" content=".NET Coding Conventions - C#" />
+			<meta property="og:url" content="https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions" />
+			<meta property="og:description" content="Learn about commonly used coding conventions in C#. Coding conventions create a consistent look to the code and facilitate copying, changing, and maintaining the code. This article also includes the docs repo coding guidelines" />
+			<meta name="platform_id" content="1381f1af-2bf9-1c4d-d7f1-30d5908c6e57" /> <meta name="scope" content=".NET" />
+			<meta name="locale" content="en-us" />
+			 
+			<meta name="uhfHeaderId" content="MSDocsHeader-DotNetCSharp" />
+
+			<meta name="page_type" content="conceptual" />
+
+			<!--page specific meta tags-->
+			
+
+			<!-- custom meta tags -->
+			
+		<meta name="apiPlatform" content="dotnet" />
+	
+		<meta name="author" content="BillWagner" />
+	
+		<meta name="breadcrumb_path" content="/dotnet/breadcrumb/toc.json" />
+	
+		<meta name="feedback_system" content="OpenSource" />
+	
+		<meta name="feedback_product_url" content="https://aka.ms/feedback/report?space=61" />
+	
+		<meta name="ms.author" content="wiwagn" />
+	
+		<meta name="ms.devlang" content="csharp" />
+	
+		<meta name="ms.service" content="dotnet-csharp" />
+	
+		<meta name="ms.topic" content="concept-article" />
+	
+		<meta name="show_latex" content="true" />
+	
+		<meta name="ms.subservice" content="fundamentals" />
+	
+		<meta name="ms.date" content="2025-01-15T00:00:00Z" />
+	
+		<meta name="helpviewer_keyword" content="coding conventions, C#" />
+	
+		<meta name="helpviewer_keyword" content="Visual C#, coding conventions" />
+	
+		<meta name="helpviewer_keyword" content="C# language, coding conventions" />
+	
+		<meta name="document_id" content="40f42506-f4a5-859a-0266-ded002056d83" />
+	
+		<meta name="document_version_independent_id" content="f940f2ad-e13d-4d37-6439-f8afcbc4e4c7" />
+	
+		<meta name="updated_at" content="2026-03-30T21:10:00Z" />
+	
+		<meta name="original_content_git_url" content="https://github.com/dotnet/docs/blob/live/docs/csharp/fundamentals/coding-style/coding-conventions.md" />
+	
+		<meta name="gitcommit" content="https://github.com/dotnet/docs/blob/156931bb4ec1e81b028c76ea983553f2e9778bdd/docs/csharp/fundamentals/coding-style/coding-conventions.md" />
+	
+		<meta name="git_commit_id" content="156931bb4ec1e81b028c76ea983553f2e9778bdd" />
+	
+		<meta name="site_name" content="Docs" />
+	
+		<meta name="depot_name" content="VS.core-docs" />
+	
+		<meta name="schema" content="Conceptual" />
+	
+		<meta name="toc_rel" content="../../toc.json" />
+	
+		<meta name="pdf_url_template" content="https://learn.microsoft.com/pdfstore/en-us/VS.core-docs/{branchName}{pdfName}" />
+	
+		<meta name="feedback_help_link_type" content="" />
+	
+		<meta name="feedback_help_link_url" content="" />
+	
+		<meta name="search.mshattr.devlang" content="csharp" />
+	
+		<meta name="word_count" content="3135" />
+	
+		<meta name="asset_id" content="csharp/fundamentals/coding-style/coding-conventions" />
+	
+		<meta name="moniker_range_name" content="" />
+	
+		<meta name="item_type" content="Content" />
+	
+		<meta name="source_path" content="docs/csharp/fundamentals/coding-style/coding-conventions.md" />
+	
+		<meta name="previous_tlsh_hash" content="37454662A60D9310AF824F4A2C4BFF51A2F0900CEEB05FD81931A6A1E15A2DA78F5DBDEADB5766846376019700A1A19E62D6DB35C47C33612CA26CBDC32C3601935D3BB7FD" />
+	
+		<meta name="github_feedback_content_git_url" content="https://github.com/dotnet/docs/blob/main/docs/csharp/fundamentals/coding-style/coding-conventions.md" />
+	
+		<meta name="markdown_url" content="https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions?accept=text/markdown" />
+	 
+		<meta name="cmProducts" content="https://authoring-docs-microsoft.poolparty.biz/devrel/63959238-cb90-4871-a33d-4a5519097e47" data-source="generated" />
+	
+		<meta name="cmProducts" content="https://authoring-docs-microsoft.poolparty.biz/devrel/7696cda6-0510-47f6-8302-71bb5d2e28cf" data-source="generated" />
+	
+		<meta name="cmProducts" content="https://microsoft-devrel.poolparty.biz/DevRelOfferingOntology/c6f99e62-1cf6-4b71-af9b-649b05f80cce" data-source="generated" />
+	
+		<meta name="spProducts" content="https://authoring-docs-microsoft.poolparty.biz/devrel/78d87f42-5582-4a6b-90be-7db2f12b34e6" data-source="generated" />
+	
+		<meta name="spProducts" content="https://authoring-docs-microsoft.poolparty.biz/devrel/69c76c32-967e-4c65-b89a-74cc527db725" data-source="generated" />
+	
+		<meta name="spProducts" content="https://microsoft-devrel.poolparty.biz/DevRelOfferingOntology/3f56b378-07a9-4fa1-afe8-9889fdc77628" data-source="generated" />
+	
+
+			<!-- assets and js globals -->
+			
+			<link rel="stylesheet" href="/static/assets/0.4.03384.7698-a05785c1/styles/site.css" />
+			
+			<script src="https://wcpstatic.microsoft.com/mscc/lib/v2/wcp-consent.js"></script>
+			<script src="https://js.monitor.azure.com/scripts/c/ms.jsll-4.min.js"></script>
+			<script src="/_themes/docs.theme/master/en-us/_themes/global/deprecation.js"></script>
+
+			<!-- msdocs global object -->
+			<script id="msdocs-script">
+		var msDocs = {
+  "environment": {
+    "accessLevel": "online",
+    "azurePortalHostname": "portal.azure.com",
+    "reviewFeatures": false,
+    "supportLevel": "production",
+    "systemContent": true,
+    "siteName": "learn",
+    "legacyHosting": false
+  },
+  "data": {
+    "contentLocale": "en-us",
+    "contentDir": "ltr",
+    "userLocale": "en-us",
+    "userDir": "ltr",
+    "pageTemplate": "Conceptual",
+    "brand": "",
+    "context": {},
+    "standardFeedback": false,
+    "showFeedbackReport": false,
+    "feedbackHelpLinkType": "",
+    "feedbackHelpLinkUrl": "",
+    "feedbackSystem": "OpenSource",
+    "feedbackGitHubRepo": "dotnet/docs",
+    "feedbackProductUrl": "https://aka.ms/feedback/report?space=61",
+    "extendBreadcrumb": false,
+    "isEditDisplayable": true,
+    "isPrivateUnauthorized": false,
+    "hideViewSource": false,
+    "isPermissioned": false,
+    "hasRecommendations": true,
+    "contributors": [
+      {
+        "name": "BillWagner",
+        "url": "https://github.com/BillWagner"
+      },
+      {
+        "name": "gewarren",
+        "url": "https://github.com/gewarren"
+      },
+      {
+        "name": "Ananth-R-Bits",
+        "url": "https://github.com/Ananth-R-Bits"
+      },
+      {
+        "name": "BartoszKlonowski",
+        "url": "https://github.com/BartoszKlonowski"
+      },
+      {
+        "name": "JimmyCushnie",
+        "url": "https://github.com/JimmyCushnie"
+      },
+      {
+        "name": "Sergio0694",
+        "url": "https://github.com/Sergio0694"
+      },
+      {
+        "name": "pkulikov",
+        "url": "https://github.com/pkulikov"
+      },
+      {
+        "name": "MSRY",
+        "url": "https://github.com/MSRY"
+      },
+      {
+        "name": "GitHubPang",
+        "url": "https://github.com/GitHubPang"
+      },
+      {
+        "name": "rafcon-dev",
+        "url": "https://github.com/rafcon-dev"
+      },
+      {
+        "name": "forensicmike",
+        "url": "https://github.com/forensicmike"
+      },
+      {
+        "name": "Naidile-P-N",
+        "url": "https://github.com/Naidile-P-N"
+      }
+    ],
+    "mathjax": {},
+    "openSourceFeedbackIssueUrl": "https://github.com/dotnet/docs/issues/new?template=z-customer-feedback.yml",
+    "openSourceFeedbackIssueTitle": ""
+  },
+  "functions": {}
+};;
+	</script>
+
+			<!-- base scripts, msdocs global should be before this -->
+			<script src="/static/assets/0.4.03384.7698-a05785c1/scripts/en-us/index-docs.js"></script>
+			
+
+			<!-- json-ld -->
+			
+		</head>
+	
+			<body
+				id="body"
+				data-bi-name="body"
+				class="layout-body "
+				lang="en-us"
+				dir="ltr"
+			>
+				<header class="layout-body-header">
+		<div class="header-holder has-default-focus">
+			
+		<a
+			href="#main"
+			
+			style="z-index: 1070"
+			class="outline-color-text visually-hidden-until-focused position-fixed inner-focus focus-visible top-0 left-0 right-0 padding-xs text-align-center background-color-body"
+			
+		>
+			Skip to main content
+		</a>
+	
+		<a
+			href="#"
+			data-skip-to-ask-learn
+			style="z-index: 1070"
+			class="outline-color-text visually-hidden-until-focused position-fixed inner-focus focus-visible top-0 left-0 right-0 padding-xs text-align-center background-color-body"
+			hidden
+		>
+			Skip to Ask Learn chat experience
+		</a>
+	
+
+			<div hidden id="cookie-consent-holder" data-test-id="cookie-consent-container"></div>
+			<!-- Unsupported browser warning -->
+			<div
+				id="unsupported-browser"
+				style="background-color: white; color: black; padding: 16px; border-bottom: 1px solid grey;"
+				hidden
+			>
+				<div style="max-width: 800px; margin: 0 auto;">
+					<p style="font-size: 24px">This browser is no longer supported.</p>
+					<p style="font-size: 16px; margin-top: 16px;">
+						Upgrade to Microsoft Edge to take advantage of the latest features, security updates, and technical support.
+					</p>
+					<div style="margin-top: 12px;">
+						<a
+							href="https://go.microsoft.com/fwlink/p/?LinkID=2092881 "
+							style="background-color: #0078d4; border: 1px solid #0078d4; color: white; padding: 6px 12px; border-radius: 2px; display: inline-block;"
+						>
+							Download Microsoft Edge
+						</a>
+						<a
+							href="https://learn.microsoft.com/en-us/lifecycle/faq/internet-explorer-microsoft-edge"
+							style="background-color: white; padding: 6px 12px; border: 1px solid #505050; color: #171717; border-radius: 2px; display: inline-block;"
+						>
+							More info about Internet Explorer and Microsoft Edge
+						</a>
+					</div>
+				</div>
+			</div>
+			<!-- site header -->
+			<div
+				id="ms--site-header"
+				data-test-id="site-header-wrapper"
+				itemscope="itemscope"
+				itemtype="http://schema.org/Organization"
+			>
+				<div
+					id="ms--mobile-nav"
+					class="site-header display-none-tablet padding-inline-none gap-none"
+					data-bi-name="mobile-header"
+					data-test-id="mobile-header"
+				></div>
+				<div
+					id="ms--primary-nav"
+					class="site-header display-none display-flex-tablet"
+					data-bi-name="L1-header"
+					data-test-id="primary-header"
+				></div>
+				<div
+					id="ms--secondary-nav"
+					class="site-header display-none display-flex-tablet"
+					data-bi-name="L2-header"
+					data-test-id="secondary-header"
+					
+				></div>
+			</div>
+			
+		<!-- banner -->
+		<div data-banner>
+			<div id="disclaimer-holder"></div>
+			
+		</div>
+		<!-- banner end -->
+	
+		</div>
+	</header>
+				 <section
+					id="layout-body-menu"
+					class="layout-body-menu display-flex"
+					data-bi-name="menu"
+			  >
+					
+		<div
+			id="left-container"
+			class="left-container display-none display-block-tablet padding-inline-sm padding-bottom-sm width-full"
+			data-toc-container="true"
+		>
+			<!-- Regular TOC content (default) -->
+			<div id="ms--toc-content" class="height-full">
+				<nav
+					id="affixed-left-container"
+					class="margin-top-sm-tablet position-sticky display-flex flex-direction-column"
+					aria-label="Primary"
+					data-bi-name="left-toc"
+					role="navigation"
+				></nav>
+			</div>
+			<!-- Collapsible TOC content (hidden by default) -->
+			<div id="ms--toc-content-collapsible" class="height-full" hidden>
+				<nav
+					id="affixed-left-container"
+					class="margin-top-sm-tablet position-sticky display-flex flex-direction-column"
+					aria-label="Primary"
+					data-bi-name="left-toc"
+					role="navigation"
+				>
+					<div
+						id="ms--collapsible-toc-header"
+						class="display-flex flex-direction-row-reverse justify-content-space-between align-items-center margin-bottom-xxs"
+					>
+						<button
+							type="button"
+							class="button button-clear inner-focus"
+							data-collapsible-toc-toggle
+							aria-expanded="true"
+							aria-controls="ms--collapsible-toc-content"
+							aria-label="Table of contents"
+						>
+							<span class="icon font-size-xxl" aria-hidden="true">
+								<span class="docon docon-panel-left-contract"></span>
+							</span>
+						</button>
+						<div id="ms--collapsible-toc-moniker-slot" class="flex-grow-1"></div>
+					</div>
+				</nav>
+			</div>
+		</div>
+	
+			  </section>
+
+				<main
+					id="main"
+					role="main"
+					class="layout-body-main "
+					data-bi-name="content"
+					lang="en-us"
+					dir="ltr"
+				>
+					
+			<div
+		id="ms--content-header"
+		class="content-header default-focus border-bottom-none"
+		data-bi-name="content-header"
+	>
+		<div class="content-header-controls margin-xxs margin-inline-sm-tablet">
+			<button
+				type="button"
+				class="contents-button button button-sm margin-right-xxs"
+				data-bi-name="contents-expand"
+				aria-haspopup="true"
+				data-contents-button
+			>
+				<span class="icon" aria-hidden="true"><span class="docon docon-menu"></span></span>
+				<span class="contents-expand-title"> Table of contents </span>
+			</button>
+			<button
+				type="button"
+				class="ap-collapse-behavior ap-expanded button button-sm"
+				data-bi-name="ap-collapse"
+				aria-controls="action-panel"
+			>
+				<span class="icon" aria-hidden="true"><span class="docon docon-exit-mode"></span></span>
+				<span>Exit editor mode</span>
+			</button>
+		</div>
+	</div>
+			<div data-main-column class="padding-sm padding-top-none padding-top-sm-tablet">
+				<div>
+					
+		<div id="article-header" class="background-color-body margin-bottom-xs display-none-print">
+			<div class="display-flex align-items-center justify-content-space-between">
+				
+		<details
+			id="article-header-breadcrumbs-overflow-popover"
+			class="popover"
+			data-for="article-header-breadcrumbs"
+		>
+			<summary
+				class="button button-clear button-primary button-sm inner-focus"
+				aria-label="All breadcrumbs"
+			>
+				<span class="icon">
+					<span class="docon docon-more"></span>
+				</span>
+			</summary>
+			<div id="article-header-breadcrumbs-overflow" class="popover-content padding-none"></div>
+		</details>
+
+		<bread-crumbs
+			id="article-header-breadcrumbs"
+			role="group"
+			aria-label="Breadcrumbs"
+			data-test-id="article-header-breadcrumbs"
+			class="overflow-hidden flex-grow-1 margin-right-sm margin-right-md-tablet margin-right-lg-desktop margin-left-negative-xxs padding-left-xxs"
+		></bread-crumbs>
+	 
+		<div
+			id="article-header-page-actions"
+			class="opacity-none margin-left-auto display-flex flex-wrap-no-wrap align-items-stretch"
+		>
+			
+		<button
+			class="button button-sm border-none inner-focus display-none-tablet flex-shrink-0 "
+			data-bi-name="ask-learn-assistant-entry"
+			data-test-id="ask-learn-assistant-modal-entry-mobile"
+			data-ask-learn-modal-entry
+			
+			type="button"
+			style="min-width: max-content;"
+			aria-expanded="false"
+			aria-label="Ask Learn"
+			hidden
+		>
+			<span class="icon font-size-lg" aria-hidden="true">
+				<span class="docon docon-chat-sparkle-fill gradient-ask-learn-logo"></span>
+			</span>
+		</button>
+		<button
+			class="button button-sm display-none display-inline-flex-tablet display-none-desktop flex-shrink-0 margin-right-xxs border-color-ask-learn "
+			data-bi-name="ask-learn-assistant-entry"
+			
+			data-test-id="ask-learn-assistant-modal-entry-tablet"
+			data-ask-learn-modal-entry
+			type="button"
+			style="min-width: max-content;"
+			aria-expanded="false"
+			hidden
+		>
+			<span class="icon font-size-lg" aria-hidden="true">
+				<span class="docon docon-chat-sparkle-fill gradient-ask-learn-logo"></span>
+			</span>
+			<span>Ask Learn</span>
+		</button>
+		<button
+			class="button button-sm display-none flex-shrink-0 display-inline-flex-desktop margin-right-xxs border-color-ask-learn "
+			data-bi-name="ask-learn-assistant-entry"
+			
+			data-test-id="ask-learn-assistant-flyout-entry"
+			data-ask-learn-flyout-entry
+			data-flyout-button="toggle"
+			type="button"
+			style="min-width: max-content;"
+			aria-expanded="false"
+			aria-controls="ask-learn-flyout"
+			hidden
+		>
+			<span class="icon font-size-lg" aria-hidden="true">
+				<span class="docon docon-chat-sparkle-fill gradient-ask-learn-logo"></span>
+			</span>
+			<span>Ask Learn</span>
+		</button>
+	 
+		<button
+			type="button"
+			id="ms--focus-mode-button"
+			data-focus-mode
+			data-bi-name="focus-mode-entry"
+			class="button button-sm flex-shrink-0 margin-right-xxs display-none display-inline-flex-desktop"
+		>
+			<span class="icon font-size-lg" aria-hidden="true">
+				<span class="docon docon-glasses"></span>
+			</span>
+			<span>Focus mode</span>
+		</button>
+	 
+
+			<details class="popover popover-right" id="article-header-page-actions-overflow">
+				<summary
+					class="justify-content-flex-start button button-clear button-sm button-primary inner-focus"
+					aria-label="More actions"
+					title="More actions"
+				>
+					<span class="icon" aria-hidden="true">
+						<span class="docon docon-more-vertical"></span>
+					</span>
+				</summary>
+				<div class="popover-content">
+					
+		<button
+			data-page-action-item="overflow-mobile"
+			type="button"
+			class="button-block button-sm inner-focus button button-clear display-none-tablet justify-content-flex-start text-align-left"
+			data-bi-name="contents-expand"
+			data-contents-button
+			data-popover-close
+		>
+			<span class="icon" aria-hidden="true"
+				><span class="docon docon-editor-list-bullet"></span
+			></span>
+			<span class="contents-expand-title">Table of contents</span>
+		</button>
+	 
+		<a
+			id="lang-link-overflow"
+			class="button-sm inner-focus button button-clear button-block justify-content-flex-start text-align-left"
+			data-bi-name="language-toggle"
+			data-page-action-item="overflow-all"
+			data-check-hidden="true"
+			data-read-in-link
+			href="#"
+			hidden
+		>
+			<span class="icon" aria-hidden="true" data-read-in-link-icon>
+				<span class="docon docon-locale-globe"></span>
+			</span>
+			<span data-read-in-link-text>Read in English</span>
+		</a>
+	 
+		<button
+			type="button"
+			class="collection button button-clear button-sm button-block justify-content-flex-start text-align-left inner-focus"
+			data-list-type="collection"
+			data-bi-name="collection"
+			data-page-action-item="overflow-all"
+			data-check-hidden="true"
+			data-popover-close
+		>
+			<span class="icon" aria-hidden="true">
+				<span class="docon docon-circle-addition"></span>
+			</span>
+			<span class="collection-status">Add</span>
+		</button>
+	
+					
+		<button
+			type="button"
+			class="collection button button-block button-clear button-sm justify-content-flex-start text-align-left inner-focus"
+			data-list-type="plan"
+			data-bi-name="plan"
+			data-page-action-item="overflow-all"
+			data-check-hidden="true"
+			data-popover-close
+			hidden
+		>
+			<span class="icon" aria-hidden="true">
+				<span class="docon docon-circle-addition"></span>
+			</span>
+			<span class="plan-status">Add to plan</span>
+		</button>
+	  
+		<a
+			data-contenteditbtn
+			class="button button-clear button-block button-sm inner-focus justify-content-flex-start text-align-left text-decoration-none"
+			data-bi-name="edit"
+			
+			href="https://github.com/dotnet/docs/blob/main/docs/csharp/fundamentals/coding-style/coding-conventions.md"
+			data-original_content_git_url="https://github.com/dotnet/docs/blob/live/docs/csharp/fundamentals/coding-style/coding-conventions.md"
+			data-original_content_git_url_template="{repo}/blob/{branch}/docs/csharp/fundamentals/coding-style/coding-conventions.md"
+			data-pr_repo=""
+			data-pr_branch=""
+		>
+			<span class="icon" aria-hidden="true">
+				<span class="docon docon-edit-outline"></span>
+			</span>
+			<span>Edit</span>
+		</a>
+	
+					
+		<hr class="margin-block-xxs" />
+		<h4 class="font-size-sm padding-left-xxs">Share via</h4>
+		
+					<a
+						class="button button-clear button-sm inner-focus button-block justify-content-flex-start text-align-left text-decoration-none share-facebook"
+						data-bi-name="facebook"
+						data-page-action-item="overflow-all"
+						href="#"
+					>
+						<span class="icon color-primary" aria-hidden="true">
+							<span class="docon docon-facebook-share"></span>
+						</span>
+						<span>Facebook</span>
+					</a>
+
+					<a
+						href="#"
+						class="button button-clear button-sm inner-focus button-block justify-content-flex-start text-align-left text-decoration-none share-twitter"
+						data-bi-name="twitter"
+						data-page-action-item="overflow-all"
+					>
+						<span class="icon color-text" aria-hidden="true">
+							<span class="docon docon-xlogo-share"></span>
+						</span>
+						<span>x.com</span>
+					</a>
+
+					<a
+						href="#"
+						class="button button-clear button-sm inner-focus button-block justify-content-flex-start text-align-left text-decoration-none share-linkedin"
+						data-bi-name="linkedin"
+						data-page-action-item="overflow-all"
+					>
+						<span class="icon color-primary" aria-hidden="true">
+							<span class="docon docon-linked-in-logo"></span>
+						</span>
+						<span>LinkedIn</span>
+					</a>
+					<a
+						href="#"
+						class="button button-clear button-sm inner-focus button-block justify-content-flex-start text-align-left text-decoration-none share-email"
+						data-bi-name="email"
+						data-page-action-item="overflow-all"
+					>
+						<span class="icon color-primary" aria-hidden="true">
+							<span class="docon docon-mail-message"></span>
+						</span>
+						<span>Email</span>
+					</a>
+			  
+	 
+		<hr class="margin-block-xxs" />
+		
+				<button
+					class="button button-block button-clear button-sm justify-content-flex-start text-align-left inner-focus"
+					type="button"
+					data-bi-name="copy-markdown"
+					data-page-action-item="overflow-all"
+					data-copy-markdown
+					data-copy-state="idle"
+					data-check-hidden="true"
+				>
+					<span class="icon color-primary" aria-hidden="true">
+						<span data-show-when="idle" class="docon docon-code-lang"></span>
+						<span data-show-when="loading" class="loader" hidden></span>
+						<span data-show-when="success" class="docon docon-check-mark" hidden></span>
+					</span>
+					<span>Copy Markdown</span>
+				</button>
+		   
+				<button
+					class="button button-block button-clear button-sm justify-content-flex-start text-align-left inner-focus"
+					type="button"
+					data-bi-name="print"
+					data-page-action-item="overflow-all"
+					data-popover-close
+					data-print-page
+					data-check-hidden="true"
+				>
+					<span class="icon color-primary" aria-hidden="true">
+						<span class="docon docon-print"></span>
+					</span>
+					<span>Print</span>
+				</button>
+		  
+	
+				</div>
+			</details>
+		</div>
+	
+			</div>
+		</div>
+	  
+		<!-- privateUnauthorizedTemplate is hidden by default -->
+		<div unauthorized-private-section data-bi-name="permission-content-unauthorized-private" hidden>
+			<hr class="hr margin-top-xs margin-bottom-sm" />
+			<div class="notification notification-info">
+				<div class="notification-content">
+					<p class="margin-top-none notification-title">
+						<span class="icon" aria-hidden="true"
+							><span class="docon docon-exclamation-circle-solid"></span
+						></span>
+						<span>Note</span>
+					</p>
+					<p class="margin-top-none authentication-determined not-authenticated">
+						Access to this page requires authorization. You can try <a class="docs-sign-in" href="#" data-bi-name="permission-content-sign-in">signing in</a> or <a  class="docs-change-directory" data-bi-name="permisson-content-change-directory">changing directories</a>.
+					</p>
+					<p class="margin-top-none authentication-determined authenticated">
+						Access to this page requires authorization. You can try <a class="docs-change-directory" data-bi-name="permisson-content-change-directory">changing directories</a>.
+					</p>
+				</div>
+			</div>
+		</div>
+	
+					<div class="content"><h1 id="common-c-code-conventions">Common C# code conventions</h1></div>
+					
+		<div
+			id="article-metadata"
+			data-bi-name="article-metadata"
+			data-test-id="article-metadata"
+			class="page-metadata-container display-flex gap-xxs justify-content-space-between align-items-center flex-wrap-wrap"
+		>
+			 
+				<div
+					id="user-feedback"
+					class="margin-block-xxs display-none display-none-print"
+					hidden
+					data-hide-on-archived
+				>
+					
+		<button
+			id="user-feedback-button"
+			data-test-id="conceptual-feedback-button"
+			class="button button-sm button-clear button-primary display-none"
+			type="button"
+			data-bi-name="user-feedback-button"
+			data-user-feedback-button
+			hidden
+		>
+			<span class="icon" aria-hidden="true">
+				<span class="docon docon-like"></span>
+			</span>
+			<span>Feedback</span>
+		</button>
+	
+				</div>
+		  
+		</div>
+	 
+		<div data-id="ai-summary" class="display-none-print">
+			<div id="ms--ai-summary-cta" class="margin-top-xs display-flex align-items-center">
+				<span class="icon" aria-hidden="true">
+					<span class="docon docon-sparkle-fill gradient-text-vivid"></span>
+				</span>
+				<button
+					id="ms--ai-summary"
+					type="button"
+					class="tag tag-sm tag-suggestion margin-left-xxs"
+					data-test-id="ai-summary-cta"
+					data-bi-name="ai-summary-cta"
+					data-an="ai-summary"
+				>
+					<span class="ai-summary-cta-text">
+						Summarize this article for me
+					</span>
+				</button>
+			</div>
+			<!-- Slot where the client will render the summary card after the user clicks the CTA -->
+			<div id="ms--ai-summary-header" class="margin-top-xs"></div>
+		</div>
+	 
+		<nav
+			id="center-doc-outline"
+			class="doc-outline is-hidden-desktop display-none-print margin-bottom-sm"
+			data-bi-name="intopic toc"
+			aria-label="In this article"
+		>
+			<h2 id="ms--in-this-article" class="title is-6 margin-block-xs">
+				In this article
+			</h2>
+		</nav>
+	
+					<div class="content"><p>Coding conventions are essential for maintaining code readability, consistency, and collaboration within a development team. Code that follows industry practices and established guidelines is easier to understand, maintain, and extend. Most projects enforce a consistent style through code conventions. The <a href="https://github.com/dotnet/docs" data-linktype="external"><code>dotnet/docs</code></a> and <a href="https://github.com/dotnet/samples" data-linktype="external"><code>dotnet/samples</code></a> projects are no exception. In this series of articles, you learn our coding conventions and the tools we use to enforce them. You can take our conventions as-is, or modify them to suit your team's needs.</p>
+<p>We chose our conventions based on the following goals:</p>
+<ol>
+<li><em>Correctness</em>: Our samples are copied and pasted into your applications. We expect that, so we need to make code that's resilient and correct, even after multiple edits.</li>
+<li><em>Teaching</em>: The purpose of our samples is to teach all of .NET and C#. For that reason, we don't place restrictions on any language feature or API. Instead, those samples teach when a feature is a good choice.</li>
+<li><em>Consistency</em>: Readers expect a consistent experience across our content. All samples should conform to the same style.</li>
+<li><em>Adoption</em>: We aggressively update our samples to use new language features. That practice raises awareness of new features, and makes them more familiar to all C# developers.</li>
+</ol>
+<div class="IMPORTANT">
+<p>Important</p>
+<p>These guidelines are used by Microsoft to develop samples and documentation. They were adopted from the <a href="https://github.com/dotnet/runtime/blob/main/docs/coding-guidelines/coding-style.md" data-linktype="external">.NET Runtime, C# Coding Style</a> and <a href="https://github.com/dotnet/roslyn/blob/main/CONTRIBUTING.md#csharp" data-linktype="external">C# compiler (roslyn)</a> guidelines. We chose those guidelines because of their adoption over several years of Open Source development. These guidelines help community members participate in the runtime and compiler projects. They're meant to be an example of common C# conventions, and not an authoritative list (see <a href="../../../standard/design-guidelines/" data-linktype="relative-path">Framework Design Guidelines</a> for detailed guidelines).</p>
+<p>The <em>teaching</em> and <em>adoption</em> goals are why the docs coding convention differs from the runtime and compiler conventions. Both the runtime and compiler have strict performance metrics for hot paths. Many other applications don't. Our <em>teaching</em> goal mandates that we don't prohibit any construct. Instead, samples show when constructs should be used. We update samples more aggressively than most production applications do. Our <em>adoption</em> goal mandates that we show code you should write today, even when code written last year doesn't need changes.</p>
+</div>
+<p>This article explains our guidelines. The guidelines evolve over time, and you'll find samples that don't follow our guidelines. We welcome PRs that bring those samples into compliance, or issues that draw our attention to samples we should update. Our guidelines are Open Source and we welcome PRs and issues. However, if your submission would change these recommendations, open an issue for discussion first. You're welcome to use our guidelines, or adapt them to your needs.</p>
+<h2 id="tools-and-analyzers">Tools and analyzers</h2>
+<p>Tools can help your team enforce your conventions. You can enable <a href="../../../fundamentals/code-analysis/overview" data-linktype="relative-path">code analysis</a> to enforce the rules you prefer. You can also create an <a href="/en-us/visualstudio/ide/create-portable-custom-editor-options" data-linktype="absolute-path">editorconfig</a> so that Visual Studio automatically enforces your style guidelines. As a starting point, you can copy the <a href="https://github.com/dotnet/docs/blob/main/.editorconfig" data-linktype="external"><code>dotnet/docs</code> <em>.editorconfig</em></a> to use our style.</p>
+<p>These tools make it easier for your team to adopt your preferred guidelines. Visual Studio applies the rules in all <em>.editorconfig</em> files in scope to format your code. You can use multiple configurations to enforce corporate-wide conventions, team conventions, and even granular project conventions.</p>
+<p>Code analysis produces warnings and diagnostics when it detects rule violations. You configure the rules you want applied to your project. Then, each CI build notifies developers when they violate any of the rules.</p>
+<h3 id="diagnostic-ids">Diagnostic IDs</h3>
+<ul>
+<li><a href="../../roslyn-sdk/choosing-diagnostic-ids" data-linktype="relative-path">Choose appropriate diagnostic IDs</a> when building your own analyzers</li>
+</ul>
+<h2 id="language-guidelines">Language guidelines</h2>
+<p>The following sections describe practices that the .NET docs team follows to prepare code examples and samples. In general, follow these practices:</p>
+<ul>
+<li>Utilize modern language features and C# versions whenever possible.</li>
+<li>Avoid outdated language constructs.</li>
+<li>Only catch exceptions that can be properly handled; avoid catching general exceptions. For example, sample code shouldn't catch the <a href="/en-us/dotnet/api/system.exception" class="no-loc" data-linktype="absolute-path">System.Exception</a> type without an exception filter.</li>
+<li>Use specific exception types to provide meaningful error messages.</li>
+<li>Use LINQ queries and methods for collection manipulation to improve code readability.</li>
+<li>Use asynchronous programming with async and await for I/O-bound operations.</li>
+<li>Be cautious of deadlocks and use <a href="/en-us/dotnet/api/system.threading.tasks.task.configureawait" class="no-loc" data-linktype="absolute-path">Task.ConfigureAwait</a> when appropriate.</li>
+<li>Use the language keywords for data types instead of the runtime types. For example, use <code>string</code> instead of <a href="/en-us/dotnet/api/system.string" class="no-loc" data-linktype="absolute-path">System.String</a>, or <code>int</code> instead of <a href="/en-us/dotnet/api/system.int32" class="no-loc" data-linktype="absolute-path">System.Int32</a>. This recommendation includes using the types <code>nint</code> and <code>nuint</code>.</li>
+<li>Use <code>int</code> rather than unsigned types. The use of <code>int</code> is common throughout C#, and it's easier to interact with other libraries when you use <code>int</code>. Exceptions are for documentation specific to unsigned data types.</li>
+<li>Use <code>var</code> only when a reader can infer the type from the expression. Readers view our samples on the docs platform. They don't have hover or tool tips that display the type of variables.</li>
+<li>Write code with clarity and simplicity in mind.</li>
+<li>Avoid overly complex and convoluted code logic.</li>
+</ul>
+<p>More specific guidelines follow.</p>
+<h3 id="string-data">String data</h3>
+<ul>
+<li><p>Use <a href="../../language-reference/tokens/interpolated" data-linktype="relative-path">string interpolation</a> to concatenate short strings, as shown in the following code.</p>
+<pre><code class="lang-csharp">string displayName = $"{nameList[n].LastName}, {nameList[n].FirstName}";
+</code></pre>
+</li>
+<li><p>To append strings in loops, especially when you're working with large amounts of text, use a <a href="/en-us/dotnet/api/system.text.stringbuilder" class="no-loc" data-linktype="absolute-path">System.Text.StringBuilder</a> object.</p>
+<pre><code class="lang-csharp">var phrase = "lalalalalalalalalalalalalalalalalalalalalalalalalalalalalala";
+var manyPhrases = new StringBuilder();
+for (var i = 0; i &lt; 10000; i++)
+{
+    manyPhrases.Append(phrase);
+}
+//Console.WriteLine("tra" + manyPhrases);
+</code></pre>
+</li>
+<li><p>Prefer raw string literals to escape sequences or verbatim strings.</p>
+<pre><code class="lang-csharp">var message = """
+    This is a long message that spans across multiple lines.
+    It uses raw string literals. This means we can 
+    also include characters like \n and \t without escaping them.
+    """;
+</code></pre>
+</li>
+<li><p>Use the expression-based string interpolation rather than positional string interpolation.</p>
+<pre><code class="lang-csharp">// Execute the queries.
+Console.WriteLine("scoreQuery:");
+foreach (var student in scoreQuery)
+{
+    Console.WriteLine($"{student.Last} Score: {student.score}");
+}
+</code></pre>
+</li>
+</ul>
+<h3 id="constructors-and-initialization">Constructors and initialization</h3>
+<ul>
+<li><p>Use Pascal case for primary constructor parameters on record types:</p>
+<pre><code class="lang-csharp">public record Person(string FirstName, string LastName);
+</code></pre>
+</li>
+<li><p>Use camel case for primary constructor parameters on class and struct types.</p>
+</li>
+<li><p>Use <code>required</code> properties instead of constructors to force initialization of property values:</p>
+<pre><code class="lang-csharp">public class LabelledContainer&lt;T&gt;(string label)
+{
+    public string Label { get; } = label;
+    public required T Contents 
+    { 
+        get;
+        init;
+    }
+}
+</code></pre>
+</li>
+</ul>
+<h3 id="arrays-and-collections">Arrays and collections</h3>
+<ul>
+<li>Use collection expressions to initialize all collection types:</li>
+</ul>
+<pre><code class="lang-csharp">string[] vowels = [ "a", "e", "i", "o", "u" ];
+</code></pre>
+<h3 id="delegates">Delegates</h3>
+<ul>
+<li>Use <a href="../../../standard/delegates-lambdas" data-linktype="relative-path"><code>Func&lt;&gt;</code> and <code>Action&lt;&gt;</code></a> instead of defining delegate types. In a class, define the delegate method.</li>
+</ul>
+<pre><code class="lang-csharp">Action&lt;string&gt; actionExample1 = x =&gt; Console.WriteLine($"x is: {x}");
+
+Action&lt;string, string&gt; actionExample2 = (x, y) =&gt;
+    Console.WriteLine($"x is: {x}, y is {y}");
+
+Func&lt;string, int&gt; funcExample1 = x =&gt; Convert.ToInt32(x);
+
+Func&lt;int, int, int&gt; funcExample2 = (x, y) =&gt; x + y;
+</code></pre>
+<ul>
+<li>Call the method using the signature defined by the <code>Func&lt;&gt;</code> or <code>Action&lt;&gt;</code> delegate.</li>
+</ul>
+<pre><code class="lang-csharp">actionExample1("string for x");
+
+actionExample2("string for x", "string for y");
+
+Console.WriteLine($"The value is {funcExample1("1")}");
+
+Console.WriteLine($"The sum is {funcExample2(1, 2)}");
+</code></pre>
+<ul>
+<li><p>If you create instances of a delegate type, use the concise syntax. In a class, define the delegate type and a method that has a matching signature.</p>
+<pre><code class="lang-csharp">public delegate void Del(string message);
+
+public static void DelMethod(string str)
+{
+    Console.WriteLine($"DelMethod argument: {str}");
+}
+</code></pre>
+</li>
+<li><p>Create an instance of the delegate type and call it. The following declaration shows the condensed syntax.</p>
+<pre><code class="lang-csharp">Del exampleDel2 = DelMethod;
+exampleDel2("Hey");
+</code></pre>
+</li>
+<li><p>The following declaration uses the full syntax.</p>
+<pre><code class="lang-csharp">Del exampleDel1 = new Del(DelMethod);
+exampleDel1("Hey");
+</code></pre>
+</li>
+</ul>
+<h3 id="try-catch-and-using-statements-in-exception-handling"><code>try-catch</code> and <code>using</code> statements in exception handling</h3>
+<ul>
+<li><p>Use a <a href="../../language-reference/statements/exception-handling-statements#the-try-catch-statement" data-linktype="relative-path">try-catch</a> statement for most exception handling.</p>
+<pre><code class="lang-csharp">static double ComputeDistance(double x1, double y1, double x2, double y2)
+{
+    try
+    {
+        return Math.Sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
+    }
+    catch (System.ArithmeticException ex)
+    {
+        Console.WriteLine($"Arithmetic overflow or underflow: {ex}");
+        throw;
+    }
+}
+</code></pre>
+</li>
+<li><p>Simplify your code by using the C# <a href="../../language-reference/statements/using" data-linktype="relative-path">using statement</a>. If you have a <a href="../../language-reference/statements/exception-handling-statements#the-try-finally-statement" data-linktype="relative-path">try-finally</a> statement in which the only code in the <code>finally</code> block is a call to the <a href="/en-us/dotnet/api/system.idisposable.dispose" class="no-loc" data-linktype="absolute-path">Dispose</a> method, use a <code>using</code> statement instead.</p>
+<p>In the following example, the <code>try-finally</code> statement only calls <code>Dispose</code> in the <code>finally</code> block.</p>
+<pre><code class="lang-csharp">Font bodyStyle = new Font("Arial", 10.0f);
+try
+{
+    byte charset = bodyStyle.GdiCharSet;
+}
+finally
+{
+    bodyStyle?.Dispose();
+}
+</code></pre>
+<p>You can do the same thing with a <code>using</code> statement.</p>
+<pre><code class="lang-csharp">using (Font arial = new Font("Arial", 10.0f))
+{
+    byte charset2 = arial.GdiCharSet;
+}
+</code></pre>
+<p>Use the new <a href="../../language-reference/statements/using" data-linktype="relative-path"><code>using</code> syntax</a> that doesn't require braces:</p>
+<pre><code class="lang-csharp">using Font normalStyle = new Font("Arial", 10.0f);
+byte charset3 = normalStyle.GdiCharSet;
+</code></pre>
+</li>
+</ul>
+<h3 id="-and--operators"><code>&amp;&amp;</code> and <code>||</code> operators</h3>
+<ul>
+<li><p>Use <a href="../../language-reference/operators/boolean-logical-operators#conditional-logical-and-operator-" data-linktype="relative-path"><code>&amp;&amp;</code></a> instead of <a href="../../language-reference/operators/boolean-logical-operators#logical-and-operator-" data-linktype="relative-path"><code>&amp;</code></a> and <a href="../../language-reference/operators/boolean-logical-operators#conditional-logical-or-operator-" data-linktype="relative-path"><code>||</code></a> instead of <a href="../../language-reference/operators/boolean-logical-operators#logical-or-operator-" data-linktype="relative-path"><code>|</code></a> when you perform comparisons, as shown in the following example.</p>
+<pre><code class="lang-csharp">Console.Write("Enter a dividend: ");
+int dividend = Convert.ToInt32(Console.ReadLine());
+
+Console.Write("Enter a divisor: ");
+int divisor = Convert.ToInt32(Console.ReadLine());
+
+if ((divisor != 0) &amp;&amp; (dividend / divisor) is var result)
+{
+    Console.WriteLine($"Quotient: {result}");
+}
+else
+{
+    Console.WriteLine("Attempted division by 0 ends up here.");
+}
+</code></pre>
+</li>
+</ul>
+<p>If the divisor is 0, the second clause in the <code>if</code> statement would cause a run-time error. But the &amp;&amp; operator short-circuits when the first expression is false. That is, it doesn't evaluate the second expression. The &amp; operator would evaluate both, resulting in a run-time error when <code>divisor</code> is 0.</p>
+<h3 id="new-operator"><code>new</code> operator</h3>
+<ul>
+<li><p>Use one of the concise forms of object instantiation when the variable type matches the object type, as shown in the following declarations. This form isn't valid when the variable is an interface type, or a base class of the runtime type.</p>
+<pre><code class="lang-csharp">var firstExample = new ExampleClass();
+</code></pre>
+<pre><code class="lang-csharp">ExampleClass instance2 = new();
+</code></pre>
+<p>The preceding declarations are equivalent to the following declaration.</p>
+<pre><code class="lang-csharp">ExampleClass secondExample = new ExampleClass();
+</code></pre>
+</li>
+<li><p>Use object initializers to simplify object creation, as shown in the following example.</p>
+<pre><code class="lang-csharp">var thirdExample = new ExampleClass { Name = "Desktop", ID = 37414,
+    Location = "Redmond", Age = 2.3 };
+</code></pre>
+<p>The following example sets the same properties as the preceding example but doesn't use initializers.</p>
+<pre><code class="lang-csharp">var fourthExample = new ExampleClass();
+fourthExample.Name = "Desktop";
+fourthExample.ID = 37414;
+fourthExample.Location = "Redmond";
+fourthExample.Age = 2.3;
+</code></pre>
+</li>
+</ul>
+<h3 id="event-handling">Event handling</h3>
+<ul>
+<li>Use a lambda expression to define an event handler that you don't need to remove later:</li>
+</ul>
+<pre><code class="lang-csharp">public Form2()
+{
+    this.Click += (s, e) =&gt;
+        {
+            MessageBox.Show(
+                ((MouseEventArgs)e).Location.ToString());
+        };
+}
+</code></pre>
+<p>The lambda expression shortens the following traditional definition.</p>
+<pre><code class="lang-csharp">public Form1()
+{
+    this.Click += new EventHandler(Form1_Click);
+}
+
+void Form1_Click(object? sender, EventArgs e)
+{
+    MessageBox.Show(((MouseEventArgs)e).Location.ToString());
+}
+</code></pre>
+<h3 id="static-members">Static members</h3>
+<p>Call <a href="../../language-reference/keywords/static" data-linktype="relative-path">static</a> members by using the class name: <em>ClassName.StaticMember</em>. This practice makes code more readable by making static access clear. Don't qualify a static member defined in a base class with the name of a derived class. While that code compiles, the code readability is misleading, and the code might break in the future if you add a static member with the same name to the derived class.</p>
+<h3 id="linq-queries">LINQ queries</h3>
+<ul>
+<li><p>Use meaningful names for query variables. The following example uses <code>seattleCustomers</code> for customers who are located in Seattle.</p>
+<pre><code class="lang-csharp">var seattleCustomers = from customer in Customers
+                       where customer.City == "Seattle"
+                       select customer.Name;
+</code></pre>
+</li>
+<li><p>Use aliases to make sure that property names of anonymous types are correctly capitalized, using Pascal casing.</p>
+<pre><code class="lang-csharp">var localDistributors =
+    from customer in Customers
+    join distributor in Distributors on customer.City equals distributor.City
+    select new { Customer = customer, Distributor = distributor };
+</code></pre>
+</li>
+<li><p>Rename properties when the property names in the result would be ambiguous. For example, if your query returns a customer name and a distributor name, instead of leaving them as a form of <code>Name</code> in the result, rename them to clarify <code>CustomerName</code> is the name of a customer, and <code>DistributorName</code> is the name of a distributor.</p>
+<pre><code class="lang-csharp">var localDistributors2 =
+    from customer in Customers
+    join distributor in Distributors on customer.City equals distributor.City
+    select new { CustomerName = customer.Name, DistributorName = distributor.Name };
+</code></pre>
+</li>
+<li><p>Use implicit typing in the declaration of query variables and range variables. This guidance on implicit typing in LINQ queries overrides the general rules for <a href="#implicitly-typed-local-variables" data-linktype="self-bookmark">implicitly typed local variables</a>. LINQ queries often use projections that create anonymous types. Other query expressions create results with nested generic types. Implicit typed variables are often more readable.</p>
+<pre><code class="lang-csharp">var seattleCustomers = from customer in Customers
+                       where customer.City == "Seattle"
+                       select customer.Name;
+</code></pre>
+</li>
+<li><p>Align query clauses under the <a href="../../language-reference/keywords/from-clause" data-linktype="relative-path"><code>from</code></a> clause, as shown in the previous examples.</p>
+</li>
+<li><p>Use <a href="../../language-reference/keywords/where-clause" data-linktype="relative-path"><code>where</code></a> clauses before other query clauses to ensure that later query clauses operate on the reduced, filtered set of data.</p>
+<pre><code class="lang-csharp">var seattleCustomers2 = from customer in Customers
+                        where customer.City == "Seattle"
+                        orderby customer.Name
+                        select customer;
+</code></pre>
+</li>
+<li><p>Access inner collections with multiple <code>from</code> clauses instead of a <a href="../../language-reference/keywords/join-clause" data-linktype="relative-path"><code>join</code></a> clause. For example, a collection of <code>Student</code> objects might each contain a collection of test scores. When the following query is executed, it returns each score that is over 90, along with the family name of the student who received the score.</p>
+<pre><code class="lang-csharp">var scoreQuery = from student in students
+                 from score in student.Scores
+                 where score &gt; 90
+                 select new { Last = student.LastName, score };
+</code></pre>
+</li>
+</ul>
+<h3 id="implicitly-typed-local-variables">Implicitly typed local variables</h3>
+<ul>
+<li><p>Use <a href="../../programming-guide/classes-and-structs/implicitly-typed-local-variables" data-linktype="relative-path">implicit typing</a> for local variables when the type of the variable is obvious from the right side of the assignment.</p>
+<pre><code class="lang-csharp">var message = "This is clearly a string.";
+var currentTemperature = 27;
+</code></pre>
+</li>
+<li><p>Don't use <a href="../../language-reference/statements/declarations#implicitly-typed-local-variables" data-linktype="relative-path">var</a> when the type isn't apparent from the right side of the assignment. Don't assume the type is clear from a method name. A variable type is considered clear if it's a <code>new</code> operator, an explicit cast, or assignment to a literal value.</p>
+<pre><code class="lang-csharp">int numberOfIterations = Convert.ToInt32(Console.ReadLine());
+int currentMaximum = ExampleClass.ResultSoFar();
+</code></pre>
+</li>
+<li><p>Don't use variable names to specify the type of the variable. It might not be correct. Instead, use the type to specify the type, and use the variable name to indicate the semantic information of the variable. The following example should use <code>string</code> for the type and something like <code>iterations</code> to indicate the meaning of the information read from the console.</p>
+<pre><code class="lang-csharp">var inputInt = Console.ReadLine();
+Console.WriteLine(inputInt);
+</code></pre>
+</li>
+<li><p>Avoid the use of <code>var</code> in place of <a href="../../language-reference/builtin-types/reference-types" data-linktype="relative-path">dynamic</a>. Use <code>dynamic</code> when you want run-time type inference. For more information, see <a href="../../advanced-topics/interop/using-type-dynamic" data-linktype="relative-path">Using type dynamic (C# Programming Guide)</a>.</p>
+</li>
+<li><p>Use implicit typing for the loop variable in <a href="../../language-reference/statements/iteration-statements#the-for-statement" data-linktype="relative-path"><code>for</code></a> loops.</p>
+<p>The following example uses implicit typing in a <code>for</code> statement.</p>
+<pre><code class="lang-csharp">var phrase = "lalalalalalalalalalalalalalalalalalalalalalalalalalalalalala";
+var manyPhrases = new StringBuilder();
+for (var i = 0; i &lt; 10000; i++)
+{
+    manyPhrases.Append(phrase);
+}
+//Console.WriteLine("tra" + manyPhrases);
+</code></pre>
+</li>
+<li><p>Don't use implicit typing to determine the type of the loop variable in <a href="../../language-reference/statements/iteration-statements#the-foreach-statement" data-linktype="relative-path"><code>foreach</code></a> loops. In most cases, the type of elements in the collection isn't immediately obvious. The collection's name shouldn't be solely relied upon for inferring the type of its elements.</p>
+<p>The following example uses explicit typing in a <code>foreach</code> statement.</p>
+<pre><code class="lang-csharp">foreach (char ch in laugh)
+{
+    if (ch == 'h')
+    {
+        Console.Write("H");
+    }
+    else
+    {
+        Console.Write(ch);
+    }
+}
+Console.WriteLine();
+</code></pre>
+</li>
+<li><p>use implicit type for the result sequences in LINQ queries. The section on <a href="#linq-queries" data-linktype="self-bookmark">LINQ</a> explains that many LINQ queries result in anonymous types where implicit types must be used. Other queries result in nested generic types where <code>var</code> is more readable.</p>
+<div class="NOTE">
+<p>Note</p>
+<p>Be careful not to accidentally change a type of an element of the iterable collection. For example, it's easy to switch from <a href="/en-us/dotnet/api/system.linq.iqueryable" class="no-loc" data-linktype="absolute-path">System.Linq.IQueryable</a> to <a href="/en-us/dotnet/api/system.collections.ienumerable" class="no-loc" data-linktype="absolute-path">System.Collections.IEnumerable</a> in a <code>foreach</code> statement, which changes the execution of a query.</p>
+</div>
+</li>
+</ul>
+<p>Some of our samples explain the <em>natural type</em> of an expression. Those samples must use <code>var</code> so that the compiler picks the natural type. Even though those examples are less obvious, the use of <code>var</code> is required for the sample. The text should explain the behavior.</p>
+<h3 id="file-scoped-namespace-declarations">File scoped namespace declarations</h3>
+<p>Most code files declare a single namespace. Therefore, our examples should use the file scoped namespace declarations:</p>
+<pre><code class="lang-csharp">namespace MySampleCode;
+</code></pre>
+<h3 id="place-the-using-directives-outside-the-namespace-declaration">Place the using directives outside the namespace declaration</h3>
+<p>When a <code>using</code> directive is outside a namespace declaration, that imported namespace is its fully qualified name. The fully qualified name is clearer. When the <code>using</code> directive is inside the namespace, it could be either relative to that namespace, or its fully qualified name.</p>
+<pre><code class="lang-csharp">using Azure;
+
+namespace CoolStuff.AwesomeFeature
+{
+    public class Awesome
+    {
+        public void Stuff()
+        {
+            WaitUntil wait = WaitUntil.Completed;
+            // ...
+        }
+    }
+}
+</code></pre>
+<p>Assuming there's a reference (direct, or indirect) to the <a href="/en-us/dotnet/api/azure.waituntil" class="no-loc" data-linktype="absolute-path">WaitUntil</a> class.</p>
+<p>Now, let's change it slightly:</p>
+<pre><code class="lang-csharp">namespace CoolStuff.AwesomeFeature
+{
+    using Azure;
+
+    public class Awesome
+    {
+        public void Stuff()
+        {
+            WaitUntil wait = WaitUntil.Completed;
+            // ...
+        }
+    }
+}
+</code></pre>
+<p>And it compiles today. And tomorrow. But then sometime next week the preceding (untouched) code fails with two errors:</p>
+<pre><code class="lang-console">- error CS0246: The type or namespace name 'WaitUntil' could not be found (are you missing a using directive or an assembly reference?)
+- error CS0103: The name 'WaitUntil' does not exist in the current context
+</code></pre>
+<p>One of the dependencies introduced this class in a namespace then ends with <code>.Azure</code>:</p>
+<pre><code class="lang-csharp">namespace CoolStuff.Azure
+{
+    public class SecretsManagement
+    {
+        public string FetchFromKeyVault(string vaultId, string secretId) { return null; }
+    }
+}
+</code></pre>
+<p>A <code>using</code> directive placed inside a namespace is context-sensitive and complicates name resolution. In this example, it's the first namespace that it finds.</p>
+<ul>
+<li><code>CoolStuff.AwesomeFeature.Azure</code></li>
+<li><code>CoolStuff.Azure</code></li>
+<li><code>Azure</code></li>
+</ul>
+<p>Adding a new namespace that matches either <code>CoolStuff.Azure</code> or <code>CoolStuff.AwesomeFeature.Azure</code> would match before the global <code>Azure</code> namespace. You could resolve it by adding the <code>global::</code> modifier to the <code>using</code> declaration. However, it's easier to place <code>using</code> declarations outside the namespace instead.</p>
+<pre><code class="lang-csharp">namespace CoolStuff.AwesomeFeature
+{
+    using global::Azure;
+
+    public class Awesome
+    {
+        public void Stuff()
+        {
+            WaitUntil wait = WaitUntil.Completed;
+            // ...
+        }
+    }
+}
+</code></pre>
+<h2 id="style-guidelines">Style guidelines</h2>
+<p>In general, use the following format for code samples:</p>
+<ul>
+<li>Use four spaces for indentation. Don't use tab characters.</li>
+<li>Align code consistently to improve readability.</li>
+<li>Limit lines to 65 characters to enhance code readability on docs, especially on mobile screens.</li>
+<li>Improve clarity and user experience by breaking long statements into multiple lines.</li>
+<li>Use the "Allman" style for braces: open and closing brace its own new line. Braces line up with current indentation level.</li>
+<li>Line breaks should occur before binary operators, if necessary.</li>
+</ul>
+<h3 id="comment-style">Comment style</h3>
+<ul>
+<li><p>Use single-line comments (<code>//</code>) for brief explanations.</p>
+</li>
+<li><p>Avoid multi-line comments (<code>/* */</code>) for longer explanations.<br>Comments in the code samples aren't localized. That means explanations embedded in the code aren't translated. Longer, explanatory text should be placed in the companion article, so that it can be localized.</p>
+</li>
+<li><p>For describing methods, classes, fields, and all public members use <a href="../../language-reference/xmldoc/" data-linktype="relative-path">XML comments</a>.</p>
+</li>
+<li><p>Place the comment on a separate line, not at the end of a line of code.</p>
+</li>
+<li><p>Begin comment text with an uppercase letter.</p>
+</li>
+<li><p>End comment text with a period.</p>
+</li>
+<li><p>Insert one space between the comment delimiter (<code>//</code>) and the comment text, as shown in the following example.</p>
+<pre><code class="lang-csharp">// The following declaration creates a query. It does not run
+// the query.
+</code></pre>
+</li>
+</ul>
+<h3 id="layout-conventions">Layout conventions</h3>
+<p>Good layout uses formatting to emphasize the structure of your code and to make the code easier to read. Microsoft examples and samples conform to the following conventions:</p>
+<ul>
+<li><p>Use the default Code Editor settings (smart indenting, four-character indents, tabs saved as spaces). For more information, see <a href="/en-us/visualstudio/ide/reference/options-text-editor-csharp-formatting" data-linktype="absolute-path">Options, Text Editor, C#, Formatting</a>.</p>
+</li>
+<li><p>Write only one statement per line.</p>
+</li>
+<li><p>Write only one declaration per line.</p>
+</li>
+<li><p>If continuation lines aren't indented automatically, indent them one tab stop (four spaces).</p>
+</li>
+<li><p>Add at least one blank line between method definitions and property definitions.</p>
+</li>
+<li><p>Use parentheses to make clauses in an expression apparent, as shown in the following code.</p>
+<pre><code class="lang-csharp">if ((startX &gt; endX) &amp;&amp; (startX &gt; previousX))
+{
+    // Take appropriate action.
+}
+</code></pre>
+</li>
+</ul>
+<p>Exceptions are when the sample explains operator or expression precedence.</p>
+<h2 id="security">Security</h2>
+<p>Follow the guidelines in <a href="../../../standard/security/secure-coding-guidelines" data-linktype="relative-path">Secure Coding Guidelines</a>.</p>
+</div>
+					
+		<div
+			id="ms--inline-notifications"
+			class="margin-block-xs"
+			data-bi-name="inline-notification"
+		></div>
+	 
+		<div
+			id="assertive-live-region"
+			role="alert"
+			aria-live="assertive"
+			class="visually-hidden"
+			aria-relevant="additions"
+			aria-atomic="true"
+		></div>
+		<div
+			id="polite-live-region"
+			role="status"
+			aria-live="polite"
+			class="visually-hidden"
+			aria-relevant="additions"
+			aria-atomic="true"
+		></div>
+	
+					
+			
+		<!-- feedback section -->
+		<section
+			class="feedback-section position-relative margin-top-lg border border-radius padding-xxs display-none-print"
+			data-bi-name="open-source-feedback-section"
+			data-open-source-feedback-section
+			hidden
+		>
+			<div class="display-flex flex-direction-column flex-direction-row-tablet">
+				<div
+					class="width-450-tablet padding-inline-xs padding-inline-xs-tablet padding-top-xs padding-bottom-sm padding-top-xs-tablet background-color-body-medium"
+				>
+					<div class="display-flex flex-direction-column">
+						<div class="padding-bottom-xxs">
+							<span class="icon margin-right-xxs" aria-hidden="true">
+								<span class="docon docon-brand-github"></span>
+							</span>
+							<span class="font-weight-semibold">
+								Collaborate with us on GitHub
+							</span>
+						</div>
+						<span class="line-height-normal">
+							The source for this content can be found on GitHub, where you can also create and review issues and pull requests. For more information, see <a href="https://learn.microsoft.com/contribute/content/dotnet/dotnet-contribute">our contributor guide</a>.
+						</span>
+					</div>
+				</div>
+				<div
+					class="display-flex gap-xs width-full-tablet flex-direction-column padding-xs justify-content-space-evenly"
+				>
+					<div class="media">
+						
+					<div class="media-left">
+						<div class="image image-36x36" hidden data-open-source-image-container>
+							<img
+								class="theme-display is-light"
+								src="https://learn.microsoft.com/media/logos/logo_net.svg"
+								aria-hidden="true"
+								data-open-source-image-light
+							/>
+							<img
+								class="theme-display is-dark is-high-contrast"
+								src="https://learn.microsoft.com/media/logos/logo_net.svg"
+								aria-hidden="true"
+								data-open-source-image-dark
+							/>
+						</div>
+					</div>
+			  
+
+						<div class="media-content">
+							<p
+								class="font-size-xl font-weight-semibold margin-bottom-xxs"
+								data-open-source-product-title
+							>
+								.NET
+							</p>
+							<div class="display-flex gap-xs flex-direction-column">
+								<p class="line-height-normal" data-open-source-product-description></p>
+								<div class="display-flex gap-xs flex-direction-column">
+									<a href="#" data-github-link>
+										<span class="icon margin-right-xxs" aria-hidden="true">
+											<span class="docon docon-bug"></span>
+										</span>
+										<span>Open a documentation issue</span>
+									</a>
+									<a
+										href="https://aka.ms/feedback/report?space=61"
+										class="display-block margin-top-auto font-size-md"
+										data-feedback-product-url
+									>
+										<span class="icon margin-right-xxs" aria-hidden="true">
+											<span class="docon docon-feedback"></span>
+										</span>
+										<span>Provide product feedback</span>
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- end feedback section -->
+	
+			
+		<!-- feedback section -->
+		<section
+			id="site-user-feedback-footer"
+			class="font-size-sm margin-top-md display-none-print display-none-desktop"
+			data-test-id="site-user-feedback-footer"
+			data-bi-name="site-feedback-section"
+		>
+			<hr class="hr" />
+			<h2 id="ms--feedback" class="title is-3">Feedback</h2>
+			<div class="display-flex flex-wrap-wrap align-items-center">
+				<p class="font-weight-semibold margin-xxs margin-left-none">
+					Was this page helpful?
+				</p>
+				<div class="buttons">
+					<button
+						class="thumb-rating-button like button button-primary button-sm"
+						data-test-id="footer-rating-yes"
+						data-binary-rating-response="rating-yes"
+						type="button"
+						title="This article is helpful"
+						data-bi-name="button-rating-yes"
+						aria-pressed="false"
+					>
+						<span class="icon" aria-hidden="true">
+							<span class="docon docon-like"></span>
+						</span>
+						<span>Yes</span>
+					</button>
+					<button
+						class="thumb-rating-button dislike button button-primary button-sm"
+						id="standard-rating-no-button"
+						hidden
+						data-test-id="footer-rating-no"
+						data-binary-rating-response="rating-no"
+						type="button"
+						title="This article is not helpful"
+						data-bi-name="button-rating-no"
+						aria-pressed="false"
+					>
+						<span class="icon" aria-hidden="true">
+							<span class="docon docon-dislike"></span>
+						</span>
+						<span>No</span>
+					</button>
+					<details
+						class="popover popover-top"
+						id="mobile-help-popover"
+						data-test-id="footer-feedback-popover"
+					>
+						<summary
+							class="thumb-rating-button dislike button button-primary button-sm"
+							data-test-id="details-footer-rating-no"
+							data-binary-rating-response="rating-no"
+							title="This article is not helpful"
+							data-bi-name="button-rating-no"
+							aria-pressed="false"
+							data-bi-an="feedback-unhelpful-popover"
+						>
+							<span class="icon" aria-hidden="true">
+								<span class="docon docon-dislike"></span>
+							</span>
+							<span>No</span>
+						</summary>
+						<div
+							class="popover-content width-200 width-300-tablet"
+							role="dialog"
+							aria-labelledby="popover-heading"
+							aria-describedby="popover-description"
+						>
+							<p id="popover-heading" class="font-size-lg margin-bottom-xxs font-weight-semibold">
+								Need help with this topic?
+							</p>
+							<p id="popover-description" class="font-size-sm margin-bottom-xs">
+								Want to try using Ask Learn to clarify or guide you through this topic?
+							</p>
+							
+		<div class="buttons flex-direction-row flex-wrap justify-content-center gap-xxs">
+			<div>
+		<button
+			class="button button-sm border inner-focus display-none margin-right-xxs"
+			data-bi-name="ask-learn-assistant-entry-troubleshoot"
+			data-test-id="ask-learn-assistant-modal-entry-mobile-feedback"
+			data-ask-learn-modal-entry-feedback
+			data-bi-an=feedback-unhelpful-popover
+			type="button"
+			style="min-width: max-content;"
+			aria-expanded="false"
+			aria-label="Ask Learn"
+			hidden
+		>
+			<span class="icon font-size-lg" aria-hidden="true">
+				<span class="docon docon-chat-sparkle-fill gradient-ask-learn-logo"></span>
+			</span>
+		</button>
+		<button
+			class="button button-sm display-inline-flex display-none-desktop flex-shrink-0 margin-right-xxs border-color-ask-learn margin-right-xxs"
+			data-bi-name="ask-learn-assistant-entry-troubleshoot"
+			data-bi-an=feedback-unhelpful-popover
+			data-test-id="ask-learn-assistant-modal-entry-tablet-feedback"
+			data-ask-learn-modal-entry-feedback
+			type="button"
+			style="min-width: max-content;"
+			aria-expanded="false"
+			hidden
+		>
+			<span class="icon font-size-lg" aria-hidden="true">
+				<span class="docon docon-chat-sparkle-fill gradient-ask-learn-logo"></span>
+			</span>
+			<span>Ask Learn</span>
+		</button>
+		<button
+			class="button button-sm display-none flex-shrink-0 display-inline-flex-desktop margin-right-xxs border-color-ask-learn margin-right-xxs"
+			data-bi-name="ask-learn-assistant-entry-troubleshoot"
+			data-bi-an=feedback-unhelpful-popover
+			data-test-id="ask-learn-assistant-flyout-entry-feedback"
+			data-ask-learn-flyout-entry-show-only
+			data-flyout-button="toggle"
+			type="button"
+			style="min-width: max-content;"
+			aria-expanded="false"
+			aria-controls="ask-learn-flyout"
+			hidden
+		>
+			<span class="icon font-size-lg" aria-hidden="true">
+				<span class="docon docon-chat-sparkle-fill gradient-ask-learn-logo"></span>
+			</span>
+			<span>Ask Learn</span>
+		</button>
+	</div>
+			<button
+				type="button"
+				class="button button-sm margin-right-xxs"
+				data-help-option="suggest-fix"
+				data-bi-name="feedback-suggest"
+				data-bi-an="feedback-unhelpful-popover"
+				data-test-id="suggest-fix"
+			>
+				<span class="icon" aria-hidden="true">
+					<span class="docon docon-feedback"></span>
+				</span>
+				<span> Suggest a fix? </span>
+			</button>
+		</div>
+	
+						</div>
+					</details>
+				</div>
+			</div>
+		</section>
+		<!-- end feedback section -->
+	
+		
+				</div>
+				
+		<div id="ms--additional-resources-mobile" class="display-none-print">
+			<hr class="hr" hidden />
+			<h2 id="ms--additional-resources-mobile-heading" class="title is-3" hidden>
+				Additional resources
+			</h2>
+			
+		<section
+			id="right-rail-recommendations-mobile"
+			class=""
+			data-bi-name="recommendations"
+			hidden
+		></section>
+	 
+		<section
+			id="right-rail-training-mobile"
+			class=""
+			data-bi-name="learning-resource-card"
+			hidden
+		></section>
+	 
+		<section
+			id="right-rail-events-mobile"
+			class=""
+			data-bi-name="events-card"
+			hidden
+		></section>
+	
+		</div>
+	 
+		<div
+			id="article-metadata-footer"
+			data-bi-name="article-metadata-footer"
+			data-test-id="article-metadata-footer"
+			class="page-metadata-container"
+		>
+			<hr class="hr" />
+			<ul class="metadata page-metadata" data-bi-name="page info" lang="en-us" dir="ltr">
+				<li class="visibility-hidden-visual-diff">
+			<span class="badge badge-sm text-wrap-pretty">
+				<span>Last updated on <local-time format="twoDigitNumeric"
+		datetime="2025-01-18T08:25:00.000Z"
+		data-article-date-source="calculated"
+		class="is-invisible"
+	>
+		2025-01-18
+	</local-time></span>
+			</span>
+		</li>
+			</ul>
+		</div>
+	
+			</div>
+			
+		<div
+			id="action-panel"
+			role="region"
+			aria-label="Action Panel"
+			class="action-panel"
+			tabindex="-1"
+		></div>
+	
+		
+				</main>
+				<aside
+					id="layout-body-aside"
+					class="layout-body-aside "
+					data-bi-name="aside"
+					aria-label="Additional resources"
+			  >
+					
+		<div
+			id="ms--additional-resources"
+			class="right-container padding-sm display-none display-block-desktop height-full"
+			data-bi-name="pageactions"
+		>
+			<div id="affixed-right-container" data-bi-name="right-column">
+				
+		<nav
+			id="side-doc-outline"
+			class="doc-outline border-bottom padding-bottom-xs margin-bottom-xs"
+			data-bi-name="intopic toc"
+			aria-label="In this article"
+		>
+			<h3>In this article</h3>
+		</nav>
+	
+				<!-- Feedback -->
+				
+		<section
+			id="ms--site-user-feedback-right-rail"
+			class="font-size-sm display-none-print"
+			data-test-id="site-user-feedback-right-rail"
+			data-bi-name="site-feedback-right-rail"
+		>
+			<p class="font-weight-semibold margin-bottom-xs">Was this page helpful?</p>
+			<div class="buttons">
+				<button
+					class="thumb-rating-button like button button-primary button-sm"
+					data-test-id="right-rail-rating-yes"
+					data-binary-rating-response="rating-yes"
+					type="button"
+					title="This article is helpful"
+					data-bi-name="button-rating-yes"
+					aria-pressed="false"
+				>
+					<span class="icon" aria-hidden="true">
+						<span class="docon docon-like"></span>
+					</span>
+					<span>Yes</span>
+				</button>
+				<button
+					class="thumb-rating-button dislike button button-primary button-sm"
+					id="right-rail-no-button"
+					hidden
+					data-test-id="right-rail-rating-no"
+					data-binary-rating-response="rating-no"
+					type="button"
+					title="This article is not helpful"
+					data-bi-name="button-rating-no"
+					aria-pressed="false"
+				>
+					<span class="icon" aria-hidden="true">
+						<span class="docon docon-dislike"></span>
+					</span>
+					<span>No</span>
+				</button>
+				<details class="popover popover-right" id="help-popover" data-test-id="feedback-popover">
+					<summary
+						tabindex="0"
+						class="thumb-rating-button dislike button button-primary button-sm"
+						data-test-id="details-right-rail-rating-no"
+						data-binary-rating-response="rating-no"
+						title="This article is not helpful"
+						data-bi-name="button-rating-no"
+						aria-pressed="false"
+						data-bi-an="feedback-unhelpful-popover"
+					>
+						<span class="icon" aria-hidden="true">
+							<span class="docon docon-dislike"></span>
+						</span>
+						<span>No</span>
+					</summary>
+					<div
+						class="popover-content width-200 width-300-tablet"
+						role="dialog"
+						aria-labelledby="popover-heading"
+						aria-describedby="popover-description"
+					>
+						<p
+							id="popover-heading-right-rail"
+							class="font-size-lg margin-bottom-xxs font-weight-semibold"
+						>
+							Need help with this topic?
+						</p>
+						<p id="popover-description-right-rail" class="font-size-sm margin-bottom-xs">
+							Want to try using Ask Learn to clarify or guide you through this topic?
+						</p>
+						
+		<div class="buttons flex-direction-row flex-wrap justify-content-center gap-xxs">
+			<div>
+		<button
+			class="button button-sm border inner-focus display-none margin-right-xxs"
+			data-bi-name="ask-learn-assistant-entry-troubleshoot"
+			data-test-id="ask-learn-assistant-modal-entry-mobile-feedback"
+			data-ask-learn-modal-entry-feedback
+			data-bi-an=feedback-unhelpful-popover
+			type="button"
+			style="min-width: max-content;"
+			aria-expanded="false"
+			aria-label="Ask Learn"
+			hidden
+		>
+			<span class="icon font-size-lg" aria-hidden="true">
+				<span class="docon docon-chat-sparkle-fill gradient-ask-learn-logo"></span>
+			</span>
+		</button>
+		<button
+			class="button button-sm display-inline-flex display-none-desktop flex-shrink-0 margin-right-xxs border-color-ask-learn margin-right-xxs"
+			data-bi-name="ask-learn-assistant-entry-troubleshoot"
+			data-bi-an=feedback-unhelpful-popover
+			data-test-id="ask-learn-assistant-modal-entry-tablet-feedback"
+			data-ask-learn-modal-entry-feedback
+			type="button"
+			style="min-width: max-content;"
+			aria-expanded="false"
+			hidden
+		>
+			<span class="icon font-size-lg" aria-hidden="true">
+				<span class="docon docon-chat-sparkle-fill gradient-ask-learn-logo"></span>
+			</span>
+			<span>Ask Learn</span>
+		</button>
+		<button
+			class="button button-sm display-none flex-shrink-0 display-inline-flex-desktop margin-right-xxs border-color-ask-learn margin-right-xxs"
+			data-bi-name="ask-learn-assistant-entry-troubleshoot"
+			data-bi-an=feedback-unhelpful-popover
+			data-test-id="ask-learn-assistant-flyout-entry-feedback"
+			data-ask-learn-flyout-entry-show-only
+			data-flyout-button="toggle"
+			type="button"
+			style="min-width: max-content;"
+			aria-expanded="false"
+			aria-controls="ask-learn-flyout"
+			hidden
+		>
+			<span class="icon font-size-lg" aria-hidden="true">
+				<span class="docon docon-chat-sparkle-fill gradient-ask-learn-logo"></span>
+			</span>
+			<span>Ask Learn</span>
+		</button>
+	</div>
+			<button
+				type="button"
+				class="button button-sm margin-right-xxs"
+				data-help-option="suggest-fix"
+				data-bi-name="feedback-suggest"
+				data-bi-an="feedback-unhelpful-popover"
+				data-test-id="suggest-fix"
+			>
+				<span class="icon" aria-hidden="true">
+					<span class="docon docon-feedback"></span>
+				</span>
+				<span> Suggest a fix? </span>
+			</button>
+		</div>
+	
+					</div>
+				</details>
+			</div>
+		</section>
+	
+			</div>
+		</div>
+	
+			  </aside> <section
+					id="layout-body-flyout"
+					class="layout-body-flyout "
+					data-bi-name="flyout"
+			  >
+					 <div
+	class="height-full border-left background-color-body-medium"
+	id="ask-learn-flyout"
+></div>
+			  </section> <div class="layout-body-footer " data-bi-name="layout-footer">
+		<footer
+			id="footer"
+			data-test-id="footer"
+			data-bi-name="footer"
+			class="footer-layout has-padding has-default-focus border-top  uhf-container"
+			role="contentinfo"
+		>
+			<div class="display-flex gap-xs flex-wrap-wrap is-full-height padding-right-lg-desktop">
+				
+		<a
+			data-mscc-ic="false"
+			href="#"
+			data-bi-name="select-locale"
+			class="locale-selector-link flex-shrink-0 button button-sm button-clear external-link-indicator"
+			id=""
+			title=""
+			><span class="icon" aria-hidden="true"
+				><span class="docon docon-world"></span></span
+			><span class="local-selector-link-text">en-us</span></a
+		>
+	 <div class="ccpa-privacy-link" data-ccpa-privacy-link hidden>
+		
+		<a
+			data-mscc-ic="false"
+			href="https://aka.ms/yourcaliforniaprivacychoices"
+			data-bi-name="your-privacy-choices"
+			class="button button-sm button-clear flex-shrink-0 external-link-indicator"
+			id=""
+			title=""
+			>
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			viewBox="0 0 30 14"
+			xml:space="preserve"
+			height="16"
+			width="43"
+			aria-hidden="true"
+			focusable="false"
+		>
+			<path
+				d="M7.4 12.8h6.8l3.1-11.6H7.4C4.2 1.2 1.6 3.8 1.6 7s2.6 5.8 5.8 5.8z"
+				style="fill-rule:evenodd;clip-rule:evenodd;fill:#fff"
+			></path>
+			<path
+				d="M22.6 0H7.4c-3.9 0-7 3.1-7 7s3.1 7 7 7h15.2c3.9 0 7-3.1 7-7s-3.2-7-7-7zm-21 7c0-3.2 2.6-5.8 5.8-5.8h9.9l-3.1 11.6H7.4c-3.2 0-5.8-2.6-5.8-5.8z"
+				style="fill-rule:evenodd;clip-rule:evenodd;fill:#06f"
+			></path>
+			<path
+				d="M24.6 4c.2.2.2.6 0 .8L22.5 7l2.2 2.2c.2.2.2.6 0 .8-.2.2-.6.2-.8 0l-2.2-2.2-2.2 2.2c-.2.2-.6.2-.8 0-.2-.2-.2-.6 0-.8L20.8 7l-2.2-2.2c-.2-.2-.2-.6 0-.8.2-.2.6-.2.8 0l2.2 2.2L23.8 4c.2-.2.6-.2.8 0z"
+				style="fill:#fff"
+			></path>
+			<path
+				d="M12.7 4.1c.2.2.3.6.1.8L8.6 9.8c-.1.1-.2.2-.3.2-.2.1-.5.1-.7-.1L5.4 7.7c-.2-.2-.2-.6 0-.8.2-.2.6-.2.8 0L8 8.6l3.8-4.5c.2-.2.6-.2.9 0z"
+				style="fill:#06f"
+			></path>
+		</svg>
+	
+			<span>Your Privacy Choices</span></a
+		>
+	
+	</div>
+				<div class="flex-shrink-0">
+		<div class="dropdown has-caret-up">
+			<button
+				data-test-id="theme-selector-button"
+				class="dropdown-trigger button button-clear button-sm inner-focus theme-dropdown-trigger"
+				aria-controls="{{ themeMenuId }}"
+				aria-expanded="false"
+				title="Theme"
+				data-bi-name="theme"
+			>
+				<span class="icon" aria-hidden="true"><span class="docon docon-sun"></span></span>
+				<span>Theme</span>
+				<span class="icon expanded-indicator" aria-hidden="true">
+					<span class="docon docon-chevron-down-light"></span>
+				</span>
+			</button>
+			<div class="dropdown-menu" id="{{ themeMenuId }}" role="menu">
+				<ul class="theme-selector padding-xxs" data-test-id="theme-dropdown-menu">
+					<li class="theme display-block">
+						<button
+							class="button button-clear button-sm theme-control button-block justify-content-flex-start text-align-left"
+							data-theme-to="light"
+						>
+							<span class="theme-light margin-right-xxs">
+								<span
+									class="theme-selector-icon border display-inline-block has-body-background"
+									aria-hidden="true"
+								>
+									<svg class="svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 14">
+										<rect width="22" height="14" class="has-fill-body-background" />
+										<rect x="5" y="5" width="12" height="4" class="has-fill-secondary" />
+										<rect x="5" y="2" width="2" height="1" class="has-fill-secondary" />
+										<rect x="8" y="2" width="2" height="1" class="has-fill-secondary" />
+										<rect x="11" y="2" width="3" height="1" class="has-fill-secondary" />
+										<rect x="1" y="1" width="2" height="2" class="has-fill-secondary" />
+										<rect x="5" y="10" width="7" height="2" rx="0.3" class="has-fill-primary" />
+										<rect x="19" y="1" width="2" height="2" rx="1" class="has-fill-secondary" />
+									</svg>
+								</span>
+							</span>
+							<span role="menuitem"> Light </span>
+						</button>
+					</li>
+					<li class="theme display-block">
+						<button
+							class="button button-clear button-sm theme-control button-block justify-content-flex-start text-align-left"
+							data-theme-to="dark"
+						>
+							<span class="theme-dark margin-right-xxs">
+								<span
+									class="border theme-selector-icon display-inline-block has-body-background"
+									aria-hidden="true"
+								>
+									<svg class="svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 14">
+										<rect width="22" height="14" class="has-fill-body-background" />
+										<rect x="5" y="5" width="12" height="4" class="has-fill-secondary" />
+										<rect x="5" y="2" width="2" height="1" class="has-fill-secondary" />
+										<rect x="8" y="2" width="2" height="1" class="has-fill-secondary" />
+										<rect x="11" y="2" width="3" height="1" class="has-fill-secondary" />
+										<rect x="1" y="1" width="2" height="2" class="has-fill-secondary" />
+										<rect x="5" y="10" width="7" height="2" rx="0.3" class="has-fill-primary" />
+										<rect x="19" y="1" width="2" height="2" rx="1" class="has-fill-secondary" />
+									</svg>
+								</span>
+							</span>
+							<span role="menuitem"> Dark </span>
+						</button>
+					</li>
+					<li class="theme display-block">
+						<button
+							class="button button-clear button-sm theme-control button-block justify-content-flex-start text-align-left"
+							data-theme-to="high-contrast"
+						>
+							<span class="theme-high-contrast margin-right-xxs">
+								<span
+									class="border theme-selector-icon display-inline-block has-body-background"
+									aria-hidden="true"
+								>
+									<svg class="svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 14">
+										<rect width="22" height="14" class="has-fill-body-background" />
+										<rect x="5" y="5" width="12" height="4" class="has-fill-secondary" />
+										<rect x="5" y="2" width="2" height="1" class="has-fill-secondary" />
+										<rect x="8" y="2" width="2" height="1" class="has-fill-secondary" />
+										<rect x="11" y="2" width="3" height="1" class="has-fill-secondary" />
+										<rect x="1" y="1" width="2" height="2" class="has-fill-secondary" />
+										<rect x="5" y="10" width="7" height="2" rx="0.3" class="has-fill-primary" />
+										<rect x="19" y="1" width="2" height="2" rx="1" class="has-fill-secondary" />
+									</svg>
+								</span>
+							</span>
+							<span role="menuitem"> High contrast </span>
+						</button>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+			</div>
+			<ul class="links" data-bi-name="footerlinks">
+				<li class="manage-cookies-holder" hidden=""></li>
+				<li>
+		
+		<a
+			data-mscc-ic="false"
+			href="https://learn.microsoft.com/en-us/principles-for-ai-generated-content"
+			data-bi-name="aiDisclaimer"
+			class=" external-link-indicator"
+			id=""
+			title=""
+			>AI Disclaimer</a
+		>
+	
+	</li><li>
+		
+		<a
+			data-mscc-ic="false"
+			href="https://learn.microsoft.com/en-us/previous-versions/"
+			data-bi-name="archivelink"
+			class=" external-link-indicator"
+			id=""
+			title=""
+			>Previous Versions</a
+		>
+	
+	</li> <li>
+		
+		<a
+			data-mscc-ic="false"
+			href="https://techcommunity.microsoft.com/t5/microsoft-learn-blog/bg-p/MicrosoftLearnBlog"
+			data-bi-name="bloglink"
+			class=" external-link-indicator"
+			id=""
+			title=""
+			>Blog</a
+		>
+	
+	</li> <li>
+		
+		<a
+			data-mscc-ic="false"
+			href="https://learn.microsoft.com/en-us/contribute"
+			data-bi-name="contributorGuide"
+			class=" external-link-indicator"
+			id=""
+			title=""
+			>Contribute</a
+		>
+	
+	</li><li>
+		
+		<a
+			data-mscc-ic="false"
+			href="https://go.microsoft.com/fwlink/?LinkId=521839"
+			data-bi-name="privacy"
+			class=" external-link-indicator"
+			id=""
+			title=""
+			>Privacy</a
+		>
+	
+	</li><li>
+		
+		<a
+			data-mscc-ic="false"
+			href="https://go.microsoft.com/fwlink/?linkid=2259814"
+			data-bi-name="consumer-health-privacy"
+			class=" external-link-indicator"
+			id=""
+			title=""
+			>Consumer Health Privacy</a
+		>
+	
+	</li><li>
+		
+		<a
+			data-mscc-ic="false"
+			href="https://learn.microsoft.com/en-us/legal/termsofuse"
+			data-bi-name="termsofuse"
+			class=" external-link-indicator"
+			id=""
+			title=""
+			>Terms of Use</a
+		>
+	
+	</li><li>
+		
+		<a
+			data-mscc-ic="false"
+			href="https://www.microsoft.com/legal/intellectualproperty/Trademarks/"
+			data-bi-name="trademarks"
+			class=" external-link-indicator"
+			id=""
+			title=""
+			>Trademarks</a
+		>
+	
+	</li>
+				<li>&copy; Microsoft 2026</li>
+			</ul>
+		</footer>
+	</footer>
+			</body>
+		</html>

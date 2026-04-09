@@ -394,9 +394,22 @@ async function activate(context) {
         webviewView.webview.html = getHtml(webviewView.webview);
         webviewView.webview.onDidReceiveMessage(async (msg) => {
           try {
+            console.log('[SWEObeyMe] Received message:', msg);
+            
             if (msg.command === 'updateConfig') {
-              await vscode.workspace.getConfiguration().update(msg.key, msg.value, vscode.ConfigurationTarget.Global);
+              console.log('[SWEObeyMe] Updating config:', msg.key, '=', msg.value);
+              // Parse the full key path (e.g., 'sweObeyMe.enabled') into section and key
+              const parts = msg.key.split('.');
+              if (parts.length >= 2) {
+                const section = parts[0];
+                const key = parts.slice(1).join('.');
+                await vscode.workspace.getConfiguration(section).update(key, msg.value, vscode.ConfigurationTarget.Global);
+              } else {
+                // Fallback for top-level keys (shouldn't occur with our webview)
+                await vscode.workspace.getConfiguration().update(msg.key, msg.value, vscode.ConfigurationTarget.Global);
+              }
               webviewView.webview.postMessage({ command: 'configUpdated', key: msg.key });
+              console.log('[SWEObeyMe] Config updated successfully');
             } else if (msg.command === 'updateMcpConfig') {
               const configPath = path.join(os.homedir(), '.sweobeyme-config.json');
               let cfg = {};
@@ -405,9 +418,11 @@ async function activate(context) {
               fs.writeFileSync(configPath, JSON.stringify(cfg, null, 2));
               webviewView.webview.postMessage({ command: 'mcpConfigUpdated', key: msg.key });
             } else if (msg.command === 'openSettings') {
-              vscode.commands.executeCommand('workbench.action.openSettings', 'sweObeyMe');
+              console.log('[SWEObeyMe] Opening settings for sweObeyMe');
+              await vscode.commands.executeCommand('workbench.action.openSettings', 'sweObeyMe');
             }
           } catch (err) {
+            console.error('[SWEObeyMe] Error handling message:', err);
             webviewView.webview.postMessage({ command: 'error', message: err.message });
           }
         });
@@ -432,7 +447,7 @@ async function activate(context) {
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${cspStyle}; script-src ${cspScript};">
   <title>SWEObeyMe Settings</title>
-  <style nonce="${nonce}">
+  <style ${nonceAttr}>
     body{font-family:var(--vscode-font-family);color:var(--vscode-foreground);background:var(--vscode-sideBar-background);padding:12px;margin:0;font-size:13px}
     h2{font-size:14px;font-weight:600;margin:0 0 12px;color:var(--vscode-sideBarTitle-foreground)}
     .badge{display:inline-block;background:var(--vscode-badge-background);color:var(--vscode-badge-foreground);padding:1px 6px;border-radius:10px;font-size:11px;margin-left:6px}
@@ -461,7 +476,7 @@ async function activate(context) {
     <input type="checkbox" id="csharp" ${vscode.workspace.getConfiguration('sweObeyMe.csharpBridge').get('enabled', true) ? 'checked' : ''}>
   </div>
   <button id="openSettings">Open Full Settings</button>
-  <script nonce="${nonce}">
+  <script ${nonceAttr}>
     const vscApi=acquireVsCodeApi();
     function send(cmd,key,value){vscApi.postMessage({command:cmd,key:key,value:value});}
     
@@ -505,6 +520,7 @@ async function activate(context) {
     const useNonce = nonce && nonce.length > 0;
     const cspStyle = useNonce ? `'nonce-${nonce}'` : `'unsafe-inline'`;
     const cspScript = useNonce ? `'nonce-${nonce}'` : `'unsafe-inline'`;
+    const nonceAttr = useNonce ? `nonce="${nonce}"` : '';
     
     // Create HTML without inline event handlers to avoid TrustedScript violations
     const html = `<!DOCTYPE html>
@@ -514,7 +530,7 @@ async function activate(context) {
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${cspStyle}; script-src ${cspScript};">
   <title>C# Bridge Settings</title>
-  <style nonce="${nonce}">
+  <style ${nonceAttr}>
     body{font-family:var(--vscode-font-family);color:var(--vscode-foreground);background:var(--vscode-sideBar-background);padding:12px;margin:0;font-size:13px}
     h2{font-size:14px;font-weight:600;margin:0 0 12px}
     .row{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--vscode-panel-border)}
@@ -556,7 +572,7 @@ async function activate(context) {
     `<div class="row"><label for="detector_${d}">${d.replace(/_/g,' ')}</label><input type="checkbox" id="detector_${d}" ${detectors[d] !== false ? 'checked' : ''}></div>`
   ).join('')}
   <button id="openCSharpSettings">Open Full Settings</button>
-  <script nonce="${nonce}">
+  <script ${nonceAttr}>
     const vscApi=acquireVsCodeApi();
     function send(cmd,key,value){vscApi.postMessage({command:cmd,key:key,value:value});}
     
@@ -642,7 +658,7 @@ async function activate(context) {
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${cspStyle}; script-src ${cspScript};">
   <title>Admin Dashboard</title>
-  <style nonce="${nonce}">
+  <style ${nonceAttr}>
     body{font-family:var(--vscode-font-family);color:var(--vscode-foreground);background:var(--vscode-sideBar-background);padding:12px;margin:0;font-size:13px}
     h2{font-size:14px;font-weight:600;margin:0 0 12px}
     .section{font-size:11px;font-weight:700;color:var(--vscode-descriptionForeground);text-transform:uppercase;margin:12px 0 4px;letter-spacing:.5px}
@@ -701,7 +717,7 @@ async function activate(context) {
   </div>
   <button id="openAdminSettings">Open VS Code Settings</button>
   <div id="status"></div>
-  <script nonce="${nonce}">
+  <script ${nonceAttr}>
     const vscApi=acquireVsCodeApi();
     function send(cmd,key,value){vscApi.postMessage({command:cmd,key:key,value:value});document.getElementById('status').textContent='Saved \u2713';}
     

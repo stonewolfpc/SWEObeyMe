@@ -1,17 +1,227 @@
 {
-  "version": "1.0.0",
-  "lastUpdated": "2026-04-07T11:08:00.000Z",
+  "version": "2.0.0",
+  "lastUpdated": "2026-04-09T21:00:00.000Z",
+  "description": "Advanced math corpus for SWEObeyMe FDQ (Floating-Point Dynamic Quantization) system",
   "categories": [
     {
-      "name": "calculus",
-      "path": "math_corpus/calculus",
-      "description": "Calculus references including limits, derivatives, integrals, and multivariate calculus",
-      "documents": []
+      "name": "numerical_analysis",
+      "path": "math_corpus/numerical_analysis",
+      "description": "Floating-point arithmetic, numerical stability, error analysis for FDQ limits",
+      "documents": [
+        {
+          "filename": "goldberg_floating_point_arithmetic.pdf",
+          "title": "What Every Computer Scientist Should Know About Floating-Point Arithmetic",
+          "author": "David Goldberg",
+          "description": "Comprehensive guide to floating-point arithmetic, rounding, underflow/overflow, error accumulation",
+          "license": "ACM",
+          "topics": ["floating-point", "rounding", "error analysis", "numerical stability"]
+        },
+        {
+          "filename": "ieee_754_nvidia_gpu_floating_point.pdf",
+          "title": "Floating Point on NVIDIA GPU",
+          "author": "NVIDIA",
+          "description": "IEEE-754 implementation on NVIDIA GPUs, precision specs, tensor core behavior",
+          "license": "NVIDIA",
+          "topics": ["IEEE-754", "GPU precision", "tensor cores", "denormal handling"]
+        }
+      ]
     },
     {
       "name": "linear_algebra",
       "path": "math_corpus/linear_algebra",
-      "description": "Linear algebra references including matrices, vectors, linear transformations, and eigenvalues",
+      "description": "Advanced linear algebra for global similarity transforms and curvature preservation",
+      "documents": [
+        {
+          "filename": "linear_algebra_done_right_axler.pdf",
+          "title": "Linear Algebra Done Right",
+          "author": "Sheldon Axler",
+          "description": "Modern approach to linear algebra focusing on linear transformations and eigenvalues",
+          "license": "Springer Open Access",
+          "topics": ["eigenvalues", "eigenvectors", "linear transformations", "matrix norms"]
+        },
+        {
+          "filename": "numerical_linear_algebra_trefethen_bau.pdf",
+          "title": "Numerical Linear Algebra",
+          "author": "Lloyd N. Trefethen, David Bau",
+          "description": "Numerical methods for linear algebra, condition numbers, stability analysis",
+          "license": "SIAM",
+          "topics": ["numerical linear algebra", "condition numbers", "stability", "orthogonality"]
+        }
+      ]
+    },
+    {
+      "name": "optimization_theory",
+      "path": "math_corpus/optimization_theory",
+      "description": "Optimization theory for error propagation and stability analysis",
+      "documents": [
+        {
+          "filename": "convex_optimization_boyd_vandenberghe.pdf",
+          "title": "Convex Optimization",
+          "author": "Stephen Boyd, Lieven Vandenberghe",
+          "description": "Comprehensive treatment of convex optimization for error propagation and stability",
+          "license": "Cambridge Open Access",
+          "topics": ["convex optimization", "error propagation", "stability", "gradient descent"]
+        }
+      ]
+    },
+    {
+      "name": "gpu_architecture",
+      "path": "math_corpus/gpu_architecture",
+      "description": "GPU architecture whitepapers for per-architecture numeric floors and precision specs",
+      "documents": [
+        {
+          "filename": "cuda_programming_guide.pdf",
+          "title": "CUDA C++ Programming Guide",
+          "author": "NVIDIA",
+          "description": "Official CUDA programming guide with precision specifications",
+          "license": "NVIDIA",
+          "topics": ["CUDA", "GPU programming", "precision specs", "memory hierarchy"]
+        },
+        {
+          "filename": "nvidia_pascal_tuning_guide.pdf",
+          "title": "Pascal Tuning Guide",
+          "author": "NVIDIA",
+          "description": "Pascal architecture optimization and precision specifications",
+          "license": "NVIDIA",
+          "topics": ["Pascal", "GPU architecture", "optimization", "FP16/FP32"]
+        },
+        {
+          "filename": "nvidia_volta_architecture_whitepaper.pdf",
+          "title": "Volta Architecture Whitepaper",
+          "author": "NVIDIA",
+          "description": "Volta architecture with Tensor Core precision specifications",
+          "license": "NVIDIA",
+          "topics": ["Volta", "Tensor Cores", "FP16", "INT8", "architecture"]
+        },
+        {
+          "filename": "nvidia_turing_architecture_whitepaper.pdf",
+          "title": "Turing Architecture Whitepaper",
+          "author": "NVIDIA",
+          "description": "Turing architecture with RT cores and precision specifications",
+          "license": "NVIDIA",
+          "topics": ["Turing", "RT cores", "Tensor Cores", "precision"]
+        },
+        {
+          "filename": "nvidia_ampere_architecture_whitepaper.pdf",
+          "title": "Ampere Architecture Whitepaper",
+          "author": "NVIDIA",
+          "description": "Ampere architecture with advanced Tensor Core specifications",
+          "license": "NVIDIA",
+          "topics": ["Ampere", "Tensor Cores", "sparsity", "precision"]
+        },
+        {
+          "filename": "nvidia_ada_architecture_whitepaper.pdf",
+          "title": "Ada Lovelace Architecture Whitepaper",
+          "author": "NVIDIA",
+          "description": "Ada architecture with improved tensor operations and precision",
+          "license": "NVIDIA",
+          "topics": ["Ada", "Lovelace", "tensor operations", "precision"]
+        },
+        {
+          "filename": "nvidia_hopper_architecture_whitepaper.pdf",
+          "title": "Hopper Architecture Whitepaper",
+          "author": "NVIDIA",
+          "description": "Hopper H100 architecture with advanced precision specifications",
+          "license": "NVIDIA",
+          "topics": ["Hopper", "H100", "FP8", "transformer engine", "precision"]
+        }
+      ]
+    },
+    {
+      "name": "advanced_mathematical_analysis",
+      "path": "math_corpus/advanced_mathematical_analysis",
+      "description": "Real analysis and advanced calculus for curvature preservation and similarity transforms",
+      "documents": [
+        {
+          "filename": "understanding_analysis_abbott.pdf",
+          "title": "Understanding Analysis",
+          "author": "Stephen Abbott",
+          "description": "Introduction to real analysis for understanding smoothness and curvature",
+          "license": "Springer",
+          "topics": ["real analysis", "limits", "continuity", "differentiation", "integration"]
+        }
+      ]
+    },
+    {
+      "name": "information_theory",
+      "path": "math_corpus/information_theory",
+      "description": "Information theory for entropy, information preservation, and compression limits",
+      "documents": [
+        {
+          "filename": "elements_of_information_theory_cover_thomas.pdf",
+          "title": "Elements of Information Theory",
+          "author": "Thomas M. Cover, Joy A. Thomas",
+          "description": "Comprehensive information theory for quantization and compression",
+          "license": "Wiley",
+          "topics": ["entropy", "information theory", "compression", "quantization"]
+        }
+      ]
+    },
+    {
+      "name": "polynomial_theory",
+      "path": "math_corpus/polynomial_theory",
+      "description": "Polynomial approximation and quadratic forms for higher-order FDQ transforms",
+      "documents": [
+        {
+          "filename": "taylor_series_tutorial.pdf",
+          "title": "Taylor Series Tutorial",
+          "author": "Duke University",
+          "description": "Taylor series and approximation theory for error bounds",
+          "license": "Educational",
+          "topics": ["Taylor series", "approximation theory", "error bounds", "polynomial approximation"]
+        },
+        {
+          "filename": "introduction_to_quadratic_forms.pdf",
+          "title": "Introduction to Quadratic Forms",
+          "author": "University of British Columbia",
+          "description": "Quadratic forms theory for higher-order FDQ transforms",
+          "license": "Educational",
+          "topics": ["quadratic forms", "bilinear forms", "discriminants", "matrix theory"]
+        }
+      ]
+    },
+    {
+      "name": "quantization_theory",
+      "path": "math_corpus/quantization_theory",
+      "description": "Quantization theory for curvature-preserving quantization transforms",
+      "documents": [
+        {
+          "filename": "vector_quantization_signal_compression.pdf",
+          "title": "Vector Quantization and Signal Compression",
+          "author": "Allen Gersho, Robert M. Gray",
+          "description": "Comprehensive vector quantization theory for multi-stage FDQ",
+          "license": "Springer",
+          "topics": ["vector quantization", "signal compression", "multi-stage quantization", "distortion"]
+        }
+      ]
+    },
+    {
+      "name": "quantum_physics",
+      "path": "math_corpus/quantum_physics",
+      "description": "Quantum mechanics and advanced physics for mathematical foundations",
+      "documents": [
+        {
+          "filename": "quantum_mechanics_binney_skinner.pdf",
+          "title": "The Physics of Quantum Mechanics",
+          "author": "James Binney, David Skinner",
+          "description": "Comprehensive quantum mechanics for mathematical physics foundations",
+          "license": "Oxford University",
+          "topics": ["quantum mechanics", "wave functions", "operators", "Hilbert spaces"]
+        },
+        {
+          "filename": "quantum_mechanics_engineers.pdf",
+          "title": "Quantum Mechanics for Engineers",
+          "author": "Florida A&M University",
+          "description": "Applied quantum mechanics for engineering applications",
+          "license": "Educational",
+          "topics": ["quantum mechanics", "engineering applications", "wave-particle duality"]
+        }
+      ]
+    },
+    {
+      "name": "calculus",
+      "path": "math_corpus/calculus",
+      "description": "Calculus references including limits, derivatives, integrals, and multivariate calculus",
       "documents": []
     },
     {
@@ -83,8 +293,9 @@
   ],
   "documents": [],
   "metadata": {
-    "totalDocuments": 0,
-    "totalCategories": 13,
+    "totalDocuments": 17,
+    "totalCategories": 21,
+    "purpose": "SWEObeyMe FDQ (Floating-Point Dynamic Quantization) system mathematical foundations",
     "supportedLicenses": [
       "MIT",
       "Apache-2.0",
@@ -93,13 +304,22 @@
       "CC0",
       "Public Domain",
       "OpenStax",
-      "MIT OCW"
+      "MIT OCW",
+      "ACM",
+      "SIAM",
+      "Springer Open Access",
+      "Cambridge Open Access",
+      "NVIDIA",
+      "Educational",
+      "Wiley",
+      "Oxford University"
     ]
   },
   "instructions": {
     "addingDocuments": "Place open-license math references in the appropriate subfolder. Update this index.json with document metadata.",
-    "downloadingSources": "Download from MIT OCW, OpenStax, public domain sources, or university lecture notes with open licenses.",
+    "downloadingSources": "Download from MIT OCW, OpenStax, public domain sources, university lecture notes with open licenses, and vendor documentation.",
     "namingConvention": "Use clear filenames like: calculus_limits_openstax.pdf, linear_algebra_mit_ocw.pdf",
-    "licenseCompliance": "Only include documents with explicit open licenses or public domain status."
+    "licenseCompliance": "Only include documents with explicit open licenses, educational use permissions, or public domain status.",
+    "fdqFocus": "Prioritize resources that teach floating-point behavior, GPU precision, quantization theory, linear algebra, optimization, and error propagation for FDQ system development."
   }
 }

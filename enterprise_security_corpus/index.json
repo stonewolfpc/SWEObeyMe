@@ -1,0 +1,104 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2026-04-09T21:45:00.000Z",
+  "description": "Enterprise security documentation corpus for SWEObeyMe",
+  "purpose": "Provide comprehensive enterprise security documentation for SSO, RBAC, SCIM, compliance, and multi-tenant features",
+  "categories": [
+    {
+      "name": "sso_oauth",
+      "path": "enterprise_security_corpus/sso_oauth",
+      "description": "Single Sign-On (SSO) and OAuth 2.0 documentation",
+      "documents": [
+        {
+          "filename": "oauth_2.0_little_book.pdf",
+          "title": "The Little Book of OAuth 2.0 RFCs",
+          "author": "Aaron Parecki",
+          "description": "Comprehensive guide to OAuth 2.0 RFCs and specifications",
+          "license": "OAuth",
+          "topics": ["OAuth 2.0", "RFCs", "authentication", "authorization"],
+          "relevance": "Understanding OAuth 2.0 protocol for SSO implementation"
+        }
+      ]
+    },
+    {
+      "name": "rbac",
+      "path": "enterprise_security_corpus/rbac",
+      "description": "Role-Based Access Control (RBAC) documentation",
+      "documents": [
+        {
+          "filename": "rbac_auth0_guide.html",
+          "title": "Role-Based Access Control - Auth0 Docs",
+          "author": "Auth0",
+          "description": "Comprehensive RBAC implementation guide from Auth0",
+          "license": "Auth0",
+          "topics": ["RBAC", "access control", "permissions", "roles"],
+          "relevance": "Understanding RBAC patterns for enterprise access control"
+        }
+      ]
+    },
+    {
+      "name": "scim",
+      "path": "enterprise_security_corpus/scim",
+      "description": "SCIM (System for Cross-domain Identity Management) protocol documentation",
+      "documents": [
+        {
+          "filename": "scim_protocol_rfc7644.html",
+          "title": "RFC 7644 - SCIM Protocol",
+          "author": "IETF",
+          "description": "SCIM protocol specification RFC 7644",
+          "license": "IETF",
+          "topics": ["SCIM", "RFC 7644", "identity management", "provisioning"],
+          "relevance": "Understanding SCIM protocol for identity provisioning"
+        }
+      ]
+    },
+    {
+      "name": "compliance_standards",
+      "path": "enterprise_security_corpus/compliance_standards",
+      "description": "Compliance standards documentation (SOC2, GDPR, HIPAA)",
+      "documents": [
+        {
+          "filename": "gdpr_compliance_checklist.pdf",
+          "title": "GDPR Compliance Checklist",
+          "author": "LW",
+          "description": "Comprehensive GDPR compliance checklist and requirements",
+          "license": "LW",
+          "topics": ["GDPR", "compliance", "data protection", "privacy"],
+          "relevance": "Understanding GDPR compliance requirements for enterprise features"
+        }
+      ]
+    },
+    {
+      "name": "encryption",
+      "path": "enterprise_security_corpus/encryption",
+      "description": "Encryption standards and best practices",
+      "documents": []
+    },
+    {
+      "name": "multi_tenant",
+      "path": "enterprise_security_corpus/multi_tenant",
+      "description": "Multi-tenant architecture and isolation patterns",
+      "documents": []
+    }
+  ],
+  "metadata": {
+    "totalDocuments": 3,
+    "totalCategories": 6,
+    "supportedLicenses": ["OAuth", "Auth0", "IETF", "LW"],
+    "integrationStatus": {
+      "sso_oauth": "Partial - OAuth 2.0 guide downloaded",
+      "rbac": "Partial - RBAC guide downloaded",
+      "scim": "Partial - SCIM RFC downloaded",
+      "compliance_standards": "Partial - GDPR checklist downloaded",
+      "encryption": "Empty - Need encryption documentation",
+      "multi_tenant": "Empty - Need multi-tenant documentation"
+    }
+  },
+  "instructions": {
+    "addingDocuments": "Place resources in appropriate subdirectories. Update this index.json with document metadata including title, author, description, license, topics, and relevance.",
+    "downloadingSources": "Download from IETF RFCs, official OAuth documentation, compliance standard bodies, and reputable security resources. Prioritize official specifications and standards.",
+    "namingConvention": "Use clear, descriptive filenames with underscores: spec_name.pdf, guide_name.html",
+    "licenseCompliance": "Include license information for all resources. Prioritize official IETF, OAuth, and compliance standard documentation.",
+    "securityFocus": "Resources should enable SWEObeyMe to: (1) understand SSO/OAuth implementation patterns, (2) implement RBAC correctly, (3) support SCIM provisioning, (4) meet compliance standards (SOC2/GDPR/HIPAA), (5) implement encryption properly, (6) handle multi-tenant isolation."
+  }
+}

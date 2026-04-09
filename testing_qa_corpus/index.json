@@ -1,0 +1,60 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2026-04-09T21:45:00.000Z",
+  "description": "Testing and QA documentation corpus for SWEObeyMe",
+  "purpose": "Provide comprehensive testing and QA documentation for extension development",
+  "categories": [
+    {
+      "name": "testing_frameworks",
+      "path": "testing_qa_corpus/testing_frameworks",
+      "description": "JavaScript/TypeScript testing frameworks documentation",
+      "documents": [
+        {
+          "filename": "jest_framework_guide.html",
+          "title": "Getting Started with the Jest Framework",
+          "author": "Sauce Labs",
+          "description": "Comprehensive guide to Jest testing framework",
+          "license": "Sauce Labs",
+          "topics": ["Jest", "testing", "JavaScript", "TypeScript"],
+          "relevance": "Understanding Jest for extension testing"
+        }
+      ]
+    },
+    {
+      "name": "test_patterns",
+      "path": "testing_qa_corpus/test_patterns",
+      "description": "Testing patterns and best practices",
+      "documents": []
+    },
+    {
+      "name": "unit_testing",
+      "path": "testing_qa_corpus/unit_testing",
+      "description": "Unit testing strategies and techniques",
+      "documents": []
+    },
+    {
+      "name": "integration_testing",
+      "path": "testing_qa_corpus/integration_testing",
+      "description": "Integration testing strategies and techniques",
+      "documents": []
+    }
+  ],
+  "metadata": {
+    "totalDocuments": 1,
+    "totalCategories": 4,
+    "supportedLicenses": ["Sauce Labs"],
+    "integrationStatus": {
+      "testing_frameworks": "Partial - Jest guide downloaded",
+      "test_patterns": "Empty - Need testing patterns documentation",
+      "unit_testing": "Empty - Need unit testing documentation",
+      "integration_testing": "Empty - Need integration testing documentation"
+    }
+  },
+  "instructions": {
+    "addingDocuments": "Place resources in appropriate subdirectories. Update this index.json with document metadata including title, author, description, license, topics, and relevance.",
+    "downloadingSources": "Download from Jest documentation, testing framework sites, and reputable testing resources. Prioritize official documentation.",
+    "namingConvention": "Use clear, descriptive filenames with underscores: framework_name.html, pattern_name.md",
+    "licenseCompliance": "Include license information for all resources. Prioritize official documentation.",
+    "testingFocus": "Resources should enable SWEObeyMe to: (1) understand testing frameworks, (2) implement testing patterns, (3) write unit tests, (4) write integration tests, (5) follow testing best practices."
+  }
+}

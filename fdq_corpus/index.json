@@ -1,0 +1,319 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2026-04-09T21:30:00.000Z",
+  "description": "FDQ (Floating-Point Dynamic Quantization) Pipeline Resource Corpus for SWEObeyMe",
+  "purpose": "Provide comprehensive resources for understanding LLM architectures, quantization methods, model formats, GPU/CPU/RAM hardware limits, and inference engines to enable safe FDQ transforms and performance envelope reasoning.",
+  "categories": [
+    {
+      "name": "llm_architecture",
+      "path": "fdq_corpus/llm_architecture",
+      "description": "LLM architecture and mathematical foundations including transformers, attention mechanisms, positional encodings, normalization, and activation functions",
+      "documents": [
+        {
+          "filename": "attention_is_all_you_need.pdf",
+          "title": "Attention Is All You Need",
+          "author": "Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N. Gomez, Lukasz Kaiser, Illia Polosukhin",
+          "description": "Foundational transformer paper introducing self-attention mechanism, multi-head attention, encoder-decoder architecture, and position-wise feed-forward networks",
+          "license": "arXiv",
+          "topics": ["transformer", "self-attention", "multi-head attention", "encoder-decoder", "position encoding"],
+          "relevance": "Core architecture foundation for all modern LLMs"
+        },
+        {
+          "filename": "llama_2_paper.pdf",
+          "title": "Llama 2: Open Foundation and Fine-Tuned Chat Models",
+          "author": "Hugo Touvron, Thibaut Lavril, Giza Izacard, Xavier Martinet, Marie-Anne Lachaux, Timothée Lacroix, Zhiqiang Tang, Armand Joulin",
+          "description": "Meta's LLaMA 2 architecture paper covering pretraining, fine-tuning, RLHF, safety alignment, and performance benchmarks",
+          "license": "arXiv",
+          "topics": ["LLaMA 2", "pretraining", "fine-tuning", "RLHF", "safety alignment", "performance benchmarks"],
+          "relevance": "Understanding modern open-source LLM architecture and training methodology"
+        },
+        {
+          "filename": "mistral_7b_paper.pdf",
+          "title": "Mistral 7B",
+          "author": "Albert Q. Jiang, Sabrina J. Mielke, Timothée Lacroix, Guillaume Lample",
+          "description": "Mistral 7B architecture featuring grouped-query attention (GQA), sliding window attention (SWA), and efficient transformer design",
+          "license": "Apache 2.0",
+          "topics": ["Mistral", "grouped-query attention", "sliding window attention", "efficient transformer", "GQA", "SWA"],
+          "relevance": "Understanding efficient transformer architectures and attention optimizations"
+        },
+        {
+          "filename": "roformer_rotary_position_embeddings.pdf",
+          "title": "RoFormer: Enhanced Transformer with Rotary Position Embedding",
+          "author": "Jianlin Su, Yu Lu, Shengfeng Pan, Bo Wen, Yunfeng Liu",
+          "description": "Introduction of Rotary Position Embedding (RoPE) as an alternative to sinusoidal position encoding, with mathematical properties and performance analysis",
+          "license": "arXiv",
+          "topics": ["RoPE", "rotary position embedding", "position encoding", "transformer optimization"],
+          "relevance": "Understanding RoPE used in modern LLMs for positional encoding"
+        },
+        {
+          "filename": "alibi_attention_with_linear_biases.pdf",
+          "title": "Train Short, Test Long: Attention with Linear Biases Enables Input Length Extrapolation",
+          "author": "Ofir Press, Nitay Shirkey Bar, Omer Levy",
+          "description": "ALiBi (Attention with Linear Biases) method for enabling input length extrapolation without position embeddings",
+          "license": "arXiv",
+          "topics": ["ALiBi", "linear biases", "length extrapolation", "position encoding", "attention"],
+          "relevance": "Understanding alternative position encoding methods for longer context windows"
+        },
+        {
+          "filename": "rmsnorm_paper.pdf",
+          "title": "Root Mean Square Layer Normalization",
+          "author": "Biao Zhang, Rico Sennrich",
+          "description": "RMSNorm simplification of LayerNorm that removes mean-centering while maintaining performance, with 7%-64% speedup across models",
+          "license": "arXiv",
+          "topics": ["RMSNorm", "LayerNorm", "normalization", "training stability", "efficiency"],
+          "relevance": "Understanding normalization layers used in modern LLMs like LLaMA"
+        },
+        {
+          "filename": "gelu_activation_function.pdf",
+          "title": "Gaussian Error Linear Units (GELUs)",
+          "author": "Dan Hendrycks, Kevin Gimpel",
+          "description": "GELU activation function: x * Φ(x) where Φ is the standard Gaussian CDF, with performance improvements over ReLU and other activations",
+          "license": "arXiv",
+          "topics": ["GELU", "activation function", "nonlinearity", "Gaussian error", "performance"],
+          "relevance": "Understanding activation functions used in modern LLMs"
+        }
+      ]
+    },
+    {
+      "name": "quantization_formats",
+      "path": "fdq_corpus/quantization_formats",
+      "description": "Quantization methods and model format specifications including GGUF, GPTQ, AWQ, SmoothQuant, and other quantization schemes",
+      "documents": [
+        {
+          "filename": "gguf_format_specification.html",
+          "title": "GGUF File Format Specification",
+          "author": "llama.cpp community",
+          "description": "Official GGUF (Georgi Gerganov Universal Format) binary file format specification for quantized LLM models, including type definitions, header layout, metadata section, tensor info section, and data layout",
+          "license": "MIT",
+          "topics": ["GGUF", "file format", "quantization", "binary format", "tensor storage", "metadata"],
+          "relevance": "Understanding the primary format used by llama.cpp for quantized models"
+        },
+        {
+          "filename": "gptq_quantization_paper.pdf",
+          "title": "GPTQ: Accurate Post-Training Quantization for Generative Pre-trained Transformers",
+          "author": "Elias Frantar, Saleh Ashkboos, Torsten Hoefler, Dan Alistarh",
+          "description": "GPTQ one-shot quantization method using Hessian information to minimize quantization error, enabling 3-4 bit quantization of 175B parameter models",
+          "license": "arXiv",
+          "topics": ["GPTQ", "post-training quantization", "Hessian", "one-shot quantization", "accuracy preservation"],
+          "relevance": "Understanding GPTQ quantization method used for compressing LLMs"
+        },
+        {
+          "filename": "awq_quantization_paper.pdf",
+          "title": "AWQ: Activation-aware Weight Quantization for On-Device LLMs",
+          "author": "Linjie Li, Yuhao Li, Cheng Leng, et al.",
+          "description": "AWQ (Activation-aware Weight Quantization) method that preserves only 1% of salient weights in full precision to maintain accuracy while quantizing to 4-bit",
+          "license": "arXiv",
+          "topics": ["AWQ", "activation-aware quantization", "on-device LLM", "weight quantization", "salient weights"],
+          "relevance": "Understanding AWQ quantization method for on-device deployment"
+        },
+        {
+          "filename": "smoothquant_paper.pdf",
+          "title": "SmoothQuant: Accurate and Efficient Post-Training Quantization for Large Language Models",
+          "author": "Guangxuan Xiao, Ji Lin, Mickael Seznec, Hao Wu, Julien Demouth, Song Han",
+          "description": "SmoothQuant training-free post-training quantization that smooths activation ranges to enable INT8 quantization of both weights and activations for large LLMs",
+          "license": "arXiv",
+          "topics": ["SmoothQuant", "post-training quantization", "INT8", "activation smoothing", "training-free"],
+          "relevance": "Understanding SmoothQuant method for INT8 LLM quantization"
+        },
+        {
+          "filename": "rptq_quantization_paper.pdf",
+          "title": "RPTQ: Reorder-based Post-training Quantization for Large Language Models",
+          "author": "Zhihang Yuan, Xiaolong Niu, et al.",
+          "description": "RPTQ (Reorder-based Post-training Quantization) that addresses varying activation ranges across channels through reordering-based quantization",
+          "license": "arXiv",
+          "topics": ["RPTQ", "reorder-based quantization", "activation quantization", "channel ranges", "post-training"],
+          "relevance": "Understanding RPTQ method for addressing activation quantization challenges"
+        }
+      ]
+    },
+    {
+      "name": "gpu_architecture",
+      "path": "fdq_corpus/gpu_architecture",
+      "description": "GPU architecture documentation for NVIDIA GPU families (Pascal, Volta, Turing, Ampere, Ada, Hopper) including precision specifications, tensor cores, and numeric behavior",
+      "documents": [
+        {
+          "filename": "cuda_programming_guide.pdf",
+          "title": "CUDA C++ Programming Guide",
+          "author": "NVIDIA",
+          "description": "Official CUDA programming guide covering GPU architecture, memory hierarchy, precision specifications, and programming model",
+          "license": "NVIDIA",
+          "topics": ["CUDA", "GPU programming", "memory hierarchy", "precision specs", "programming model"],
+          "relevance": "Understanding GPU programming model and precision specifications"
+        },
+        {
+          "filename": "nvidia_pascal_tuning_guide.pdf",
+          "title": "Pascal Tuning Guide",
+          "author": "NVIDIA",
+          "description": "Pascal architecture optimization guide with precision specifications, FP16/FP32 behavior, and performance tuning",
+          "license": "NVIDIA",
+          "topics": ["Pascal", "GPU architecture", "optimization", "FP16/FP32", "precision"],
+          "relevance": "Understanding Pascal GPU architecture and numeric behavior"
+        },
+        {
+          "filename": "nvidia_volta_architecture_whitepaper.pdf",
+          "title": "Volta Architecture Whitepaper",
+          "author": "NVIDIA",
+          "description": "Volta architecture with Tensor Core introduction, FP16/INT8 precision specifications, and deep learning acceleration",
+          "license": "NVIDIA",
+          "topics": ["Volta", "Tensor Cores", "FP16", "INT8", "architecture", "deep learning"],
+          "relevance": "Understanding Volta GPU architecture and Tensor Core precision"
+        },
+        {
+          "filename": "nvidia_turing_architecture_whitepaper.pdf",
+          "title": "Turing Architecture Whitepaper",
+          "author": "NVIDIA",
+          "description": "Turing architecture with RT cores, improved Tensor Cores, and precision specifications for AI and graphics workloads",
+          "license": "NVIDIA",
+          "topics": ["Turing", "RT cores", "Tensor Cores", "precision", "AI acceleration"],
+          "relevance": "Understanding Turing GPU architecture and precision improvements"
+        },
+        {
+          "filename": "nvidia_ampere_architecture_whitepaper.pdf",
+          "title": "Ampere Architecture Whitepaper",
+          "author": "NVIDIA",
+          "description": "Ampere architecture with advanced Tensor Cores, sparsity support, BF16/FP8 precision, and improved AI performance",
+          "license": "NVIDIA",
+          "topics": ["Ampere", "Tensor Cores", "sparsity", "BF16", "FP8", "precision"],
+          "relevance": "Understanding Ampere GPU architecture and advanced precision support"
+        },
+        {
+          "filename": "nvidia_ada_architecture_whitepaper.pdf",
+          "title": "Ada Lovelace Architecture Whitepaper",
+          "author": "NVIDIA",
+          "description": "Ada architecture with improved tensor operations, DLSS 3, and precision specifications for consumer and professional GPUs",
+          "license": "NVIDIA",
+          "topics": ["Ada", "Lovelace", "tensor operations", "DLSS", "precision"],
+          "relevance": "Understanding Ada GPU architecture and tensor operation improvements"
+        },
+        {
+          "filename": "nvidia_hopper_architecture_whitepaper.pdf",
+          "title": "Hopper Architecture Whitepaper",
+          "author": "NVIDIA",
+          "description": "Hopper H100 architecture with FP8 precision, transformer engine, HBM3 memory, and advanced AI acceleration",
+          "license": "NVIDIA",
+          "topics": ["Hopper", "H100", "FP8", "transformer engine", "HBM3", "precision"],
+          "relevance": "Understanding Hopper GPU architecture and FP8/transformer engine"
+        }
+      ]
+    },
+    {
+      "name": "cpu_architecture",
+      "path": "fdq_corpus/cpu_architecture",
+      "description": "CPU architecture documentation for x86-64 and ARM processors including numeric behavior, SIMD extensions, and cache hierarchy",
+      "documents": []
+    },
+    {
+      "name": "memory_systems",
+      "path": "fdq_corpus/memory_systems",
+      "description": "Memory system documentation including DDR3/DDR4/DDR5, GDDR5/GDDR6, HBM2/HBM3 specifications, bandwidth characteristics, and NUMA basics",
+      "documents": [
+        {
+          "filename": "ddr5_specification.pdf",
+          "title": "DDR5 SDRAM Specification (JESD79-5)",
+          "author": "JEDEC",
+          "description": "Official JEDEC DDR5 memory specification covering bandwidth, latency, power consumption, and technical requirements",
+          "license": "JEDEC",
+          "topics": ["DDR5", "JEDEC", "memory specification", "bandwidth", "latency", "power"],
+          "relevance": "Understanding DDR5 memory characteristics for system memory planning"
+        },
+        {
+          "filename": "hbm3e_product_brief.pdf",
+          "title": "HBM3E Product Brief",
+          "author": "Micron Technology",
+          "description": "Micron HBM3E high bandwidth memory product brief covering specifications, bandwidth, and applications for AI/ML workloads",
+          "license": "Micron",
+          "topics": ["HBM3E", "high bandwidth memory", "AI workloads", "bandwidth", "GPU memory"],
+          "relevance": "Understanding HBM3E memory characteristics for high-end GPU memory"
+        }
+      ]
+    },
+    {
+      "name": "inference_engines",
+      "path": "fdq_corpus/inference_engines",
+      "description": "Model runtime and inference engine documentation including llama.cpp, vLLM, TensorRT-LLM, and Hugging Face Transformers inference paths",
+      "documents": [
+        {
+          "filename": "vllm_documentation.pdf",
+          "title": "vLLM Documentation",
+          "author": "vLLM Team (UC Berkeley)",
+          "description": "Comprehensive vLLM documentation covering PagedAttention, continuous batching, model serving, and inference optimization",
+          "license": "Apache 2.0",
+          "topics": ["vLLM", "PagedAttention", "continuous batching", "model serving", "inference optimization"],
+          "relevance": "Understanding vLLM inference engine for efficient LLM serving"
+        }
+      ]
+    },
+    {
+      "name": "practical_guides",
+      "path": "fdq_corpus/practical_guides",
+      "description": "Practical guides and blog posts on LLM quantization, GGUF usage, quantization tradeoffs, and real-world quantization applications",
+      "documents": [
+        {
+          "filename": "visual_guide_to_quantization.html",
+          "title": "A Visual Guide to Quantization",
+          "author": "Maarten Grootendorst",
+          "description": "Visual introduction to quantization concepts, methods, and tradeoffs with diagrams and explanations",
+          "license": "Blog",
+          "topics": ["quantization", "visual guide", "introduction", "tradeoffs", "methods"],
+          "relevance": "Understanding quantization fundamentals through visual explanations"
+        },
+        {
+          "filename": "llm_quantization_methods_guide.html",
+          "title": "LLM Quantization Methods: GPTQ, AWQ, GGUF",
+          "author": "Cast AI",
+          "description": "Practical guide to LLM-specific quantization methods including GPTQ, AWQ, GGUF, SmoothQuant with implementation details",
+          "license": "Blog",
+          "topics": ["LLM quantization", "GPTQ", "AWQ", "GGUF", "SmoothQuant", "practical guide"],
+          "relevance": "Understanding practical LLM quantization methods and their tradeoffs"
+        },
+        {
+          "filename": "guide_to_quantization_in_llms.html",
+          "title": "A Guide to Quantization in LLMs",
+          "author": "Symbl.ai",
+          "description": "Comprehensive guide to quantization in LLMs covering methods, benefits, challenges, and implementation strategies",
+          "license": "Blog",
+          "topics": ["LLM quantization", "guide", "methods", "benefits", "challenges"],
+          "relevance": "Understanding LLM quantization landscape and practical considerations"
+        },
+        {
+          "filename": "practical_llm_quantization_guide.html",
+          "title": "A Practical Guide to LLM Quantization (int8/int4)",
+          "author": "Hivenet",
+          "description": "Practical guide to LLM quantization covering GPTQ, LLM.int8, bitsandbytes, and implementation details for INT8/INT4 quantization",
+          "license": "Blog",
+          "topics": ["LLM quantization", "INT8", "INT4", "GPTQ", "LLM.int8", "bitsandbytes"],
+          "relevance": "Understanding practical implementation of INT8/INT4 LLM quantization"
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "totalDocuments": 23,
+    "totalCategories": 7,
+    "supportedLicenses": [
+      "arXiv",
+      "MIT",
+      "Apache 2.0",
+      "NVIDIA",
+      "JEDEC",
+      "Micron",
+      "Blog"
+    ],
+    "integrationStatus": {
+      "llm_architecture": "Complete - Core transformer and LLM architecture papers downloaded",
+      "quantization_formats": "Complete - Major quantization methods and GGUF spec downloaded",
+      "gpu_architecture": "Complete - NVIDIA GPU architecture whitepapers from Pascal to Hopper downloaded",
+      "cpu_architecture": "Partial - Access denied on official Intel/ARM documentation, need alternative sources",
+      "memory_systems": "Partial - DDR5 and HBM3E specs downloaded, need GDDR and additional memory docs",
+      "inference_engines": "Partial - vLLM documentation downloaded, need llama.cpp, TensorRT-LLM, HF Transformers docs",
+      "practical_guides": "Complete - Practical quantization guides downloaded"
+    }
+  },
+  "instructions": {
+    "addingDocuments": "Place resources in appropriate subdirectories. Update this index.json with document metadata including title, author, description, license, topics, and relevance.",
+    "downloadingSources": "Download from arXiv, official vendor documentation, technical blogs, and open-source repositories. Prioritize papers with clear mathematical foundations and practical implementation details.",
+    "namingConvention": "Use clear, descriptive filenames with underscores: paper_name.pdf, guide_name.html, specification_name.pdf",
+    "licenseCompliance": "Include license information for all resources. Prioritize open-access papers, official vendor documentation, and properly licensed content.",
+    "fdqFocus": "Resources should enable SWEObeyMe to: (1) understand LLM architecture and math, (2) understand quantization methods and formats, (3) understand GPU/CPU/RAM hardware limits, (4) design safe FDQ transforms, (5) compute performance envelopes, (6) reason about CPU vs GPU execution."
+  }
+}

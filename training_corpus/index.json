@@ -1,0 +1,235 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2026-04-09T21:30:00.000Z",
+  "description": "Training Data & Math Resource Corpus for SWEObeyMe",
+  "purpose": "Provide comprehensive resources for understanding how LLMs are trained, what training data does to the model, how information is encoded in weights, how gradients shape representational geometry, and what must be preserved for quality to remain intact during FDQ transforms.",
+  "categories": [
+    {
+      "name": "training_data_theory",
+      "path": "training_corpus/training_data_theory",
+      "description": "Training data theory covering tokenization, distributional semantics, scaling laws, and how training data shapes internal representations",
+      "documents": [
+        {
+          "filename": "scaling_laws_neural_language_models.pdf",
+          "title": "Scaling Laws for Neural Language Models",
+          "author": "Jared Kaplan, Sam McCandlish, Tom Henighan, Tom B. Brown, Benjamin Chess, Rewon Child, Scott Gray, Alec Radford, Jeffrey Wu, Dario Amodei",
+          "description": "Foundational paper on scaling laws for neural language models, investigating how performance depends on model size, compute budget, and dataset size",
+          "license": "arXiv",
+          "topics": ["scaling laws", "model size", "compute budget", "dataset size", "sample efficiency", "convergence"],
+          "relevance": "Understanding how model size and data scale affects training efficiency and final performance"
+        },
+        {
+          "filename": "training_compute_optimal_llms_chinchilla.pdf",
+          "title": "Training Compute-Optimal Large Language Models",
+          "author": "Jordan Hoffmann, Sebastian Borgeaud, Arthur Mensch, et al.",
+          "description": "Chinchilla paper establishing optimal compute allocation between model size and training tokens, showing current models are undertrained",
+          "license": "arXiv",
+          "topics": ["Chinchilla", "compute-optimal", "model size", "training tokens", "undertraining", "compute budget"],
+          "relevance": "Understanding optimal balance between model size and training data for efficient training"
+        },
+        {
+          "filename": "sentencepiece_paper.pdf",
+          "title": "SentencePiece: A simple and language independent subword tokenizer and detokenizer",
+          "author": "Taku Kudo, John Richardson",
+          "description": "SentencePiece subword tokenizer implementation that treats tokenization as a data preprocessing task, enabling language-independent tokenization",
+          "license": "arXiv",
+          "topics": ["SentencePiece", "subword tokenization", "language-independent", "preprocessing", "BPE"],
+          "relevance": "Understanding how tokenization affects model training and representation"
+        },
+        {
+          "filename": "fast_wordpiece_tokenization.pdf",
+          "title": "Fast WordPiece Tokenization",
+          "author": "Biao Zhang, Rico Sennrich",
+          "description": "Efficient algorithms for WordPiece tokenization used in BERT, from single-word tokenization to general text tokenization",
+          "license": "arXiv",
+          "topics": ["WordPiece", "tokenization", "BERT", "efficiency", "algorithms"],
+          "relevance": "Understanding WordPiece tokenization algorithm used in many LLMs"
+        }
+      ]
+    },
+    {
+      "name": "training_math",
+      "path": "training_corpus/training_math",
+      "description": "Core training mathematics including gradient descent, backpropagation, loss functions, weight initialization, and numerical stability",
+      "documents": [
+        {
+          "filename": "backpropagation_algorithm_math.pdf",
+          "title": "The Backpropagation algorithm for a math student",
+          "author": "Various",
+          "description": "Mathematical treatment of backpropagation algorithm explaining how gradients are computed efficiently through composite structure of neural networks",
+          "license": "arXiv",
+          "topics": ["backpropagation", "gradient computation", "neural networks", "composite structure", "efficiency"],
+          "relevance": "Understanding mathematical foundation of how gradients encode information during training"
+        },
+        {
+          "filename": "gradient_descent_optimization_algorithms.pdf",
+          "title": "An overview of gradient descent optimization algorithms",
+          "author": "Sebastian Ruder",
+          "description": "Comprehensive overview of gradient descent variants including SGD, momentum, Adam, RMSProp, and their properties",
+          "license": "arXiv",
+          "topics": ["gradient descent", "SGD", "momentum", "Adam", "RMSProp", "optimization algorithms"],
+          "relevance": "Understanding different optimization algorithms and their impact on training dynamics"
+        },
+        {
+          "filename": "cross_entropy_loss_functions.pdf",
+          "title": "Cross-Entropy Loss Functions: Theoretical Analysis and Applications",
+          "author": "Zhang, Sabuncu",
+          "description": "Theoretical analysis of cross-entropy loss functions, their properties, and applications in training deep neural networks",
+          "license": "arXiv",
+          "topics": ["cross-entropy", "loss functions", "theoretical analysis", "robustness", "noise"],
+          "relevance": "Understanding loss function behavior and how it affects gradient flow"
+        },
+        {
+          "filename": "weight_initialization_techniques.pdf",
+          "title": "Weight Initialization Techniques for Deep Learning Algorithms",
+          "author": "Various",
+          "description": "Overview of weight initialization methods including Xavier/Glorot and Kaiming/He initialization, their theory and impact on training",
+          "license": "arXiv",
+          "topics": ["weight initialization", "Xavier", "Kaiming", "He", "Glorot", "variance preservation"],
+          "relevance": "Understanding how initialization affects gradient flow and training stability"
+        }
+      ]
+    },
+    {
+      "name": "optimization_theory",
+      "path": "training_corpus/optimization_theory",
+      "description": "Optimization theory covering convex vs non-convex optimization, saddle points, learning rate schedules, and modern optimizers",
+      "documents": [
+        {
+          "filename": "adam_optimizer_paper.pdf",
+          "title": "Adam: A Method for Stochastic Optimization",
+          "author": "Diederik P. Kingma, Jimmy Ba",
+          "description": "Adam optimizer paper introducing adaptive moment estimation for stochastic optimization with regret bounds",
+          "license": "arXiv",
+          "topics": ["Adam", "stochastic optimization", "adaptive learning rates", "moment estimation", "convergence"],
+          "relevance": "Understanding Adam optimizer behavior and its impact on training dynamics"
+        }
+      ]
+    },
+    {
+      "name": "representation_learning",
+      "path": "training_corpus/representation_learning",
+      "description": "Representation learning covering embedding space geometry, attention head specialization, superposition theory, and feature interference",
+      "documents": [
+        {
+          "filename": "toy_models_of_superposition.pdf",
+          "title": "Toy Models of Superposition",
+          "author": "Chris Olah, Neel Nanda, et al. (Anthropic)",
+          "description": "Anthropic paper providing toy models for understanding superposition - how neural networks pack many unrelated concepts into single neurons (polysemanticity)",
+          "license": "arXiv",
+          "topics": ["superposition", "polysemanticity", "interpretability", "feature representation", "neural networks"],
+          "relevance": "Understanding how information is encoded in neural networks and what must be preserved during quantization"
+        },
+        {
+          "filename": "interpreting_transformers_attention_heads.pdf",
+          "title": "Interpreting Transformers Through Attention Head Specialization",
+          "author": "Various",
+          "description": "Paper on interpreting attention head specialization in transformers, understanding how different heads learn different functions",
+          "license": "arXiv",
+          "topics": ["attention heads", "specialization", "interpretability", "transformers", "mechanistic interpretability"],
+          "relevance": "Understanding attention head behavior and which patterns must be preserved during FDQ transforms"
+        }
+      ]
+    },
+    {
+      "name": "training_pipelines",
+      "path": "training_corpus/training_pipelines",
+      "description": "Training pipeline documentation covering sequence packing, masking strategies, batching, and data preprocessing",
+      "documents": [
+        {
+          "filename": "efficient_sequence_packing.pdf",
+          "title": "Efficient Sequence Packing without Cross-contamination: Accelerating Large Language Models without Impacting Performance",
+          "author": "Mario Michael Krell, Matej Kosec, Sergio P. Perez, Andrew Fitzgibbon",
+          "description": "Paper on efficient sequence packing for training large language models, avoiding cross-contamination while maintaining mathematical equivalence",
+          "license": "arXiv",
+          "topics": ["sequence packing", "training efficiency", "cross-contamination", "padding", "computational efficiency"],
+          "relevance": "Understanding how training pipelines structure data and what this means for model internal representations"
+        },
+        {
+          "filename": "learning_better_masking_pretraining.pdf",
+          "title": "Learning Better Masking for Better Language Model Pre-training",
+          "author": "Dongjie Yang, et al.",
+          "description": "Paper on learning better masking strategies for masked language modeling pre-training to improve model quality",
+          "license": "arXiv",
+          "topics": ["masking", "masked language modeling", "pre-training", "MLM", "denoising objective"],
+          "relevance": "Understanding how masking strategies during training affect what the model learns"
+        }
+      ]
+    },
+    {
+      "name": "training_runs",
+      "path": "training_corpus/training_runs",
+      "description": "Full training run documentation from real-world LLM training including learning rate curves, loss curves, gradient norms, and numeric behavior",
+      "documents": [
+        {
+          "filename": "bloom_training_paper.pdf",
+          "title": "BLOOM: A 176B-Parameter Open-Access Multilingual Language Model",
+          "author": "BigScience Workshop: Teven Le Scao, et al. (392 authors)",
+          "description": "BigScience BLOOM training paper documenting training of 176B parameter multilingual model on ROOTS corpus, including training methodology and results",
+          "license": "arXiv",
+          "topics": ["BLOOM", "BigScience", "training", "multilingual", "176B parameters", "ROOTS corpus"],
+          "relevance": "Understanding real-world training process and numeric behavior at large scale"
+        },
+        {
+          "filename": "llama_3_training_details.pdf",
+          "title": "The Llama 3 Herd of Models",
+          "author": "Llama Team, AI @ Meta",
+          "description": "Meta's Llama 3 training documentation including data curation, training methodology, quality ranking, and multilingual token balancing",
+          "license": "Meta",
+          "topics": ["Llama 3", "Meta", "training", "data curation", "quality ranking", "multilingual"],
+          "relevance": "Understanding modern LLM training methodology and data quality practices"
+        },
+        {
+          "filename": "falcon_training_paper.pdf",
+          "title": "The Falcon Series of Open Language Models",
+          "author": "Ebtesam Almazrouei, et al.",
+          "description": "Technology Innovation Institute's Falcon series training paper covering 7B, 40B, and 180B parameter models trained on diverse high-quality corpora",
+          "license": "arXiv",
+          "topics": ["Falcon", "TII", "training", "open models", "high-quality data", "competitive performance"],
+          "relevance": "Understanding training methodology and data quality requirements for competitive open models"
+        }
+      ]
+    },
+    {
+      "name": "data_quality_distribution",
+      "path": "training_corpus/data_quality_distribution",
+      "description": "Data quality and distribution theory covering Zipf's law, token frequency distributions, long-tail effects, and rare token behavior",
+      "documents": [
+        {
+          "filename": "zipf_law_review.pdf",
+          "title": "Zipf's Law and Vocabulary",
+          "author": "Various",
+          "description": "Review of Zipf's law and its implications for vocabulary and word frequency distributions in natural language",
+          "license": "Academic",
+          "topics": ["Zipf's law", "word frequency", "vocabulary", "power laws", "language distribution"],
+          "relevance": "Understanding how token frequency distributions affect model training and what must be preserved for rare tokens"
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "totalDocuments": 14,
+    "totalCategories": 7,
+    "supportedLicenses": [
+      "arXiv",
+      "Meta",
+      "Academic"
+    ],
+    "integrationStatus": {
+      "training_data_theory": "Complete - Core scaling laws and tokenization papers downloaded",
+      "training_math": "Complete - Backpropagation, gradient descent, loss functions, and initialization papers downloaded",
+      "optimization_theory": "Partial - Adam optimizer downloaded, need more optimizer and learning rate schedule papers",
+      "representation_learning": "Complete - Superposition and attention head interpretability papers downloaded",
+      "training_pipelines": "Complete - Sequence packing and masking strategy papers downloaded",
+      "training_runs": "Complete - BLOOM, Llama 3, and Falcon training documentation downloaded",
+      "data_quality_distribution": "Partial - Zipf's law review downloaded, need more token frequency and data quality papers"
+    }
+  },
+  "instructions": {
+    "addingDocuments": "Place resources in appropriate subdirectories. Update this index.json with document metadata including title, author, description, license, topics, and relevance.",
+    "downloadingSources": "Download from arXiv, official vendor documentation, technical blogs, and open-source repositories. Prioritize papers with clear mathematical foundations and practical implementation details.",
+    "namingConvention": "Use clear, descriptive filenames with underscores: paper_name.pdf, guide_name.html, specification_name.pdf",
+    "licenseCompliance": "Include license information for all resources. Prioritize open-access papers, official vendor documentation, and properly licensed content.",
+    "trainingFocus": "Resources should enable SWEObeyMe to: (1) understand how training shapes model geometry, (2) identify which tensors are most sensitive to distortion, (3) predict how FDQ affects embeddings, attention, MLPs, and residual streams, (4) preserve all learned structure while shrinking size, (5) reason about deeper FDQ transforms safely, (6) avoid precision collapse by understanding training dynamics."
+  }
+}

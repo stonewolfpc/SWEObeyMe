@@ -1,0 +1,60 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2026-04-09T21:45:00.000Z",
+  "description": "Git documentation corpus for SWEObeyMe",
+  "purpose": "Provide comprehensive Git documentation for Git integration features",
+  "categories": [
+    {
+      "name": "git_basics",
+      "path": "git_corpus/git_basics",
+      "description": "Git fundamentals and basic commands",
+      "documents": [
+        {
+          "filename": "git_cheat_sheet.pdf",
+          "title": "Git Cheat Sheet",
+          "author": "Git",
+          "description": "Comprehensive Git command reference cheat sheet",
+          "license": "Git",
+          "topics": ["git", "commands", "cheat sheet", "reference"],
+          "relevance": "Quick reference for common Git operations"
+        }
+      ]
+    },
+    {
+      "name": "git_branching",
+      "path": "git_corpus/git_branching",
+      "description": "Git branching strategies and workflows",
+      "documents": []
+    },
+    {
+      "name": "git_workflows",
+      "path": "git_corpus/git_workflows",
+      "description": "Git workflow patterns and best practices",
+      "documents": []
+    },
+    {
+      "name": "git_advanced",
+      "path": "git_corpus/git_advanced",
+      "description": "Advanced Git features and operations",
+      "documents": []
+    }
+  ],
+  "metadata": {
+    "totalDocuments": 1,
+    "totalCategories": 4,
+    "supportedLicenses": ["Git"],
+    "integrationStatus": {
+      "git_basics": "Partial - Git cheat sheet downloaded",
+      "git_branching": "Empty - Need branching strategy documentation",
+      "git_workflows": "Empty - Need workflow pattern documentation",
+      "git_advanced": "Empty - Need advanced Git features documentation"
+    }
+  },
+  "instructions": {
+    "addingDocuments": "Place resources in appropriate subdirectories. Update this index.json with document metadata including title, author, description, license, topics, and relevance.",
+    "downloadingSources": "Download from official Git documentation, Git SCM, and reputable Git resources. Prioritize official Git documentation.",
+    "namingConvention": "Use clear, descriptive filenames with underscores: guide_name.pdf, reference_name.html",
+    "licenseCompliance": "Include license information for all resources. Prioritize official Git documentation.",
+    "gitFocus": "Resources should enable SWEObeyMe to: (1) understand Git commands and operations, (2) support branch management, (3) implement commit message generation, (4) handle Git integration features, (5) support checkpoint and revert functionality."
+  }
+}

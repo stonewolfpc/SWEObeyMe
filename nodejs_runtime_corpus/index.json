@@ -1,0 +1,67 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2026-04-09T21:45:00.000Z",
+  "description": "Node.js Runtime documentation corpus for SWEObeyMe",
+  "purpose": "Provide comprehensive Node.js runtime documentation for extension development",
+  "categories": [
+    {
+      "name": "nodejs_api",
+      "path": "nodejs_runtime_corpus/nodejs_api",
+      "description": "Node.js API reference and documentation",
+      "documents": [
+        {
+          "filename": "nodejs_api_index.html",
+          "title": "Node.js API Documentation",
+          "author": "Node.js",
+          "description": "Official Node.js API documentation index",
+          "license": "Node.js",
+          "topics": ["Node.js", "API", "runtime", "JavaScript"],
+          "relevance": "Understanding Node.js API for extension development"
+        }
+      ]
+    },
+    {
+      "name": "event_loop",
+      "path": "nodejs_runtime_corpus/event_loop",
+      "description": "Node.js event loop and async programming",
+      "documents": []
+    },
+    {
+      "name": "streams",
+      "path": "nodejs_runtime_corpus/streams",
+      "description": "Node.js streams API and usage",
+      "documents": []
+    },
+    {
+      "name": "buffers",
+      "path": "nodejs_runtime_corpus/buffers",
+      "description": "Node.js Buffer API and usage",
+      "documents": []
+    },
+    {
+      "name": "async_patterns",
+      "path": "nodejs_runtime_corpus/async_patterns",
+      "description": "Async programming patterns in Node.js",
+      "documents": []
+    }
+  ],
+  "metadata": {
+    "totalDocuments": 1,
+    "totalCategories": 5,
+    "supportedLicenses": ["Node.js"],
+    "integrationStatus": {
+      "nodejs_api": "Partial - Node.js API index downloaded",
+      "event_loop": "Empty - Need event loop documentation",
+      "streams": "Empty - Need streams documentation",
+      "buffers": "Empty - Need buffers documentation",
+      "async_patterns": "Empty - Need async patterns documentation"
+    }
+  },
+  "instructions": {
+    "addingDocuments": "Place resources in appropriate subdirectories. Update this index.json with document metadata including title, author, description, license, topics, and relevance.",
+    "downloadingSources": "Download from official Node.js documentation at nodejs.org/api. Prioritize official Node.js documentation.",
+    "namingConvention": "Use clear, descriptive filenames with underscores: api_name.html, pattern_name.md",
+    "licenseCompliance": "Include license information for all resources. Prioritize official Node.js documentation.",
+    "nodejsFocus": "Resources should enable SWEObeyMe to: (1) understand Node.js API, (2) implement event loop correctly, (3) use streams properly, (4) handle buffers correctly, (5) implement async patterns."
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2026-04-09T21:45:00.000Z",
+  "description": "VS Code Extension API documentation corpus for SWEObeyMe",
+  "purpose": "Provide comprehensive VS Code Extension API documentation for extension development",
+  "categories": [
+    {
+      "name": "vscode_api",
+      "path": "vscode_extension_corpus/vscode_api",
+      "description": "VS Code Extension API reference and overview",
+      "documents": [
+        {
+          "filename": "vscode_extension_api.html",
+          "title": "Extension API | Visual Studio Code Extension API",
+          "author": "Microsoft",
+          "description": "Official VS Code Extension API documentation",
+          "license": "Microsoft",
+          "topics": ["VS Code", "extension API", "contribution points", "API reference"],
+          "relevance": "Understanding VS Code Extension API for extension development"
+        }
+      ]
+    },
+    {
+      "name": "webview_api",
+      "path": "vscode_extension_corpus/webview_api",
+      "description": "VS Code Webview API documentation",
+      "documents": []
+    },
+    {
+      "name": "commands_api",
+      "path": "vscode_extension_corpus/commands_api",
+      "description": "VS Code Commands API documentation",
+      "documents": []
+    },
+    {
+      "name": "configuration_api",
+      "path": "vscode_extension_corpus/configuration_api",
+      "description": "VS Code Configuration API documentation",
+      "documents": []
+    }
+  ],
+  "metadata": {
+    "totalDocuments": 1,
+    "totalCategories": 4,
+    "supportedLicenses": ["Microsoft"],
+    "integrationStatus": {
+      "vscode_api": "Partial - VS Code extension API documentation downloaded",
+      "webview_api": "Empty - Need Webview API documentation",
+      "commands_api": "Empty - Need Commands API documentation",
+      "configuration_api": "Empty - Need Configuration API documentation"
+    }
+  },
+  "instructions": {
+    "addingDocuments": "Place resources in appropriate subdirectories. Update this index.json with document metadata including title, author, description, license, topics, and relevance.",
+    "downloadingSources": "Download from official VS Code documentation at code.visualstudio.com/api. Prioritize official Microsoft documentation.",
+    "namingConvention": "Use clear, descriptive filenames with underscores: api_name.html, guide_name.md",
+    "licenseCompliance": "Include license information for all resources. Prioritize official Microsoft documentation.",
+    "vscodeFocus": "Resources should enable SWEObeyMe to: (1) understand VS Code Extension API, (2) implement webview functionality correctly, (3) register and handle commands, (4) manage configuration properly, (5) follow VS Code extension best practices."
+  }
+}

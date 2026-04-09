@@ -1,0 +1,60 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2026-04-09T21:45:00.000Z",
+  "description": "Performance profiling documentation corpus for SWEObeyMe",
+  "purpose": "Provide comprehensive performance profiling and optimization documentation",
+  "categories": [
+    {
+      "name": "profiling_tools",
+      "path": "performance_profiling_corpus/profiling_tools",
+      "description": "Profiling tools and techniques",
+      "documents": [
+        {
+          "filename": "vscode_profiling_guide.html",
+          "title": "Performance Profiling JavaScript",
+          "author": "Microsoft",
+          "description": "VS Code guide to profiling JavaScript performance",
+          "license": "Microsoft",
+          "topics": ["profiling", "JavaScript", "performance", "VS Code"],
+          "relevance": "Understanding performance profiling in VS Code"
+        }
+      ]
+    },
+    {
+      "name": "performance_optimization",
+      "path": "performance_profiling_corpus/performance_optimization",
+      "description": "Performance optimization techniques and best practices",
+      "documents": []
+    },
+    {
+      "name": "memory_management",
+      "path": "performance_profiling_corpus/memory_management",
+      "description": "Memory management and leak detection",
+      "documents": []
+    },
+    {
+      "name": "cpu_optimization",
+      "path": "performance_profiling_corpus/cpu_optimization",
+      "description": "CPU optimization and profiling",
+      "documents": []
+    }
+  ],
+  "metadata": {
+    "totalDocuments": 1,
+    "totalCategories": 4,
+    "supportedLicenses": ["Microsoft"],
+    "integrationStatus": {
+      "profiling_tools": "Partial - VS Code profiling guide downloaded",
+      "performance_optimization": "Empty - Need performance optimization documentation",
+      "memory_management": "Empty - Need memory management documentation",
+      "cpu_optimization": "Empty - Need CPU optimization documentation"
+    }
+  },
+  "instructions": {
+    "addingDocuments": "Place resources in appropriate subdirectories. Update this index.json with document metadata including title, author, description, license, topics, and relevance.",
+    "downloadingSources": "Download from VS Code documentation, Node.js profiling guides, and reputable performance resources. Prioritize official documentation.",
+    "namingConvention": "Use clear, descriptive filenames with underscores: tool_name.html, technique_name.md",
+    "licenseCompliance": "Include license information for all resources. Prioritize official documentation.",
+    "performanceFocus": "Resources should enable SWEObeyMe to: (1) understand profiling tools, (2) implement performance optimization, (3) manage memory properly, (4) optimize CPU usage, (5) follow performance best practices."
+  }
+}

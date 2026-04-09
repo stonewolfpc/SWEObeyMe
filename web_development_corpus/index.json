@@ -1,0 +1,97 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2026-04-09T21:45:00.000Z",
+  "description": "Web development documentation corpus for SWEObeyMe",
+  "purpose": "Provide comprehensive web development documentation for HTML, CSS, DOM, and web APIs",
+  "categories": [
+    {
+      "name": "html5",
+      "path": "web_development_corpus/html5",
+      "description": "HTML5 specification and features",
+      "documents": [
+        {
+          "filename": "html5_spec.html",
+          "title": "HTML Standard",
+          "author": "WHATWG",
+          "description": "Official HTML5 specification from WHATWG",
+          "license": "WHATWG",
+          "topics": ["HTML5", "specification", "WHATWG", "web standards"],
+          "relevance": "Understanding HTML5 specification for web development"
+        }
+      ]
+    },
+    {
+      "name": "css3",
+      "path": "web_development_corpus/css3",
+      "description": "CSS3 specification and features",
+      "documents": [
+        {
+          "filename": "css3_spec.html",
+          "title": "CSS: Cascading Style Sheets",
+          "author": "MDN",
+          "description": "Comprehensive CSS documentation from MDN",
+          "license": "MDN",
+          "topics": ["CSS", "CSS3", "styles", "MDN"],
+          "relevance": "Understanding CSS3 specification for web development"
+        }
+      ]
+    },
+    {
+      "name": "dom_api",
+      "path": "web_development_corpus/dom_api",
+      "description": "Document Object Model API documentation",
+      "documents": [
+        {
+          "filename": "dom_api_documentation.html",
+          "title": "Document Object Model (DOM)",
+          "author": "MDN",
+          "description": "Comprehensive DOM API documentation from MDN",
+          "license": "MDN",
+          "topics": ["DOM", "API", "JavaScript", "MDN"],
+          "relevance": "Understanding DOM API for web development"
+        }
+      ]
+    },
+    {
+      "name": "fetch_api",
+      "path": "web_development_corpus/fetch_api",
+      "description": "Fetch API documentation",
+      "documents": [
+        {
+          "filename": "fetch_api_guide.html",
+          "title": "Using the Fetch API",
+          "author": "MDN",
+          "description": "Comprehensive Fetch API guide from MDN",
+          "license": "MDN",
+          "topics": ["Fetch API", "HTTP", "JavaScript", "MDN"],
+          "relevance": "Understanding Fetch API for web development"
+        }
+      ]
+    },
+    {
+      "name": "web_security",
+      "path": "web_development_corpus/web_security",
+      "description": "Web security best practices",
+      "documents": []
+    }
+  ],
+  "metadata": {
+    "totalDocuments": 4,
+    "totalCategories": 5,
+    "supportedLicenses": ["WHATWG", "MDN"],
+    "integrationStatus": {
+      "html5": "Partial - HTML5 spec downloaded",
+      "css3": "Partial - CSS3 spec downloaded",
+      "dom_api": "Partial - DOM API documentation downloaded",
+      "fetch_api": "Partial - Fetch API guide downloaded",
+      "web_security": "Empty - Need web security documentation"
+    }
+  },
+  "instructions": {
+    "addingDocuments": "Place resources in appropriate subdirectories. Update this index.json with document metadata including title, author, description, license, topics, and relevance.",
+    "downloadingSources": "Download from WHATWG HTML specification, MDN Web Docs, and reputable web development resources. Prioritize official WHATWG and MDN documentation.",
+    "namingConvention": "Use clear, descriptive filenames with underscores: spec_name.html, api_name.html",
+    "licenseCompliance": "Include license information for all resources. Prioritize official WHATWG and MDN documentation.",
+    "webFocus": "Resources should enable SWEObeyMe to: (1) understand HTML5 specification, (2) use CSS3 correctly, (3) manipulate the DOM properly, (4) use Fetch API correctly, (5) follow web security best practices."
+  }
+}

@@ -2,6 +2,19 @@
 
 All notable changes to SWEObeyMe will be documented in this file.
 
+## [2.1.5-beta] - 2026-04-09
+
+### Features
+
+- **Enhanced separation of concerns rules** - Added detailed WHY/WHEN/HOW explanations to CODE_RESPONSIBILITY, FILE_SCOPE, FILE_LOCATION, and NAMING_CONVENTIONS rules to guide AI on maintaining lean, organized files
+- **Improved tool descriptions** - Enhanced write_file, obey_surgical_plan, refactor_move_block, and extract_to_new_file tool descriptions with explicit separation of concerns guidance
+- **Better AI guidance** - Rules now include concrete examples and patterns for organizing code by concern (e.g., validators/, api/, components/, utils/)
+
+### Documentation
+
+- **Rule engine explanations** - All architectural rules now include clear rationale and remediation steps
+- **Tool usage patterns** - Refactoring tools now emphasize their role in enforcing Single Responsibility Principle
+
 ## [2.1.4-beta] - 2026-04-08
 
 ### Bug Fixes

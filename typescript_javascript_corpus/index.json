@@ -1,0 +1,77 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2026-04-09T21:45:00.000Z",
+  "description": "TypeScript and JavaScript documentation corpus for SWEObeyMe",
+  "purpose": "Provide comprehensive TypeScript and JavaScript documentation for extension development and general web development",
+  "categories": [
+    {
+      "name": "typescript_language",
+      "path": "typescript_javascript_corpus/typescript_language",
+      "description": "TypeScript language specification and features",
+      "documents": [
+        {
+          "filename": "typescript_language_spec_readme.md",
+          "title": "TypeScript Language Specification README",
+          "author": "Microsoft",
+          "description": "TypeScript language specification documentation from Microsoft",
+          "license": "Microsoft",
+          "topics": ["TypeScript", "language specification", "types", "compilation"],
+          "relevance": "Understanding TypeScript language features for extension development"
+        }
+      ]
+    },
+    {
+      "name": "javascript_es6",
+      "path": "typescript_javascript_corpus/javascript_es6",
+      "description": "JavaScript ES6 (ECMAScript 2015) features and syntax",
+      "documents": [
+        {
+          "filename": "javascript_es6_guide.html",
+          "title": "JavaScript ES6 Guide",
+          "author": "Programiz",
+          "description": "Comprehensive guide to JavaScript ES6 features",
+          "license": "Programiz",
+          "topics": ["JavaScript", "ES6", "ECMAScript 2015", "modern JavaScript"],
+          "relevance": "Understanding modern JavaScript features for extension development"
+        }
+      ]
+    },
+    {
+      "name": "typescript_best_practices",
+      "path": "typescript_javascript_corpus/typescript_best_practices",
+      "description": "TypeScript coding standards and best practices",
+      "documents": []
+    },
+    {
+      "name": "javascript_best_practices",
+      "path": "typescript_javascript_corpus/javascript_best_practices",
+      "description": "JavaScript coding standards and best practices",
+      "documents": []
+    },
+    {
+      "name": "nodejs_patterns",
+      "path": "typescript_javascript_corpus/nodejs_patterns",
+      "description": "Node.js patterns and async programming",
+      "documents": []
+    }
+  ],
+  "metadata": {
+    "totalDocuments": 2,
+    "totalCategories": 5,
+    "supportedLicenses": ["Microsoft", "Programiz"],
+    "integrationStatus": {
+      "typescript_language": "Partial - TypeScript spec README downloaded",
+      "javascript_es6": "Partial - JavaScript ES6 guide downloaded",
+      "typescript_best_practices": "Empty - Need TypeScript best practices documentation",
+      "javascript_best_practices": "Empty - Need JavaScript best practices documentation",
+      "nodejs_patterns": "Empty - Need Node.js patterns documentation"
+    }
+  },
+  "instructions": {
+    "addingDocuments": "Place resources in appropriate subdirectories. Update this index.json with document metadata including title, author, description, license, topics, and relevance.",
+    "downloadingSources": "Download from Microsoft TypeScript documentation, MDN Web Docs, and reputable JavaScript/TypeScript resources. Prioritize official Microsoft and MDN documentation.",
+    "namingConvention": "Use clear, descriptive filenames with underscores: spec_name.md, guide_name.html",
+    "licenseCompliance": "Include license information for all resources. Prioritize official Microsoft and MDN documentation.",
+    "tsjsFocus": "Resources should enable SWEObeyMe to: (1) understand TypeScript language features, (2) use modern JavaScript ES6+ syntax, (3) follow TypeScript/JavaScript best practices, (4) implement Node.js patterns correctly, (5) support extension development with proper TypeScript usage."
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2026-04-09T21:45:00.000Z",
+  "description": "Security and CSP documentation corpus for SWEObeyMe",
+  "purpose": "Provide comprehensive security and Content Security Policy documentation for secure extension development",
+  "categories": [
+    {
+      "name": "csp_headers",
+      "path": "security_csp_corpus/csp_headers",
+      "description": "Content Security Policy headers and directives",
+      "documents": []
+    },
+    {
+      "name": "nonce_security",
+      "path": "security_csp_corpus/nonce_security",
+      "description": "CSP nonce-based security for inline scripts and styles",
+      "documents": [
+        {
+          "filename": "csp_nonce_guide.html",
+          "title": "CSP Nonce Guide",
+          "author": "Content Security Policy",
+          "description": "Comprehensive guide to using CSP nonces for inline script and style security",
+          "license": "CSP",
+          "topics": ["CSP", "nonce", "inline scripts", "inline styles", "security"],
+          "relevance": "Understanding CSP nonce implementation for secure webview development"
+        }
+      ]
+    },
+    {
+      "name": "xss_prevention",
+      "path": "security_csp_corpus/xss_prevention",
+      "description": "Cross-site scripting (XSS) prevention techniques",
+      "documents": []
+    },
+    {
+      "name": "csrf_protection",
+      "path": "security_csp_corpus/csrf_protection",
+      "description": "Cross-site request forgery (CSRF) protection techniques",
+      "documents": []
+    },
+    {
+      "name": "webview_security",
+      "path": "security_csp_corpus/webview_security",
+      "description": "VS Code webview security best practices",
+      "documents": []
+    }
+  ],
+  "metadata": {
+    "totalDocuments": 1,
+    "totalCategories": 5,
+    "supportedLicenses": ["CSP"],
+    "integrationStatus": {
+      "csp_headers": "Empty - Need CSP headers documentation",
+      "nonce_security": "Partial - CSP nonce guide downloaded",
+      "xss_prevention": "Empty - Need XSS prevention documentation",
+      "csrf_protection": "Empty - Need CSRF protection documentation",
+      "webview_security": "Empty - Need webview security documentation"
+    }
+  },
+  "instructions": {
+    "addingDocuments": "Place resources in appropriate subdirectories. Update this index.json with document metadata including title, author, description, license, topics, and relevance.",
+    "downloadingSources": "Download from OWASP, MDN Web Docs, and reputable security resources. Prioritize OWASP and MDN documentation.",
+    "namingConvention": "Use clear, descriptive filenames with underscores: guide_name.html, prevention_name.md",
+    "licenseCompliance": "Include license information for all resources. Prioritize OWASP and MDN documentation.",
+    "securityFocus": "Resources should enable SWEObeyMe to: (1) implement CSP correctly, (2) use nonce-based security for webviews, (3) prevent XSS attacks, (4) prevent CSRF attacks, (5) follow webview security best practices."
+  }
+}

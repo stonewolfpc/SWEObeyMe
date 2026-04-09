@@ -1,0 +1,70 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2026-04-09T21:47:00.000Z",
+  "description": "C++ documentation corpus for SWEObeyMe",
+  "purpose": "Provide comprehensive C++ documentation including language specifications, core guidelines, debugging, and best practices",
+  "categories": [
+    {
+      "name": "cpp_language_spec",
+      "path": "cpp_corpus/cpp_language_spec",
+      "description": "C++ language specifications and standards",
+      "documents": []
+    },
+    {
+      "name": "cpp_core_guidelines",
+      "path": "cpp_corpus/cpp_core_guidelines",
+      "description": "C++ Core Guidelines for modern C++ development",
+      "documents": [
+        {
+          "filename": "cpp_core_guidelines.html",
+          "title": "C++ Core Guidelines",
+          "author": "ISO C++",
+          "description": "Official C++ Core Guidelines for using C++ effectively and safely",
+          "license": "ISO C++",
+          "topics": ["C++", "core guidelines", "modern C++", "best practices", "ISO"],
+          "relevance": "Understanding official C++ core guidelines for safe and effective C++ development"
+        }
+      ]
+    },
+    {
+      "name": "cpp_debugging",
+      "path": "cpp_corpus/cpp_debugging",
+      "description": "C++ debugging techniques, tools, and best practices",
+      "documents": [
+        {
+          "filename": "cpp_debugging_without_ide.html",
+          "title": "A Step-by-Step Crash Course in C++ Debugging Without IDE",
+          "author": "Incredibuild",
+          "description": "Comprehensive guide to C++ debugging without relying on IDE features",
+          "license": "Incredibuild",
+          "topics": ["C++", "debugging", "GDB", "command line", "best practices"],
+          "relevance": "Understanding C++ debugging techniques and best practices"
+        }
+      ]
+    },
+    {
+      "name": "cpp_best_practices",
+      "path": "cpp_corpus/cpp_best_practices",
+      "description": "C++ coding standards, patterns, and best practices",
+      "documents": []
+    }
+  ],
+  "metadata": {
+    "totalDocuments": 2,
+    "totalCategories": 4,
+    "supportedLicenses": ["ISO C++", "Incredibuild"],
+    "integrationStatus": {
+      "cpp_language_spec": "Empty - Need C++ language specification",
+      "cpp_core_guidelines": "Partial - C++ Core Guidelines downloaded",
+      "cpp_debugging": "Partial - C++ debugging guide downloaded",
+      "cpp_best_practices": "Empty - Need C++ best practices documentation"
+    }
+  },
+  "instructions": {
+    "addingDocuments": "Place resources in appropriate subdirectories. Update this index.json with document metadata including title, author, description, license, topics, and relevance.",
+    "downloadingSources": "Download from ISO C++ standards, cppreference.com, and reputable C++ resources. Prioritize official ISO C++ documentation and C++ Core Guidelines.",
+    "namingConvention": "Use clear, descriptive filenames with underscores: spec_name.html, guide_name.html",
+    "licenseCompliance": "Include license information for all resources. Prioritize official ISO C++ and open-source documentation.",
+    "cppFocus": "Resources should enable SWEObeyMe to: (1) understand C++ language standards, (2) follow C++ Core Guidelines, (3) implement C++ debugging techniques, (4) follow C++ best practices, (5) identify C++ patterns and anti-patterns."
+  }
+}

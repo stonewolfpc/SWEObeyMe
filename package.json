@@ -1,8 +1,8 @@
 {
   "name": "swe-obey-me",
   "displayName": "SWEObeyMe",
-  "description": "SWEObeyMe - Surgical governance system for VS Code with MCP server integration. v2.1.4-beta: Fixed empty UI panels, MCP config installation, TrustedScript violations, and runtime warnings.",
-  "version": "2.1.4-beta",
+  "description": "SWEObeyMe - Surgical governance system for VS Code with MCP server integration. v2.1.5-beta: Enhanced separation of concerns rules with WHY/WHEN/HOW explanations, improved tool descriptions for better AI guidance.",
+  "version": "2.1.5-beta",
   "type": "module",
   "publisher": "stonewolfpc",
   "icon": "icon.png",

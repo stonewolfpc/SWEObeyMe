@@ -1,0 +1,60 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2026-04-09T21:45:00.000Z",
+  "description": "MCP Server Implementation documentation corpus for SWEObeyMe",
+  "purpose": "Provide comprehensive MCP server implementation patterns and documentation",
+  "categories": [
+    {
+      "name": "mcp_server_patterns",
+      "path": "mcp_implementation_corpus/mcp_server_patterns",
+      "description": "MCP server implementation patterns and architecture",
+      "documents": [
+        {
+          "filename": "mcp_server_implementation_guide.html",
+          "title": "MCP Server Implementation: Architecture, Setup & Best Practices",
+          "author": "Atlan",
+          "description": "Comprehensive guide to MCP server implementation, architecture, and best practices",
+          "license": "Atlan",
+          "topics": ["MCP", "server implementation", "architecture", "best practices"],
+          "relevance": "Understanding MCP server implementation patterns"
+        }
+      ]
+    },
+    {
+      "name": "mcp_transport_handling",
+      "path": "mcp_implementation_corpus/mcp_transport_handling",
+      "description": "MCP transport layer handling (stdio, HTTP)",
+      "documents": []
+    },
+    {
+      "name": "mcp_tool_registration",
+      "path": "mcp_implementation_corpus/mcp_tool_registration",
+      "description": "MCP tool registration and implementation",
+      "documents": []
+    },
+    {
+      "name": "mcp_resource_handling",
+      "path": "mcp_implementation_corpus/mcp_resource_handling",
+      "description": "MCP resource handling and implementation",
+      "documents": []
+    }
+  ],
+  "metadata": {
+    "totalDocuments": 1,
+    "totalCategories": 4,
+    "supportedLicenses": ["Atlan"],
+    "integrationStatus": {
+      "mcp_server_patterns": "Partial - MCP server implementation guide downloaded",
+      "mcp_transport_handling": "Empty - Need transport handling documentation",
+      "mcp_tool_registration": "Empty - Need tool registration documentation",
+      "mcp_resource_handling": "Empty - Need resource handling documentation"
+    }
+  },
+  "instructions": {
+    "addingDocuments": "Place resources in appropriate subdirectories. Update this index.json with document metadata including title, author, description, license, topics, and relevance.",
+    "downloadingSources": "Download from MCP specification documentation, modelcontextprotocol.io, and reputable MCP implementation guides. Prioritize official MCP documentation.",
+    "namingConvention": "Use clear, descriptive filenames with underscores: guide_name.html, pattern_name.md",
+    "licenseCompliance": "Include license information for all resources. Prioritize official MCP documentation.",
+    "mcpFocus": "Resources should enable SWEObeyMe to: (1) understand MCP server patterns, (2) implement transport handling, (3) register tools correctly, (4) handle resources properly, (5) follow MCP best practices."
+  }
+}

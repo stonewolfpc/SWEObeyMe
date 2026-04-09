@@ -1,0 +1,86 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2026-04-09T21:45:00.000Z",
+  "description": "C# and .NET documentation corpus for SWEObeyMe",
+  "purpose": "Provide comprehensive C# and .NET documentation for C# Bridge diagnostics and .NET development",
+  "categories": [
+    {
+      "name": "csharp_language_specs",
+      "path": "csharp_dotnet_corpus/csharp_language_specs",
+      "description": "C# language specifications and standards",
+      "documents": [
+        {
+          "filename": "ecma_334_csharp_language_spec.pdf",
+          "title": "ECMA-334 C# Language Specification",
+          "author": "ECMA International",
+          "description": "Official ECMA-334 specification for the C# programming language",
+          "license": "ECMA",
+          "topics": ["C# language", "ECMA-334", "language specification", "standards"],
+          "relevance": "Official C# language specification for understanding language semantics"
+        }
+      ]
+    },
+    {
+      "name": "dotnet_runtime",
+      "path": "csharp_dotnet_corpus/dotnet_runtime",
+      "description": ".NET runtime documentation and features",
+      "documents": []
+    },
+    {
+      "name": "dotnet_8_10_features",
+      "path": "csharp_dotnet_corpus/dotnet_8_10_features",
+      "description": ".NET 8 and .NET 10 specific features and improvements",
+      "documents": []
+    },
+    {
+      "name": "roslyn_compiler",
+      "path": "csharp_dotnet_corpus/roslyn_compiler",
+      "description": "Roslyn compiler architecture and API documentation",
+      "documents": []
+    },
+    {
+      "name": "csharp_best_practices",
+      "path": "csharp_dotnet_corpus/csharp_best_practices",
+      "description": "C# coding standards, patterns, and best practices",
+      "documents": [
+        {
+          "filename": "dotnet_coding_conventions.html",
+          "title": ".NET Coding Conventions",
+          "author": "Microsoft",
+          "description": "Official .NET coding conventions and style guidelines from Microsoft Learn",
+          "license": "Microsoft",
+          "topics": ["C#", ".NET", "coding conventions", "style guidelines", "best practices"],
+          "relevance": "Understanding official .NET coding conventions for C# development"
+        },
+        {
+          "filename": "csharp_debugging/vscode_csharp_debugging.html",
+          "title": "Debugging C# in Visual Studio Code",
+          "author": "Microsoft",
+          "description": "Official VS Code C# debugging documentation",
+          "license": "Microsoft",
+          "topics": ["C#", "debugging", "VS Code", "Visual Studio", "breakpoints"],
+          "relevance": "Understanding C# debugging techniques and tools in VS Code"
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "totalDocuments": 3,
+    "totalCategories": 5,
+    "supportedLicenses": ["ECMA", "Microsoft"],
+    "integrationStatus": {
+      "csharp_language_specs": "Partial - ECMA-334 spec downloaded",
+      "dotnet_runtime": "Empty - Need .NET runtime documentation",
+      "dotnet_8_10_features": "Empty - Need .NET 8/10 feature documentation",
+      "roslyn_compiler": "Empty - Need Roslyn compiler documentation",
+      "csharp_best_practices": "Partial - .NET coding conventions and VS Code debugging docs downloaded"
+    }
+  },
+  "instructions": {
+    "addingDocuments": "Place resources in appropriate subdirectories. Update this index.json with document metadata including title, author, description, license, topics, and relevance.",
+    "downloadingSources": "Download from Microsoft documentation, ECMA standards, and reputable C#/.NET resources. Prioritize official specifications and Microsoft Learn documentation.",
+    "namingConvention": "Use clear, descriptive filenames with underscores: spec_name.pdf, guide_name.html",
+    "licenseCompliance": "Include license information for all resources. Prioritize official Microsoft and ECMA documentation.",
+    "csharpFocus": "Resources should enable SWEObeyMe to: (1) understand C# language semantics for error detection, (2) identify C# patterns and anti-patterns, (3) support .NET 8/10 features, (4) understand Roslyn compiler behavior, (5) enforce C# best practices."
+  }
+}

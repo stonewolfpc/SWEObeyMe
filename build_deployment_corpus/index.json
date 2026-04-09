@@ -1,0 +1,60 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2026-04-09T21:45:00.000Z",
+  "description": "Build and deployment documentation corpus for SWEObeyMe",
+  "purpose": "Provide comprehensive build and deployment documentation for VS Code extensions",
+  "categories": [
+    {
+      "name": "vsce_packaging",
+      "path": "build_deployment_corpus/vsce_packaging",
+      "description": "vsce packaging and publishing documentation",
+      "documents": []
+    },
+    {
+      "name": "esbuild_configuration",
+      "path": "build_deployment_corpus/esbuild_configuration",
+      "description": "esbuild configuration and API documentation",
+      "documents": [
+        {
+          "filename": "esbuild_api.html",
+          "title": "esbuild API Documentation",
+          "author": "esbuild",
+          "description": "Official esbuild API documentation and configuration guide",
+          "license": "esbuild",
+          "topics": ["esbuild", "build", "bundling", "configuration"],
+          "relevance": "Understanding esbuild configuration for extension bundling"
+        }
+      ]
+    },
+    {
+      "name": "deployment_patterns",
+      "path": "build_deployment_corpus/deployment_patterns",
+      "description": "Deployment patterns and best practices",
+      "documents": []
+    },
+    {
+      "name": "ci_cd",
+      "path": "build_deployment_corpus/ci_cd",
+      "description": "CI/CD configuration and automation",
+      "documents": []
+    }
+  ],
+  "metadata": {
+    "totalDocuments": 1,
+    "totalCategories": 4,
+    "supportedLicenses": ["esbuild"],
+    "integrationStatus": {
+      "vsce_packaging": "Empty - Need vsce packaging documentation",
+      "esbuild_configuration": "Partial - esbuild API documentation downloaded",
+      "deployment_patterns": "Empty - Need deployment patterns documentation",
+      "ci_cd": "Empty - Need CI/CD documentation"
+    }
+  },
+  "instructions": {
+    "addingDocuments": "Place resources in appropriate subdirectories. Update this index.json with document metadata including title, author, description, license, topics, and relevance.",
+    "downloadingSources": "Download from esbuild documentation, vsce documentation, and reputable build/deployment resources. Prioritize official documentation.",
+    "namingConvention": "Use clear, descriptive filenames with underscores: tool_name.html, pattern_name.md",
+    "licenseCompliance": "Include license information for all resources. Prioritize official documentation.",
+    "buildFocus": "Resources should enable SWEObeyMe to: (1) understand vsce packaging, (2) configure esbuild correctly, (3) implement deployment patterns, (4) set up CI/CD pipelines, (5) follow build best practices."
+  }
+}
