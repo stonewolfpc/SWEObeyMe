@@ -49,6 +49,9 @@ dump*.txt
 # Old release artifacts
 SWEObeyMe-v1.0.12.zip
 
+# Local-only tests (not included in builds)
+.local/
+
 # Local config
 mcp_config.json
 

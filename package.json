@@ -1,8 +1,8 @@
 {
   "name": "swe-obey-me",
   "displayName": "SWEObeyMe",
-  "description": "SWEObeyMe - Surgical governance system for VS Code with MCP server integration. v2.1.5-beta: Enhanced separation of concerns rules with WHY/WHEN/HOW explanations, improved tool descriptions for better AI guidance.",
-  "version": "2.1.5-beta",
+  "description": "SWEObeyMe - Surgical governance system for VS Code with MCP server integration. Enterprise-ready with 95 tools, strict governance, and cross-platform certification.",
+  "version": "3.0.0",
   "type": "module",
   "publisher": "stonewolfpc",
   "icon": "icon.png",
@@ -60,6 +60,12 @@
       {
         "command": "sweObeyMe.analyzeCSharp",
         "title": "Analyze Current C# File",
+        "category": "SWEObeyMe",
+        "icon": "$(search)"
+      },
+      {
+        "command": "sweObeyMe.analyzeCpp",
+        "title": "Analyze Current C++ File",
         "category": "SWEObeyMe",
         "icon": "$(search)"
       },
@@ -181,6 +187,12 @@
         "when": "config.sweObeyMe.enabled && editorLangId == 'csharp'"
       },
       {
+        "command": "sweObeyMe.analyzeCpp",
+        "key": "ctrl+shift+c",
+        "mac": "cmd+shift+c",
+        "when": "config.sweObeyMe.enabled && (editorLangId == 'cpp' || editorLangId == 'c')"
+      },
+      {
         "command": "sweObeyMe.showDiagnostics",
         "key": "ctrl+shift+d",
         "mac": "cmd+shift+d",
@@ -266,6 +278,59 @@
             "stringConcatenation": true
           },
           "description": "Enable/disable specific error detectors"
+        },
+        "sweObeyMe.cppBridge.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable C++ Bridge custom error detection (ADDS to Windsurf defaults, doesn't replace)"
+        },
+        "sweObeyMe.cppBridge.severityThreshold": {
+          "type": "number",
+          "default": 0,
+          "description": "Minimum severity level to report (0=Info, 1=Warning, 2=Error)"
+        },
+        "sweObeyMe.cppBridge.confidenceThreshold": {
+          "type": "number",
+          "default": 70,
+          "description": "Minimum confidence percentage to show alerts (0-100)"
+        },
+        "sweObeyMe.cppBridge.deduplicateAlerts": {
+          "type": "boolean",
+          "default": true,
+          "description": "Group identical warnings to reduce noise"
+        },
+        "sweObeyMe.cppBridge.alertCooldown": {
+          "type": "number",
+          "default": 30,
+          "description": "Cooldown in seconds before repeating same alert"
+        },
+        "sweObeyMe.cppBridge.useClangTidy": {
+          "type": "boolean",
+          "default": false,
+          "description": "Use clang-tidy for deeper analysis (requires clang-tidy installed)"
+        },
+        "sweObeyMe.cppBridge.useCppcheck": {
+          "type": "boolean",
+          "default": false,
+          "description": "Use cppcheck for static analysis (requires cppcheck installed)"
+        },
+        "sweObeyMe.cppBridge.detectors": {
+          "type": "object",
+          "default": {
+            "memory_leak_raw_new": true,
+            "missing_virtual_destructor": true,
+            "raw_array_new": true,
+            "missing_null_check": true,
+            "unused_include": true,
+            "naked_delete": true,
+            "exception_safety": true,
+            "buffer_overflow_risk": true,
+            "magic_number": true,
+            "deep_nesting": true,
+            "global_variable": true,
+            "implicit_conversion": true
+          },
+          "description": "Enable/disable specific C++ error detectors"
         },
         "sweObeyMe.initialization.scanOnNewProject": {
           "type": "boolean",
