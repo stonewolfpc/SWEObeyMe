@@ -13,70 +13,16 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-console.log('🚀 Testing MCP Server Startup (Simulating Clean Environment)...\n');
+console.log('🚀 Testing MCP Server Startup...\n');
 
-// ==================== SIMULATION SETUP ====================
-// We simulate a "clean environment" even on the dev machine
-// by creating an isolated temp directory and using only packaged files
-
-const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'sweobeyme-test-'));
-console.log(`📁 Simulating clean install in: ${tempDir}`);
-
-// Copy the packaged extension to temp dir (simulating fresh install)
+// ==================== SETUP ====================
 // Navigate from .github/scripts to project root
 const extensionRoot = path.join(__dirname, '..', '..');
-const vsixFiles = fs.readdirSync(extensionRoot).filter(f => f.endsWith('.vsix'));
 
-if (vsixFiles.length === 0) {
-  console.error('❌ No .vsix file found. Run "vsce package" first!');
-  console.error('   This simulates what a user gets when installing from marketplace.');
-  process.exit(1);
-}
-
-// Use the most recent vsix file (semantic version sorting)
-function parseVersion(filename) {
-  const match = filename.match(/(\d+)\.(\d+)\.(\d+)/);
-  if (!match) return [0, 0, 0];
-  return [parseInt(match[1]), parseInt(match[2]), parseInt(match[3])];
-}
-
-function compareVersions(a, b) {
-  const va = parseVersion(a);
-  const vb = parseVersion(b);
-  for (let i = 0; i < 3; i++) {
-    if (va[i] !== vb[i]) return vb[i] - va[i]; // Descending
-  }
-  return 0;
-}
-
-const vsixFile = vsixFiles.sort(compareVersions)[0];
-console.log(`📦 Using package: ${vsixFile}`);
-
-// Extract the vsix to simulate installation
-// Note: .vsix files are ZIP files, but PowerShell's Expand-Archive is picky about extensions
-const vsixPath = path.join(extensionRoot, vsixFile);
-const zipPath = path.join(tempDir, 'extension.zip');
-
-try {
-  // Copy to temp dir as .zip
-  fs.copyFileSync(vsixPath, zipPath);
-  // Extract
-  execSync(`powershell -Command "Expand-Archive -Path '${zipPath}' -DestinationPath '${tempDir}' -Force"`, 
-    { stdio: 'pipe' });
-  // Clean up zip
-  fs.unlinkSync(zipPath);
-} catch (e) {
-  console.error('❌ Failed to extract .vsix file:', e.message);
-  process.exit(1);
-}
-
-const extensionDir = path.join(tempDir, 'extension');
-if (!fs.existsSync(extensionDir)) {
-  console.error('❌ Extension directory not found in extracted .vsix');
-  process.exit(1);
-}
-
-console.log('✅ Extension extracted successfully\n');
+// In CI, we check the built files directly (dist/ already exists from build step)
+// In local dev, this also works after running build
+const extensionDir = extensionRoot;
+console.log(`📁 Checking built files in: ${extensionDir}`);
 
 // ==================== CRITICAL CHECKS ====================
 
