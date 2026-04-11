@@ -30,7 +30,7 @@ const nodePath = process.execPath;
 const server = spawn(nodePath, [serverPath], {
   stdio: ['pipe', 'pipe', 'pipe'],
   env: { ...process.env, NODE_ENV: 'test' },
-  cwd: extensionDir
+  cwd: extensionRoot
 });
 
 let buffer = '';
