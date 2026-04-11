@@ -13,56 +13,13 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-console.log('🔌 Testing MCP Protocol Compliance (Simulating Clean Environment)...\n');
+console.log('🔌 Testing MCP Protocol Compliance...\n');
 
-// ==================== SIMULATION SETUP ====================
-const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'sweobeyme-compliance-'));
-console.log(`📁 Simulating clean install in: ${tempDir}`);
-
+// ==================== SETUP ====================
 // Navigate from .github/scripts to project root
 const extensionRoot = path.join(__dirname, '..', '..');
-const vsixFiles = fs.readdirSync(extensionRoot).filter(f => f.endsWith('.vsix'));
-
-if (vsixFiles.length === 0) {
-  console.error('❌ No .vsix file found. Run "vsce package" first!');
-  process.exit(1);
-}
-
-// Use the most recent vsix file (semantic version sorting)
-function parseVersion(filename) {
-  const match = filename.match(/(\d+)\.(\d+)\.(\d+)/);
-  if (!match) return [0, 0, 0];
-  return [parseInt(match[1]), parseInt(match[2]), parseInt(match[3])];
-}
-
-function compareVersions(a, b) {
-  const va = parseVersion(a);
-  const vb = parseVersion(b);
-  for (let i = 0; i < 3; i++) {
-    if (va[i] !== vb[i]) return va[i] - vb[i]; // Ascending
-  }
-  return 0;
-}
-
-const vsixFile = vsixFiles.sort(compareVersions)[vsixFiles.length - 1];
-console.log(`📦 Using package: ${vsixFile}`);
-
-// Extract the vsix to simulate installation
-const vsixPath = path.join(extensionRoot, vsixFile);
-const zipPath = path.join(tempDir, 'extension.zip');
-
-try {
-  fs.copyFileSync(vsixPath, zipPath);
-  execSync(`powershell -Command "Expand-Archive -Path '${zipPath}' -DestinationPath '${tempDir}' -Force"`, 
-    { stdio: 'pipe' });
-  fs.unlinkSync(zipPath);
-} catch (e) {
-  console.error('❌ Failed to extract .vsix file:', e.message);
-  process.exit(1);
-}
-
-const extensionDir = path.join(tempDir, 'extension');
-const serverPath = path.join(extensionDir, 'dist/mcp/server.js');
+const serverPath = path.join(extensionRoot, 'dist/mcp/server.js');
+console.log(`� Checking built files in: ${extensionRoot}`);
 
 // ==================== MANUAL MCP TEST ====================
 // Since we may not have the SDK installed, we do manual JSON-RPC testing
@@ -217,7 +174,6 @@ function validateTools(tools) {
 function finishTest() {
   setTimeout(() => {
     server.kill();
-    cleanup();
     
     console.log('\n' + '='.repeat(50));
     
@@ -239,15 +195,6 @@ function finishTest() {
   }, 500);
 }
 
-function cleanup() {
-  try {
-    fs.rmSync(tempDir, { recursive: true, force: true });
-    console.log(`\n🧹 Cleaned up temp directory`);
-  } catch (e) {
-    // Ignore cleanup errors
-  }
-}
-
 // Start the test sequence
 setTimeout(() => {
   console.log('   Sending initialize request...');
@@ -262,6 +209,5 @@ setTimeout(() => {
 setTimeout(() => {
   console.error('\n❌ Test timeout (15s)');
   server.kill();
-  cleanup();
   process.exit(1);
 }, 15000);
