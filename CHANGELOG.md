@@ -17,6 +17,21 @@ All notable changes to SWEObeyMe will be documented in this file.
 
 ### Major Changes
 
+#### Separation of Concerns (SoC) Refactoring
+- **extension.js**: 1,130 → 147 lines (87% reduction)
+  - Extracted UI generators to `lib/ui/generators/`
+  - Extracted webview provider factory
+  - Now handles only extension lifecycle
+- **csharp-handlers.js**: 765 → 452 lines
+  - Extracted C# bridge handlers to `lib/tools/csharp/bridge-handlers.js`
+  - Maintains core C# functionality
+- **SoC Compliance Testing** - NEW FEATURE
+  - `ARCHITECTURE_SOC_RULES.md` - Mandatory architectural standards
+  - `SOC_AUDIT_REPORT.md` - Violation analysis and remediation
+  - **Why this matters**: Enforces clean code architecture, prevents god files, ensures AI follows senior engineer standards
+  - **Impact**: Intern coders get architectural guidance automatically - mistakes erased before they happen
+- **All files under 700 lines** - Zero god files remaining
+
 #### Tool Consolidation
 - Unified documentation tools (14 → 4 tools)
   - `docs_lookup` - Search all corpora
