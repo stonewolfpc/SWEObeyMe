@@ -12,7 +12,9 @@ build/
 # Test files (individual test files, but keep tests/ directory for CI/CD)
 # Note: test-tools/ is included for schema validation tests
 # Note: tests/ directory is included for MCP integration tests
+# Note: .github/scripts/test-*.js are needed for release validation
 test-*.js
+!.github/scripts/test-*.js
 !test-tools/test-all-schemas.js
 !test-tools/test-csharp-tools.js
 !tests/test-mcp-config-simulation.js
