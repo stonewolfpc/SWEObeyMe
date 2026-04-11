@@ -135,11 +135,10 @@ setTimeout(() => {
     if (started || stderr === '') {
       console.log('✅ Server started successfully and is running\n');
       server.kill();
-      cleanup();
       
       console.log('='.repeat(50));
       console.log('✅ ALL STARTUP TESTS PASSED');
-      console.log('   Server starts correctly in clean environment');
+      console.log('   Server starts correctly');
       console.log('   package.json is properly packaged');
       console.log('   Ready for WindSurf deployment');
       process.exit(0);
@@ -148,7 +147,6 @@ setTimeout(() => {
       console.warn('   STDOUT:', stdout.slice(0, 200) || '(empty)');
       console.warn('   STDERR:', stderr.slice(0, 200) || '(empty)');
       server.kill();
-      cleanup();
       process.exit(0); // Soft pass - server is running
     }
   } catch (e) {
@@ -156,7 +154,6 @@ setTimeout(() => {
     console.error('STDOUT:', stdout || '(empty)');
     console.error('STDERR:', stderr || '(empty)');
     server.kill();
-    cleanup();
     process.exit(1);
   }
 }, 5000);
@@ -167,16 +164,5 @@ setTimeout(() => {
   console.error('STDOUT:', stdout || '(empty)');
   console.error('STDERR:', stderr || '(empty)');
   server.kill();
-  cleanup();
   process.exit(1);
 }, 10000);
-
-function cleanup() {
-  // Clean up temp directory
-  try {
-    fs.rmSync(tempDir, { recursive: true, force: true });
-    console.log(`\n🧹 Cleaned up temp directory`);
-  } catch (e) {
-    console.warn(`⚠️  Could not clean up temp directory: ${tempDir}`);
-  }
-}
