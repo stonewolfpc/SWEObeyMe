@@ -2,6 +2,23 @@
 
 All notable changes to SWEObeyMe will be documented in this file.
 
+## [3.0.2] - 2026-04-13
+
+### Patch - Tool Compliance & Governance Enforcement
+
+**Highlights:**
+- **`.windsurfrules`** - New workspace rules file injected into every Cascade session as hard session-start mandates
+- **Workflow fixed** - Removed 23 phantom tool references from `swe-obeyme-automation.md` that were causing model hallucination
+- **`create_backup` MCP handler** - Was registered in schema but had no implementation; now fully functional
+- **Tool descriptions strengthened** - 56/96 tools now have `MUST`/`ONLY way`/`REQUIRED` imperative language (was 30/96)
+- **Priority rebalancing** - Critical operational tools (`run_related_tests`, `create_backup`, `request_surgical_recovery`, `confirm_dangerous_operation`) promoted from priority 10 to 50–60
+- **Response injection expanded** - `REQUIRED NEXT:` guidance now fires from error, search, and new-file contexts in addition to read/write
+
+### Bug Fixes
+- `create_backup` tool existed in registry schema with no handler — added implementation
+- Backup system end-to-end verified: create → list → restore → stats all pass
+- Workflow file referenced 23 non-existent tools; replaced with actual registry tools
+
 ## [3.0.0] - 2026-04-10
 
 ### v1.0 Full Release - Enterprise Certification
