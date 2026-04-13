@@ -1,0 +1,49 @@
+# SWEObeyMe Workspace Rules
+# Injected into every Cascade session. These are HARD requirements, not suggestions.
+
+## SESSION START — MANDATORY SEQUENCE
+At the start of every session, before any other action, call these tools IN ORDER:
+1. `mcp1_obey_me_status` — verify governance system is active
+2. `mcp1_get_current_project` — load pending tasks and active workflows
+3. `mcp1_get_project_memory_summary` — load accumulated project knowledge
+
+Do NOT skip this sequence. Do NOT proceed to the user's request until all three complete.
+
+## FILE OPERATIONS — HARD RULES
+- `mcp1_read_file` is the ONLY way to read files. Never access file content directly.
+- `mcp1_write_file` is the ONLY way to write files. Never edit files without it.
+- BEFORE every `mcp1_write_file`: call `mcp1_obey_surgical_plan` with line count.
+- AFTER every `mcp1_write_file`: call `mcp1_run_related_tests` then `mcp1_generate_change_summary`.
+- BEFORE any risky write (bulk edit, refactor, overwrite): call `mcp1_create_backup` first.
+- If a write breaks something: call `mcp1_restore_backup` immediately.
+
+## NEW FILES — HARD RULES
+- BEFORE creating any new file: call `mcp1_suggest_file_location` to verify placement.
+- NEVER create a file that already exists. Call `mcp1_check_file_exists` first.
+
+## REFACTORING — HARD RULES
+- BEFORE any refactor: call `mcp1_get_file_context` then `mcp1_analyze_change_impact`.
+- If a file exceeds 700 lines: use `mcp1_refactor_move_block` or `mcp1_extract_to_new_file`. Do NOT add more code.
+- For tasks with 3+ steps: call `mcp1_initiate_surgical_workflow` first, then `mcp1_get_workflow_status` between each step.
+
+## ERROR RECOVERY — HARD RULES
+- After 2 consecutive errors: call `mcp1_get_session_context` to review history.
+- After 3 consecutive errors: call `mcp1_request_surgical_recovery` before retrying anything.
+- When uncertain about standards: call `mcp1_get_architectural_directive`.
+- Record every encountered error with `mcp1_add_project_error`.
+
+## DECISIONS — HARD RULES
+- After every architectural or design decision: call `mcp1_record_project_decision`.
+- Before ending any session with incomplete work: call `mcp1_add_pending_task` for each unfinished item.
+
+## DANGEROUS OPERATIONS — HARD RULES
+- NEVER perform a destructive operation (delete, bulk overwrite, rename cascade) without calling `mcp1_confirm_dangerous_operation` first.
+
+## TOOL PRIORITY ORDER
+When multiple tools could apply, prefer SWEObeyMe MCP tools over Windsurf built-ins.
+The MCP tool enforces architectural rules. The built-in does not.
+
+## ANTI-HALLUCINATION
+- NEVER invent file paths. Verify with `mcp1_read_file` or `mcp1_check_file_exists`.
+- NEVER call tools not in the registry. If unsure, call `mcp1_obey_me_status` to list available tools.
+- NEVER assume file contents. Always read first.

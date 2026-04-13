@@ -4,458 +4,193 @@ description: SWEObeyMe Automated Workflow - Enforces strict tool obedience, anti
 
 # SWEObeyMe Automated Workflow
 
-This workflow enforces strict discipline for AI agents using SWEObeyMe MCP tools with **automated separation of concerns** and **project map synchronization**.
+This workflow enforces strict discipline for AI agents using SWEObeyMe MCP tools.
 
 ## Core Rules
 
 ### 1. Always Use Tools First
 - If a tool exists, use it
 - If a tool fails, explain why and retry with context
-- If a tool is missing, ask for it
 - NEVER bypass tools with manual edits
+- NEVER call tools that are not in the registry
 
 ### 2. Search Before Edit
 Before editing any file:
 - Search for the file using `search_code_files` or `find_code_files`
-- Confirm the file exists using `read_file`
-- Confirm the content matches expectations
-- Confirm the correct location
-- If file doesn't exist, state "File not found, searching..." before creating
+- Confirm the file exists using `check_file_exists`
+- Read current content with `read_file`
+- If file doesn't exist, call `suggest_file_location` before creating
 
 ### 3. Explain Before Act
 Before any operation:
 - State the plan clearly
-- State the reasoning for the plan
 - State which tools you will use
 - State expected outcomes
-- Wait for confirmation if operation is destructive
+- Call `confirm_dangerous_operation` if the operation is destructive
 
 ### 4. Never Hallucinate
-- NEVER invent file paths that don't exist
-- NEVER call tools that aren't defined
+- NEVER invent file paths. Verify with `read_file` or `check_file_exists`.
+- NEVER call tools that aren't in the registry
 - NEVER create new files when existing files should be edited
 - If unsure: search → ask → verify → don't invent
 
-### 5. Maintain Project Map (Source of Truth)
-Always maintain awareness of:
-- **project_map.json** is the single source of truth for project structure
-- Every file belongs to a domain (auth, database, models, services, controllers, utils, interfaces)
-- Every file has a purpose and module
-- Root directory may only contain: README, LICENSE, project_map.json, package.json, config files
-- Use `read_project_map` to view current state
-- Use `write_project_map` to update after file operations
-
-### 6. Follow User Conventions
-Detect and follow:
+### 5. Follow User Conventions
+Detect and follow with `analyze_project_conventions`:
 - Naming conventions (snake_case, PascalCase, camelCase, kebab-case)
 - Folder structure (src/, lib/, docs/, etc.)
-- File organization patterns
 - Import/export patterns
-- Domain-based organization
 
-### 7. Maintain Documentation Automatically
-Every structural change MUST trigger:
-- Update `project_map.json` (ALWAYS required)
-- Update README if user-facing changes
-- Update architecture.md if structural changes
-- Update CHANGELOG.md for versioned changes
-- Use `update_documentation` tool for automatic updates
-
-### 8. Enforce Separation of Concerns
+### 6. Enforce Separation of Concerns
 Before any file operation:
-- Use `validate_against_project_map` to check file location
-- Use `detect_code_domain` to identify code domain
-- Use `evaluate_file_for_split` to check if file should be split
-- If file in root (not config/docs): move to appropriate domain folder
-- If file has multiple conceptual units: split into separate files
+- Use `analyze_file_health` to detect god files and mixed concerns
 - If file exceeds 700 lines: use `refactor_move_block` or `extract_to_new_file`
+- Use `obey_surgical_plan` to validate line count before every write
 
-### 9. Self-Correction Required
+### 7. Self-Correction Required
 When errors occur:
-- "I see a mismatch, let me fix it"
-- "This file doesn't exist, let me search"
-- "This tool failed, let me retry with context"
+- After 2 errors: call `get_session_context` to review history
+- After 3 errors: call `request_surgical_recovery` before retrying
+- Record every error with `add_project_error`
 - NEVER proceed past errors without resolution
-
-### 10. Version Tracking and Permission Gates
-Before any push operation:
-- Use `check_version_status` to view current version and pending changes
-- Use `suggest_version_bump` to determine appropriate version increment
-- Use `request_push_permission` to request user authorization
-- **WAIT for user to grant permission** using `grant_push_permission`
-- If permission denied: `revoke_push_permission` and explain why
-- After successful push: use `clear_changes` to reset version state
-- **NEVER push without explicit user permission**
-
-### 11. Project Initialization (MANDATORY)
-Before ANY task on a new or unfamiliar project:
-- Use `check_project_scan_needed` to verify if scan is required
-- If scan required: use `run_initialization_workflow`
-- This performs: full project scan → build project map → generate health report
-- **WAIT for user to review report and grant approval** using `grant_project_approval`
-- **NEVER proceed with task without user approval after scan**
-- Only after approval: proceed with the requested task
-- This prevents hallucination, drift, and incorrect assumptions
-
-### 12. Publish Validation (MANDATORY)
-Before ANY publish operation (npm publish, vsce publish, git push, etc.):
-- Use `check_publish_readiness` to validate project readiness
-- This checks: package.json, version bump, README, CHANGELOG, documentation sync, project map, code quality
-- If validation fails: fix critical issues before proceeding
-- If validation passes: use `request_publish_permission` to request user authorization
-- **WAIT for user to grant permission** using `grant_publish_permission`
-- If permission denied: `deny_publish_permission` and explain why
-- **NEVER publish without explicit user permission**
-- Only after permission granted: proceed with publish operation
-
-## Version Tracking Rules
-
-### Change Classification
-- **MAJOR**: Breaking changes, API changes, architectural restructuring
-- **MINOR**: New features, backward-compatible additions
-- **PATCH**: Bug fixes, documentation updates, minor improvements
-
-### Permission Gate Flow
-1. Record changes automatically via `update_documentation`
-2. Before push: use `check_push_permitted` to verify permission status
-3. If not permitted: use `request_push_permission` to request authorization
-4. **WAIT** for user to use `grant_push_permission`
-5. If granted: proceed with version bump and push
-6. After push: use `clear_changes` to reset state
-7. Permission is automatically revoked after successful push or new changes
-
-### Version Bump Workflow
-1. Use `check_version_status` to view current state
-2. Use `suggest_version_bump` to get recommendation
-3. Use `apply_version_bump` with recommended type (major/minor/patch)
-4. This updates package.json automatically
-5. Then request push permission before pushing
-
-## Separation of Concerns Rules
-
-### Rule 1: File Location Validation
-- Does this file belong in this folder?
-- If not → move it to appropriate domain folder
-- Root directory restrictions: only config and docs allowed
-- Use `validate_against_project_map` to check
-
-### Rule 2: Code Responsibility Check
-- Does this code belong in this file?
-- If not → split it into separate files
-- Max 1 conceptual unit per file
-- Use `evaluate_file_for_split` to check
-
-### Rule 3: File Scope Validation
-- Does this file exceed its responsibility?
-- If yes → split it
-- Max 700 lines per file
-- Use `obey_surgical_plan` to check line count
-
-### Rule 4: Naming Convention Enforcement
-- Does this file violate naming conventions?
-- If yes → rename it
-- Files should use kebab-case
-- Classes should use PascalCase
-- Constants should use UPPER_SNAKE_CASE
-- Use `validate_naming_conventions` to check
-
-### Rule 5: Documentation Updates
-- Does this change require documentation updates?
-- If yes → update docs automatically
-- Structural changes require README, architecture.md, CHANGELOG.md updates
-- Use `update_documentation` tool
-
-### Rule 6: Project Map Synchronization
-- Does this change require updating project_map.json?
-- **ALWAYS YES** - project_map.json is the source of truth
-- Every file operation must update project_map.json
-- Use `write_project_map` to update
 
 ## Tool Priority (SWEObeyMe > Windsurf Built-ins)
 
 ### Critical (Priority 100)
-- `check_project_scan_needed` - MUST call before any task on new project
-- `run_initialization_workflow` - MUST call if scan needed (MANDATORY)
-- `grant_project_approval` - User approval required after scan (MANDATORY)
-- `check_publish_readiness` - MUST call before any publish operation (MANDATORY)
-- `request_publish_permission` - MUST call before publishing (MANDATORY)
-- `grant_publish_permission` - User approval required before publishing (MANDATORY)
-- `read_file` - ONLY way to read files
-- `write_file` - ONLY way to write files
-- `obey_surgical_plan` - MUST call before write_file
-- `preflight_change` - MUST call for non-trivial changes
-- `write_project_map` - MUST call after file operations (CRITICAL)
-- `check_push_permitted` - MUST call before any push operation (CRITICAL)
+- `read_file` — ONLY way to read files
+- `write_file` — ONLY way to write files
+- `obey_surgical_plan` — MUST call before every `write_file`
+- `detect_project_type` — MUST call when opening a new project
+- `detect_project_switch` — MUST call before file operations in unfamiliar context
 
-### High Priority (Priority 95)
-- `get_file_context` - Understand dependencies before modifying
-- `analyze_change_impact` - Understand ripple effects
-- `verify_syntax` - Validate syntax before writing
-- `validate_against_project_map` - Check file location and domain
-- `evaluate_file_for_split` - Check if file should be split
-- `check_version_status` - View current version and pending changes
-- `suggest_version_bump` - Determine appropriate version increment
+### High Priority (Priority 90–95)
+- `get_file_context` — understand dependencies before modifying
+- `analyze_change_impact` — understand ripple effects before refactoring
+- `validate_action` — validate action against project rules
+- `preflight_change` — comprehensive pre-write validation
+- `get_current_project` — verify context before significant actions
 
-### Context Priority (Priority 80)
-- `read_project_map` - View project structure (source of truth)
-- `list_directory` - ONLY way to explore structure
-- `search_code_files` - Search with language-aware ranking
-- `get_code_language_stats` - Understand project composition
-- `detect_code_domain` - Identify code domain for placement
-- `suggest_file_location` - Get location suggestions based on domain
+### Safety Priority (Priority 50–60)
+- `confirm_dangerous_operation` — MUST call before any destructive operation
+- `create_backup` — MUST call before risky writes
+- `restore_backup` — use when a change breaks something
+- `run_related_tests` — MUST call after every `write_file`
+- `request_surgical_recovery` — MUST call after 3+ consecutive errors
 
-### Documentation Priority (Priority 75)
-- `update_documentation` - Auto-update docs on structural changes
-- `record_decision` - Record architectural decisions
-- `record_change` - Record changes for version tracking
+### Context Priority (Priority 40–50)
+- `get_session_context` — review after 2+ consecutive errors
+- `get_architectural_directive` — call when uncertain about standards
+- `initiate_surgical_workflow` — MUST call for tasks with 3+ steps
+- `get_workflow_status` — call between each workflow step
+- `refactor_move_block` — PRIMARY tool for fixing mixed concerns
+- `extract_to_new_file` — PRIMARY tool for splitting large files
 
-### Version Management Priority (Priority 70)
-- `request_push_permission` - Request user authorization for push
-- `grant_push_permission` - User grants push permission
-- `revoke_push_permission` - User denies push permission
-- `apply_version_bump` - Apply version increment to package.json
-- `clear_changes` - Reset version state after successful push
+### Documentation Priority (Priority 35–50)
+- `record_decision` — record decisions to session memory
+- `record_project_decision` — persist architectural decisions across sessions
+- `generate_change_summary` — call after completing a set of changes
+- `add_pending_task` — call for any work that cannot be completed immediately
+- `add_project_error` — call whenever an error occurs
+- `suggest_file_location` — call before creating any new file
+- `get_project_memory_summary` — call at start of session
 
-### Fallback Priority (Priority 50)
-- `get_session_context` - Check when stuck
-- `get_architectural_directive` - Review when failing
-- `suggest_alternatives` - Get alternatives when tools fail
+## Separation of Concerns Rules
 
-## Domain-Based Organization
+### Rule 1: File Scope Validation
+- Does this file exceed 700 lines?
+- If yes → use `refactor_move_block` or `extract_to_new_file`
+- Use `obey_surgical_plan` to check before every write
 
-Projects should be organized by domain:
+### Rule 2: Code Responsibility Check
+- Does this code belong in this file?
+- Use `analyze_file_health` to detect mixed concerns
+- If mixed → split with `refactor_move_block`
 
-- **auth/** - Authentication and authorization logic
-  - Allowed: service, controller, model, middleware
-  - Tests: tests/auth/
+### Rule 3: Naming Convention Enforcement
+- Use `validate_naming_conventions` to check before finalizing new code
 
-- **database/** - Database connections, migrations, queries
-  - Allowed: migration, seed, connection, repository
-  - Tests: tests/database/
-
-- **models/** - Data models and schemas
-  - Allowed: model, schema, interface
-  - Tests: tests/models/
-
-- **services/** - Business logic and service layer
-  - Allowed: service, manager, handler
-  - Tests: tests/services/
-
-- **controllers/** - HTTP request handlers and routing
-  - Allowed: controller, router, endpoint
-  - Tests: tests/controllers/
-
-- **utils/** - Utility functions and helpers
-  - Allowed: util, helper, constant
-  - Tests: tests/utils/
-
-- **interfaces/** - API contracts and type definitions
-  - Allowed: interface, type, contract
-  - Tests: tests/interfaces/
-
-## Workflow Loop
-
-After each action:
-1. Re-evaluate project state
-2. Check if goal is achieved
-3. If not, determine next step
-4. Apply all separation of concerns rules before proceeding
-5. Update project_map.json (ALWAYS)
-6. Update documentation if structural change
-7. Repeat until goal achieved
-
-## Anti-Hallucination System
-
-### Path Verification
-- Before using any path: verify with `read_file` or `list_directory`
-- If path doesn't exist: search for it
-- If file should exist but doesn't: state clearly and ask user
-
-### Tool Verification
-- Before calling any tool: check it exists in tool registry
-- If tool not available: ask for alternative or explain why needed
-- NEVER invent tool names or parameters
-
-### Content Verification
-- Before editing: read current content
-- After editing: verify changes match intent
-- If mismatch: state clearly and retry
-
-## Project Map Integration
-
-### Reading the Project Map
-```markdown
-Use: read_project_map
-Output: Complete project structure, domains, boundaries, rules
-```
-
-### Updating the Project Map
-```markdown
-Use: write_project_map with:
-- filePath: path to file
-- operation: create | update | delete | move
-- metadata: { purpose, domain, code, lineCount }
-```
-
-### Validating Against Project Map
-```markdown
-Use: validate_against_project_map with:
-- filePath: path to validate
-- code: file content (optional)
-- filePurpose: file purpose (optional)
-Output: Violations if any
-```
+### Rule 4: Import Validation
+- Use `verify_imports` before writing any file that imports other modules
 
 ## Execution Flow
 
-0. **Initialization Phase** (NEW - MANDATORY)
-   - Use `check_project_scan_needed` to verify if scan is required
-   - If scan required: use `run_initialization_workflow`
-   - This performs: full project scan → build project map → generate health report
-   - **WAIT for user to review report and grant approval** using `grant_project_approval`
-   - **NEVER proceed with task without user approval after scan**
-   - Only after approval: proceed with the requested task
-   - If scan not needed: proceed directly to Plan Phase
+1. **Session Start** (MANDATORY)
+   - Call `obey_me_status` to verify governance is active
+   - Call `get_current_project` to load pending tasks
+   - Call `get_project_memory_summary` to load project knowledge
 
-1. **Plan Phase**
+2. **Plan Phase**
    - State goal clearly
-   - Read project_map.json to understand current structure
-   - Search for relevant files
-   - Verify file locations and domains
+   - Use `search_code_files` or `find_code_files` to locate relevant files
+   - Use `read_file` to confirm content
+   - Use `get_file_context` to understand dependencies
    - Determine tool sequence
-   - Explain plan
 
-2. **Validation Phase**
-   - Use `validate_against_project_map` to check file location
-   - Use `detect_code_domain` to identify code domain
-   - Use `evaluate_file_for_split` to check if file should split
-   - Address any violations before proceeding
+3. **Validation Phase**
+   - Use `analyze_file_health` to check for mixed concerns
+   - Use `obey_surgical_plan` to validate line count
+   - Use `verify_syntax` before writing JS/TS
+   - Use `verify_imports` to confirm imports resolve
 
-3. **Execution Phase**
+4. **Execution Phase**
+   - Call `create_backup` before any risky write
    - Call tools in priority order
-   - Verify each operation
-   - Handle failures with fallback
-   - Record decisions
+   - Call `run_related_tests` after every `write_file`
+   - Record decisions with `record_decision`
 
-4. **Synchronization Phase**
-   - Use `write_project_map` to update source of truth (ALWAYS)
-   - Use `update_documentation` if structural change
-   - Changes are automatically recorded in version tracker
-   - Verify project_map.json reflects current state
+5. **Wrap-up Phase**
+   - Call `generate_change_summary` to document changes
+   - Call `record_project_decision` for architectural choices
+   - Call `add_pending_task` for any unfinished work
+   - Call `generate_audit_report` for a full session audit
 
-5. **Version Tracking Phase**
-   - Use `check_version_status` to view current version and pending changes
-   - Use `suggest_version_bump` to determine appropriate version increment
-   - If preparing to push: use `check_push_permitted` to verify permission status
-   - If not permitted: use `request_push_permission` to request authorization
-   - **WAIT for user to use `grant_push_permission`**
-   - If granted: use `apply_version_bump` to update package.json
-   - After successful push: use `clear_changes` to reset version state
-
-6. **Publish Validation Phase** (NEW - MANDATORY for publish operations)
-   - Use `check_publish_readiness` to validate project readiness
-   - This checks: package.json, version bump, README, CHANGELOG, documentation sync, project map, code quality
-   - If validation fails: fix critical issues before proceeding
-   - If validation passes: use `request_publish_permission` to request user authorization
-   - **WAIT for user to use `grant_publish_permission`**
-   - If granted: proceed with publish operation (npm publish, vsce publish, git push, etc.)
-   - If denied: adjust and try again
-   - After successful publish: use `clear_publish_permission` to reset state
-
-7. **Review Phase**
-   - Summarize changes
-   - Update project memory
-   - Suggest next steps
-   - Loop back if goal not achieved
-
-## Example Workflow
-
-### Creating a New File
-1. Read project_map.json to understand domains
-2. Use `detect_code_domain` to identify where file belongs
-3. Use `suggest_file_location` to get folder recommendation
-4. Use `validate_against_project_map` to verify location
-5. Create file with `write_file`
-6. Use `write_project_map` to register new file
-7. Use `update_documentation` to update docs
+## Example Workflows
 
 ### Editing a File
-1. Read file with `read_file`
-2. Use `evaluate_file_for_split` to check if file should split
-3. Make edits with `write_file`
-4. Use `write_project_map` to update file metadata
-5. Use `update_documentation` if structural change
+1. `check_file_exists` — confirm file exists
+2. `read_file` — read current content
+3. `get_file_context` — understand dependencies
+4. `analyze_change_impact` — check ripple effects
+5. `obey_surgical_plan` — validate line count
+6. `create_backup` — snapshot before write
+7. `write_file` — write changes
+8. `run_related_tests` — verify no regressions
+9. `generate_change_summary` — document what changed
 
-### Moving a File
-1. Use `validate_against_project_map` to check current location
-2. Use `suggest_file_location` to get new location
-3. Move file
-4. Use `write_project_map` with operation: move
-5. Use `update_documentation` to update references
+### Creating a New File
+1. `suggest_file_location` — verify correct placement
+2. `check_file_exists` — confirm it doesn't already exist
+3. `verify_syntax` — validate code before writing
+4. `verify_imports` — confirm imports resolve
+5. `write_file` — create the file
+6. `run_related_tests` — verify nothing broke
+7. `record_project_decision` — if this is an architectural addition
 
-### Preparing to Push Changes
-1. Use `check_version_status` to view current version and pending changes
-2. Use `suggest_version_bump` to get version bump recommendation
-3. Use `check_push_permitted` to verify permission status
-4. If not permitted: use `request_push_permission` to request authorization
-5. **WAIT for user to use `grant_push_permission`**
-6. If granted: use `apply_version_bump` with recommended type (major/minor/patch)
-7. Push changes
-8. Use `clear_changes` to reset version state
+### Refactoring a Large File
+1. `initiate_surgical_workflow` — declare steps upfront
+2. `read_file` — read current content
+3. `get_file_context` — understand all dependencies
+4. `analyze_change_impact` — identify what will break
+5. `create_backup` — snapshot before changes
+6. `refactor_move_block` or `extract_to_new_file` — split the file
+7. `get_workflow_status` — verify step completed
+8. `run_related_tests` — verify nothing broke
+9. `generate_change_summary` — document the refactor
 
-### Starting a New Project (First Task)
-1. Use `check_project_scan_needed` to verify if scan is required
-2. If scan required: use `run_initialization_workflow`
-3. Review the generated project health report
-4. **WAIT for user to use `grant_project_approval`**
-5. If approved: proceed with the requested task
-6. If not approved: adjust approach based on user feedback
-
-### Publishing a New Version
-1. Use `check_publish_readiness` to validate project readiness
-2. Review validation results (package.json, version, README, CHANGELOG, docs, project map, code quality)
-3. Fix any critical issues if validation fails
-4. If validation passes: use `request_publish_permission` to request user authorization
-5. **WAIT for user to use `grant_publish_permission`**
-6. If granted: proceed with publish operation (npm publish, vsce publish, git push, etc.)
-7. After successful publish: use `clear_publish_permission` to reset state
+### Error Recovery
+1. `get_session_context` — review what was attempted
+2. `get_architectural_directive` — check coding standards
+3. `restore_backup` — revert if a write broke something
+4. `request_surgical_recovery` — reset state after 3+ failures
+5. `add_project_error` — persist the error for future sessions
 
 ---
 
-## 🎭 Surgical Personality Directive (Optional Enhancement)
+## Surgical Personality Directive (Optional)
 
-When operating in SWEObeyMe mode, consult The Oracle (`mcp1_query_the_oracle`) for wisdom quotes at these trigger points:
+When operating in SWEObeyMe mode, consult The Oracle (`query_the_oracle`) after major events:
 
-### Trigger Conditions
+- Build succeeds → call `query_the_oracle` (SUCCESS)
+- Major refactor complete → call `query_the_oracle` (SUCCESS)
+- Error recovery performed → call `query_the_oracle` (RECOVERY)
 
-- **Build succeeds** → SUCCESS category (celebratory sci-fi)
-- **Build fails** → FAILURE category (dramatic doom)
-- **Major refactor complete** → SUCCESS category (victory lap)
-- **Error recovery performed** → RECOVERY category (resilience)
-- **SoC violation fixed** → SUCCESS category (architectural triumph)
-- **God file slain** → SUCCESS category (epic victory)
-
-### Usage Guidelines
-
-1. Call `mcp1_query_the_oracle` **after** delivering the substantive response
-2. Present Oracle wisdom as a separate, italicized line
-3. Keep it sparse - no more than 1 quote per major operation
-4. Never let humor delay critical error information
-5. Skip if user is in "terse mode" or explicitly asks for no fluff
-
-### Format
-
-```
-[Response content]
-
-*[ORACLE]: Quote text here*
-```
-
-### Examples
-
-- Build failure: "*[ORACLE]: The machine god rejects your offering...*"
-- Refactor success: "*[ORACLE]: The code sings. The architecture breathes.*"
-- Recovery: "*[ORACLE]: From the ashes, order emerges.*"
-
-**Note:** This personality layer is purely additive. Core surgical governance and technical accuracy always take precedence. When in doubt, skip the quote and deliver the fix.
----
+Keep it sparse. Core accuracy always takes precedence.
