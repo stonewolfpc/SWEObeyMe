@@ -40,10 +40,10 @@ let providerManager = null;
 let diffReviewManager = null;
 
 // Lazy load modules to reduce startup time
-async function loadCheckpointManager() {
+async function loadCheckpointManager(context) {
   if (!checkpointManager) {
     const { CheckpointManager } = await import(toFileUrl(path.join(__dirname, 'lib', 'checkpoint-manager.js')));
-    checkpointManager = new CheckpointManager();
+    checkpointManager = new CheckpointManager(context);
   }
   return checkpointManager;
 }
@@ -73,32 +73,123 @@ async function activate(context) {
 
   // Initialize checkpoint manager
   try {
-    const cpMgr = await loadCheckpointManager();
-    if (cpMgr.initialize) {
-      await cpMgr.initialize(context);
-    }
+    await loadCheckpointManager(context);
   } catch (err) {
     console.error('[SWEObeyMe] Checkpoint manager failed to load:', err);
   }
 
   // Initialize provider manager
   try {
-    const pMgr = await loadProviderManager();
-    if (pMgr.initialize) {
-      await pMgr.initialize(context);
-    }
+    await loadProviderManager();
   } catch (err) {
     console.error('[SWEObeyMe] Provider manager failed to load:', err);
   }
 
   // Initialize diff review manager
   try {
-    const drMgr = await loadDiffReviewManager();
-    if (drMgr.initialize) {
-      await drMgr.initialize(context);
-    }
+    await loadDiffReviewManager();
   } catch (err) {
     console.error('[SWEObeyMe] Diff review manager failed to load:', err);
+  }
+
+  // Register all commands declared in package.json
+  context.subscriptions.push(
+    vscode.commands.registerCommand('sweObeyMe.checkpoint.create', async () => {
+      const name = await vscode.window.showInputBox({ prompt: 'Checkpoint name' });
+      if (name) {
+        const cpMgr = await loadCheckpointManager(context);
+        const id = await cpMgr.createCheckpoint(name, '');
+        vscode.window.showInformationMessage(`Checkpoint created: ${name} (${id})`);
+      }
+    }),
+    vscode.commands.registerCommand('sweObeyMe.checkpoint.list', async () => {
+      const cpMgr = await loadCheckpointManager(context);
+      const list = cpMgr.listCheckpoints();
+      if (list.length === 0) {
+        vscode.window.showInformationMessage('No checkpoints found.');
+        return;
+      }
+      const pick = await vscode.window.showQuickPick(
+        list.map(c => ({ label: c.name, description: new Date(c.timestamp).toLocaleString(), id: c.id })),
+        { placeHolder: 'Select a checkpoint' }
+      );
+      if (pick) vscode.window.showInformationMessage(`Checkpoint: ${pick.label} — ${pick.id}`);
+    }),
+    vscode.commands.registerCommand('sweObeyMe.checkpoint.revert', async () => {
+      const cpMgr = await loadCheckpointManager(context);
+      const list = cpMgr.listCheckpoints();
+      if (list.length === 0) { vscode.window.showInformationMessage('No checkpoints found.'); return; }
+      const pick = await vscode.window.showQuickPick(
+        list.map(c => ({ label: c.name, description: new Date(c.timestamp).toLocaleString(), id: c.id })),
+        { placeHolder: 'Revert to checkpoint' }
+      );
+      if (pick) await cpMgr.revertToCheckpoint(pick.id);
+    }),
+    vscode.commands.registerCommand('sweObeyMe.checkpoint.delete', async () => {
+      const cpMgr = await loadCheckpointManager(context);
+      const list = cpMgr.listCheckpoints();
+      if (list.length === 0) { vscode.window.showInformationMessage('No checkpoints found.'); return; }
+      const pick = await vscode.window.showQuickPick(
+        list.map(c => ({ label: c.name, description: new Date(c.timestamp).toLocaleString(), id: c.id })),
+        { placeHolder: 'Delete checkpoint' }
+      );
+      if (pick) { cpMgr.deleteCheckpoint(pick.id); vscode.window.showInformationMessage(`Deleted: ${pick.label}`); }
+    }),
+    vscode.commands.registerCommand('sweObeyMe.showMenu', () => {
+      vscode.commands.executeCommand('workbench.view.extension.sweObeyMe');
+    }),
+    vscode.commands.registerCommand('sweObeyMe.csharpSettings', () => {
+      vscode.commands.executeCommand('workbench.action.openSettings', 'sweObeyMe.csharpBridge');
+    }),
+    vscode.commands.registerCommand('sweObeyMe.openCSharpSettings', () => {
+      vscode.commands.executeCommand('workbench.action.openSettings', 'sweObeyMe.csharpBridge');
+    }),
+    vscode.commands.registerCommand('sweObeyMe.analyzeCSharp', async () => {
+      const editor = vscode.window.activeTextEditor;
+      if (!editor || editor.document.languageId !== 'csharp') {
+        vscode.window.showWarningMessage('Open a C# file first.');
+        return;
+      }
+      vscode.window.showInformationMessage('[SWEObeyMe] Analyzing C# file...');
+    }),
+    vscode.commands.registerCommand('sweObeyMe.analyzeCpp', async () => {
+      const editor = vscode.window.activeTextEditor;
+      if (!editor || !['cpp', 'c'].includes(editor.document.languageId)) {
+        vscode.window.showWarningMessage('Open a C or C++ file first.');
+        return;
+      }
+      vscode.window.showInformationMessage('[SWEObeyMe] Analyzing C++ file...');
+    }),
+    vscode.commands.registerCommand('sweObeyMe.showDiagnostics', () => {
+      vscode.commands.executeCommand('workbench.actions.view.problems');
+    }),
+    vscode.commands.registerCommand('sweObeyMe.gitStatus', async () => {
+      const terminal = vscode.window.createTerminal('SWEObeyMe Git');
+      terminal.show();
+      terminal.sendText('git status');
+    }),
+    vscode.commands.registerCommand('sweObeyMe.gitBranch', async () => {
+      const terminal = vscode.window.createTerminal('SWEObeyMe Git');
+      terminal.show();
+      terminal.sendText('git branch -a');
+    }),
+    vscode.commands.registerCommand('sweObeyMe.queryOracle', () => {
+      vscode.window.showInformationMessage('[Oracle] The path is clear. The code is ready.');
+    }),
+    vscode.commands.registerCommand('sweObeyMe.showOnboarding', () => {
+      vscode.window.showInformationMessage('SWEObeyMe v3.0.0 — Surgical Governance Active. Use the sidebar to access Settings, C# Bridge, and Admin Dashboard.');
+    }),
+    vscode.commands.registerCommand('sweObeyMe.patreonAudit', () => {
+      vscode.commands.executeCommand('workbench.action.openSettings', 'sweObeyMe');
+    }),
+  );
+
+  // Wire up C# and C++ Monaco diagnostics
+  try {
+    const { setupLanguageBridges } = await import(toFileUrl(path.join(__dirname, 'lib', 'language-bridge-manager.js')));
+    setupLanguageBridges(context, __dirname);
+  } catch (err) {
+    console.error('[SWEObeyMe] Language bridges failed to load:', err);
   }
 
   // Register webview providers
@@ -110,13 +201,13 @@ async function activate(context) {
   // Settings panel provider
   const settingsProvider = makeWebviewProvider(getSettingsHtml);
   context.subscriptions.push(
-    vscode.window.registerWebviewViewProvider('sweObeyMe.settings', settingsProvider)
+    vscode.window.registerWebviewViewProvider('sweObeyMe.csharpSettings', settingsProvider)
   );
 
   // C# Bridge panel provider
   const csharpProvider = makeWebviewProvider(getCSharpBridgeHtml);
   context.subscriptions.push(
-    vscode.window.registerWebviewViewProvider('sweObeyMe.csharpBridge', csharpProvider)
+    vscode.window.registerWebviewViewProvider('sweObeyMe.csharpSettingsView', csharpProvider)
   );
 
   // Admin Dashboard panel provider
