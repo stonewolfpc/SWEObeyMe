@@ -2,7 +2,7 @@
   "name": "swe-obey-me",
   "displayName": "SWEObeyMe",
   "description": "SWEObeyMe - Surgical governance system for VS Code with MCP server integration. Enterprise-ready with 95 tools, strict governance, and cross-platform certification.",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "type": "module",
   "publisher": "stonewolfpc",
   "icon": "icon.png",

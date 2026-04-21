@@ -4,6 +4,8 @@ import {
   InitializeRequestSchema,
   CallToolRequestSchema,
   ListToolsRequestSchema,
+  ListPromptsRequestSchema,
+  GetPromptRequestSchema,
 } from '@modelcontextprotocol/sdk/types.js';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
@@ -14,6 +16,11 @@ import { ensureBackupDir } from './lib/backup.js';
 import { internalAudit, CONSTITUTION } from './lib/enforcement.js';
 import { loadProjectContract, loadSweIgnore } from './lib/project.js';
 import { toolHandlers, getToolDefinitions, initializeQuotes } from './lib/tools.js';
+import { initializePromptRegistry, getPromptRegistry } from './lib/prompts/registry.js';
+import { getDynamicToolRegistry } from './lib/tools/registry-dynamic.js';
+import { getLanguageSpecificTools } from './lib/language-upper-functions.js';
+import { getProactiveVoice, GOVERNANCE_CONSTITUTION } from './lib/proactive-voice.js';
+import { getServerDiagnostics } from './lib/server-diagnostics.js';
 
 // Read version from package.json (single source of truth)
 const __filename = fileURLToPath(import.meta.url);
@@ -49,12 +56,26 @@ const log = msg => {
       version: VERSION,
     },
     {
-      capabilities: { tools: {} },
+      capabilities: { tools: {}, prompts: {} },
     },
   );
 
   // Ensure backup directory exists
   await ensureBackupDir();
+
+  // Initialize proactive voice system
+  const proactiveVoice = getProactiveVoice();
+
+  // Initialize server diagnostics
+  const diagnostics = getServerDiagnostics();
+
+  // Run initial diagnostics in background (non-blocking)
+  diagnostics.runDiagnostics().then(results => {
+    diagnostics.lastResults = results;
+    log(`Diagnostics completed: ${results.summary.overall} (${results.summary.pass}/${results.summary.total} passed)`);
+  }).catch(error => {
+    log(`Diagnostics failed: ${error.message}`);
+  });
 
   // Initialize handler - REQUIRED for handshake
   server.setRequestHandler(InitializeRequestSchema, () => {
@@ -62,18 +83,75 @@ const log = msg => {
     // Kick off in background if not already loaded.
     loadProjectContract().catch(() => {});
     loadSweIgnore().catch(() => {});
+    initializePromptRegistry().catch(() => {});
 
     return {
       protocolVersion: '2025-11-25',
-      capabilities: { tools: {} },
-      serverInfo: { name: 'SWEObeyMe', version: VERSION },
+      capabilities: { tools: {}, prompts: {} },
+      serverInfo: { 
+        name: 'SWEObeyMe', 
+        version: VERSION,
+        // Add diagnostic metadata for Windsurf UI
+        _diagnostics: {
+          status: 'initializing',
+          message: 'SWEObeyMe initializing - diagnostics running in background',
+        },
+      },
     };
   });
 
+  // Initialize dynamic tool registry
+  const dynamicRegistry = getDynamicToolRegistry();
+
   // ListTools handler - REQUIRED for green dot
+  // Uses dynamic registry for project-specific toolsets and corpus disabling
   server.setRequestHandler(ListToolsRequestSchema, () => ({
-    tools: getToolDefinitions(),
+    tools: dynamicRegistry.getFilteredToolDefinitions(),
   }));
+
+  // ListPrompts handler - REQUIRED for prompt discovery
+  server.setRequestHandler(ListPromptsRequestSchema, async () => {
+    const registry = await getPromptRegistry();
+    const prompts = registry.getAllPrompts();
+
+    return {
+      prompts: prompts.map(prompt => ({
+        name: prompt.name,
+        description: prompt.description,
+        arguments: prompt.arguments || [],
+      })),
+    };
+  });
+
+  // GetPrompt handler - REQUIRED for prompt retrieval
+  server.setRequestHandler(GetPromptRequestSchema, async request => {
+    const { name, arguments: args = {} } = request.params;
+    const registry = await getPromptRegistry();
+    const prompt = registry.getPrompt(name);
+
+    if (!prompt) {
+      throw new Error(`Prompt ${name} not found`);
+    }
+
+    // Apply arguments to template if it exists
+    let messages = prompt.messages || [];
+    if (prompt.template) {
+      messages = [{ role: 'user', content: prompt.template }];
+    }
+
+    // Replace argument placeholders in messages
+    if (args && messages.length > 0) {
+      messages = messages.map(msg => ({
+        ...msg,
+        content: msg.content.replace(/\{\{(\w+)\}\}/g, (match, key) => args[key] || match),
+      }));
+    }
+
+    return {
+      description: prompt.description,
+      messages,
+    };
+  });
 
   // CallTool handler - Core MCP interaction
   server.setRequestHandler(CallToolRequestSchema, async request => {
@@ -103,6 +181,27 @@ const log = msg => {
         );
       }
 
+      // Proactive voice analysis - automatically recommend next actions
+      const proactiveAnalysis = await proactiveVoice.analyzeToolCall(name, result, { args });
+
+      // Add proactive recommendations to result
+      if (proactiveAnalysis.recommendations.length > 0) {
+        const recommendationsText = proactiveAnalysis.recommendations
+          .map(rec => {
+            let text = `\n[${rec.priority.toUpperCase()}] ${rec.message}`;
+            if (rec.prompt) {
+              text += `\n  Recommended prompt: ${rec.prompt}`;
+            }
+            return text;
+          })
+          .join('\n');
+
+        result.content.push({
+          type: 'text',
+          text: `\n=== SWEObeyMe Proactive Guidance ===\n${recommendationsText}\n=== End Guidance ===\nIntegrity Score: ${proactiveAnalysis.integrityScore}/100`,
+        });
+      }
+
       // If the AI is failing too much, force it to check the Constitution
       if (internalAudit.consecutiveFailures >= CONSTITUTION.ERROR_THRESHOLD && result) {
         result.content.push({
@@ -118,9 +217,17 @@ const log = msg => {
       internalAudit.surgicalIntegrityScore -= 5;
 
       log(`ERROR: ${error.message}`);
+      
+      const errorMessage = error.message;
+      const validationStatus = `\n\n[VALIDATION STATUS]\nSurgical Integrity Score: ${internalAudit.surgicalIntegrityScore}/100\nConsecutive Failures: ${internalAudit.consecutiveFailures}\nRecommended Action: Call get_validation_status for details`;
+      
       return {
         isError: true,
-        content: [{ type: 'text', text: error.message }],
+        content: [{ type: 'text', text: errorMessage + validationStatus }],
+        _validation: {
+          integrityScore: internalAudit.surgicalIntegrityScore,
+          consecutiveFailures: internalAudit.consecutiveFailures,
+        },
       };
     }
   });

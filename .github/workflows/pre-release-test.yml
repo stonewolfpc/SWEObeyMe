@@ -35,6 +35,14 @@ jobs:
       
       - name: Validate WindSurf Schema Compliance
         run: node .github/scripts/validate-windsurf-schema.js
+      
+      - name: Run Pre-Install Validation Test
+        run: node scripts/preinstall-validation.js
+        timeout-minutes: 5
+      
+      - name: Run MCP Stress Test
+        run: node scripts/mcp-stress-test.js
+        timeout-minutes: 5
 
   # ============================================
   # JOB 2: Windows Tests (The Critical One)
@@ -87,6 +95,15 @@ jobs:
 
       - name: Test MCP Compliance
         run: node .github/scripts/test-mcp-compliance.js
+        timeout-minutes: 5
+      
+      - name: Run Pre-Install Validation Test
+        run: node scripts/preinstall-validation.js
+        timeout-minutes: 5
+      
+      - name: Run MCP Stress Test
+        run: node scripts/mcp-stress-test.js
+        timeout-minutes: 5
 
   # ============================================
   # JOB 3: macOS Tests
@@ -125,6 +142,14 @@ jobs:
       
       - name: Test Config Auto-Generation
         run: node .github/scripts/test-config-generation.js
+      
+      - name: Run Pre-Install Validation Test
+        run: node scripts/preinstall-validation.js
+        timeout-minutes: 5
+      
+      - name: Run MCP Stress Test
+        run: node scripts/mcp-stress-test.js
+        timeout-minutes: 5
 
   # ============================================
   # JOB 4: Linux Tests
@@ -163,6 +188,15 @@ jobs:
       
       - name: Test MCP Compliance
         run: node .github/scripts/test-mcp-compliance.js
+        timeout-minutes: 5
+      
+      - name: Run Pre-Install Validation Test
+        run: node scripts/preinstall-validation.js
+        timeout-minutes: 5
+      
+      - name: Run MCP Stress Test
+        run: node scripts/mcp-stress-test.js
+        timeout-minutes: 5
 
   # ============================================
   # JOB 5: Clean Environment Simulation (Docker)
@@ -234,6 +268,7 @@ jobs:
       
       - name: Run MCP Compliance Tests
         run: node .github/scripts/test-mcp-compliance.js
+        timeout-minutes: 5
 
   # ============================================
   # JOB 7: Final Release Gate
