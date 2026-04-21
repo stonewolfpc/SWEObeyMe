@@ -24,6 +24,7 @@ const tests = [
   { name: 'Chaos Engineering', file: 'chaos-engineering.js', critical: true },
   { name: 'Simulated User From Hell', file: 'simulated-user-from-hell.js', critical: true },
   { name: 'Git Configuration Validation', file: 'git-configuration-validation.js', critical: true },
+  { name: 'URI Validation', file: 'uri-validation.js', critical: true },
   { name: 'Windsurf Runtime Behavior', file: 'windsurf-runtime-behavior.js', critical: true },
 ];
 
