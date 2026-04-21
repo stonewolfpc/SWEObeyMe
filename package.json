@@ -1302,7 +1302,7 @@
     "test:windsurf-package": "npm run package && npm run test:clean-env",
     "test:all": "node scripts/release-validation.js",
     "preflight": "node scripts/preflight-checklist.js",
-    "prepackage": "npm run test:comprehensive && npm run test:all",
+    "prepackage": "npm run test:comprehensive && npm run test:all && npm run test:csharp",
     "lint": "eslint . --ext .js",
     "lint:fix": "eslint . --ext .js --fix",
     "format": "prettier --write \"**/*.{js,json,md}\"",
