@@ -217,42 +217,50 @@
         "sweObeyMe.enabled": {
           "type": "boolean",
           "default": true,
-          "description": "Enable SWEObeyMe MCP Server"
+          "description": "Enable SWEObeyMe MCP Server",
+          "order": 0
         },
         "sweObeyMe.backupPath": {
           "type": "string",
           "default": "",
-          "description": "Custom backup directory path (leave empty for default)"
+          "description": "Custom backup directory path (leave empty for default)",
+          "order": 1
         },
         "sweObeyMe.csharpBridge.enabled": {
           "type": "boolean",
           "default": true,
-          "description": "Enable C# Bridge error detection"
+          "description": "Enable C# Bridge error detection",
+          "order": 10
         },
         "sweObeyMe.csharpBridge.keepAiInformed": {
           "type": "boolean",
           "default": true,
-          "description": "Automatically inform AI about C# errors in file reads"
+          "description": "Automatically inform AI about C# errors in file reads",
+          "order": 11
         },
         "sweObeyMe.csharpBridge.severityThreshold": {
           "type": "number",
           "default": 0,
-          "description": "Minimum severity level to report (0=Info, 1=Warning, 2=Error)"
+          "description": "Minimum severity level to report (0=Info, 1=Warning, 2=Error)",
+          "order": 12
         },
         "sweObeyMe.csharpBridge.confidenceThreshold": {
           "type": "number",
           "default": 70,
-          "description": "Minimum confidence percentage to show alerts (0-100)"
+          "description": "Minimum confidence percentage to show alerts (0-100)",
+          "order": 13
         },
         "sweObeyMe.csharpBridge.deduplicateAlerts": {
           "type": "boolean",
           "default": true,
-          "description": "Group identical warnings to reduce noise"
+          "description": "Group identical warnings to reduce noise",
+          "order": 14
         },
         "sweObeyMe.csharpBridge.alertCooldown": {
           "type": "number",
           "default": 30,
-          "description": "Cooldown in seconds before repeating same alert"
+          "description": "Cooldown in seconds before repeating same alert",
+          "order": 15
         },
         "sweObeyMe.csharpBridge.logVerbosity": {
           "type": "string",
@@ -262,7 +270,8 @@
             "errors",
             "verbose"
           ],
-          "description": "Log verbosity level"
+          "description": "Log verbosity level",
+          "order": 16
         },
         "sweObeyMe.csharpBridge.detectors": {
           "type": "object",
@@ -277,42 +286,50 @@
             "staticMutation": true,
             "stringConcatenation": true
           },
-          "description": "Enable/disable specific error detectors"
+          "description": "Enable/disable specific error detectors",
+          "order": 17
         },
         "sweObeyMe.cppBridge.enabled": {
           "type": "boolean",
           "default": true,
-          "description": "Enable C++ Bridge custom error detection (ADDS to Windsurf defaults, doesn't replace)"
+          "description": "Enable C++ Bridge custom error detection (ADDS to Windsurf defaults, doesn't replace)",
+          "order": 20
         },
         "sweObeyMe.cppBridge.severityThreshold": {
           "type": "number",
           "default": 0,
-          "description": "Minimum severity level to report (0=Info, 1=Warning, 2=Error)"
+          "description": "Minimum severity level to report (0=Info, 1=Warning, 2=Error)",
+          "order": 21
         },
         "sweObeyMe.cppBridge.confidenceThreshold": {
           "type": "number",
           "default": 70,
-          "description": "Minimum confidence percentage to show alerts (0-100)"
+          "description": "Minimum confidence percentage to show alerts (0-100)",
+          "order": 22
         },
         "sweObeyMe.cppBridge.deduplicateAlerts": {
           "type": "boolean",
           "default": true,
-          "description": "Group identical warnings to reduce noise"
+          "description": "Group identical warnings to reduce noise",
+          "order": 23
         },
         "sweObeyMe.cppBridge.alertCooldown": {
           "type": "number",
           "default": 30,
-          "description": "Cooldown in seconds before repeating same alert"
+          "description": "Cooldown in seconds before repeating same alert",
+          "order": 24
         },
         "sweObeyMe.cppBridge.useClangTidy": {
           "type": "boolean",
           "default": false,
-          "description": "Use clang-tidy for deeper analysis (requires clang-tidy installed)"
+          "description": "Use clang-tidy for deeper analysis (requires clang-tidy installed)",
+          "order": 25
         },
         "sweObeyMe.cppBridge.useCppcheck": {
           "type": "boolean",
           "default": false,
-          "description": "Use cppcheck for static analysis (requires cppcheck installed)"
+          "description": "Use cppcheck for static analysis (requires cppcheck installed)",
+          "order": 26
         },
         "sweObeyMe.cppBridge.detectors": {
           "type": "object",
@@ -330,32 +347,38 @@
             "global_variable": true,
             "implicit_conversion": true
           },
-          "description": "Enable/disable specific C++ error detectors"
+          "description": "Enable/disable specific C++ error detectors",
+          "order": 27
         },
         "sweObeyMe.initialization.scanOnNewProject": {
           "type": "boolean",
           "default": true,
-          "description": "Always scan on new project"
+          "description": "Always scan on new project",
+          "order": 30
         },
         "sweObeyMe.initialization.scanOnLoad": {
           "type": "boolean",
           "default": false,
-          "description": "Always scan on load"
+          "description": "Always scan on load",
+          "order": 31
         },
         "sweObeyMe.initialization.scanOnlyWhenAsked": {
           "type": "boolean",
           "default": false,
-          "description": "Scan only when asked"
+          "description": "Scan only when asked",
+          "order": 32
         },
         "sweObeyMe.initialization.scanOnlyOnProjectMapChange": {
           "type": "boolean",
           "default": false,
-          "description": "Scan only when project map changes"
+          "description": "Scan only when project map changes",
+          "order": 33
         },
         "sweObeyMe.initialization.neverScan": {
           "type": "boolean",
           "default": false,
-          "description": "Never scan"
+          "description": "Never scan",
+          "order": 34
         },
         "sweObeyMe.initialization.reportDetailLevel": {
           "type": "string",
@@ -366,7 +389,8 @@
             "full",
             "debug"
           ],
-          "description": "Report detail level"
+          "description": "Report detail level",
+          "order": 35
         },
         "sweObeyMe.initialization.digitalDebtThreshold": {
           "type": "string",
@@ -377,37 +401,44 @@
             "50",
             "always"
           ],
-          "description": "Digital debt threshold for warnings"
+          "description": "Digital debt threshold for warnings",
+          "order": 36
         },
         "sweObeyMe.initialization.autoFixNaming": {
           "type": "boolean",
           "default": false,
-          "description": "Auto-fix naming inconsistencies"
+          "description": "Auto-fix naming inconsistencies",
+          "order": 37
         },
         "sweObeyMe.initialization.autoFixFolderStructure": {
           "type": "boolean",
           "default": false,
-          "description": "Auto-fix folder structure"
+          "description": "Auto-fix folder structure",
+          "order": 38
         },
         "sweObeyMe.initialization.autoFixDocumentation": {
           "type": "boolean",
           "default": false,
-          "description": "Auto-fix documentation"
+          "description": "Auto-fix documentation",
+          "order": 39
         },
         "sweObeyMe.initialization.autoFixTests": {
           "type": "boolean",
           "default": false,
-          "description": "Auto-fix tests"
+          "description": "Auto-fix tests",
+          "order": 40
         },
         "sweObeyMe.initialization.autoFixDigitalDebt": {
           "type": "boolean",
           "default": false,
-          "description": "Auto-fix digital debt"
+          "description": "Auto-fix digital debt",
+          "order": 41
         },
         "sweObeyMe.initialization.neverAutoFix": {
           "type": "boolean",
           "default": true,
-          "description": "Never auto-fix"
+          "description": "Never auto-fix",
+          "order": 42
         },
         "sweObeyMe.initialization.toolPriority": {
           "type": "string",
@@ -417,7 +448,8 @@
             "windsurf",
             "none"
           ],
-          "description": "Tool priority: MCP tools first, Windsurf tools second, or no built-in tools"
+          "description": "Tool priority: MCP tools first, Windsurf tools second, or no built-in tools",
+          "order": 43
         },
         "sweObeyMe.initialization.transparencyMode": {
           "type": "string",
@@ -427,137 +459,164 @@
             "major",
             "silent"
           ],
-          "description": "Transparency mode: explain everything, only major decisions, or silent"
+          "description": "Transparency mode: explain everything, only major decisions, or silent",
+          "order": 44
         },
         "sweObeyMe.general.statusBarEnabled": {
           "type": "boolean",
           "default": true,
-          "description": "Show SWEObeyMe status bar indicator"
+          "description": "Show SWEObeyMe status bar indicator",
+          "order": 50
         },
         "sweObeyMe.general.codeLensEnabled": {
           "type": "boolean",
           "default": true,
-          "description": "Show CodeLens for quick actions on C# files"
+          "description": "Show CodeLens for quick actions on C# files",
+          "order": 51
         },
         "sweObeyMe.general.hotReloadEnabled": {
           "type": "boolean",
           "default": false,
-          "description": "Enable hot-reload for extension changes"
+          "description": "Enable hot-reload for extension changes",
+          "order": 52
         },
         "sweObeyMe.mathCorpus.enabled": {
           "type": "boolean",
           "default": true,
-          "description": "Enable math corpus for mathematical reference"
+          "description": "Enable math corpus for mathematical reference",
+          "order": 55
         },
         "sweObeyMe.mathCorpus.autoLookup": {
           "type": "boolean",
           "default": false,
-          "description": "Automatically lookup math concepts when detected"
+          "description": "Automatically lookup math concepts when detected",
+          "order": 56
         },
         "sweObeyMe.godotIntegration.enabled": {
           "type": "boolean",
           "default": true,
-          "description": "Enable Godot project detection and enforcement"
+          "description": "Enable Godot project detection and enforcement",
+          "order": 60
         },
         "sweObeyMe.godotIntegration.strictMode": {
           "type": "boolean",
           "default": true,
-          "description": "Enable strict Godot project structure enforcement"
+          "description": "Enable strict Godot project structure enforcement",
+          "order": 61
         },
         "sweObeyMe.godotIntegration.autoDetect": {
           "type": "boolean",
           "default": true,
-          "description": "Automatically detect Godot projects on workspace open"
+          "description": "Automatically detect Godot projects on workspace open",
+          "order": 62
         },
         "sweObeyMe.notifications.enabled": {
           "type": "boolean",
           "default": true,
-          "description": "Show SWEObeyMe notifications"
+          "description": "Show SWEObeyMe notifications",
+          "order": 65
         },
         "sweObeyMe.notifications.soundEnabled": {
           "type": "boolean",
           "default": false,
-          "description": "Play notification sounds"
+          "description": "Play notification sounds",
+          "order": 66
         },
         "sweObeyMe.advanced.debugMode": {
           "type": "boolean",
           "default": false,
-          "description": "Enable debug logging for troubleshooting"
+          "description": "Enable debug logging for troubleshooting",
+          "order": 70
         },
         "sweObeyMe.advanced.experimentalFeatures": {
           "type": "boolean",
           "default": false,
-          "description": "Enable experimental features (may be unstable)"
+          "description": "Enable experimental features (may be unstable)",
+          "order": 71
         },
         "sweObeyMe.providers.ollama.enabled": {
           "type": "boolean",
           "default": false,
-          "description": "Enable local Ollama provider support"
+          "description": "Enable local Ollama provider support",
+          "order": 75
         },
         "sweObeyMe.providers.ollama.endpoint": {
           "type": "string",
           "default": "http://localhost:11434",
-          "description": "Ollama API endpoint URL"
+          "description": "Ollama API endpoint URL",
+          "order": 76
         },
         "sweObeyMe.providers.ollama.models": {
           "type": "array",
           "default": [],
-          "description": "Available Ollama models (e.g., [\"llama2\", \"codellama\"])"
+          "description": "Available Ollama models (e.g., [\"llama2\", \"codellama\"])",
+          "order": 77
         },
         "sweObeyMe.providers.openai.enabled": {
           "type": "boolean",
           "default": false,
-          "description": "Enable OpenAI provider support"
+          "description": "Enable OpenAI provider support",
+          "order": 78
         },
         "sweObeyMe.providers.openai.apiKey": {
           "type": "string",
           "default": "",
-          "description": "OpenAI API key (leave empty to use environment variable)"
+          "description": "OpenAI API key (leave empty to use environment variable)",
+          "order": 79
         },
         "sweObeyMe.providers.anthropic.enabled": {
           "type": "boolean",
           "default": false,
-          "description": "Enable Anthropic provider support"
+          "description": "Enable Anthropic provider support",
+          "order": 80
         },
         "sweObeyMe.providers.anthropic.apiKey": {
           "type": "string",
           "default": "",
-          "description": "Anthropic API key (leave empty to use environment variable)"
+          "description": "Anthropic API key (leave empty to use environment variable)",
+          "order": 81
         },
         "sweObeyMe.checkpoints.enabled": {
           "type": "boolean",
           "default": true,
-          "description": "Enable named checkpoints and revert functionality"
+          "description": "Enable named checkpoints and revert functionality",
+          "order": 85
         },
         "sweObeyMe.checkpoints.maxCount": {
           "type": "number",
           "default": 10,
-          "description": "Maximum number of checkpoints to retain"
+          "description": "Maximum number of checkpoints to retain",
+          "order": 86
         },
         "sweObeyMe.checkpoints.autoCreate": {
           "type": "boolean",
           "default": true,
-          "description": "Automatically create checkpoint before major operations"
+          "description": "Automatically create checkpoint before major operations",
+          "order": 87
         },
         "sweObeyMe.diffReview.enabled": {
           "type": "boolean",
           "default": true,
-          "description": "Enable diff review before approval"
+          "description": "Enable diff review before approval",
+          "order": 90
         },
         "sweObeyMe.diffReview.showSideBySide": {
           "type": "boolean",
           "default": true,
-          "description": "Show diff in side-by-side view"
+          "description": "Show diff in side-by-side view",
+          "order": 91
         },
         "sweObeyMe.diffReview.requireApproval": {
           "type": "boolean",
           "default": true,
-          "description": "Require user approval before applying changes"
+          "description": "Require user approval before applying changes",
+          "order": 92
         },
         "sweObeyMe.toolControls.perAgent": {
           "type": "boolean",
           "default": true,
-          "description": "Enable per-agent tool control permissions"
+          "description": "Enable per-agent tool control permissions",
+          "order": 95
         },
         "sweObeyMe.toolControls.fileAccess": {
           "type": "string",
@@ -567,7 +626,8 @@
             "ask",
             "deny"
           ],
-          "description": "File access permission level: allow, ask, or deny"
+          "description": "File access permission level: allow, ask, or deny",
+          "order": 96
         },
         "sweObeyMe.toolControls.terminalAccess": {
           "type": "string",
@@ -577,7 +637,8 @@
             "ask",
             "deny"
           ],
-          "description": "Terminal access permission level: allow, ask, or deny"
+          "description": "Terminal access permission level: allow, ask, or deny",
+          "order": 97
         },
         "sweObeyMe.toolControls.networkAccess": {
           "type": "string",
@@ -587,42 +648,50 @@
             "ask",
             "deny"
           ],
-          "description": "Network access permission level: allow, ask, or deny"
+          "description": "Network access permission level: allow, ask, or deny",
+          "order": 98
         },
         "sweObeyMe.onboarding.showWelcome": {
           "type": "boolean",
           "default": true,
-          "description": "Show welcome guide on first activation"
+          "description": "Show welcome guide on first activation",
+          "order": 100
         },
         "sweObeyMe.onboarding.showTips": {
           "type": "boolean",
           "default": true,
-          "description": "Show inline tips for first-time users"
+          "description": "Show inline tips for first-time users",
+          "order": 101
         },
         "sweObeyMe.onboarding.tutorialEnabled": {
           "type": "boolean",
           "default": true,
-          "description": "Enable interactive tutorial"
+          "description": "Enable interactive tutorial",
+          "order": 102
         },
         "sweObeyMe.enterprise.enabled": {
           "type": "boolean",
           "default": false,
-          "description": "Enable enterprise-grade features"
+          "description": "Enable enterprise-grade features",
+          "order": 110
         },
         "sweObeyMe.enterprise.organizationId": {
           "type": "string",
           "default": "",
-          "description": "Organization ID for enterprise deployments"
+          "description": "Organization ID for enterprise deployments",
+          "order": 111
         },
         "sweObeyMe.enterprise.tenantId": {
           "type": "string",
           "default": "",
-          "description": "Tenant ID for multi-tenant deployments"
+          "description": "Tenant ID for multi-tenant deployments",
+          "order": 112
         },
         "sweObeyMe.enterprise.rbac.enabled": {
           "type": "boolean",
           "default": false,
-          "description": "Enable Role-Based Access Control"
+          "description": "Enable Role-Based Access Control",
+          "order": 113
         },
         "sweObeyMe.enterprise.rbac.defaultRole": {
           "type": "string",
@@ -632,17 +701,20 @@
             "user",
             "readonly"
           ],
-          "description": "Default role for new users"
+          "description": "Default role for new users",
+          "order": 114
         },
         "sweObeyMe.enterprise.rbac.permissions": {
           "type": "object",
           "default": {},
-          "description": "Custom role permissions configuration"
+          "description": "Custom role permissions configuration",
+          "order": 115
         },
         "sweObeyMe.enterprise.sso.enabled": {
           "type": "boolean",
           "default": false,
-          "description": "Enable Single Sign-On"
+          "description": "Enable Single Sign-On",
+          "order": 116
         },
         "sweObeyMe.enterprise.sso.provider": {
           "type": "string",
@@ -654,92 +726,110 @@
             "saml",
             "oidc"
           ],
-          "description": "SSO provider"
+          "description": "SSO provider",
+          "order": 117
         },
         "sweObeyMe.enterprise.sso.ssoUrl": {
           "type": "string",
           "default": "",
-          "description": "SSO URL from identity provider"
+          "description": "SSO URL from identity provider",
+          "order": 118
         },
         "sweObeyMe.enterprise.sso.entityId": {
           "type": "string",
           "default": "",
-          "description": "IdP Entity ID"
+          "description": "IdP Entity ID",
+          "order": 119
         },
         "sweObeyMe.enterprise.sso.certificate": {
           "type": "string",
           "default": "",
-          "description": "X509 Certificate for SAML"
+          "description": "X509 Certificate for SAML",
+          "order": 120
         },
         "sweObeyMe.enterprise.sso.callbackUrl": {
           "type": "string",
           "default": "",
-          "description": "Callback URL for SSO"
+          "description": "Callback URL for SSO",
+          "order": 121
         },
         "sweObeyMe.enterprise.sso.spEntityId": {
           "type": "string",
           "default": "",
-          "description": "SP Entity ID"
+          "description": "SP Entity ID",
+          "order": 122
         },
         "sweObeyMe.enterprise.scim.enabled": {
           "type": "boolean",
           "default": false,
-          "description": "Enable SCIM provisioning"
+          "description": "Enable SCIM provisioning",
+          "order": 125
         },
         "sweObeyMe.enterprise.scim.endpoint": {
           "type": "string",
           "default": "",
-          "description": "SCIM endpoint URL"
+          "description": "SCIM endpoint URL",
+          "order": 126
         },
         "sweObeyMe.enterprise.scim.accessToken": {
           "type": "string",
           "default": "",
-          "description": "SCIM access token"
+          "description": "SCIM access token",
+          "order": 127
         },
         "sweObeyMe.enterprise.systemRules.enabled": {
           "type": "boolean",
           "default": false,
-          "description": "Enable system-level rules"
+          "description": "Enable system-level rules",
+          "order": 130
         },
         "sweObeyMe.enterprise.systemRules.directory": {
           "type": "string",
           "default": "",
-          "description": "Directory for system-level rules (OS-specific)"
+          "description": "Directory for system-level rules (OS-specific)",
+          "order": 131
         },
         "sweObeyMe.enterprise.systemWorkflows.enabled": {
           "type": "boolean",
           "default": false,
-          "description": "Enable system-level workflows"
+          "description": "Enable system-level workflows",
+          "order": 132
         },
         "sweObeyMe.enterprise.systemWorkflows.directory": {
           "type": "string",
           "default": "",
-          "description": "Directory for system-level workflows (OS-specific)"
+          "description": "Directory for system-level workflows (OS-specific)",
+          "order": 133
         },
         "sweObeyMe.enterprise.systemSkills.enabled": {
           "type": "boolean",
           "default": false,
-          "description": "Enable system-level skills"
+          "description": "Enable system-level skills",
+          "order": 134
         },
         "sweObeyMe.enterprise.systemSkills.directory": {
           "type": "string",
           "default": "",
-          "description": "Directory for system-level skills (OS-specific)"
+          "description": "Directory for system-level skills (OS-specific)",
+          "order": 135
         },
         "sweObeyMe.enterprise.auditLogging.enabled": {
           "type": "boolean",
           "default": true,
-          "description": "Enable audit logging for all operations"
+          "description": "Enable audit logging for all operations",
+          "order": 140
         },
         "sweObeyMe.enterprise.auditLogging.directory": {
           "type": "string",
           "default": "",
-          "description": "Directory for audit logs"
+          "description": "Directory for audit logs",
+          "order": 141
         },
         "sweObeyMe.enterprise.auditLogging.retentionDays": {
           "type": "number",
           "default": 90,
-          "description": "Retention period for audit logs in days"
+          "description": "Retention period for audit logs in days",
+          "order": 142
         },
         "sweObeyMe.enterprise.auditLogging.logLevel": {
           "type": "string",
@@ -750,107 +840,128 @@
             "warn",
             "error"
           ],
-          "description": "Log level for audit logs"
+          "description": "Log level for audit logs",
+          "order": 143
         },
         "sweObeyMe.enterprise.analytics.enabled": {
           "type": "boolean",
           "default": false,
-          "description": "Enable analytics collection"
+          "description": "Enable analytics collection",
+          "order": 145
         },
         "sweObeyMe.enterprise.analytics.endpoint": {
           "type": "string",
           "default": "",
-          "description": "Analytics endpoint URL"
+          "description": "Analytics endpoint URL",
+          "order": 146
         },
         "sweObeyMe.enterprise.analytics.apiKey": {
           "type": "string",
           "default": "",
-          "description": "Analytics API key"
+          "description": "Analytics API key",
+          "order": 147
         },
         "sweObeyMe.enterprise.quotas.enabled": {
           "type": "boolean",
           "default": false,
-          "description": "Enable quota-based usage limits"
+          "description": "Enable quota-based usage limits",
+          "order": 150
         },
         "sweObeyMe.enterprise.quotas.maxOperationsPerDay": {
           "type": "number",
           "default": 1000,
-          "description": "Maximum operations per day"
+          "description": "Maximum operations per day",
+          "order": 151
         },
         "sweObeyMe.enterprise.quotas.maxOperationsPerHour": {
           "type": "number",
           "default": 100,
-          "description": "Maximum operations per hour"
+          "description": "Maximum operations per hour",
+          "order": 152
         },
         "sweObeyMe.enterprise.quotas.maxCheckpoints": {
           "type": "number",
           "default": 50,
-          "description": "Maximum checkpoints per workspace"
+          "description": "Maximum checkpoints per workspace",
+          "order": 153
         },
         "sweObeyMe.enterprise.rateLimiting.enabled": {
           "type": "boolean",
           "default": false,
-          "description": "Enable rate limiting"
+          "description": "Enable rate limiting",
+          "order": 155
         },
         "sweObeyMe.enterprise.rateLimiting.requestsPerMinute": {
           "type": "number",
           "default": 60,
-          "description": "Requests per minute limit"
+          "description": "Requests per minute limit",
+          "order": 156
         },
         "sweObeyMe.enterprise.encryption.enabled": {
           "type": "boolean",
           "default": true,
-          "description": "Enable encryption for sensitive data"
+          "description": "Enable encryption for sensitive data",
+          "order": 160
         },
         "sweObeyMe.enterprise.encryption.algorithm": {
           "type": "string",
           "default": "aes-256-gcm",
-          "description": "Encryption algorithm"
+          "description": "Encryption algorithm",
+          "order": 161
         },
         "sweObeyMe.enterprise.encryption.keyRotationDays": {
           "type": "number",
           "default": 90,
-          "description": "Key rotation period in days"
+          "description": "Key rotation period in days",
+          "order": 162
         },
         "sweObeyMe.enterprise.apiKeys.enabled": {
           "type": "boolean",
           "default": false,
-          "description": "Enable API key management"
+          "description": "Enable API key management",
+          "order": 165
         },
         "sweObeyMe.enterprise.apiKeys.rotationDays": {
           "type": "number",
           "default": 30,
-          "description": "API key rotation period in days"
+          "description": "API key rotation period in days",
+          "order": 166
         },
         "sweObeyMe.enterprise.domainVerification.enabled": {
           "type": "boolean",
           "default": false,
-          "description": "Enable domain verification"
+          "description": "Enable domain verification",
+          "order": 170
         },
         "sweObeyMe.enterprise.domainVerification.verifiedDomains": {
           "type": "array",
           "default": [],
-          "description": "List of verified domains"
+          "description": "List of verified domains",
+          "order": 171
         },
         "sweObeyMe.enterprise.webhooks.enabled": {
           "type": "boolean",
           "default": false,
-          "description": "Enable webhook notifications"
+          "description": "Enable webhook notifications",
+          "order": 175
         },
         "sweObeyMe.enterprise.webhooks.endpoints": {
           "type": "array",
           "default": [],
-          "description": "Webhook endpoint configurations"
+          "description": "Webhook endpoint configurations",
+          "order": 176
         },
         "sweObeyMe.enterprise.compliance.enabled": {
           "type": "boolean",
           "default": false,
-          "description": "Enable compliance reporting"
+          "description": "Enable compliance reporting",
+          "order": 180
         },
         "sweObeyMe.enterprise.compliance.standards": {
           "type": "array",
           "default": [],
-          "description": "Compliance standards (SOC2, GDPR, HIPAA, etc.)"
+          "description": "Compliance standards (SOC2, GDPR, HIPAA, etc.)",
+          "order": 181
         },
         "sweObeyMe.enterprise.compliance.reportSchedule": {
           "type": "string",
@@ -861,12 +972,14 @@
             "monthly",
             "quarterly"
           ],
-          "description": "Compliance report generation schedule"
+          "description": "Compliance report generation schedule",
+          "order": 182
         },
         "sweObeyMe.enterprise.multiTenant.enabled": {
           "type": "boolean",
           "default": false,
-          "description": "Enable multi-tenant isolation"
+          "description": "Enable multi-tenant isolation",
+          "order": 185
         },
         "sweObeyMe.enterprise.multiTenant.isolationLevel": {
           "type": "string",
@@ -876,12 +989,14 @@
             "organization",
             "user"
           ],
-          "description": "Isolation level for multi-tenant"
+          "description": "Isolation level for multi-tenant",
+          "order": 186
         },
         "sweObeyMe.enterprise.configurationInheritance.enabled": {
           "type": "boolean",
           "default": true,
-          "description": "Enable configuration inheritance"
+          "description": "Enable configuration inheritance",
+          "order": 190
         },
         "sweObeyMe.enterprise.configurationInheritance.precedence": {
           "type": "array",
@@ -891,47 +1006,26 @@
             "workspace",
             "user"
           ],
-          "description": "Configuration precedence order"
-        },
-        "sweObeyMe.enterprise.disasterRecovery.enabled": {
-          "type": "boolean",
-          "default": false,
-          "description": "Enable disaster recovery procedures"
-        },
-        "sweObeyMe.enterprise.disasterRecovery.backupSchedule": {
-          "type": "string",
-          "default": "daily",
-          "enum": [
-            "hourly",
-            "daily",
-            "weekly"
-          ],
-          "description": "Backup schedule"
-        },
-        "sweObeyMe.enterprise.disasterRecovery.retentionDays": {
-          "type": "number",
-          "default": 30,
-          "description": "Backup retention period in days"
-        },
-        "sweObeyMe.enterprise.healthChecks.enabled": {
-          "type": "boolean",
-          "default": true,
-          "description": "Enable health checks"
+          "description": "Configuration precedence order",
+          "order": 191
         },
         "sweObeyMe.enterprise.healthChecks.intervalSeconds": {
           "type": "number",
           "default": 60,
-          "description": "Health check interval in seconds"
+          "description": "Health check interval in seconds",
+          "order": 200
         },
         "sweObeyMe.enterprise.metrics.enabled": {
           "type": "boolean",
           "default": false,
-          "description": "Enable metrics collection"
+          "description": "Enable metrics collection",
+          "order": 201
         },
         "sweObeyMe.enterprise.metrics.endpoint": {
           "type": "string",
           "default": "",
-          "description": "Metrics endpoint URL"
+          "description": "Metrics endpoint URL",
+          "order": 202
         },
         "sweObeyMe.enterprise.metrics.format": {
           "type": "string",
@@ -941,7 +1035,8 @@
             "json",
             "influxdb"
           ],
-          "description": "Metrics export format"
+          "description": "Metrics export format",
+          "order": 203
         }
       }
     }
