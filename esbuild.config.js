@@ -102,6 +102,7 @@ const commonConfig = {
     'json-schema-typed',
     'zod-to-json-schema',
     'raw-body',
+    'crypto',
   ],
   logLevel: 'info',
 };

@@ -8,6 +8,7 @@ import {
   GetPromptRequestSchema,
 } from '@modelcontextprotocol/sdk/types.js';
 import fs from 'fs';
+import crypto from 'crypto';
 import { fileURLToPath } from 'url';
 import path from 'path';
 
@@ -21,6 +22,7 @@ import { getDynamicToolRegistry } from './lib/tools/registry-dynamic.js';
 import { getLanguageSpecificTools } from './lib/language-upper-functions.js';
 import { getProactiveVoice, GOVERNANCE_CONSTITUTION } from './lib/proactive-voice.js';
 import { getServerDiagnostics } from './lib/server-diagnostics.js';
+import { initializeOAuthManager, getOAuthManager } from './lib/oauth-manager.js';
 
 // Read version from package.json (single source of truth)
 const __filename = fileURLToPath(import.meta.url);
@@ -64,6 +66,13 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
     await initializeQuotes();
   } catch (error) {
     console.error('[SWEObeyMe]: Failed to initialize quotes:', error);
+  }
+
+  // Initialize OAuth manager
+  try {
+    await initializeOAuthManager();
+  } catch (error) {
+    console.error('[SWEObeyMe]: Failed to initialize OAuth manager:', error);
   }
 
   // Initialize server
@@ -268,6 +277,119 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
     app.use(cors());
     app.use(express.json());
 
+    // Root route
+    app.get('/', (req, res) => {
+      res.json({ message: 'SWEObeyMe MCP Server', version: VERSION, transport: TRANSPORT_MODE });
+    });
+
+    // Health check endpoint
+    app.get('/health', (req, res) => {
+      res.json({ status: 'ok', version: VERSION, transport: TRANSPORT_MODE });
+    });
+
+    // Test endpoint
+    app.get('/test', (req, res) => {
+      res.json({ message: 'Express is working', transport: TRANSPORT_MODE });
+    });
+
+    // OAuth endpoints
+    app.get('/oauth/pkce', async (req, res) => {
+      try {
+        const oauthManager = getOAuthManager();
+        if (!oauthManager) {
+          return res.status(503).json({ error: 'OAuth manager not initialized' });
+        }
+        const state = req.query.state || crypto.randomUUID();
+        const challenge = await oauthManager.generatePKCEChallenge(state);
+        res.json(challenge);
+      } catch (error) {
+        res.status(500).json({ error: error.message });
+      }
+    });
+
+    // OAuth callback endpoint
+    app.post('/oauth/callback', async (req, res) => {
+      try {
+        const oauthManager = getOAuthManager();
+        if (!oauthManager) {
+          return res.status(503).json({ error: 'OAuth manager not initialized' });
+        }
+        const { provider, code, state, codeVerifier } = req.body;
+        
+        if (!provider || !code || !state) {
+          return res.status(400).json({ error: 'Missing required parameters' });
+        }
+
+        // Verify PKCE challenge if codeVerifier is provided
+        if (codeVerifier) {
+          oauthManager.verifyPKCEChallenge(state, codeVerifier);
+        }
+
+        // Store the token (this would normally exchange the code for tokens)
+        // For now, we'll store the code as a placeholder
+        await oauthManager.storeToken(provider, code, null, 3600);
+
+        res.json({ success: true, provider });
+      } catch (error) {
+        res.status(500).json({ error: error.message });
+      }
+    });
+
+    // Get token status
+    app.get('/oauth/token/:provider', (req, res) => {
+      try {
+        const oauthManager = getOAuthManager();
+        if (!oauthManager) {
+          return res.status(503).json({ error: 'OAuth manager not initialized' });
+        }
+        const { provider } = req.params;
+        const token = oauthManager.getToken(provider);
+        
+        if (!token) {
+          return res.status(404).json({ error: 'Token not found' });
+        }
+
+        res.json({
+          provider: token.provider,
+          expiresAt: token.expiresAt,
+          isExpired: token.isExpired(),
+          willExpireSoon: token.willExpireSoon(),
+          scopes: token.scopes,
+        });
+      } catch (error) {
+        res.status(500).json({ error: error.message });
+      }
+    });
+
+    // Remove token
+    app.delete('/oauth/token/:provider', async (req, res) => {
+      try {
+        const oauthManager = getOAuthManager();
+        if (!oauthManager) {
+          return res.status(503).json({ error: 'OAuth manager not initialized' });
+        }
+        const { provider } = req.params;
+        await oauthManager.removeToken(provider);
+        res.json({ success: true });
+      } catch (error) {
+        res.status(500).json({ error: error.message });
+      }
+    });
+
+    // OAuth statistics
+    app.get('/oauth/stats', (req, res) => {
+      try {
+        const oauthManager = getOAuthManager();
+        if (!oauthManager) {
+          return res.status(503).json({ error: 'OAuth manager not initialized' });
+        }
+        const stats = oauthManager.getStatistics();
+        res.json(stats);
+      } catch (error) {
+        res.status(500).json({ error: error.message });
+      }
+    });
+
     // SSE endpoint for streaming
     if (TRANSPORT_MODE === 'sse') {
       app.get('/sse', async (req, res) => {
@@ -297,11 +419,6 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
         });
       });
     }
-
-    // Health check endpoint
-    app.get('/health', (req, res) => {
-      res.json({ status: 'ok', version: VERSION, transport: TRANSPORT_MODE });
-    });
 
     // Start HTTP server
     app.listen(HTTP_PORT, HTTP_HOST, () => {

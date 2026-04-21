@@ -1037,6 +1037,36 @@
           ],
           "description": "Metrics export format",
           "order": 203
+        },
+        "sweObeyMe.oauth.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable OAuth token management",
+          "order": 210
+        },
+        "sweObeyMe.oauth.providers": {
+          "type": "object",
+          "default": {},
+          "description": "OAuth provider configurations",
+          "order": 211
+        },
+        "sweObeyMe.oauth.tokenStoragePath": {
+          "type": "string",
+          "default": "",
+          "description": "Path to OAuth token storage file (default: ~/.sweobeyme/oauth-tokens.json)",
+          "order": 212
+        },
+        "sweObeyMe.oauth.autoRefresh": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically refresh expired OAuth tokens",
+          "order": 213
+        },
+        "sweObeyMe.oauth.refreshBuffer": {
+          "type": "number",
+          "default": 300,
+          "description": "Seconds before expiration to trigger token refresh",
+          "order": 214
         }
       }
     }
