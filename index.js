@@ -9,6 +9,8 @@ import {
 } from '@modelcontextprotocol/sdk/types.js';
 import fs from 'fs';
 import crypto from 'crypto';
+import express from 'express';
+import cors from 'cors';
 import { fileURLToPath } from 'url';
 import path from 'path';
 
@@ -38,7 +40,7 @@ const log = msg => {
 
 // Transport selection: stdio (default) or http/sse
 const TRANSPORT_MODE = process.env.SWEOBEYME_TRANSPORT || 'stdio';
-const HTTP_PORT = process.env.SWEOBEYME_PORT || 3000;
+const HTTP_PORT = process.env.SWEOBEYME_PORT || 3001;
 const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
 
 // Main async initialization
@@ -51,14 +53,10 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
   process.stderr.write(`[SWEObeyMe] Transport: ${TRANSPORT_MODE}\n`);
 
   // HTTP transport dependencies - imported conditionally to avoid bundling issues
-  let SSEServerTransport, express, cors;
+  let SSEServerTransport;
   if (TRANSPORT_MODE === 'http' || TRANSPORT_MODE === 'sse') {
     const sseModule = await import('@modelcontextprotocol/sdk/server/sse.js');
     SSEServerTransport = sseModule.SSEServerTransport;
-    const expressModule = await import('express');
-    express = expressModule.default;
-    const corsModule = await import('cors');
-    cors = corsModule.default;
   }
 
   try {
@@ -271,24 +269,34 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
       process.stderr.write(`[CRITICAL]: Handshake Failed: ${error}\n`);
       throw error;
     }
-  } else if (TRANSPORT_MODE === 'http' || TRANSPORT_MODE === 'sse') {
-    // HTTP/SSE Transport
+  } else if (TRANSPORT_MODE === 'http') {
+    // HTTP REST API mode - Express server only (no MCP transport)
     const app = express();
+    
+    // Add request logging middleware
+    app.use((req, res, next) => {
+      process.stderr.write(`[HTTP] ${req.method} ${req.url}\n`);
+      next();
+    });
+    
     app.use(cors());
     app.use(express.json());
 
     // Root route
     app.get('/', (req, res) => {
-      res.json({ message: 'SWEObeyMe MCP Server', version: VERSION, transport: TRANSPORT_MODE });
+      process.stderr.write('[HTTP] Serving root route\n');
+      res.json({ message: 'SWEObeyMe HTTP API', version: VERSION, transport: TRANSPORT_MODE });
     });
 
     // Health check endpoint
     app.get('/health', (req, res) => {
+      process.stderr.write('[HTTP] Serving health route\n');
       res.json({ status: 'ok', version: VERSION, transport: TRANSPORT_MODE });
     });
 
     // Test endpoint
     app.get('/test', (req, res) => {
+      process.stderr.write('[HTTP] Serving test route\n');
       res.json({ message: 'Express is working', transport: TRANSPORT_MODE });
     });
 
@@ -390,35 +398,21 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
       }
     });
 
-    // SSE endpoint for streaming
-    if (TRANSPORT_MODE === 'sse') {
-      app.get('/sse', async (req, res) => {
-        process.stderr.write('[SWEObeyMe] SSE connection established\n');
-        
-        // Set SSE headers
-        res.setHeader('Content-Type', 'text/event-stream');
-        res.setHeader('Cache-Control', 'no-cache');
-        res.setHeader('Connection', 'keep-alive');
-        res.setHeader('Access-Control-Allow-Origin', '*');
+    // 404 handler - must be after all other routes
+    app.use((req, res) => {
+      process.stderr.write(`[HTTP] 404 - Route not found: ${req.method} ${req.url}\n`);
+      res.status(404).json({ error: 'Route not found', path: req.url, method: req.method });
+    });
 
-        // Create SSE transport
-        const transport = new SSEServerTransport('/message', res);
+    // Error handler
+    app.use((err, req, res, next) => {
+      process.stderr.write(`[HTTP] Error: ${err.message}\n`);
+      res.status(500).json({ error: err.message });
+    });
 
-        try {
-          await server.connect(transport);
-          process.stderr.write('[SWEObeyMe] MCP server connected and ready (SSE transport)\n');
-        } catch (error) {
-          process.stderr.write(`[CRITICAL]: SSE Handshake Failed: ${error}\n`);
-          res.end();
-          throw error;
-        }
-
-        // Handle client disconnect
-        req.on('close', () => {
-          process.stderr.write('[SWEObeyMe] SSE connection closed\n');
-        });
-      });
-    }
+    // Log all registered routes before starting server
+    process.stderr.write(`[HTTP] Starting HTTP server on ${HTTP_HOST}:${HTTP_PORT}\n`);
+    process.stderr.write(`[HTTP] Transport mode: ${TRANSPORT_MODE}\n`);
 
     // Start HTTP server
     app.listen(HTTP_PORT, HTTP_HOST, () => {
