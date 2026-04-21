@@ -248,6 +248,39 @@ try {
   // Check for stale submodule references that would break CI/CD
   const gitConfigPath = join(projectRoot, '.git', 'config');
   const gitModulesPath = join(projectRoot, '.gitmodules');
+  const gitIndexPath = join(projectRoot, '.git', 'index');
+  
+  let hasStaleReferences = false;
+  const staleReferences = [];
+  
+  // Check git index for stale submodule references (mode 160000)
+  try {
+    if (existsSync(gitIndexPath)) {
+      const gitIndex = readFileSync(gitIndexPath, 'utf8');
+      const indexLines = gitIndex.split('\n');
+      
+      for (const line of indexLines) {
+        // Git index entries with mode 160000 are submodules
+        if (line.startsWith('160000')) {
+          const parts = line.split('\t');
+          if (parts.length > 1) {
+            const submodulePath = parts[1].trim();
+            staleReferences.push(submodulePath);
+            hasStaleReferences = true;
+          }
+        }
+      }
+      
+      if (hasStaleReferences) {
+        assert(false, 'No stale submodule references in git index', `Found stale submodule references in git index: ${staleReferences.join(', ')}. Remove them with: git rm --cached <path>`);
+      }
+    }
+    
+    assert(true, 'No stale submodule references in git index');
+  } catch (indexError) {
+    // Git index might not be readable, skip this check
+    console.log('  ℹ️  Skipping git index check (file not accessible)');
+  }
   
   // If .gitmodules doesn't exist, check for stale submodule references in .git/config
   if (!existsSync(gitModulesPath)) {
