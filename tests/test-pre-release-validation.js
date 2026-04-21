@@ -242,6 +242,65 @@ try {
   assert(false, 'MCP server entry point validation', error.message);
 }
 
+// Test 11: Submodule configuration validation
+console.log('\n11. Submodule Configuration Validation');
+try {
+  // Check for stale submodule references that would break CI/CD
+  const gitConfigPath = join(projectRoot, '.git', 'config');
+  const gitModulesPath = join(projectRoot, '.gitmodules');
+  
+  // If .gitmodules doesn't exist, check for stale submodule references in .git/config
+  if (!existsSync(gitModulesPath)) {
+    try {
+      const gitConfig = readFileSync(gitConfigPath, 'utf8');
+      const hasSubmoduleRefs = gitConfig.includes('[submodule');
+      
+      if (hasSubmoduleRefs) {
+        // Extract submodule paths from .git/config
+        const submoduleMatches = gitConfig.matchAll(/\[submodule "([^"]+)"\]/g);
+        const staleSubmodules = [];
+        
+        for (const match of submoduleMatches) {
+          staleSubmodules.push(match[1]);
+        }
+        
+        if (staleSubmodules.length > 0) {
+          assert(false, 'No stale submodule references in .git/config', `Found stale submodule references: ${staleSubmodules.join(', ')}. Remove them with: git config --remove-section submodule.<path>`);
+        }
+      }
+      
+      assert(true, 'No stale submodule references in .git/config');
+    } catch (configError) {
+      // .git/config might not exist or be readable, skip this check
+      console.log('  ℹ️  Skipping .git/config check (file not accessible)');
+      assert(true, 'Submodule configuration validation skipped');
+    }
+  } else {
+    // .gitmodules exists, validate it
+    const gitModules = readFileSync(gitModulesPath, 'utf8');
+    
+    // Check each submodule has a URL
+    const submoduleSections = gitModules.matchAll(/\[submodule "([^"]+)"\]([\s\S]*?)(?=\[submodule|$)/g);
+    const invalidSubmodules = [];
+    
+    for (const match of submoduleSections) {
+      const section = match[2];
+      if (!section.includes('url =')) {
+        invalidSubmodules.push(match[1]);
+      }
+    }
+    
+    if (invalidSubmodules.length > 0) {
+      assert(false, 'All submodules in .gitmodules have URLs', `Missing URLs for: ${invalidSubmodules.join(', ')}`);
+    }
+    
+    assert(true, 'All submodules in .gitmodules have URLs');
+  }
+  
+} catch (error) {
+  assert(false, 'Submodule configuration validation', error.message);
+}
+
 // Summary
 console.log('\n' + '='.repeat(50));
 console.log(`Total: ${testsPassed + testsFailed} tests`);

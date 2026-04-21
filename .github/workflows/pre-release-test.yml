@@ -18,6 +18,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          submodules: false
       
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -54,6 +56,8 @@ jobs:
         node-location: ['in-path', 'not-in-path', 'default-location', 'custom-location']
     steps:
       - uses: actions/checkout@v4
+        with:
+          submodules: false
       
       - name: Setup Node.js (conditional)
         if: matrix.node-location != 'not-in-path'
@@ -112,6 +116,8 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          submodules: false
       
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -158,6 +164,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          submodules: false
       
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -205,6 +213,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          submodules: false
       
       - name: Build Extension
         run: |
@@ -253,6 +263,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          submodules: false
       
       - name: Setup Node.js
         uses: actions/setup-node@v4
