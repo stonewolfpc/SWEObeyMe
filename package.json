@@ -1,8 +1,8 @@
 {
   "name": "swe-obey-me",
   "displayName": "SWEObeyMe",
-  "description": "SWEObeyMe - Surgical governance system for VS Code with MCP server integration. Enterprise-ready with 95 tools, strict governance, and cross-platform certification.",
-  "version": "3.0.3",
+  "description": "SWEObeyMe - Anti vibe-coding surgical governance for AI-assisted development. 72+ enforcement tools that make AI finish what it starts.",
+  "version": "4.0.0",
   "type": "module",
   "publisher": "stonewolfpc",
   "icon": "icon.png",
@@ -1115,6 +1115,144 @@
           "default": 60000,
           "description": "Health check interval in milliseconds",
           "order": 222
+        },
+        "sweObeyMe.urlHandler.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable path-aware URL handling",
+          "order": 223
+        },
+        "sweObeyMe.urlHandler.strictValidation": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable strict URL validation",
+          "order": 224
+        },
+        "sweObeyMe.urlHandler.maxPathLength": {
+          "type": "number",
+          "default": 2048,
+          "description": "Maximum URL path length",
+          "order": 225
+        },
+        "sweObeyMe.urlHandler.defaultPath": {
+          "type": "string",
+          "default": "/mcp",
+          "description": "Default path for MCP endpoint",
+          "order": 226
+        },
+        "sweObeyMe.urlHandler.allowedProtocols": {
+          "type": "array",
+          "default": ["http:", "https:"],
+          "description": "Allowed URL protocols",
+          "order": 227
+        },
+        "sweObeyMe.loadingState.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable loading state tracking",
+          "order": 228
+        },
+        "sweObeyMe.loadingState.maxStates": {
+          "type": "number",
+          "default": 100,
+          "description": "Maximum number of loading states to track",
+          "order": 229
+        },
+        "sweObeyMe.loadingState.stateTimeout": {
+          "type": "number",
+          "default": 300000,
+          "description": "State timeout in milliseconds before cleanup",
+          "order": 230
+        },
+        "sweObeyMe.loadingState.cleanupInterval": {
+          "type": "number",
+          "default": 60000,
+          "description": "Cleanup interval in milliseconds",
+          "order": 231
+        },
+        "sweObeyMe.autoEnforcement.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable automated rule enforcement",
+          "order": 232
+        },
+        "sweObeyMe.autoEnforcement.autoIntercept": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically intercept file operations",
+          "order": 233
+        },
+        "sweObeyMe.autoEnforcement.maxFileSize": {
+          "type": "number",
+          "default": 500,
+          "description": "Maximum file size in lines",
+          "order": 234
+        },
+        "sweObeyMe.autoEnforcement.maxFunctionLength": {
+          "type": "number",
+          "default": 50,
+          "description": "Maximum function length in lines",
+          "order": 235
+        },
+        "sweObeyMe.autoEnforcement.maxNestingDepth": {
+          "type": "number",
+          "default": 4,
+          "description": "Maximum nesting depth",
+          "order": 236
+        },
+        "sweObeyMe.autoEnforcement.maxFunctionCount": {
+          "type": "number",
+          "default": 10,
+          "description": "Maximum functions per file",
+          "order": 237
+        },
+        "sweObeyMe.autoEnforcement.maxClassCount": {
+          "type": "number",
+          "default": 5,
+          "description": "Maximum classes per file",
+          "order": 238
+        },
+        "sweObeyMe.autoEnforcement.detectFakeImplementations": {
+          "type": "boolean",
+          "default": true,
+          "description": "Detect and block fake/placeholder implementations (BLOCKING)",
+          "order": 239
+        },
+        "sweObeyMe.audit.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable audit system",
+          "order": 240
+        },
+        "sweObeyMe.audit.preWorkEnabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable pre-work auditing",
+          "order": 241
+        },
+        "sweObeyMe.audit.scanDepth": {
+          "type": "number",
+          "default": 3,
+          "description": "Directory scan depth for audits",
+          "order": 242
+        },
+        "sweObeyMe.audit.similarityThreshold": {
+          "type": "number",
+          "default": 0.7,
+          "description": "Similarity threshold for duplicate detection",
+          "order": 243
+        },
+        "sweObeyMe.audit.todoAutoRemind": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable automatic todo reminders",
+          "order": 244
+        },
+        "sweObeyMe.audit.reminderInterval": {
+          "type": "number",
+          "default": 3600000,
+          "description": "Todo reminder interval in milliseconds",
+          "order": 245
         }
       }
     }
@@ -1146,11 +1284,25 @@
     "test:ui": "node .github/scripts/test-ui-components.js",
     "test:os": "node .github/scripts/test-os-compatibility.js",
     "test:artifacts": "node .github/scripts/test-build-artifacts.js",
-    "test:full": "npm run build && npm run test:tools && npm run test:server && npm run test:mcp && npm run test:config",
-    "test:windsurf": "npm run package && npm run test:clean-env",
+    "test:cross-platform": "node tests/cross-platform-integration-test.js",
+    "test:schema-validation": "node tests/backend-mcp-schema-validation.js",
+    "test:concurrency": "node tests/backend-mcp-concurrency.js",
+    "test:file-safety": "node tests/backend-mcp-file-system-safety.js",
+    "test:manifest": "node tests/extension-manifest-validation.js",
+    "test:packaging": "node tests/marketplace-packaging.js",
+    "test:spec-drift": "node tests/spec-drift-simulation.js",
+    "test:multi-agent": "node tests/multi-agent-orchestration.js",
+    "test:ui-ide": "node tests/ui-ide-integration.js",
+    "test:ux-safety": "node tests/user-experience-safety.js",
+    "test:chaos": "node tests/chaos-engineering.js",
+    "test:user-from-hell": "node tests/simulated-user-from-hell.js",
+    "test:windsurf": "node tests/windsurf-runtime-behavior.js",
+    "test:comprehensive": "node tests/run-all-tests.js",
+    "test:full": "npm run build && npm run test:tools && npm run test:server && npm run test:mcp && npm run test:config && npm run test:comprehensive && npm run test:windsurf",
+    "test:windsurf-package": "npm run package && npm run test:clean-env",
     "test:all": "node scripts/release-validation.js",
     "preflight": "node scripts/preflight-checklist.js",
-    "prepackage": "npm run test:all",
+    "prepackage": "npm run test:comprehensive && npm run test:all",
     "lint": "eslint . --ext .js",
     "lint:fix": "eslint . --ext .js --fix",
     "format": "prettier --write \"**/*.{js,json,md}\"",

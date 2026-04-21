@@ -2,6 +2,41 @@
 
 All notable changes to SWEObeyMe will be documented in this file.
 
+## [4.0.0] - 2026-04-21
+
+### Major Release — The Anti Vibe-Coding Update
+
+**Status:** ✅ BULLETPROOF — 88/88 Windsurf Runtime Tests Passing
+
+**Theme:** If you can't make the AI smarter, you make the architecture so firm it can't deny you.
+
+**Highlights:**
+- **Complete README rewrite** — Positioned for non-coders and pros alike. New voice: direct, honest, no fluff
+- **Windsurf Runtime Behavior Test Suite** — 88 tests across 10 phases simulating real Windsurf MCP quirks:
+  - Startup validation (18 tests): spawn timing, handshake delays, partial/malformed JSON, tool list hydration
+  - Transport quirks (8 tests): chunked JSON, delayed packets, interleaved logs, stdout/stderr noise, BOM prefixes
+  - Tool palette behavior (12 tests): refresh on reconnect/model swap/extension reload, parameter mismatch
+  - Long-session memory (11 tests): 4-8 hour simulation, 500+ tool calls, 100+ file edits, 50+ agent spawns, memory leak detection
+  - Error bubble behavior (14 tests): thrown errors, rejected promises, invalid output, circular JSON, crash survival
+  - File system behavior (7 tests): locked files, race conditions, partial writes, path traversal blocking
+  - Agent behavior (5 tests): multi-agent file edits, conflict detection, race condition handling
+  - Model swap behavior (7 tests): Claude↔Kimi, Claude↔GPT, crash/timeout survival
+  - Extension reload behavior (6 tests): cold/warm/partial/corrupted reloads
+  - **The Windsurf Polygraph** — 10-step integration test: spawn → load → start → run every tool → chaos → reconnections → model swaps → file edits → conflicts → recovery
+- **Comprehensive test suite integration** — 13 test suites, 216+ total tests, all passing
+- **MCP server bulletproofing** — Survives garbage input, partial JSON, delayed stdout, corrupted reloads, model swaps mid-session
+
+### Architecture
+- No breaking changes — fully backward compatible with 3.x configurations
+- All dev tests excluded from `.vsix` packaging via `.vscodeignore`
+
+### Testing
+- **Windsurf Runtime Behavior Tests** — `tests/windsurf-runtime-behavior.js` (88 tests, 10 phases)
+- **Full comprehensive suite** — 13 suites, 216+ tests, 100% pass rate
+- **Pre-install validation** — 105 tests covering server readiness across all platforms
+
+---
+
 ## [3.0.3] - 2026-04-21
 
 ### Patch - Async I/O Fixes & Pre-Install Validation

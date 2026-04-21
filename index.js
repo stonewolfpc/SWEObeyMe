@@ -26,6 +26,10 @@ import { getProactiveVoice, GOVERNANCE_CONSTITUTION } from './lib/proactive-voic
 import { getServerDiagnostics } from './lib/server-diagnostics.js';
 import { initializeOAuthManager, getOAuthManager } from './lib/oauth-manager.js';
 import { initializeRefreshRecovery, getRefreshRecovery } from './lib/refresh-recovery.js';
+import { initializeURLHandler, getURLHandler } from './lib/url-handler.js';
+import { initializeLoadingStateManager, getLoadingStateManager } from './lib/loading-state.js';
+import { initializeAutoEnforcement, getAutoEnforcement } from './lib/auto-enforcement.js';
+import { initializeAuditSystem, getAuditSystem } from './lib/audit-system.js';
 
 // Read version from package.json (single source of truth)
 const __filename = fileURLToPath(import.meta.url);
@@ -97,6 +101,86 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
     console.log('[SWEObeyMe] Refresh/recovery mechanisms initialized');
   } catch (error) {
     console.error('[SWEObeyMe]: Failed to initialize refresh/recovery:', error);
+  }
+
+  // Initialize URL handler
+  try {
+    initializeURLHandler({
+      urlHandler: {
+        baseUrl: `http://${HTTP_HOST}:${HTTP_PORT}`,
+        defaultPath: '/mcp',
+        strictValidation: true,
+      },
+      router: {
+        defaultRoute: null,
+      },
+      config: {
+        defaultConfig: {
+          protocol: 'http:',
+          host: HTTP_HOST,
+          port: HTTP_PORT,
+        },
+      },
+    });
+    console.log('[SWEObeyMe] URL handler initialized');
+  } catch (error) {
+    console.error('[SWEObeyMe]: Failed to initialize URL handler:', error);
+  }
+
+  // Initialize loading state manager
+  try {
+    initializeLoadingStateManager({
+      maxStates: 100,
+      stateTimeout: 300000,
+      cleanupInterval: 60000,
+    });
+    console.log('[SWEObeyMe] Loading state manager initialized');
+  } catch (error) {
+    console.error('[SWEObeyMe]: Failed to initialize loading state manager:', error);
+  }
+
+  // Initialize automated rule enforcement
+  try {
+    initializeAutoEnforcement({
+      enabled: true,
+      autoIntercept: true,
+      thresholds: {
+        maxFileSize: 500,
+        maxFunctionLength: 50,
+        maxNestingDepth: 4,
+        maxFunctionCount: 10,
+        maxClassCount: 5,
+      },
+      forbiddenPatterns: [
+        /console\.log\(/,
+        /debugger/,
+        /TODO/,
+        /FIXME/,
+        /XXX/,
+      ],
+    });
+    console.log('[SWEObeyMe] Automated rule enforcement initialized');
+  } catch (error) {
+    console.error('[SWEObeyMe]: Failed to initialize auto enforcement:', error);
+  }
+
+  // Initialize audit system
+  try {
+    initializeAuditSystem({
+      preWorkAuditor: {
+        enabled: true,
+        projectRoot: process.cwd(),
+        scanDepth: 3,
+        similarityThreshold: 0.7,
+      },
+      todoScheduler: {
+        autoRemind: true,
+        reminderInterval: 3600000,
+      },
+    });
+    console.log('[SWEObeyMe] Audit system initialized');
+  } catch (error) {
+    console.error('[SWEObeyMe]: Failed to initialize audit system:', error);
   }
 
   // Initialize server
@@ -459,6 +543,181 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
         const refreshRecovery = getRefreshRecovery();
         refreshRecovery.circuitBreaker.reset();
         res.json({ success: true, message: 'Circuit breaker reset' });
+      } catch (error) {
+        res.status(500).json({ error: error.message });
+      }
+    });
+
+    // Loading state statistics
+    app.get('/loading/stats', (req, res) => {
+      try {
+        const { loadingStateManager } = getLoadingStateManager();
+        const stats = loadingStateManager.getStatistics();
+        res.json(stats);
+      } catch (error) {
+        res.status(500).json({ error: error.message });
+      }
+    });
+
+    // Get all loading states
+    app.get('/loading/states', (req, res) => {
+      try {
+        const { loadingStateManager } = getLoadingStateManager();
+        const states = loadingStateManager.getAllStates();
+        res.json(states);
+      } catch (error) {
+        res.status(500).json({ error: error.message });
+      }
+    });
+
+    // Get loading state by ID
+    app.get('/loading/state/:id', (req, res) => {
+      try {
+        const { id } = req.params;
+        const { loadingStateManager } = getLoadingStateManager();
+        const state = loadingStateManager.getState(id);
+        if (!state) {
+          return res.status(404).json({ error: 'State not found' });
+        }
+        res.json(state);
+      } catch (error) {
+        res.status(500).json({ error: error.message });
+      }
+    });
+
+    // Get progress for a state
+    app.get('/loading/progress/:id', (req, res) => {
+      try {
+        const { id } = req.params;
+        const { loadingStateManager } = getLoadingStateManager();
+        const progress = loadingStateManager.getProgress(id);
+        if (!progress) {
+          return res.status(404).json({ error: 'Progress not found' });
+        }
+        res.json(progress);
+      } catch (error) {
+        res.status(500).json({ error: error.message });
+      }
+    });
+
+    // Automated rule enforcement status
+    app.get('/enforcement/status', (req, res) => {
+      try {
+        const { autoEnforcement } = getAutoEnforcement();
+        const status = {
+          enabled: autoEnforcement.enabled,
+          thresholds: autoEnforcement.thresholds,
+          violations: autoEnforcement.getViolations().length,
+        };
+        res.json(status);
+      } catch (error) {
+        res.status(500).json({ error: error.message });
+      }
+    });
+
+    // Validate a file against rules
+    app.post('/enforcement/validate', (req, res) => {
+      try {
+        const { filePath } = req.body;
+        if (!filePath) {
+          return res.status(400).json({ error: 'File path is required' });
+        }
+
+        const fs = require('fs');
+        const content = fs.readFileSync(filePath, 'utf8');
+        const { autoEnforcement } = getAutoEnforcement();
+        const validation = autoEnforcement.validateFile(filePath, content);
+
+        res.json(validation);
+      } catch (error) {
+        res.status(500).json({ error: error.message });
+      }
+    });
+
+    // Get enforcement statistics
+    app.get('/enforcement/stats', (req, res) => {
+      try {
+        const { autoEnforcement } = getAutoEnforcement();
+        const violations = autoEnforcement.getViolations();
+
+        const stats = {
+          totalViolations: violations.length,
+          byType: {},
+          bySeverity: {},
+          byRule: {},
+        };
+
+        for (const violation of violations) {
+          stats.byType[violation.type] = (stats.byType[violation.type] || 0) + 1;
+          stats.bySeverity[violation.severity] = (stats.bySeverity[violation.severity] || 0) + 1;
+          stats.byRule[violation.id] = (stats.byRule[violation.id] || 0) + 1;
+        }
+
+        res.json(stats);
+      } catch (error) {
+        res.status(500).json({ error: error.message });
+      }
+    });
+
+    // Audit system status
+    app.get('/audit/status', (req, res) => {
+      try {
+        const { preWorkAuditor, todoScheduler } = getAuditSystem();
+        const status = {
+          preWorkAuditor: {
+            enabled: preWorkAuditor.enabled,
+            issues: preWorkAuditor.getIssues().length,
+          },
+          todoScheduler: {
+            schedules: todoScheduler.getSchedules().length,
+          },
+        };
+        res.json(status);
+      } catch (error) {
+        res.status(500).json({ error: error.message });
+      }
+    });
+
+    // Run pre-work audit
+    app.post('/audit/pre-work', (req, res) => {
+      try {
+        const { taskDescription } = req.body;
+        if (!taskDescription) {
+          return res.status(400).json({ error: 'Task description is required' });
+        }
+
+        const { preWorkAuditor } = getAuditSystem();
+        preWorkAuditor.auditBeforeWork(taskDescription).then(audit => {
+          res.json(audit);
+        }).catch(error => {
+          res.status(500).json({ error: error.message });
+        });
+      } catch (error) {
+        res.status(500).json({ error: error.message });
+      }
+    });
+
+    // Get audit issues
+    app.get('/audit/issues', (req, res) => {
+      try {
+        const { preWorkAuditor } = getAuditSystem();
+        const issues = preWorkAuditor.getIssues();
+        res.json(issues);
+      } catch (error) {
+        res.status(500).json({ error: error.message });
+      }
+    });
+
+    // Get due todos
+    app.get('/audit/todos/due', (req, res) => {
+      try {
+        const { todoScheduler } = getAuditSystem();
+        const context = {
+          action: req.query.action,
+          phase: req.query.phase,
+        };
+        const dueTodos = todoScheduler.getDueTodos(context);
+        res.json(dueTodos);
       } catch (error) {
         res.status(500).json({ error: error.message });
       }
