@@ -1,45 +1,64 @@
-# Explicitly include required directories
-!lib/**
-!utils/**
-!docs/**
-!examples/**
-!scripts/**
-!test-tools/**
-!index.js
-!extension.js
-!quotes.js
-!icon.png
+# ============================================
+# VSCode Extension Packaging Configuration
+# ============================================
+# This extension is bundled using esbuild. Only include
+# the bundled dist/ directory and essential metadata files.
+# All source files are already bundled into dist/.
+
+# ============================================
+# Include Essential Files
+# ============================================
+!dist/**
 !package.json
-!package-lock.json
 !README.md
 !LICENSE
+!icon.png
 !.sweignore
 
-# Exclude test files
+# ============================================
+# Exclude Source Files (already bundled)
+# ============================================
+lib/
+utils/
+docs/
+examples/
+scripts/
+test-tools/
+index.js
+extension.js
+quotes.js
+esbuild.config.js
+
+# ============================================
+# Exclude Test Files
+# ============================================
 tests/
 __tests__/
 *.test.js
 *.spec.js
 **/test/**
-# Note: test-tools/ is included for schema validation tests
 vscode/
 test-electron/
 
-# Exclude git
+# ============================================
+# Exclude Git and Development Files
+# ============================================
 .git/
 .gitignore
 .github/
-
-# Exclude development files
 .vscode/
 .idea/
 ares-rig/
 windsurf-rig/
 
-# Exclude node_modules
+# ============================================
+# Exclude Dependencies
+# ============================================
 node_modules/
 
-# Exclude documentation files
+# ============================================
+# Exclude Documentation (except README)
+# =================================<arg_value>
 ANTI_PATTERNS.md
 BEST_PRACTICES.md
 CODE_OF_CONDUCT.md
@@ -52,33 +71,43 @@ PERFORMANCE_TIPS.md
 QUICKSTART.md
 SECURITY.md
 TROUBLESHOOTING.md
+CHANGELOG.md
 docs/
 *.md
 !README.md
 
-# Exclude build artifacts
+# ============================================
+# Exclude Build Artifacts
+# ============================================
 build/
 *.vsix
 *.tgz
 
-# Exclude temp and dump files
+# ============================================
+# Exclude Temp and Dump Files
+# ============================================
 dump*.txt
 *.tmp
 *.log
 *.bak
 *.swp
 
-# Exclude error logs (test artifacts)
+# ============================================
+# Exclude Error Logs (test artifacts)
+# ============================================
 error_log.json
 error_patterns.json
 
-# Exclude backup directories
+# ============================================
+# Exclude Backup Directories
+# ============================================
 project_registry/
 backup/
 backups/
 
-# Exclude tool memory and corpus files
-# Note: tool-memory.json is included as it's referenced by code
+# ============================================
+# Exclude Tool Memory and Corpus Files
+# ============================================
 scripts/tool-memory.json
 math_corpus/
 fdq_corpus/
@@ -98,7 +127,9 @@ vscode_extension_corpus/
 web_development_corpus/
 build_deployment_corpus/
 
-# Exclude configuration files
+# ============================================
+# Exclude Configuration Files
+# ============================================
 .eslintrc.js
 .prettierrc
 .lintstagedrc.js
@@ -106,12 +137,31 @@ build_deployment_corpus/
 .releaserc.json
 .husky/
 
-# Exclude workflows
+# ============================================
+# Exclude Workflows
+# ============================================
 .windsurf/
 
-# Exclude schemas and project files
-# Note: project_map.json is included as it's referenced by code
+# ============================================
+# Exclude Schemas and Project Files
+# ============================================
 project_map.schema.json
+.sweobeyme-memory.json
+project_map.json
+tool-memory.json
+.windsurfrules
 
-# Include dist/ for bundled output (must be at end to override exclusions)
-!dist/**
+# ============================================
+# Exclude Additional Directories and Files
+# ============================================
+.code-dumps/
+.local/
+git-governor/
+godot_corpus/
+plugins/
+schemas/
+temp/
+Dockerfile
+index.mjs
+jest.config.js
+package-lock.json
