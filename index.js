@@ -34,6 +34,11 @@ const log = msg => {
   process.stderr.write(`[SWEObeyMe-Audit]: ${msg}\n`);
 };
 
+// Transport selection: stdio (default) or http/sse
+const TRANSPORT_MODE = process.env.SWEOBEYME_TRANSPORT || 'stdio';
+const HTTP_PORT = process.env.SWEOBEYME_PORT || 3000;
+const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
+
 // Main async initialization
 (async () => {
   // Startup banner to stderr (not stdout) for diagnostics
@@ -41,6 +46,18 @@ const log = msg => {
   process.stderr.write(`[SWEObeyMe] Version: ${VERSION}\n`);
   process.stderr.write(`[SWEObeyMe] Platform: ${process.platform}\n`);
   process.stderr.write(`[SWEObeyMe] Node: ${process.version}\n`);
+  process.stderr.write(`[SWEObeyMe] Transport: ${TRANSPORT_MODE}\n`);
+
+  // HTTP transport dependencies - imported conditionally to avoid bundling issues
+  let SSEServerTransport, express, cors;
+  if (TRANSPORT_MODE === 'http' || TRANSPORT_MODE === 'sse') {
+    const sseModule = await import('@modelcontextprotocol/sdk/server/sse.js');
+    SSEServerTransport = sseModule.SSEServerTransport;
+    const expressModule = await import('express');
+    express = expressModule.default;
+    const corsModule = await import('cors');
+    cors = corsModule.default;
+  }
 
   try {
     // Initialize quotes module
@@ -232,16 +249,67 @@ const log = msg => {
     }
   });
 
-  // [STRICT TRANSPORT]: Standard Input/Output
-  const transport = new StdioServerTransport();
+  // [TRANSPORT SELECTION]: stdio (default) or http/sse
+  if (TRANSPORT_MODE === 'stdio') {
+    // [STRICT TRANSPORT]: Standard Input/Output
+    const transport = new StdioServerTransport();
 
-  // Start server
-  try {
-    await server.connect(transport);
-    process.stderr.write('[SWEObeyMe] MCP server connected and ready\n');
-  } catch (error) {
-    process.stderr.write(`[CRITICAL]: Handshake Failed: ${error}\n`);
-    throw error;
+    // Start server
+    try {
+      await server.connect(transport);
+      process.stderr.write('[SWEObeyMe] MCP server connected and ready (stdio transport)\n');
+    } catch (error) {
+      process.stderr.write(`[CRITICAL]: Handshake Failed: ${error}\n`);
+      throw error;
+    }
+  } else if (TRANSPORT_MODE === 'http' || TRANSPORT_MODE === 'sse') {
+    // HTTP/SSE Transport
+    const app = express();
+    app.use(cors());
+    app.use(express.json());
+
+    // SSE endpoint for streaming
+    if (TRANSPORT_MODE === 'sse') {
+      app.get('/sse', async (req, res) => {
+        process.stderr.write('[SWEObeyMe] SSE connection established\n');
+        
+        // Set SSE headers
+        res.setHeader('Content-Type', 'text/event-stream');
+        res.setHeader('Cache-Control', 'no-cache');
+        res.setHeader('Connection', 'keep-alive');
+        res.setHeader('Access-Control-Allow-Origin', '*');
+
+        // Create SSE transport
+        const transport = new SSEServerTransport('/message', res);
+
+        try {
+          await server.connect(transport);
+          process.stderr.write('[SWEObeyMe] MCP server connected and ready (SSE transport)\n');
+        } catch (error) {
+          process.stderr.write(`[CRITICAL]: SSE Handshake Failed: ${error}\n`);
+          res.end();
+          throw error;
+        }
+
+        // Handle client disconnect
+        req.on('close', () => {
+          process.stderr.write('[SWEObeyMe] SSE connection closed\n');
+        });
+      });
+    }
+
+    // Health check endpoint
+    app.get('/health', (req, res) => {
+      res.json({ status: 'ok', version: VERSION, transport: TRANSPORT_MODE });
+    });
+
+    // Start HTTP server
+    app.listen(HTTP_PORT, HTTP_HOST, () => {
+      process.stderr.write(`[SWEObeyMe] MCP server listening on http://${HTTP_HOST}:${HTTP_PORT} (${TRANSPORT_MODE} transport)\n`);
+    });
+  } else {
+    process.stderr.write(`[ERROR]: Unknown transport mode: ${TRANSPORT_MODE}. Use 'stdio' or 'sse'.\n`);
+    process.exit(1);
   }
 
   // Background initialization (must not delay MCP handshake)
