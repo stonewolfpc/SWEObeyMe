@@ -25,6 +25,7 @@ import { getLanguageSpecificTools } from './lib/language-upper-functions.js';
 import { getProactiveVoice, GOVERNANCE_CONSTITUTION } from './lib/proactive-voice.js';
 import { getServerDiagnostics } from './lib/server-diagnostics.js';
 import { initializeOAuthManager, getOAuthManager } from './lib/oauth-manager.js';
+import { initializeRefreshRecovery, getRefreshRecovery } from './lib/refresh-recovery.js';
 
 // Read version from package.json (single source of truth)
 const __filename = fileURLToPath(import.meta.url);
@@ -71,6 +72,31 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
     await initializeOAuthManager();
   } catch (error) {
     console.error('[SWEObeyMe]: Failed to initialize OAuth manager:', error);
+  }
+
+  // Initialize refresh-recovery mechanisms
+  try {
+    initializeRefreshRecovery({
+      circuitBreaker: {
+        failureThreshold: 5,
+        resetTimeout: 60000,
+        callTimeout: 30000,
+      },
+      retryHandler: {
+        maxRetries: 3,
+        initialDelay: 1000,
+        maxDelay: 30000,
+        backoffMultiplier: 2,
+      },
+      connectionRefresh: {
+        refreshInterval: 300000,
+        healthCheckInterval: 60000,
+        maxRetries: 3,
+      },
+    });
+    console.log('[SWEObeyMe] Refresh/recovery mechanisms initialized');
+  } catch (error) {
+    console.error('[SWEObeyMe]: Failed to initialize refresh/recovery:', error);
   }
 
   // Initialize server
@@ -393,6 +419,46 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
         }
         const stats = oauthManager.getStatistics();
         res.json(stats);
+      } catch (error) {
+        res.status(500).json({ error: error.message });
+      }
+    });
+
+    // Health check endpoint
+    app.get('/health/detailed', (req, res) => {
+      try {
+        const refreshRecovery = getRefreshRecovery();
+        const health = {
+          status: 'ok',
+          timestamp: new Date().toISOString(),
+          version: VERSION,
+          transport: TRANSPORT_MODE,
+          circuitBreaker: refreshRecovery.circuitBreaker.getState(),
+          connections: refreshRecovery.connectionRefreshManager.getAllHealthStatus(),
+        };
+        res.json(health);
+      } catch (error) {
+        res.status(500).json({ error: error.message });
+      }
+    });
+
+    // Circuit breaker status
+    app.get('/circuit-breaker/status', (req, res) => {
+      try {
+        const refreshRecovery = getRefreshRecovery();
+        const status = refreshRecovery.circuitBreaker.getState();
+        res.json(status);
+      } catch (error) {
+        res.status(500).json({ error: error.message });
+      }
+    });
+
+    // Circuit breaker reset
+    app.post('/circuit-breaker/reset', (req, res) => {
+      try {
+        const refreshRecovery = getRefreshRecovery();
+        refreshRecovery.circuitBreaker.reset();
+        res.json({ success: true, message: 'Circuit breaker reset' });
       } catch (error) {
         res.status(500).json({ error: error.message });
       }

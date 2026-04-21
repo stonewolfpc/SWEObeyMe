@@ -1067,6 +1067,54 @@
           "default": 300,
           "description": "Seconds before expiration to trigger token refresh",
           "order": 214
+        },
+        "sweObeyMe.refreshRecovery.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable refresh mechanisms and error recovery",
+          "order": 215
+        },
+        "sweObeyMe.refreshRecovery.circuitBreaker.failureThreshold": {
+          "type": "number",
+          "default": 5,
+          "description": "Number of failures before circuit breaker opens",
+          "order": 216
+        },
+        "sweObeyMe.refreshRecovery.circuitBreaker.resetTimeout": {
+          "type": "number",
+          "default": 60000,
+          "description": "Timeout in milliseconds before circuit breaker resets",
+          "order": 217
+        },
+        "sweObeyMe.refreshRecovery.retry.maxRetries": {
+          "type": "number",
+          "default": 3,
+          "description": "Maximum number of retry attempts",
+          "order": 218
+        },
+        "sweObeyMe.refreshRecovery.retry.initialDelay": {
+          "type": "number",
+          "default": 1000,
+          "description": "Initial retry delay in milliseconds",
+          "order": 219
+        },
+        "sweObeyMe.refreshRecovery.retry.maxDelay": {
+          "type": "number",
+          "default": 30000,
+          "description": "Maximum retry delay in milliseconds",
+          "order": 220
+        },
+        "sweObeyMe.refreshRecovery.connection.refreshInterval": {
+          "type": "number",
+          "default": 300000,
+          "description": "Connection refresh interval in milliseconds",
+          "order": 221
+        },
+        "sweObeyMe.refreshRecovery.connection.healthCheckInterval": {
+          "type": "number",
+          "default": 60000,
+          "description": "Health check interval in milliseconds",
+          "order": 222
         }
       }
     }
