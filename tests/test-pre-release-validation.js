@@ -180,7 +180,16 @@ try {
   
   // README uses double-dash format for badges (2.0.4--beta) to avoid URL encoding
   const readmeVersion = packageJson.version.replace('-', '--');
-  assert(readme.includes(readmeVersion) || readme.includes(packageJson.version), `README.md contains version ${packageJson.version}`);
+  const hasVersion = readme.includes(readmeVersion) || readme.includes(packageJson.version);
+  
+  if (!hasVersion) {
+    // Find what version is actually in README
+    const versionMatch = readme.match(/(\d+\.\d+\.\d+(?:--\w+)?)/);
+    const foundVersion = versionMatch ? versionMatch[1] : 'none';
+    assert(false, `README.md contains version ${packageJson.version}`, `Found version: ${foundVersion} (expected: ${packageJson.version})`);
+  } else {
+    assert(true, `README.md contains version ${packageJson.version}`);
+  }
   
 } catch (error) {
   assert(false, 'Version consistency validation', error.message);
