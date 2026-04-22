@@ -54,6 +54,10 @@ export class WindsurfRuntimeFuzzer {
         env: process.env
       });
 
+      // Prevent MaxListenersExceededWarning from rapid .once('data') in sendMessage
+      server.stdout.setMaxListeners(50);
+      server.stderr.setMaxListeners(50);
+
       let stdout = '';
       let stderr = '';
 
