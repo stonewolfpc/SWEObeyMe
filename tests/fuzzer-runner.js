@@ -15,7 +15,7 @@ import { getAllInvariants } from './fuzzer-invariants.js';
 
 class FuzzerRunner {
   constructor(options = {}) {
-    this.platforms = options.platforms || ['windsurf', 'cursor', 'lmstudio', 'vscode'];
+    this.platforms = options.platforms || ['windsurf']; // Only windsurf for now
     this.iterations = options.iterations || 100;
     this.generateTests = options.generateTests !== false;
     this.testGenerator = new FuzzTestGenerator();

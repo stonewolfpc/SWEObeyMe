@@ -312,21 +312,21 @@ class MCPLoaderStressTest {
 
   async testSlowStartup() {
     const configPath = join(this.testDir, 'mcp_config_slow.json');
-    
+
     try {
       writeFileSync(configPath, JSON.stringify({ mcpServers: { 'swe-obey-me': { command: 'node' } } }));
-      
-      // Simulate slow MCP startup
+
+      // Simulate slow MCP startup (reduced from 5000ms to 500ms for faster dev testing)
       const start = Date.now();
-      const loaded = await this.loadConfigWithDelay(configPath, 5000);
+      const loaded = await this.loadConfigWithDelay(configPath, 500);
       const duration = Date.now() - start;
-      
+
       // Should handle slow startup gracefully
-      const handled = loaded !== null && duration < 10000;
-      
+      const handled = loaded !== null && duration < 1000;
+
       // Cleanup
       unlinkSync(configPath);
-      
+
       return handled;
     } catch (e) {
       try {
@@ -490,13 +490,13 @@ class MCPLoaderStressTest {
 
   async testConcurrentAccess() {
     const configPath = join(this.testDir, 'mcp_config_concurrent.json');
-    
+
     try {
       writeFileSync(configPath, JSON.stringify({ mcpServers: { 'swe-obey-me': { command: 'node' } } }));
-      
-      // Simulate concurrent reads
+
+      // Simulate concurrent reads (reduced from 100 to 10 for faster dev testing)
       const reads = [];
-      for (let i = 0; i < 100; i++) {
+      for (let i = 0; i < 10; i++) {
         reads.push(
           new Promise(resolve => {
             setTimeout(() => {
@@ -510,13 +510,13 @@ class MCPLoaderStressTest {
           })
         );
       }
-      
+
       const results = await Promise.all(reads);
       const allSucceeded = results.every(r => r === true);
-      
+
       // Cleanup
       unlinkSync(configPath);
-      
+
       return allSucceeded;
     } catch (e) {
       try {

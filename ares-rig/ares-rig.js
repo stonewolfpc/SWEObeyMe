@@ -60,7 +60,7 @@ class ARESRig {
 
   async run() {
     console.log('[ARES] Starting test execution...');
-    
+
     try {
       // Run based on layer selection
       if (this.options.layer === 'all') {
@@ -68,13 +68,16 @@ class ARESRig {
       } else {
         await this.runLayer(this.options.layer);
       }
-      
+
       this.results.endTime = Date.now();
       await this.generateReport();
-      
+
       console.log('[ARES] Test execution completed');
       this.printSummary();
-      
+
+      // Explicitly exit to prevent hanging
+      process.exit(this.results.failed > 0 ? 1 : 0);
+
     } catch (error) {
       console.error('[ARES] Fatal error:', error);
       process.exit(1);
@@ -101,41 +104,51 @@ class ARESRig {
   }
 
   async runLayer(layerName) {
-    console.log(`[ARES] Running layer: ${layerName}`);
-    
+    console.log(`[ARES] [${new Date().toISOString()}] Starting layer: ${layerName}`);
+    const layerStartTime = Date.now();
+
     this.results.layers[layerName] = {
       tests: [],
       passed: 0,
       failed: 0,
       skipped: 0,
-      startTime: Date.now(),
+      startTime: layerStartTime,
       endTime: null,
     };
-    
+
     try {
       const { pathToFileURL } = await import('url');
       const modulePath = join(__dirname, 'simulators', `${layerName}.js`);
       const moduleUrl = pathToFileURL(modulePath).href;
       const module = await import(moduleUrl);
       const simulator = new module.default(this.options);
-      const results = await simulator.run();
-      
+
+      // Add timeout for entire layer (5 minutes max)
+      const timeout = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error(`Layer ${layerName} timeout (5min)`)), 300000)
+      );
+
+      const results = await Promise.race([simulator.run(), timeout]);
+
       this.results.layers[layerName].tests = results.tests;
       this.results.layers[layerName].passed = results.passed;
       this.results.layers[layerName].failed = results.failed;
       this.results.layers[layerName].skipped = results.skipped;
       this.results.layers[layerName].endTime = Date.now();
-      
+
       this.results.totalTests += results.total;
       this.results.passed += results.passed;
       this.results.failed += results.failed;
       this.results.skipped += results.skipped;
-      
-      console.log(`[ARES] Layer ${layerName} completed: ${results.passed}/${results.total} passed`);
-      
+
+      const duration = ((Date.now() - layerStartTime) / 1000).toFixed(2);
+      console.log(`[ARES] [${new Date().toISOString()}] Layer ${layerName} completed in ${duration}s: ${results.passed}/${results.total} passed`);
+
     } catch (error) {
-      console.error(`[ARES] Layer ${layerName} failed:`, error);
+      const duration = ((Date.now() - layerStartTime) / 1000).toFixed(2);
+      console.error(`[ARES] [${new Date().toISOString()}] Layer ${layerName} failed after ${duration}s:`, error.message);
       this.results.layers[layerName].error = error.message;
+      this.results.layers[layerName].endTime = Date.now();
       this.results.failed++;
     }
   }

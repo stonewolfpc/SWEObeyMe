@@ -74,21 +74,30 @@ async function simulateExtensionLoad(extensionPath) {
       stdio: 'pipe',
       cwd: extensionPath
     });
-    
+
     let output = '';
     child.stdout.on('data', (data) => {
       output += data.toString();
     });
-    
-    child.on('close', (code) => {
+
+    // Add timeout
+    const timeout = setTimeout(() => {
+      child.kill();
       fs.unlinkSync(tempFile);
-      resolve({ 
+      resolve({ success: false, error: 'Extension load timeout (30s)' });
+    }, 30000);
+
+    child.on('close', (code) => {
+      clearTimeout(timeout);
+      fs.unlinkSync(tempFile);
+      resolve({
         success: code === 0 && output.includes('Extension loaded successfully'),
-        output 
+        output
       });
     });
-    
+
     child.on('error', (error) => {
+      clearTimeout(timeout);
       fs.unlinkSync(tempFile);
       resolve({ success: false, error: error.message });
     });
@@ -119,17 +128,41 @@ async function testVSIXInstallation() {
     if (os.platform() === 'win32') {
       await new Promise((resolve, reject) => {
         const child = spawn('powershell', [
-          '-Command', 
+          '-Command',
           `Expand-Archive -Path "${path.join(projectRoot, vsixFile)}" -DestinationPath "${tempDir}" -Force`
         ]);
-        child.on('close', resolve);
-        child.on('error', reject);
+
+        const timeout = setTimeout(() => {
+          child.kill();
+          reject(new Error('Expand-Archive timeout (30s)'));
+        }, 30000);
+
+        child.on('close', (code) => {
+          clearTimeout(timeout);
+          resolve(code);
+        });
+        child.on('error', (error) => {
+          clearTimeout(timeout);
+          reject(error);
+        });
       });
     } else {
       await new Promise((resolve, reject) => {
         const child = spawn('unzip', ['-q', path.join(projectRoot, vsixFile), '-d', tempDir]);
-        child.on('close', resolve);
-        child.on('error', reject);
+
+        const timeout = setTimeout(() => {
+          child.kill();
+          reject(new Error('unzip timeout (30s)'));
+        }, 30000);
+
+        child.on('close', (code) => {
+          clearTimeout(timeout);
+          resolve(code);
+        });
+        child.on('error', (error) => {
+          clearTimeout(timeout);
+          reject(error);
+        });
       });
     }
     

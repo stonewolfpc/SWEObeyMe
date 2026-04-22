@@ -112,17 +112,33 @@ export class GenericMCPFuzzer {
       }
 
       let response = '';
+      let chunksReceived = 0;
       const timeout = setTimeout(() => {
-        reject(new Error('Message timeout'));
+        reject(new Error(`Message timeout (${chunksReceived} chunks received)`));
       }, this.timeout);
 
-      this.server.stdout.once('data', (data) => {
-        clearTimeout(timeout);
-        response = data.toString();
-        resolve(response);
-      });
+      // Use 'on' instead of 'once' to accumulate all chunks
+      const dataHandler = (data) => {
+        chunksReceived++;
+        response += data.toString();
 
-      this.server.stdin.write(JSON.stringify(message) + '\n');
+        // Resolve when we have a complete JSON response (ends with newline)
+        if (response.endsWith('\n')) {
+          clearTimeout(timeout);
+          this.server.stdout.off('data', dataHandler);
+          resolve(response);
+        }
+      };
+
+      this.server.stdout.on('data', dataHandler);
+
+      this.server.stdin.write(JSON.stringify(message) + '\n', (err) => {
+        if (err) {
+          clearTimeout(timeout);
+          this.server.stdout.off('data', dataHandler);
+          reject(err);
+        }
+      });
     });
   }
 

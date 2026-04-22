@@ -1,0 +1,953 @@
+{
+  "metadata": {
+    "rigVersion": "1.0.0",
+    "timestamp": "2026-04-22T21:44:38.813Z",
+    "duration": 5563,
+    "options": {
+      "layer": "all",
+      "os": "all",
+      "editor": "all",
+      "report": false,
+      "verbose": false
+    }
+  },
+  "summary": {
+    "totalTests": 140,
+    "passed": 140,
+    "failed": 0,
+    "skipped": 0,
+    "passRate": "100.00"
+  },
+  "layers": {
+    "editor-simulation": {
+      "tests": [
+        {
+          "id": "windsurf-activation-timing",
+          "name": "windsurf - activation-timing",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "windsurf-config-loading",
+          "name": "windsurf - config-loading",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "windsurf-path-normalization",
+          "name": "windsurf - path-normalization",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "windsurf-mcp-startup",
+          "name": "windsurf - mcp-startup",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "windsurf-error-handling",
+          "name": "windsurf - error-handling",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "windsurf-next-activation-timing",
+          "name": "windsurf-next - activation-timing",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "windsurf-next-config-loading",
+          "name": "windsurf-next - config-loading",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "windsurf-next-path-normalization",
+          "name": "windsurf-next - path-normalization",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "windsurf-next-mcp-startup",
+          "name": "windsurf-next - mcp-startup",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "windsurf-next-error-handling",
+          "name": "windsurf-next - error-handling",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "vscode-activation-timing",
+          "name": "vscode - activation-timing",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "vscode-config-loading",
+          "name": "vscode - config-loading",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "vscode-path-normalization",
+          "name": "vscode - path-normalization",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "vscode-mcp-startup",
+          "name": "vscode - mcp-startup",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "vscode-error-handling",
+          "name": "vscode - error-handling",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "continue-vscode-activation-timing",
+          "name": "continue-vscode - activation-timing",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "continue-vscode-config-loading",
+          "name": "continue-vscode - config-loading",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "continue-vscode-path-normalization",
+          "name": "continue-vscode - path-normalization",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "continue-vscode-mcp-startup",
+          "name": "continue-vscode - mcp-startup",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "continue-vscode-error-handling",
+          "name": "continue-vscode - error-handling",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "continue-windsurf-activation-timing",
+          "name": "continue-windsurf - activation-timing",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "continue-windsurf-config-loading",
+          "name": "continue-windsurf - config-loading",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "continue-windsurf-path-normalization",
+          "name": "continue-windsurf - path-normalization",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "continue-windsurf-mcp-startup",
+          "name": "continue-windsurf - mcp-startup",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "continue-windsurf-error-handling",
+          "name": "continue-windsurf - error-handling",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "cursor-activation-timing",
+          "name": "cursor - activation-timing",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "cursor-config-loading",
+          "name": "cursor - config-loading",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "cursor-path-normalization",
+          "name": "cursor - path-normalization",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "cursor-mcp-startup",
+          "name": "cursor - mcp-startup",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "cursor-error-handling",
+          "name": "cursor - error-handling",
+          "passed": true,
+          "error": null
+        }
+      ],
+      "passed": 30,
+      "failed": 0,
+      "skipped": 0,
+      "startTime": 1776894273255,
+      "endTime": 1776894276516
+    },
+    "os-simulation": {
+      "tests": [
+        {
+          "id": "windows-path-normalization",
+          "name": "windows - path-normalization",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "windows-case-sensitivity",
+          "name": "windows - case-sensitivity",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "windows-symlink-handling",
+          "name": "windows - symlink-handling",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "windows-max-path-length",
+          "name": "windows - max-path-length",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "windows-permissions",
+          "name": "windows - permissions",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "windows-config-locations",
+          "name": "windows - config-locations",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "windows-environment-variables",
+          "name": "windows - environment-variables",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "macos-path-normalization",
+          "name": "macos - path-normalization",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "macos-case-sensitivity",
+          "name": "macos - case-sensitivity",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "macos-symlink-handling",
+          "name": "macos - symlink-handling",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "macos-max-path-length",
+          "name": "macos - max-path-length",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "macos-permissions",
+          "name": "macos - permissions",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "macos-config-locations",
+          "name": "macos - config-locations",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "macos-environment-variables",
+          "name": "macos - environment-variables",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "linux-path-normalization",
+          "name": "linux - path-normalization",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "linux-case-sensitivity",
+          "name": "linux - case-sensitivity",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "linux-symlink-handling",
+          "name": "linux - symlink-handling",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "linux-max-path-length",
+          "name": "linux - max-path-length",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "linux-permissions",
+          "name": "linux - permissions",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "linux-config-locations",
+          "name": "linux - config-locations",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "linux-environment-variables",
+          "name": "linux - environment-variables",
+          "passed": true,
+          "error": null
+        }
+      ],
+      "passed": 21,
+      "failed": 0,
+      "skipped": 0,
+      "startTime": 1776894276517,
+      "endTime": 1776894276534
+    },
+    "mcp-loader-stress": {
+      "tests": [
+        {
+          "id": "corrupted-config",
+          "name": "MCP Loader - corrupted-config",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "missing-config",
+          "name": "MCP Loader - missing-config",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "duplicate-config",
+          "name": "MCP Loader - duplicate-config",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "invalid-json",
+          "name": "MCP Loader - invalid-json",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "partial-write",
+          "name": "MCP Loader - partial-write",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "race-condition",
+          "name": "MCP Loader - race-condition",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "slow-startup",
+          "name": "MCP Loader - slow-startup",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "crash-on-init",
+          "name": "MCP Loader - crash-on-init",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "invalid-schema",
+          "name": "MCP Loader - invalid-schema",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "valid-schema-invalid-data",
+          "name": "MCP Loader - valid-schema-invalid-data",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "empty-response",
+          "name": "MCP Loader - empty-response",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "timeout",
+          "name": "MCP Loader - timeout",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "concurrent-access",
+          "name": "MCP Loader - concurrent-access",
+          "passed": true,
+          "error": null
+        }
+      ],
+      "passed": 13,
+      "failed": 0,
+      "skipped": 0,
+      "startTime": 1776894276534,
+      "endTime": 1776894277079
+    },
+    "tool-arbitration": {
+      "tests": [
+        {
+          "id": "model-ignoring-instructions",
+          "name": "Tool Arbitration - model-ignoring-instructions",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "model-hallucinating-tool-names",
+          "name": "Tool Arbitration - model-hallucinating-tool-names",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "model-calling-wrong-tools",
+          "name": "Tool Arbitration - model-calling-wrong-tools",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "model-calling-missing-parameters",
+          "name": "Tool Arbitration - model-calling-missing-parameters",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "model-calling-invalid-parameters",
+          "name": "Tool Arbitration - model-calling-invalid-parameters",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "model-refusing-tools",
+          "name": "Tool Arbitration - model-refusing-tools",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "model-looping-tool-calls",
+          "name": "Tool Arbitration - model-looping-tool-calls",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "model-bypassing-resolve-tool",
+          "name": "Tool Arbitration - model-bypassing-resolve-tool",
+          "passed": true,
+          "error": null
+        }
+      ],
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0,
+      "startTime": 1776894277079,
+      "endTime": 1776894277081
+    },
+    "fs-chaos": {
+      "tests": [
+        {
+          "id": "locked-files",
+          "name": "FS Chaos - locked-files",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "read-only-files",
+          "name": "FS Chaos - read-only-files",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "missing-directories",
+          "name": "FS Chaos - missing-directories",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "corrupted-files",
+          "name": "FS Chaos - corrupted-files",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "long-paths",
+          "name": "FS Chaos - long-paths",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "unicode-paths",
+          "name": "FS Chaos - unicode-paths",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "symlink-loops",
+          "name": "FS Chaos - symlink-loops",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "permission-denied",
+          "name": "FS Chaos - permission-denied",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "file-in-use",
+          "name": "FS Chaos - file-in-use",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "atomic-write-failure",
+          "name": "FS Chaos - atomic-write-failure",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "backup-failure",
+          "name": "FS Chaos - backup-failure",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "concurrent-writes",
+          "name": "FS Chaos - concurrent-writes",
+          "passed": true,
+          "error": null
+        }
+      ],
+      "passed": 12,
+      "failed": 0,
+      "skipped": 0,
+      "startTime": 1776894277081,
+      "endTime": 1776894277116
+    },
+    "workspace-awareness": {
+      "tests": [
+        {
+          "id": "single-file-open",
+          "name": "Workspace Awareness - single-file-open",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "hundred-files-open",
+          "name": "Workspace Awareness - hundred-files-open",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "no-workspace",
+          "name": "Workspace Awareness - no-workspace",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "multi-root-workspace",
+          "name": "Workspace Awareness - multi-root-workspace",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "nested-workspaces",
+          "name": "Workspace Awareness - nested-workspaces",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "missing-workspace-folder-env",
+          "name": "Workspace Awareness - missing-workspace-folder-env",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "workspace-folder-change",
+          "name": "Workspace Awareness - workspace-folder-change",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "workspace-folder-deletion",
+          "name": "Workspace Awareness - workspace-folder-deletion",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "symlinked-workspace",
+          "name": "Workspace Awareness - symlinked-workspace",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "remote-workspace",
+          "name": "Workspace Awareness - remote-workspace",
+          "passed": true,
+          "error": null
+        }
+      ],
+      "passed": 10,
+      "failed": 0,
+      "skipped": 0,
+      "startTime": 1776894277116,
+      "endTime": 1776894277170
+    },
+    "provider-failure": {
+      "tests": [
+        {
+          "id": "ollama-offline",
+          "name": "Provider Failure - ollama-offline",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "ollama-model-missing",
+          "name": "Provider Failure - ollama-model-missing",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "openai-key-invalid",
+          "name": "Provider Failure - openai-key-invalid",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "openai-rate-limited",
+          "name": "Provider Failure - openai-rate-limited",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "anthropic-rate-limited",
+          "name": "Provider Failure - anthropic-rate-limited",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "provider-returns-500",
+          "name": "Provider Failure - provider-returns-500",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "provider-returns-malformed-json",
+          "name": "Provider Failure - provider-returns-malformed-json",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "provider-returns-empty-response",
+          "name": "Provider Failure - provider-returns-empty-response",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "provider-timeout",
+          "name": "Provider Failure - provider-timeout",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "provider-connection-refused",
+          "name": "Provider Failure - provider-connection-refused",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "provider-dns-failure",
+          "name": "Provider Failure - provider-dns-failure",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "provider-ssl-error",
+          "name": "Provider Failure - provider-ssl-error",
+          "passed": true,
+          "error": null
+        }
+      ],
+      "passed": 12,
+      "failed": 0,
+      "skipped": 0,
+      "startTime": 1776894277170,
+      "endTime": 1776894278177
+    },
+    "webview-failure": {
+      "tests": [
+        {
+          "id": "csp-violation",
+          "name": "Webview Failure - csp-violation",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "missing-nonce",
+          "name": "Webview Failure - missing-nonce",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "webview-crash",
+          "name": "Webview Failure - webview-crash",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "webview-reload",
+          "name": "Webview Failure - webview-reload",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "extension-reload",
+          "name": "Webview Failure - extension-reload",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "dev-mode-hot-reload",
+          "name": "Webview Failure - dev-mode-hot-reload",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "script-error",
+          "name": "Webview Failure - script-error",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "style-error",
+          "name": "Webview Failure - style-error",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "resource-load-failure",
+          "name": "Webview Failure - resource-load-failure",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "message-channel-failure",
+          "name": "Webview Failure - message-channel-failure",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "disposal-failure",
+          "name": "Webview Failure - disposal-failure",
+          "passed": true,
+          "error": null
+        }
+      ],
+      "passed": 11,
+      "failed": 0,
+      "skipped": 0,
+      "startTime": 1776894278177,
+      "endTime": 1776894278292
+    },
+    "checkpoint-stress": {
+      "tests": [
+        {
+          "id": "ten-thousand-checkpoints",
+          "name": "Checkpoint Stress - ten-thousand-checkpoints",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "corrupted-checkpoint",
+          "name": "Checkpoint Stress - corrupted-checkpoint",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "missing-checkpoint",
+          "name": "Checkpoint Stress - missing-checkpoint",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "revert-failure",
+          "name": "Checkpoint Stress - revert-failure",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "revert-conflict",
+          "name": "Checkpoint Stress - revert-conflict",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "revert-with-unsaved-files",
+          "name": "Checkpoint Stress - revert-with-unsaved-files",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "checkpoint-pruning",
+          "name": "Checkpoint Stress - checkpoint-pruning",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "checkpoint-validation",
+          "name": "Checkpoint Stress - checkpoint-validation",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "checkpoint-recovery",
+          "name": "Checkpoint Stress - checkpoint-recovery",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "concurrent-checkpoints",
+          "name": "Checkpoint Stress - concurrent-checkpoints",
+          "passed": true,
+          "error": null
+        }
+      ],
+      "passed": 10,
+      "failed": 0,
+      "skipped": 0,
+      "startTime": 1776894278292,
+      "endTime": 1776894278787
+    },
+    "e2e-software-factory": {
+      "tests": [
+        {
+          "id": "create-new-project",
+          "name": "E2E Factory - create-new-project",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "add-files",
+          "name": "E2E Factory - add-files",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "modify-files",
+          "name": "E2E Factory - modify-files",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "refactor-files",
+          "name": "E2E Factory - refactor-files",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "run-diagnostics",
+          "name": "E2E Factory - run-diagnostics",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "fix-errors",
+          "name": "E2E Factory - fix-errors",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "create-checkpoints",
+          "name": "E2E Factory - create-checkpoints",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "revert-checkpoints",
+          "name": "E2E Factory - revert-checkpoints",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "use-multiple-providers",
+          "name": "E2E Factory - use-multiple-providers",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "use-multiple-tools",
+          "name": "E2E Factory - use-multiple-tools",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "use-multiple-workflows",
+          "name": "E2E Factory - use-multiple-workflows",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "use-multiple-editors",
+          "name": "E2E Factory - use-multiple-editors",
+          "passed": true,
+          "error": null
+        },
+        {
+          "id": "use-multiple-oses",
+          "name": "E2E Factory - use-multiple-oses",
+          "passed": true,
+          "error": null
+        }
+      ],
+      "passed": 13,
+      "failed": 0,
+      "skipped": 0,
+      "startTime": 1776894278787,
+      "endTime": 1776894278813
+    }
+  }
+}

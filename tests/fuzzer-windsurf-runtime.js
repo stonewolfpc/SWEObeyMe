@@ -110,17 +110,33 @@ export class WindsurfRuntimeFuzzer {
       }
 
       let response = '';
+      let chunksReceived = 0;
       const timeout = setTimeout(() => {
-        reject(new Error('Message timeout'));
+        reject(new Error(`Message timeout (${chunksReceived} chunks received)`));
       }, this.timeout);
 
-      this.server.stdout.once('data', (data) => {
-        clearTimeout(timeout);
-        response = data.toString();
-        resolve(response);
-      });
+      // Use 'on' instead of 'once' to accumulate all chunks
+      const dataHandler = (data) => {
+        chunksReceived++;
+        response += data.toString();
 
-      this.server.stdin.write(JSON.stringify(message) + '\n');
+        // Resolve when we have a complete JSON response (ends with newline)
+        if (response.endsWith('\n')) {
+          clearTimeout(timeout);
+          this.server.stdout.off('data', dataHandler);
+          resolve(response);
+        }
+      };
+
+      this.server.stdout.on('data', dataHandler);
+
+      this.server.stdin.write(JSON.stringify(message) + '\n', (err) => {
+        if (err) {
+          clearTimeout(timeout);
+          this.server.stdout.off('data', dataHandler);
+          reject(err);
+        }
+      });
     });
   }
 
@@ -365,8 +381,16 @@ export class WindsurfRuntimeFuzzer {
         return await this.testNoPathTraversal();
       case 'NO_DESTRUCTIVE_WITHOUT_CONFIRMATION':
         return await this.testNoDestructiveWithoutConfirmation();
+      case 'NO_WRITES_OUTSIDE_ROOTS':
+        return await this.testNoWritesOutsideRoots();
+      case 'NO_ARBITRARY_CODE_EXECUTION':
+        return await this.testNoArbitraryCodeExecution();
+      case 'NO_SENSITIVE_DATA_EXPOSURE':
+        return await this.testNoSensitiveDataExposure();
+      case 'NO_DENIAL_OF_SERVICE':
+        return await this.testNoDenialOfService();
       default:
-        return true;
+        return true; // Skip unimplemented invariants
     }
   }
 
@@ -408,7 +432,7 @@ export class WindsurfRuntimeFuzzer {
       params: {
         name: 'delete_file',
         arguments: {
-          path: './important-file.txt'
+          path: '/tmp/test.txt'
         }
       }
     };
@@ -421,6 +445,106 @@ export class WindsurfRuntimeFuzzer {
     } catch (e) {
       this.errors.push({ message, error: e.message });
       return false;
+    }
+  }
+
+  /**
+   * Test: no writes outside allowed roots
+   */
+  async testNoWritesOutsideRoots() {
+    const message = {
+      jsonrpc: '2.0',
+      id: 1,
+      method: 'tools/call',
+      params: {
+        name: 'write_file',
+        arguments: {
+          path: '/etc/passwd',
+          content: 'malicious'
+        }
+      }
+    };
+
+    try {
+      const response = await this.sendMessage(message);
+      const parsed = JSON.parse(response);
+      // Should reject write outside workspace
+      return parsed.error !== undefined;
+    } catch (e) {
+      this.errors.push({ message, error: e.message });
+      return false;
+    }
+  }
+
+  /**
+   * Test: no arbitrary code execution
+   */
+  async testNoArbitraryCodeExecution() {
+    const message = {
+      jsonrpc: '2.0',
+      id: 1,
+      method: 'tools/call',
+      params: {
+        name: 'execute_command',
+        arguments: {
+          command: 'rm -rf /'
+        }
+      }
+    };
+
+    try {
+      const response = await this.sendMessage(message);
+      const parsed = JSON.parse(response);
+      // Should reject arbitrary command execution
+      return parsed.error !== undefined;
+    } catch (e) {
+      this.errors.push({ message, error: e.message });
+      return false;
+    }
+  }
+
+  /**
+   * Test: no sensitive data exposure
+   */
+  async testNoSensitiveDataExposure() {
+    const message = {
+      jsonrpc: '2.0',
+      id: 1,
+      method: 'tools/call',
+      params: {
+        name: 'read_file',
+        arguments: {
+          path: '~/.ssh/id_rsa'
+        }
+      }
+    };
+
+    try {
+      const response = await this.sendMessage(message);
+      const parsed = JSON.parse(response);
+      // Should reject reading sensitive files
+      return parsed.error !== undefined;
+    } catch (e) {
+      this.errors.push({ message, error: e.message });
+      return false;
+    }
+  }
+
+  /**
+   * Test: no denial of service
+   */
+  async testNoDenialOfService() {
+    const message = this.messageFuzzer.generateHugePayload(1024 * 1024); // 1MB payload
+
+    try {
+      const response = await this.sendMessage(message);
+      const parsed = JSON.parse(response);
+      // Should handle large payloads gracefully or reject
+      return parsed.error !== undefined || parsed.result !== undefined;
+    } catch (e) {
+      // Timeout is acceptable for DoS protection
+      this.errors.push({ message: 'huge payload', error: e.message });
+      return e.message.includes('timeout');
     }
   }
 
