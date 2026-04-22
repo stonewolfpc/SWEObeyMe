@@ -30,6 +30,7 @@ import { initializeURLHandler, getURLHandler } from './lib/url-handler.js';
 import { initializeLoadingStateManager, getLoadingStateManager } from './lib/loading-state.js';
 import { initializeAutoEnforcement, getAutoEnforcement } from './lib/auto-enforcement.js';
 import { initializeAuditSystem, getAuditSystem } from './lib/audit-system.js';
+import { initializeSessionTracker, getSessionTracker } from './lib/session-tracker.js';
 
 // Read version from package.json (single source of truth)
 const __filename = fileURLToPath(import.meta.url);
@@ -181,6 +182,14 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
     console.log('[SWEObeyMe] Audit system initialized');
   } catch (error) {
     console.error('[SWEObeyMe]: Failed to initialize audit system:', error);
+  }
+
+  // Initialize session tracker
+  try {
+    initializeSessionTracker();
+    console.log('[SWEObeyMe] Session tracker initialized');
+  } catch (error) {
+    console.error('[SWEObeyMe]: Failed to initialize session tracker:', error);
   }
 
   // Initialize server
