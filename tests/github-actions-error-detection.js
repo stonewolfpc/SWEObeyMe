@@ -468,6 +468,54 @@ async function checkFileLineCounts() {
 }
 
 /**
+ * Check 14: Verify package-lock.json is in sync with package.json
+ */
+async function checkNpmLockFileSync() {
+  totalChecks++;
+  console.log('Check 14: package-lock.json is in sync with package.json');
+  try {
+    const packageJsonPath = path.join(rootDir, 'package.json');
+    const lockJsonPath = path.join(rootDir, 'package-lock.json');
+    
+    // Check if package-lock.json exists
+    try {
+      await fs.access(lockJsonPath);
+    } catch {
+      console.log(`  ❌ FAIL: package-lock.json does not exist\n`);
+      failedChecks++;
+      return;
+    }
+    
+    // Try to parse both files
+    const packageJsonContent = await fs.readFile(packageJsonPath, 'utf-8');
+    const lockJsonContent = await fs.readFile(lockJsonPath, 'utf-8');
+    
+    const packageJson = JSON.parse(packageJsonContent);
+    const lockJson = JSON.parse(lockJsonContent);
+    
+    // Check if versions match
+    if (packageJson.version !== lockJson.version) {
+      console.log(`  ❌ FAIL: package.json version (${packageJson.version}) does not match package-lock.json version (${lockJson.version})\n`);
+      failedChecks++;
+      return;
+    }
+    
+    // Check if package name matches
+    if (packageJson.name !== lockJson.name) {
+      console.log(`  ❌ FAIL: package.json name (${packageJson.name}) does not match package-lock.json name (${lockJson.name})\n`);
+      failedChecks++;
+      return;
+    }
+    
+    console.log(`  ✅ PASS: package-lock.json is in sync with package.json\n`);
+    passedChecks++;
+  } catch (error) {
+    console.log(`  ❌ FAIL: ${error.message}\n`);
+    failedChecks++;
+  }
+}
+
+/**
  * Helper function to get all files in a directory recursively
  */
 async function getAllFiles(dir, extensions = []) {
@@ -504,6 +552,7 @@ async function runAllChecks() {
   await checkToolHandlerRegistration();
   await checkTodoComments();
   await checkFileLineCounts();
+  await checkNpmLockFileSync();
   
   console.log('\n╔════════════════════════════════════════════════════════════╗');
   console.log('║                    TEST RESULTS                           ║');
