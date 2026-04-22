@@ -1273,7 +1273,7 @@
     "test": "npm run test:pre-release && npm run test:mcp-config-simulation && npm run test:mcp-config && npm run test:integration && npm run test:protocol && npm run test:schemas && npm run test:csharp && npm run test:unit && npm run test:property",
     "test:unit": "vitest run tests/unit",
     "test:integration:vitest": "vitest run tests/integration",
-    "test:property": "vitest run tests/unit --property",
+    "test:property": "vitest run tests/unit/session-state.property.test.js",
     "test:e2e": "vitest run tests/e2e",
     "test:coverage": "vitest run --coverage",
     "test:coverage:check": "vitest run --coverage",

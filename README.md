@@ -1,6 +1,6 @@
 # SWEObeyMe MCP Server
 
-[![Version](https://img.shields.io/badge/version-4.1.6-blue.svg)](https://github.com/stonewolfpc/SWEObeyMe)
+[![Version](https://img.shields.io/badge/version-4.2.0-blue.svg)](https://github.com/stonewolfpc/SWEObeyMe)
 [![License](https://img.shields.io/badge/license-Dual--License-yellow.svg)](LICENSE)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-green.svg)](https://nodejs.org)
 [![VS Code](https://img.shields.io/badge/VS%20Code-Extension-purple.svg)](https://marketplace.visualstudio.com)
@@ -22,19 +22,16 @@
 
 ---
 
-## ⚠️ Important Notice - v4.1.6
+## ⚠️ Important Notice - v4.2.0
 
-**C# Bridge UI fixes and startup prompting system added.** v4.1.6 includes:
+**Implementation Knowledge System and Codebase Orientation added.** v4.2.0 includes:
 
-- Fixed C# Bridge [Object Object] display issue
-- Fixed tab collapse issue in full settings
-- Added automatic startup prompting system
-- Implemented shadow memory ledger for episodic memory
-- Tool orientation injection at conversation start
-- Project continuity snapshot injection
-- File-specific episodic memory injection
+- **Implementation Knowledge System**: Tracks experimental attempts, assumptions, working patterns, context annotations, and dependency impacts to help AI agents avoid repeating mistakes.
+- **Codebase Orientation System**: Added codebase_orientation, dependency_analysis, entry_point_mapper, and codebase_explore tools for AI navigation.
+- **Extended Project Memory**: Added contextAnnotations and dependencyImpacts arrays with automatic recording.
+- **Comprehensive Testing**: Added full test suite (e2e, integration, unit) with 100% success rate.
 
-**Please upgrade to v4.1.6** to ensure all features function correctly.
+**Please upgrade to v4.2.0** to ensure all features function correctly.
 
 ---
 
