@@ -142,7 +142,6 @@ async function testModuleImports() {
     { name: 'handlers.js', path: '../lib/tools/handlers.js' },
     { name: 'docs-handlers.js', path: '../lib/tools/docs-handlers.js' },
     { name: 'project-awareness-handlers.js', path: '../lib/tools/project-awareness-handlers.js' },
-    { name: 'unified-handlers.js', path: '../lib/tools/unified-handlers.js' },
   ];
   
   for (const module of modules) {

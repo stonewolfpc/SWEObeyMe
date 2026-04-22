@@ -34,6 +34,11 @@ import { initializeDuplicateScanner, getDuplicateScanner } from './lib/duplicate
 import { initializeSessionTracker, getSessionTracker } from './lib/session-tracker.js';
 import { initializeShadowMemoryLedger, getShadowMemoryLedger } from './lib/shadow-memory-ledger.js';
 import { initializeStartupPromptInjector, getStartupPromptInjector } from './lib/startup-prompt-injector.js';
+import { initializeProjectMemorySystem, getProjectMemoryManager } from './lib/project-memory-system.js';
+import { initializeProjectRegistry, getProjectRegistry } from './lib/project-registry.js';
+import { initializeArchiveManager, getArchiveManager } from './lib/archive-manager.js';
+import { setBackupCallback } from './lib/backup.js';
+import { loadSessionState, incrementToolCallCounter, shouldShowReminder, updateLastReminder, getSessionState, setTaskListSnapshot, setCurrentTaskId } from './lib/session-state.js';
 
 // Read version from package.json (single source of truth)
 const __filename = fileURLToPath(import.meta.url);
@@ -219,6 +224,79 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
     console.error('[SWEObeyMe]: Failed to initialize startup prompt injector:', error);
   }
 
+  // Initialize project memory system
+  try {
+    await initializeProjectMemorySystem();
+    console.log('[SWEObeyMe] Project memory system initialized');
+  } catch (error) {
+    console.error('[SWEObeyMe]: Failed to initialize project memory system:', error);
+  }
+
+  // Initialize project registry
+  try {
+    await initializeProjectRegistry();
+    console.log('[SWEObeyMe] Project registry initialized');
+  } catch (error) {
+    console.error('[SWEObeyMe]: Failed to initialize project registry:', error);
+  }
+
+  // Initialize archive manager
+  try {
+    await initializeArchiveManager();
+    console.log('[SWEObeyMe] Archive manager initialized');
+  } catch (error) {
+    console.error('[SWEObeyMe]: Failed to initialize archive manager:', error);
+  }
+
+  // Load session state for task reminder system
+  try {
+    loadSessionState();
+    console.log('[SWEObeyMe] Session state loaded');
+  } catch (error) {
+    console.error('[SWEObeyMe] Failed to load session state:', error);
+  }
+
+  // Set up backup callback for project memory integration
+  setBackupCallback(async (filePath, backupPath, timestamp) => {
+    try {
+      const projectRegistry = getProjectRegistry();
+      if (!projectRegistry) return;
+
+      // Find project for this file
+      const projects = projectRegistry.getAllProjects();
+      const project = projects.find(p => filePath.startsWith(p.projectPath));
+      
+      if (project) {
+        const memoryManager = await getProjectMemoryManager(project.projectName);
+        if (memoryManager) {
+          // Include current task context in backup metadata
+          const sessionState = getSessionState();
+          const taskContext = sessionState.currentTaskId ? {
+            taskId: sessionState.currentTaskId,
+            taskList: sessionState.taskListSnapshot || [],
+          } : null;
+          
+          memoryManager.linkToBackup(filePath, backupPath, taskContext);
+        }
+      }
+    } catch (error) {
+      console.error('[Backup Callback] Failed to link backup to project memory:', error);
+    }
+  });
+
+  // Reset old shadow memory directory (Phase 5.1)
+  // This prevents pollution from old global memory and starts fresh with project-based system
+  try {
+    const oldShadowMemoryDir = path.join(os.homedir(), '.sweobeyme-shadow-memory');
+    if (fs.existsSync(oldShadowMemoryDir)) {
+      console.log('[SWEObeyMe] Resetting old shadow memory directory:', oldShadowMemoryDir);
+      fs.rmSync(oldShadowMemoryDir, { recursive: true, force: true });
+      console.log('[SWEObeyMe] Old shadow memory directory deleted');
+    }
+  } catch (error) {
+    console.error('[SWEObeyMe]: Failed to reset old shadow memory directory:', error);
+  }
+
   // Initialize server
   const server = new Server(
     {
@@ -343,6 +421,20 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
 
     log(`Tool called: ${name}`);
 
+    // Increment tool call counter
+    const callCount = incrementToolCallCounter();
+
+    // Get project memory manager if available
+    const projectRegistry = getProjectRegistry();
+    let memoryManager = null;
+    if (projectRegistry && args?.path) {
+      const projects = projectRegistry.getAllProjects();
+      const project = projects.find(p => args.path.startsWith(p.projectPath));
+      if (project) {
+        memoryManager = await getProjectMemoryManager(project.projectName);
+      }
+    }
+
     // Inject startup prompt if this is the first tool call of a new conversation
     const startupPrompt = injector.injectStartupPromptIntoToolCall(name, args, {
       filePath: args?.path,
@@ -368,6 +460,30 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
       // Call the tool handler
       result = await toolHandlers[name](args);
 
+      // Inject task reminder if applicable
+      // Only on pertinent tools: read_file, write_file, obey_surgical_plan, refactor_manage, etc.
+      const pertinentTools = ['read_file', 'write_file', 'obey_surgical_plan', 'preflight_change', 'refactor_manage', 'backup_manage', 'analyze_file', 'code_analyze'];
+      if (pertinentTools.includes(name) && shouldShowReminder()) {
+        const sessionState = getSessionState();
+        const currentTaskId = sessionState.currentTaskId;
+        const taskList = sessionState.taskListSnapshot || [];
+        
+        if (taskList.length > 0) {
+          const currentTask = taskList.find(t => t.id === currentTaskId) || taskList[0];
+          const currentIndex = taskList.findIndex(t => t.id === currentTaskId);
+          const remaining = taskList.filter(t => t.status !== 'completed').length;
+          
+          const reminderText = `[CONTEXT REMINDER] Call ${callCount}. Task ${currentIndex + 1}/${taskList.length}: "${currentTask.description || currentTask}" (${currentTask.status || 'pending'}). Remaining: ${remaining}. Resume with project_track when complete.`;
+          
+          result.content.push({
+            type: 'text',
+            text: reminderText,
+          });
+          
+          updateLastReminder(callCount);
+        }
+      }
+
       // Inject startup prompt into result if this is a new conversation
       if (startupPrompt && result && result.content) {
         result.content.unshift({
@@ -376,13 +492,37 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
         });
       }
 
-      // Record file events in shadow memory ledger
+      // Record file events in shadow memory ledger (legacy)
       if (name === 'read_file' && args?.path) {
         ledger.recordFileEvent(args.path, 'file_read', { path: args.path });
       } else if (name === 'write_file' && args?.path) {
         ledger.recordFileEvent(args.path, 'file_edit', { path: args.path });
       } else if (name === 'obey_surgical_plan' && args?.target_file) {
         ledger.recordFileEvent(args.target_file, 'surgical_plan', { target_file: args.target_file });
+      }
+
+      // Record in project memory system if available
+      if (memoryManager) {
+        if (name === 'read_file' && args?.path) {
+          memoryManager.recordFileEvent(args.path, 'file_read', { path: args.path });
+        } else if (name === 'write_file' && args?.path) {
+          memoryManager.recordFileEvent(args.path, 'file_edit', { path: args.path });
+        } else if (name === 'obey_surgical_plan' && args?.target_file) {
+          memoryManager.recordFileEvent(args.target_file, 'surgical_plan', { target_file: args.target_file });
+          memoryManager.recordArchitecture({
+            decision: 'Surgical plan approved for file modification',
+            targetFile: args.target_file,
+            currentLineCount: args?.current_line_count,
+            estimatedAddition: args?.estimated_addition,
+          });
+        } else if (name === 'preflight_change' && args?.path) {
+          memoryManager.recordEvent('preflight_check', { path: args.path });
+        } else if (name === 'audit' && args?.operation) {
+          memoryManager.recordEvent('audit', { operation: args.operation });
+        }
+
+        // Record tool call
+        memoryManager.recordEvent('tool_call', { tool: name, args });
       }
 
       // PHASE 10: Pre-flight hook - Update internalAudit based on result

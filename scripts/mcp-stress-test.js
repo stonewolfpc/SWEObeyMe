@@ -15,10 +15,6 @@
 
 import { docs_lookup_handler } from '../lib/tools/docs-handlers.js';
 import { add_project_error_handler, add_pending_task_handler } from '../lib/tools/project-awareness-handlers.js';
-import { unifiedHandlers } from '../lib/tools/unified-handlers.js';
-import { math_lookup_handler } from '../lib/tools/math-handlers.js';
-import { fdq_lookup_handler } from '../lib/tools/fdq-handlers.js';
-import { training_lookup_handler } from '../lib/tools/training-handlers.js';
 import { godot_lookup_handler } from '../lib/tools/godot-handlers.js';
 
 const TEST_RESULTS = {

@@ -1,0 +1,67 @@
+{
+  "empty": [],
+  "single": [
+    {
+      "id": "task-001",
+      "description": "Single task",
+      "status": "pending",
+      "createdAt": "2024-01-01T00:00:00.000Z"
+    }
+  ],
+  "multiple": [
+    {
+      "id": "task-001",
+      "description": "First task",
+      "status": "pending",
+      "createdAt": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "task-002",
+      "description": "Second task",
+      "status": "pending",
+      "createdAt": "2024-01-01T01:00:00.000Z"
+    },
+    {
+      "id": "task-003",
+      "description": "Third task",
+      "status": "pending",
+      "createdAt": "2024-01-01T02:00:00.000Z"
+    }
+  ],
+  "with_progress": [
+    {
+      "id": "task-001",
+      "description": "Completed task",
+      "status": "completed",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "completedAt": "2024-01-01T01:00:00.000Z"
+    },
+    {
+      "id": "task-002",
+      "description": "In-progress task",
+      "status": "in_progress",
+      "isCurrent": true,
+      "createdAt": "2024-01-01T01:00:00.000Z"
+    },
+    {
+      "id": "task-003",
+      "description": "Pending task",
+      "status": "pending",
+      "createdAt": "2024-01-01T02:00:00.000Z"
+    }
+  ],
+  "blocked": [
+    {
+      "id": "task-001",
+      "description": "Blocked task",
+      "status": "blocked",
+      "createdAt": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "task-002",
+      "description": "Pending task",
+      "status": "pending",
+      "createdAt": "2024-01-01T01:00:00.000Z"
+    }
+  ]
+}

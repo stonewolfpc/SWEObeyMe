@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "lastUpdated": "2026-04-07T19:05:00.000Z",
+  "lastUpdated": "2026-04-22T20:32:00.000Z",
   "categories": [
     {
       "name": "windsurf",
@@ -148,12 +148,40 @@
           "license": "EPL-2.0"
         }
       ]
+    },
+    {
+      "name": "codebase",
+      "path": "ide_mcp_corpus/codebase",
+      "description": "Codebase orientation documentation for AI agents to understand project structure without overwhelming context",
+      "documents": [
+        {
+          "name": "architecture_guide",
+          "path": "ide_mcp_corpus/codebase/architecture-guide.md",
+          "description": "Guide for AI agents to understand codebase structure, module boundaries, and critical dependencies",
+          "source": "SWEObeyMe",
+          "license": "MIT"
+        },
+        {
+          "name": "usage_patterns",
+          "path": "ide_mcp_corpus/codebase/usage-patterns.md",
+          "description": "Usage patterns and workflows for codebase orientation tools",
+          "source": "SWEObeyMe",
+          "license": "MIT"
+        },
+        {
+          "name": "implementation_knowledge_guide",
+          "path": "ide_mcp_corpus/codebase/implementation-knowledge-guide.md",
+          "description": "Guide for tracking experimental attempts, assumptions, working patterns, and dependency impacts in complex projects",
+          "source": "SWEObeyMe",
+          "license": "MIT"
+        }
+      ]
     }
   ],
   "documents": [],
   "metadata": {
-    "totalDocuments": 14,
-    "totalCategories": 5,
+    "totalDocuments": 17,
+    "totalCategories": 6,
     "supportedLicenses": [
       "MIT",
       "Apache-2.0",
@@ -170,7 +198,8 @@
       "VS Code extensions",
       "Continue",
       "Model Context Protocol",
-      "Open VSX registry"
+      "Open VSX registry",
+      "Codebase orientation"
     ]
   },
   "instructions": {
@@ -205,6 +234,11 @@
       "priority": "MEDIUM",
       "categories": ["openvsx"],
       "keywords": ["Open VSX", "publish", "registry", "marketplace", "namespace", "extension"]
+    },
+    "codebase": {
+      "priority": "HIGH",
+      "categories": ["codebase"],
+      "keywords": ["codebase", "architecture", "module", "dependency", "entry point", "structure", "orientation"]
     }
   }
 }

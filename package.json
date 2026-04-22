@@ -2,7 +2,7 @@
   "name": "swe-obey-me",
   "displayName": "SWEObeyMe",
   "description": "SWEObeyMe - Anti vibe-coding surgical governance for AI-assisted development. 72+ enforcement tools that make AI finish what it starts.",
-  "version": "4.1.6",
+  "version": "4.2.0",
   "type": "module",
   "publisher": "stonewolfpc",
   "icon": "icon.png",
@@ -1142,7 +1142,10 @@
         },
         "sweObeyMe.urlHandler.allowedProtocols": {
           "type": "array",
-          "default": ["http:", "https:"],
+          "default": [
+            "http:",
+            "https:"
+          ],
           "description": "Allowed URL protocols",
           "order": 227
         },
@@ -1267,7 +1270,14 @@
     "build:enterprise": "NODE_ENV=production BUILD_MODE=enterprise node esbuild.config.js",
     "build:dev": "BUILD_MODE=dev node esbuild.config.js",
     "build:watch": "BUILD_MODE=dev node esbuild.config.js --watch",
-    "test": "npm run test:pre-release && npm run test:mcp-config-simulation && npm run test:mcp-config && npm run test:integration && npm run test:protocol && npm run test:schemas && npm run test:csharp",
+    "test": "npm run test:pre-release && npm run test:mcp-config-simulation && npm run test:mcp-config && npm run test:integration && npm run test:protocol && npm run test:schemas && npm run test:csharp && npm run test:unit && npm run test:property",
+    "test:unit": "vitest run tests/unit",
+    "test:integration:vitest": "vitest run tests/integration",
+    "test:property": "vitest run tests/unit --property",
+    "test:e2e": "vitest run tests/e2e",
+    "test:coverage": "vitest run --coverage",
+    "test:coverage:check": "vitest run --coverage",
+    "test:watch": "vitest",
     "test:pre-release": "node tests/test-pre-release-validation.js",
     "test:mcp-config-simulation": "node tests/test-mcp-config-simulation.js",
     "test:mcp-config": "node tests/test-mcp-config.js",
@@ -1322,16 +1332,20 @@
     "@semantic-release/github": "^10.0.5",
     "@semantic-release/npm": "^11.0.2",
     "@semantic-release/release-notes-generator": "^12.1.0",
+    "@vitest/coverage-v8": "^4.1.5",
+    "@vitest/ui": "^4.1.5",
     "@vscode/vsce": "^3.7.1",
     "commitizen": "^4.3.0",
     "esbuild": "^0.28.0",
     "eslint": "^9.18.0",
+    "fast-check": "^4.7.0",
     "husky": "^9.0.11",
     "jest": "^29.7.0",
     "lint-staged": "^15.2.2",
     "ovsx": "^0.10.10",
     "prettier": "^3.2.5",
-    "semantic-release": "^23.0.8"
+    "semantic-release": "^23.0.8",
+    "vitest": "^4.1.5"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.29.0",

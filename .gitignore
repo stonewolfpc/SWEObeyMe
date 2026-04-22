@@ -75,5 +75,15 @@ error_patterns.json
 # Generated files (can be regenerated)
 # Note: project_map.json and tool-memory.json are committed as they are referenced by code
 
+# Deprecated documentation registries (consolidated into registry-docs.js)
+lib/tools/registry-math.js
+lib/tools/registry-fdq.js
+lib/tools/registry-training.js
+lib/tools/registry-unified.js
+lib/tools/math-handlers.js
+lib/tools/fdq-handlers.js
+lib/tools/training-handlers.js
+lib/tools/unified-handlers.js
+
 # Code dump directory (development artifacts)
 .code-dumps/
