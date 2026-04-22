@@ -213,9 +213,9 @@ class FuzzerRunner {
     console.log(`Platforms Failed: ${report.summary.platformsFailed}`);
     console.log(`Invariants Defined: ${report.summary.invariantsDefined}`);
     console.log(`Invariants Violated: ${report.summary.invariantsViolated}`);
-    console.log(`Crashes: ${totalCrashes}`);
-    console.log(`Hangs: ${totalHangs}`);
-    console.log(`Errors: ${totalErrors}`);
+    console.log(`Crashes: ${report.totalCrashes}`);
+    console.log(`Hangs: ${report.totalHangs}`);
+    console.log(`Errors: ${report.totalErrors}`);
     console.log(`Regression Tests Generated: ${generatedTests.length}`);
     console.log(`\nOverall Status: ${report.passed ? '✅ PASSED' : '❌ FAILED'}`);
     
@@ -231,7 +231,10 @@ class FuzzerRunner {
 }
 
 // Run fuzzer suite if executed directly
-if (import.meta.url === `file://${process.argv[1]}`) {
+const isMainModule = import.meta.url === `file://${process.argv[1]}` || 
+                     import.meta.url === `file:///${process.argv[1].replace(/\\/g, '/')}` ||
+                     import.meta.url.endsWith(process.argv[1].replace(/\\/g, '/'));
+if (isMainModule) {
   const runner = new FuzzerRunner();
   const report = await runner.runCompleteSuite();
   process.exit(report.passed ? 0 : 1);

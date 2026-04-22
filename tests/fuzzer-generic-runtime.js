@@ -39,6 +39,11 @@ export class GenericMCPFuzzer {
       hangs: [],
       errors: []
     };
+    
+    // Convenience aliases used throughout the class
+    this.crashes = this.results.crashes;
+    this.hangs = this.results.hangs;
+    this.errors = this.results.errors;
   }
 
   /**
