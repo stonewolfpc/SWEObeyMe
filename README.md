@@ -22,6 +22,27 @@
 
 ---
 
+## ⚠️ Important Usage Note
+
+**Please explicitly tell the AI to use SWEObeyMe tools.**
+
+When working with this extension, you should instruct the AI assistant to:
+
+- **"Always use SWEObeyMe tools for file operations"**
+- **"Call get_governance_constitution at the start of each session"**
+- **"Use obey_surgical_plan before write_file"**
+
+**Important disclaimer:** While SWEObeyMe provides strong enforcement mechanisms, the AI model ultimately retains autonomy in tool selection. We cannot bypass Windsurf's internal mechanisms or override the model's decision-making process to achieve true full automation. However, with proper prompting and the runtime enforcement features we've implemented, SWEObeyMe can come very close to ensuring consistent tool usage in most cases.
+
+The extension includes:
+- Runtime enforcement that rejects operations if required tools weren't called first
+- Tool priority settings (governance constitution at highest priority 999)
+- Strong tool descriptions with explicit consequences for non-compliance
+
+These features significantly increase the likelihood the AI will use the correct tools, but prompt guidance remains the most reliable method.
+
+---
+
 ## Table of Contents
 
 - [What It Does For You](#what-it-does-for-you)
