@@ -32,6 +32,9 @@ class UIIDEIntegrationTest {
       noUIFlicker: { passed: false, errors: [] },
       noAgentDesync: { passed: false, errors: [] },
       noGhostAgents: { passed: false, errors: [] },
+      webviewSettingsButtons: { passed: false, errors: [] },
+      webviewNoInlineHandlers: { passed: false, errors: [] },
+      webviewProviderHandlesOpenSettings: { passed: false, errors: [] },
     };
   }
 
@@ -82,6 +85,15 @@ class UIIDEIntegrationTest {
     await this.testNoUIFlicker();
     await this.testNoAgentDesync();
     await this.testNoGhostAgents();
+
+    console.log();
+    console.log('Phase 5: Webview Panel Validation');
+    console.log('-'.repeat(60));
+    console.log();
+
+    await this.testWebviewSettingsButtons();
+    await this.testWebviewNoInlineHandlers();
+    await this.testWebviewProviderHandlesOpenSettings();
 
     this.printResults();
     return this.allPassed();
@@ -643,6 +655,114 @@ class UIIDEIntegrationTest {
     } catch (error) {
       this.results.noGhostAgents.errors.push(error.message);
       console.log(`  ❌ No ghost agents test failed: ${error.message}`);
+    }
+  }
+
+  /**
+   * Test: Webview panels have settings buttons
+   */
+  async testWebviewSettingsButtons() {
+    console.log('Testing: Webview settings buttons...');
+
+    try {
+      const panels = [
+        { name: 'Settings', file: 'lib/ui/generators/settings-html.js', buttonId: 'openFullSettings' },
+        { name: 'C# Bridge', file: 'lib/ui/generators/csharp-bridge-html.js', buttonId: 'openCSharpSettings' },
+        { name: 'Admin Dashboard', file: 'lib/ui/generators/admin-dashboard-html.js', buttonId: 'openAdminSettings' },
+      ];
+
+      for (const panel of panels) {
+        const filePath = path.join(__dirname, '..', panel.file);
+        const content = await fs.readFile(filePath, 'utf-8');
+        
+        if (!content.includes(`id="${panel.buttonId}"`)) {
+          this.results.webviewSettingsButtons.errors.push(`${panel.name} panel missing button: ${panel.buttonId}`);
+          console.log(`  ❌ ${panel.name} panel missing settings button`);
+          return;
+        }
+        
+        if (!content.includes(`getElementById('${panel.buttonId}')`)) {
+          this.results.webviewSettingsButtons.errors.push(`${panel.name} panel missing event listener for: ${panel.buttonId}`);
+          console.log(`  ❌ ${panel.name} panel missing event listener for settings button`);
+          return;
+        }
+      }
+
+      this.results.webviewSettingsButtons.passed = true;
+      console.log('  ✅ Webview settings buttons test passed');
+    } catch (error) {
+      this.results.webviewSettingsButtons.errors.push(error.message);
+      console.log(`  ❌ Webview settings buttons test failed: ${error.message}`);
+    }
+  }
+
+  /**
+   * Test: Webview panels use DOMContentLoaded (no inline handlers)
+   */
+  async testWebviewNoInlineHandlers() {
+    console.log('Testing: Webview no inline event handlers...');
+
+    try {
+      const panels = [
+        'lib/ui/generators/settings-html.js',
+        'lib/ui/generators/csharp-bridge-html.js',
+        'lib/ui/generators/admin-dashboard-html.js',
+      ];
+
+      for (const panelFile of panels) {
+        const filePath = path.join(__dirname, '..', panelFile);
+        const content = await fs.readFile(filePath, 'utf-8');
+        
+        // Must use DOMContentLoaded
+        if (!content.includes("addEventListener('DOMContentLoaded'")) {
+          this.results.webviewNoInlineHandlers.errors.push(`${panelFile} missing DOMContentLoaded listener`);
+          console.log(`  ❌ ${panelFile} missing DOMContentLoaded listener`);
+          return;
+        }
+        
+        // Must NOT have inline onclick handlers
+        if (content.includes('onclick=') || content.includes('onchange=') || content.includes('onsubmit=')) {
+          this.results.webviewNoInlineHandlers.errors.push(`${panelFile} has inline event handlers`);
+          console.log(`  ❌ ${panelFile} has inline event handlers (TrustedScript violation)`);
+          return;
+        }
+      }
+
+      this.results.webviewNoInlineHandlers.passed = true;
+      console.log('  ✅ Webview no inline handlers test passed');
+    } catch (error) {
+      this.results.webviewNoInlineHandlers.errors.push(error.message);
+      console.log(`  ❌ Webview no inline handlers test failed: ${error.message}`);
+    }
+  }
+
+  /**
+   * Test: Webview provider handles openSettings command
+   */
+  async testWebviewProviderHandlesOpenSettings() {
+    console.log('Testing: Webview provider handles openSettings...');
+
+    try {
+      const providerPath = path.join(__dirname, '..', 'lib/ui/providers/webview-provider-factory.js');
+      const content = await fs.readFile(providerPath, 'utf-8');
+      
+      if (!content.includes("message.command === 'openSettings'")) {
+        this.results.webviewProviderHandlesOpenSettings.errors.push('Provider does not handle openSettings command');
+        console.log('  ❌ Provider missing openSettings handler');
+        return;
+      }
+      
+      if (!content.includes('workbench.action.openSettings')) {
+        this.results.webviewProviderHandlesOpenSettings.errors.push('Provider does not execute openSettings command');
+        console.log('  ❌ Provider missing workbench.action.openSettings execution');
+        return;
+      }
+
+      this.results.webviewProviderHandlesOpenSettings.passed = true;
+      console.log('  ✅ Webview provider openSettings handler test passed');
+    } catch (error) {
+      this.results.webviewProviderHandlesOpenSettings.errors.push(error.message);
+      console.log(`  ❌ Webview provider openSettings test failed: ${error.message}`);
     }
   }
 
