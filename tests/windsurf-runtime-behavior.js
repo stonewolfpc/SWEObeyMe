@@ -53,7 +53,8 @@ class WindsurfRuntimeBehaviorTest {
       return { passed: allExist, note: 'paths resolve' };
     });
     await this.t('executableResolution', async () => {
-      const nodePath = execSync('where node', { encoding: 'utf-8' }).trim().split('\n')[0];
+      const whichCmd = process.platform === 'win32' ? 'where' : 'which';
+      const nodePath = execSync(`${whichCmd} node`, { encoding: 'utf-8' }).trim().split('\n')[0];
       return { passed: nodePath.includes('node'), note: nodePath };
     });
     await this.t('envVarInterpolation', async () => {

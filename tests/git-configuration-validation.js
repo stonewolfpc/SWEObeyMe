@@ -9,10 +9,14 @@
 import { execSync } from 'child_process';
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 console.log('=== Git Configuration Validation ===\n');
 
-const repoPath = process.cwd();
+const repoPath = path.join(__dirname, '..');
 const gitConfigPath = path.join(repoPath, '.git', 'config');
 const gitModulesPath = path.join(repoPath, '.gitmodules');
 
@@ -133,6 +137,42 @@ try {
 } catch (error) {
   console.log(`  ❌ ERROR: Cannot check git status: ${error.message}`);
   hasErrors = true;
+}
+
+// Check 7: Verify platform-specific commands in tests
+console.log('\nCheck 7: Platform-specific command validation');
+const platform = process.platform;
+const windsurfTestPath = path.join(__dirname, 'windsurf-runtime-behavior.js');
+let platformCheckPassed = true;
+
+try {
+  const windsurfTest = fs.readFileSync(windsurfTestPath, 'utf-8');
+  
+  // On Unix (Linux/macOS), should use 'which', not 'where'
+  if (platform !== 'win32') {
+    if (windsurfTest.includes("execSync('where")) {
+      console.log('  ❌ ERROR: windsurf-runtime-behavior.js uses Windows-only "where" command on Unix');
+      console.log('     This will cause CI failures on Linux/macOS runners');
+      hasErrors = true;
+      platformCheckPassed = false;
+    }
+  }
+  
+  // On Windows, should use 'where', not 'which'
+  if (platform === 'win32') {
+    if (windsurfTest.includes("execSync('which")) {
+      console.log('  ❌ ERROR: windsurf-runtime-behavior.js uses Unix-only "which" command on Windows');
+      console.log('     This will cause CI failures on Windows runners');
+      hasErrors = true;
+      platformCheckPassed = false;
+    }
+  }
+  
+  if (platformCheckPassed) {
+    console.log(`  ✅ Platform-specific commands correct for ${platform}`);
+  }
+} catch (error) {
+  console.log(`  ⚠️  WARNING: Could not validate windsurf-runtime-behavior.js: ${error.message}`);
 }
 
 console.log('\n=== Test Complete ===');
