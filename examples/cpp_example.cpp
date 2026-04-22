@@ -3,7 +3,6 @@
 #include <vector>
 #include <string>
 #include <memory>
-#include <algorithm>
 
 class DataProcessor {
 private:
@@ -18,8 +17,8 @@ public:
     }
     
     // Potential memory leak if not managed properly
-    int* processArray(int size) {
-        int* arr = new int[size]; // Missing delete[]
+    std::vector<int> processArray(int size) {
+        std::vector<int> arr(size); // Fixed: use std::vector instead of raw new[]
         for (int i = 0; i < size; i++) {
             arr[i] = data[i] * 2;
         }
@@ -93,8 +92,7 @@ int main() {
     processor.addValue(30);
     
     // Usage examples
-    int* arr = processor.processArray(3);
-    // Missing delete[] arr;
+    std::vector<int> arr = processor.processArray(3); // Fixed: use std::vector
     
     processor.riskyOperation();
     processor.complexLogic();

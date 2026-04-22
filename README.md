@@ -1,6 +1,6 @@
 # SWEObeyMe MCP Server
 
-[![Version](https://img.shields.io/badge/version-4.1.0-blue.svg)](https://github.com/stonewolfpc/SWEObeyMe)
+[![Version](https://img.shields.io/badge/version-4.1.2-blue.svg)](https://github.com/stonewolfpc/SWEObeyMe)
 [![License](https://img.shields.io/badge/license-Dual--License-yellow.svg)](LICENSE)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-green.svg)](https://nodejs.org)
 [![VS Code](https://img.shields.io/badge/VS%20Code-Extension-purple.svg)](https://marketplace.visualstudio.com)
@@ -19,6 +19,21 @@
 > If you can't make the AI smarter, you make the architecture so firm it can't deny you. That's the hope I have, that this extension will provide you with relief. No more 3 AM "lets give it a list before bed" and wake up to 20 questions, 30 bracket nightmares, and simulated functions where you just had working implementations.
 >
 > Coders who know what they're doing can appreciate the speedup and automation. Professionals can appreciate the fact their side projects are now completing in record time with less intervention, but they're also able to provide far more control now.
+
+---
+
+## ⚠️ Important Notice - v4.1.2 Hotfix
+
+**We apologize for issues in v4.1.1.** Several tools were experiencing runtime errors due to undefined array initialization in the MCP server. These have been fixed in v4.1.2:
+
+- Fixed `project_context` tool "Cannot read properties of undefined (reading 'push')" error
+- Fixed `docs_verify` tool "Cannot read properties of undefined (reading 'push')" error  
+- Fixed `docs_list_categories` corpus name mismatch errors
+- Fixed `docs_lookup` directory not found errors
+
+**What happened:** The project awareness manager was not properly initializing arrays when loading from disk, causing push operations on undefined arrays. This has been corrected with proper initialization checks.
+
+**Please upgrade to v4.1.2** to ensure all tools function correctly.
 
 ---
 

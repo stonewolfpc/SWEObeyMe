@@ -1,0 +1,147 @@
+{
+  "id": "plan-1776838557442",
+  "goal": "test prompt",
+  "originalPrompt": "test prompt",
+  "createdAt": "2026-04-22T06:15:57.442Z",
+  "status": "active",
+  "tasks": [
+    {
+      "id": "task-1",
+      "description": "Research: Framework not specified",
+      "type": "research",
+      "status": "pending",
+      "priority": "high",
+      "dependencies": [],
+      "estimatedDuration": "15-30 minutes"
+    },
+    {
+      "id": "task-2",
+      "description": "Setup: Test framework setup",
+      "type": "setup",
+      "status": "pending",
+      "priority": "high",
+      "dependencies": [],
+      "estimatedDuration": "10-20 minutes"
+    },
+    {
+      "id": "task-3",
+      "description": "test prompt",
+      "type": "implementation",
+      "status": "pending",
+      "priority": "medium",
+      "dependencies": [],
+      "estimatedDuration": "60-120 minutes"
+    },
+    {
+      "id": "task-4",
+      "description": "Validate implementation against requirements",
+      "type": "validation",
+      "status": "pending",
+      "priority": "high",
+      "dependencies": [
+        "task-3"
+      ],
+      "estimatedDuration": "15-30 minutes"
+    },
+    {
+      "id": "task-5",
+      "description": "Test implementation",
+      "type": "testing",
+      "status": "pending",
+      "priority": "high",
+      "dependencies": [
+        "task-4"
+      ],
+      "estimatedDuration": "20-40 minutes"
+    }
+  ],
+  "phases": [
+    {
+      "name": "Research & Planning",
+      "tasks": [
+        {
+          "id": "task-1",
+          "description": "Research: Framework not specified",
+          "type": "research",
+          "status": "pending",
+          "priority": "high",
+          "dependencies": [],
+          "estimatedDuration": "15-30 minutes"
+        }
+      ]
+    },
+    {
+      "name": "Setup & Configuration",
+      "tasks": [
+        {
+          "id": "task-2",
+          "description": "Setup: Test framework setup",
+          "type": "setup",
+          "status": "pending",
+          "priority": "high",
+          "dependencies": [],
+          "estimatedDuration": "10-20 minutes"
+        }
+      ]
+    },
+    {
+      "name": "Implementation",
+      "tasks": [
+        {
+          "id": "task-3",
+          "description": "test prompt",
+          "type": "implementation",
+          "status": "pending",
+          "priority": "medium",
+          "dependencies": [],
+          "estimatedDuration": "60-120 minutes"
+        }
+      ]
+    },
+    {
+      "name": "Validation",
+      "tasks": [
+        {
+          "id": "task-4",
+          "description": "Validate implementation against requirements",
+          "type": "validation",
+          "status": "pending",
+          "priority": "high",
+          "dependencies": [
+            "task-3"
+          ],
+          "estimatedDuration": "15-30 minutes"
+        }
+      ]
+    },
+    {
+      "name": "Testing",
+      "tasks": [
+        {
+          "id": "task-5",
+          "description": "Test implementation",
+          "type": "testing",
+          "status": "pending",
+          "priority": "high",
+          "dependencies": [
+            "task-4"
+          ],
+          "estimatedDuration": "20-40 minutes"
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "estimatedDuration": null,
+    "complexity": "low",
+    "risks": [],
+    "prerequisites": [
+      "Test framework setup"
+    ],
+    "missingInformation": [
+      "Framework not specified"
+    ]
+  },
+  "lastModified": "2026-04-22T06:15:57.443Z",
+  "version": "1.0.0"
+}

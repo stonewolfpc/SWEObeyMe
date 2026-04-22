@@ -2,6 +2,32 @@
 
 All notable changes to SWEObeyMe will be documented in this file.
 
+## [4.1.2] - 2026-04-22
+
+### Hotfix - Critical Tool Runtime Errors
+
+**Bug Fixes:**
+
+- **Fixed `project_context` tool "Cannot read properties of undefined (reading 'push')" error** - Project awareness manager was not properly initializing arrays (pendingTasks, warnings, errors) when loading from disk. Added `loadCurrentProject()` method to ensure arrays are always initialized before use.
+- **Fixed `docs_verify` tool "Cannot read properties of undefined (reading 'push')" error** - Added safety checks in math_verify_handler to ensure checks array is initialized before all push operations.
+- **Fixed `docs_list_categories` corpus name mismatch errors** - Added corpus ID mapping to handle 'unified' corpus name properly and added safety checks for index.categories and index.documents.
+- **Fixed `docs_lookup` directory not found errors** - Added better error handling to catch ENOENT, "no such file or directory", and "not found" errors gracefully instead of throwing errors for missing corpus directories.
+
+**Root Cause:**
+The project awareness manager constructor was not calling `loadCurrentProject()` to initialize the currentProject state from the saved file. This caused arrays to be undefined when tools tried to push to them.
+
+**Testing:**
+- All error detection tests passing (10/10)
+- All integration tests passing (9/9)
+- All protocol compliance tests passing (12/12)
+- All schema validation tests passing (78/78)
+
+**Files Modified:**
+- `lib/project-awareness.js` - Added `loadCurrentProject()` method and called it in constructor
+- `lib/tools/math-handlers.js` - Added safety checks for checks array
+- `lib/tools/docs-handlers.js` - Added corpus ID mapping and better error handling
+- `lib/tools/unified-handlers.js` - Added safety checks for index.categories and index.documents
+
 ## [4.1.1] - 2026-04-21
 
 ### Patch - Tool Registration & C++ Bridge Fixes
