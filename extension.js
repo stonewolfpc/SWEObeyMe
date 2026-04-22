@@ -211,9 +211,6 @@ async function activate(context) {
   context.subscriptions.push(
     vscode.window.registerWebviewViewProvider('sweObeyMe.csharpSettings', csharpProvider)
   );
-  context.subscriptions.push(
-    vscode.window.registerWebviewViewProvider('sweObeyMe.csharpSettingsView', csharpProvider)
-  );
 
   // Admin Dashboard panel provider
   const adminProvider = makeWebviewProvider(getAdminDashboardHtml);

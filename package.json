@@ -155,12 +155,6 @@
         },
         {
           "type": "webview",
-          "id": "sweObeyMe.csharpSettingsView",
-          "name": "C# Bridge Settings",
-          "icon": "$(settings-gear)"
-        },
-        {
-          "type": "webview",
           "id": "sweObeyMe.adminDashboard",
           "name": "SWEObeyMe Admin Dashboard",
           "icon": "$(shield)"
