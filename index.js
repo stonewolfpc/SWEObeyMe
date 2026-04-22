@@ -30,6 +30,7 @@ import { initializeURLHandler, getURLHandler } from './lib/url-handler.js';
 import { initializeLoadingStateManager, getLoadingStateManager } from './lib/loading-state.js';
 import { initializeAutoEnforcement, getAutoEnforcement } from './lib/auto-enforcement.js';
 import { initializeAuditSystem, getAuditSystem } from './lib/audit-system.js';
+import { initializeDuplicateScanner, getDuplicateScanner } from './lib/duplicate-scanner.js';
 import { initializeSessionTracker, getSessionTracker } from './lib/session-tracker.js';
 import { initializeShadowMemoryLedger, getShadowMemoryLedger } from './lib/shadow-memory-ledger.js';
 import { initializeStartupPromptInjector, getStartupPromptInjector } from './lib/startup-prompt-injector.js';
@@ -176,14 +177,22 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
         scanDepth: 3,
         similarityThreshold: 0.7,
       },
-      todoScheduler: {
-        autoRemind: true,
-        reminderInterval: 3600000,
-      },
     });
     console.log('[SWEObeyMe] Audit system initialized');
   } catch (error) {
     console.error('[SWEObeyMe]: Failed to initialize audit system:', error);
+  }
+
+  // Initialize duplicate scanner
+  try {
+    initializeDuplicateScanner({
+      projectRoot: process.cwd(),
+      scanDepth: 3,
+      similarityThreshold: 0.7,
+    });
+    console.log('[SWEObeyMe] Duplicate scanner initialized');
+  } catch (error) {
+    console.error('[SWEObeyMe]: Failed to initialize duplicate scanner:', error);
   }
 
   // Initialize session tracker
