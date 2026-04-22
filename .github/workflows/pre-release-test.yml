@@ -24,7 +24,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
       
       - name: Install dependencies
         run: npm ci
@@ -63,7 +63,7 @@ jobs:
         if: matrix.node-location != 'not-in-path'
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
       
       - name: Test WITHOUT Node in PATH
         if: matrix.node-location == 'not-in-path'
@@ -122,7 +122,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
       
       - name: Install dependencies
         run: npm ci
@@ -170,7 +170,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
       
       - name: Install dependencies
         run: npm ci
@@ -225,7 +225,7 @@ jobs:
       
       - name: Test in Clean Container
         run: |
-          docker run --rm -v "$PWD:/workspace" -w /workspace node:20-alpine \
+          docker run --rm -v "$PWD:/workspace" -w /workspace node:24-alpine \
             sh -c "
               # Install vsce in container
               npm install -g @vscode/vsce
@@ -269,7 +269,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
       
       - name: Build Extension
         run: |

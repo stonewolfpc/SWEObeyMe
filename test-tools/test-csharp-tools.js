@@ -8,7 +8,7 @@ const toolNames = getToolDefinitions().map(t => t.name);
 const csharpTools = [
   'get_csharp_errors',
   'get_csharp_errors_for_file',
-  'get_integrity_report',
+  'get_csharp_integrity_report',
   'toggle_csharp_error_type',
   'set_csharp_ai_informed',
   'undo_last_surgical_edit',
