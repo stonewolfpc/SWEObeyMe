@@ -2,6 +2,38 @@
 
 All notable changes to SWEObeyMe will be documented in this file.
 
+## [4.1.1] - 2026-04-21
+
+### Patch - Tool Registration & C++ Bridge Fixes
+
+**Bug Fixes:**
+
+- **Fixed missing swiss-army-knife tool handlers** - Added dispatcher handlers for 18 swiss-army-knife tools that were missing handlers:
+  - auto_enforce, audit, validate_code, config_manage, session_manage, workflow_manage
+  - analyze_file, safety_check, guidance, corpus_manage, file_info, project_memory
+  - search_code, backup_manage, code_analyze
+- **Fixed C++ bridge false positives** - Increased default confidence threshold from 50 to 75 and severity threshold from WARNING (1) to ERROR (2) to reduce noise
+- **Disabled C++ bridge by default** - Users must explicitly enable via settings to prevent false positives from affecting users who don't need it
+- **Fixed Monaco squigglies** - C++ bridge now preserves native diagnostics when disabled instead of clearing them, so standard IDE errors will show
+- **Disabled aggressive error detection rules** - Only high-confidence rules enabled by default (buffer_overflow_risk, memory_leak_raw_new, missing_virtual_destructor, raw_array_new)
+
+**Testing:**
+
+- **Enhanced tool registration test** - `tests/test-tool-registration.js` now verifies:
+  - All 78 tools have corresponding handlers
+  - No handler name conflicts
+  - All handlers are functions
+  - Tool definitions have required fields
+  - No common initialization error patterns
+  - Swiss-army-knife tools have proper dispatcher handlers
+- **All tests passing** - 78 tools registered, 208 handlers available, 18 swiss-army-knife tools with dispatchers
+
+**Configuration Changes:**
+
+- `sweObeyMe.cppBridge.enabled` defaults to `false` (was `true`)
+- `sweObeyMe.cppBridge.confidenceThreshold` defaults to `75` (was `70`)
+- `sweObeyMe.cppBridge.severityThreshold` defaults to `2` (was `0`)
+
 ## [4.0.1] - 2026-04-21
 
 ### Patch - CI Compatibility & Fuzzer Infrastructure
