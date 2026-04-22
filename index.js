@@ -196,7 +196,7 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
 
   // Initialize shadow memory ledger
   try {
-    initializeShadowMemoryLedger();
+    await initializeShadowMemoryLedger();
     console.log('[SWEObeyMe] Shadow memory ledger initialized');
   } catch (error) {
     console.error('[SWEObeyMe]: Failed to initialize shadow memory ledger:', error);
@@ -204,7 +204,7 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
 
   // Initialize startup prompt injector
   try {
-    initializeStartupPromptInjector();
+    await initializeStartupPromptInjector();
     console.log('[SWEObeyMe] Startup prompt injector initialized');
   } catch (error) {
     console.error('[SWEObeyMe]: Failed to initialize startup prompt injector:', error);
