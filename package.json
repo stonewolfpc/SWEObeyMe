@@ -143,8 +143,14 @@
       "sweObeyMe": [
         {
           "type": "webview",
-          "id": "sweObeyMe.csharpSettings",
+          "id": "sweObeyMe.settings",
           "name": "Settings",
+          "icon": "$(settings-gear)"
+        },
+        {
+          "type": "webview",
+          "id": "sweObeyMe.csharpSettings",
+          "name": "C# Bridge",
           "icon": "$(settings-gear)"
         },
         {

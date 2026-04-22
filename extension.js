@@ -201,13 +201,16 @@ async function activate(context) {
   // Settings panel provider
   const settingsProvider = makeWebviewProvider(getSettingsHtml);
   context.subscriptions.push(
-    vscode.window.registerWebviewViewProvider('sweObeyMe.csharpSettings', settingsProvider)
+    vscode.window.registerWebviewViewProvider('sweObeyMe.settings', settingsProvider)
   );
 
   // C# Bridge panel provider (async wrapper for template loading)
   const csharpProvider = makeWebviewProvider(async (webview) => {
     return await getCSharpBridgeHtml(webview);
   });
+  context.subscriptions.push(
+    vscode.window.registerWebviewViewProvider('sweObeyMe.csharpSettings', csharpProvider)
+  );
   context.subscriptions.push(
     vscode.window.registerWebviewViewProvider('sweObeyMe.csharpSettingsView', csharpProvider)
   );

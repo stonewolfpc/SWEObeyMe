@@ -953,13 +953,13 @@
         document.getElementById('toolPriority').value = config.initialization?.toolPriority ?? 'mcp';
         
         // Backup info
-        document.getElementById('backupPath').textContent = message.backupPath || 'Default: ~/AppData/Local/SWEObeyMe/.sweobeyme-backups';
-        document.getElementById('customBackupPath').value = message.customBackupPath || '';
+        document.getElementById('backupPath').textContent = String(message.backupPath || 'Default: ~/AppData/Local/SWEObeyMe/.sweobeyme-backups');
+        document.getElementById('customBackupPath').value = String(message.customBackupPath || '');
         
         // Backup statistics
         if (message.backupStats) {
-          document.getElementById('totalBackups').textContent = message.backupStats.totalBackups;
-          document.getElementById('totalBackupSize').textContent = message.backupStats.totalSizeMB + ' MB';
+          document.getElementById('totalBackups').textContent = String(message.backupStats.totalBackups || 0);
+          document.getElementById('totalBackupSize').textContent = String(message.backupStats.totalSizeMB || '0.00') + ' MB';
         }
         
         // MCP Config settings
