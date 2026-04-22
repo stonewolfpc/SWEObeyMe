@@ -11,7 +11,6 @@ const csharpTools = [
   'get_csharp_integrity_report',
   'toggle_csharp_error_type',
   'set_csharp_ai_informed',
-  'undo_last_surgical_edit',
 ];
 
 console.log('Total tools registered:', toolNames.length);
