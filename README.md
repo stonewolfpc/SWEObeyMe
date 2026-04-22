@@ -1,6 +1,6 @@
 # SWEObeyMe MCP Server
 
-[![Version](https://img.shields.io/badge/version-4.1.2-blue.svg)](https://github.com/stonewolfpc/SWEObeyMe)
+[![Version](https://img.shields.io/badge/version-4.1.6-blue.svg)](https://github.com/stonewolfpc/SWEObeyMe)
 [![License](https://img.shields.io/badge/license-Dual--License-yellow.svg)](LICENSE)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-green.svg)](https://nodejs.org)
 [![VS Code](https://img.shields.io/badge/VS%20Code-Extension-purple.svg)](https://marketplace.visualstudio.com)
@@ -22,18 +22,19 @@
 
 ---
 
-## ⚠️ Important Notice - v4.1.2 Hotfix
+## ⚠️ Important Notice - v4.1.6
 
-**We apologize for issues in v4.1.1.** Several tools were experiencing runtime errors due to undefined array initialization in the MCP server. These have been fixed in v4.1.2:
+**C# Bridge UI fixes and startup prompting system added.** v4.1.6 includes:
 
-- Fixed `project_context` tool "Cannot read properties of undefined (reading 'push')" error
-- Fixed `docs_verify` tool "Cannot read properties of undefined (reading 'push')" error  
-- Fixed `docs_list_categories` corpus name mismatch errors
-- Fixed `docs_lookup` directory not found errors
+- Fixed C# Bridge [Object Object] display issue
+- Fixed tab collapse issue in full settings
+- Added automatic startup prompting system
+- Implemented shadow memory ledger for episodic memory
+- Tool orientation injection at conversation start
+- Project continuity snapshot injection
+- File-specific episodic memory injection
 
-**What happened:** The project awareness manager was not properly initializing arrays when loading from disk, causing push operations on undefined arrays. This has been corrected with proper initialization checks.
-
-**Please upgrade to v4.1.2** to ensure all tools function correctly.
+**Please upgrade to v4.1.6** to ensure all features function correctly.
 
 ---
 

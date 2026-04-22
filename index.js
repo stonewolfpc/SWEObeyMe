@@ -31,6 +31,8 @@ import { initializeLoadingStateManager, getLoadingStateManager } from './lib/loa
 import { initializeAutoEnforcement, getAutoEnforcement } from './lib/auto-enforcement.js';
 import { initializeAuditSystem, getAuditSystem } from './lib/audit-system.js';
 import { initializeSessionTracker, getSessionTracker } from './lib/session-tracker.js';
+import { initializeShadowMemoryLedger, getShadowMemoryLedger } from './lib/shadow-memory-ledger.js';
+import { initializeStartupPromptInjector, getStartupPromptInjector } from './lib/startup-prompt-injector.js';
 
 // Read version from package.json (single source of truth)
 const __filename = fileURLToPath(import.meta.url);
@@ -192,6 +194,22 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
     console.error('[SWEObeyMe]: Failed to initialize session tracker:', error);
   }
 
+  // Initialize shadow memory ledger
+  try {
+    initializeShadowMemoryLedger();
+    console.log('[SWEObeyMe] Shadow memory ledger initialized');
+  } catch (error) {
+    console.error('[SWEObeyMe]: Failed to initialize shadow memory ledger:', error);
+  }
+
+  // Initialize startup prompt injector
+  try {
+    initializeStartupPromptInjector();
+    console.log('[SWEObeyMe] Startup prompt injector initialized');
+  } catch (error) {
+    console.error('[SWEObeyMe]: Failed to initialize startup prompt injector:', error);
+  }
+
   // Initialize server
   const server = new Server(
     {
@@ -221,7 +239,19 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
   });
 
   // Initialize handler - REQUIRED for handshake
-  server.setRequestHandler(InitializeRequestSchema, () => {
+  server.setRequestHandler(InitializeRequestSchema, (request) => {
+    const injector = getStartupPromptInjector();
+    const ledger = getShadowMemoryLedger();
+    
+    // Detect new conversation
+    const modelInfo = request.params?.clientInfo?.name || 'unknown';
+    const isNewConversation = injector.detectNewConversation(modelInfo);
+    
+    if (isNewConversation) {
+      console.log(`[SWEObeyMe] New conversation detected: ${modelInfo}`);
+      ledger.startNewSession();
+    }
+
     // Do not block initialize on filesystem IO; Windsurf may EOF if init is slow.
     // Kick off in background if not already loaded.
     loadProjectContract().catch(() => {});
@@ -299,8 +329,25 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
   // CallTool handler - Core MCP interaction
   server.setRequestHandler(CallToolRequestSchema, async request => {
     const { name, arguments: args } = request.params;
+    const injector = getStartupPromptInjector();
+    const ledger = getShadowMemoryLedger();
 
     log(`Tool called: ${name}`);
+
+    // Inject startup prompt if this is the first tool call of a new conversation
+    const startupPrompt = injector.injectStartupPromptIntoToolCall(name, args, {
+      filePath: args?.path,
+    });
+
+    if (startupPrompt) {
+      console.log('[SWEObeyMe] Injecting startup prompt');
+      // Record the startup prompt in the ledger
+      ledger.recordEvent('startup_prompt_injected', {
+        sessionId: startupPrompt.sessionId,
+        model: startupPrompt.model,
+        tool: name,
+      });
+    }
 
     // Check if tool exists
     if (!toolHandlers[name]) {
@@ -311,6 +358,23 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
     try {
       // Call the tool handler
       result = await toolHandlers[name](args);
+
+      // Inject startup prompt into result if this is a new conversation
+      if (startupPrompt && result && result.content) {
+        result.content.unshift({
+          type: 'text',
+          text: startupPrompt.prompt,
+        });
+      }
+
+      // Record file events in shadow memory ledger
+      if (name === 'read_file' && args?.path) {
+        ledger.recordFileEvent(args.path, 'file_read', { path: args.path });
+      } else if (name === 'write_file' && args?.path) {
+        ledger.recordFileEvent(args.path, 'file_edit', { path: args.path });
+      } else if (name === 'obey_surgical_plan' && args?.target_file) {
+        ledger.recordFileEvent(args.target_file, 'surgical_plan', { target_file: args.target_file });
+      }
 
       // PHASE 10: Pre-flight hook - Update internalAudit based on result
       if (result && result.isError) {
