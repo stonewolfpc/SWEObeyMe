@@ -877,6 +877,11 @@ class WindsurfRuntimeBehaviorTest {
 
 const test = new WindsurfRuntimeBehaviorTest();
 test.runAll().catch(e => {
-  console.error('Test runner crashed:', e);
+  console.error('Test execution failed:', e);
+  console.error('Stack trace:', e.stack);
+  process.exit(1);
+}).catch(error => {
+  // Catch any unhandled errors
+  console.error('Unhandled error:', error);
   process.exit(1);
 });

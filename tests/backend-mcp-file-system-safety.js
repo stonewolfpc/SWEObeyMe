@@ -304,5 +304,10 @@ test.runAll().then(passed => {
   process.exit(passed ? 0 : 1);
 }).catch(error => {
   console.error('Test execution failed:', error);
+  console.error('Stack trace:', error.stack);
+  process.exit(1);
+}).catch(error => {
+  // Catch any unhandled errors
+  console.error('Unhandled error:', error);
   process.exit(1);
 });
