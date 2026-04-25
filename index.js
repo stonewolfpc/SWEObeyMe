@@ -250,7 +250,7 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
 
   // Load session state for task reminder system
   try {
-    loadSessionState();
+    await loadSessionState();
     console.log('[SWEObeyMe] Session state loaded');
   } catch (error) {
     console.error('[SWEObeyMe] Failed to load session state:', error);
