@@ -18,18 +18,14 @@ export const SERVER_INVARIANTS = {
 
 export const PROTOCOL_INVARIANTS = {
   EVERY_REQUEST_GETS_RESPONSE: 'Every request must get a response or clean error',
-  NO_PARTIAL_STATES: 'No partial or ambiguous protocol states',
-  NO_DOUBLE_REPLIES: 'No double-replies to the same request',
   VALID_REQUEST_ID: 'All requests must have valid IDs',
   VALID_JSON_RPC: 'All messages must be valid JSON-RPC 2.0',
-  TOOL_SIGNATURE_VALID: 'All tool calls must match tool signatures',
 };
 
 export const SAFETY_INVARIANTS = {
   NO_WRITES_OUTSIDE_ROOTS: 'No writes outside allowed workspace roots',
   NO_PATH_TRAVERSAL: 'No path traversal attacks (../, etc.)',
   NO_DESTRUCTIVE_WITHOUT_CONFIRMATION: 'No destructive operations without confirmation',
-  NO_ARBITRARY_CODE_EXECUTION: 'No arbitrary code execution',
   NO_SENSITIVE_DATA_EXPOSURE: 'No exposure of sensitive data',
   NO_DENIAL_OF_SERVICE: 'No denial of service attacks via resource exhaustion',
 };

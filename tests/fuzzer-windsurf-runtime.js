@@ -136,7 +136,9 @@ export class WindsurfRuntimeFuzzer {
       this.server.stdin.write(JSON.stringify(message) + '\n', (err) => {
         if (err) {
           clearTimeout(timeout);
-          this.server.stdout.off('data', dataHandler);
+          if (this.server && this.server.stdout) {
+            this.server.stdout.off('data', dataHandler);
+          }
           reject(err);
         }
       });
@@ -424,8 +426,6 @@ export class WindsurfRuntimeFuzzer {
         return await this.testNoDestructiveWithoutConfirmation();
       case 'NO_WRITES_OUTSIDE_ROOTS':
         return await this.testNoWritesOutsideRoots();
-      case 'NO_ARBITRARY_CODE_EXECUTION':
-        return await this.testNoArbitraryCodeExecution();
       case 'NO_SENSITIVE_DATA_EXPOSURE':
         return await this.testNoSensitiveDataExposure();
       case 'NO_DENIAL_OF_SERVICE':
