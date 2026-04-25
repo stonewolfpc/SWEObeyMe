@@ -2,6 +2,25 @@
 
 All notable changes to SWEObeyMe will be documented in this file.
 
+## [4.2.7] - 2026-04-25
+
+### Bug Fixes
+
+- **Fixed scanDirectory hanging issue in project memory** - Added timeout protection, depth limit, and circular reference detection to prevent hanging on large projects:
+  - Added 30000ms timeout (configurable) to prevent infinite directory scans
+  - Added depth limit (default 15) to prevent excessive recursion
+  - Added circular reference detection using visited directories set
+  - Replaced fs.readdir with readdirSafe (5000ms timeout per directory)
+  - Added timeout warnings with partial results when timeout occurs
+  - This fixes the hanging issue when project memory initialization scans large directories
+  - The scanDirectory function is called during project memory initialization, which was causing read_file to hang on subsequent reads
+
+**Files Modified:**
+- `lib/project-memory-structure.js` - Added timeout protection to scanDirectory
+- `package.json` - Version bump to 4.2.7
+- `README.md` - Updated version shield to 4.2.7
+- `CHANGELOG.md` - Added v4.2.7 entry
+
 ## [4.2.6] - 2026-04-25
 
 ### Bug Fixes
