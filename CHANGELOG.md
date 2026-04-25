@@ -2,6 +2,58 @@
 
 All notable changes to SWEObeyMe will be documented in this file.
 
+## [4.2.2] - 2026-04-24
+
+### Bug Fixes
+
+- **Fixed tool hang issues** - Added timeout protection, async conversions, and caching to prevent indefinite hangs in critical tools:
+  - `project-awareness.js` - Added timeout (5000ms), loop detection, and depth limit to `findProjectRoot()` directory traversal
+  - `project-memory-core.js` - Added timeout (10000ms) to memory file loads using Promise.race
+  - `context-handlers.js` - Converted git operations to async with timeout (5000ms)
+  - `handlers-preflight.js` - Added overall timeout (30000ms) for aggregate operations
+  - `project-memory.js` - Added initialization caching to prevent repeated expensive operations
+  - `handlers-auto-enforcement.js` - Converted to async file reads with timeout (5000ms)
+  - `godot-handlers.js` - Converted to async with timeout (5000ms) on project detection
+
+### Testing
+
+- **Added property-based timeout tests** - New test suite based on verification theory best practices testing timeout invariants, idempotence, resource leaks, and monotonic performance
+- **Added invariant tests** - New test suite testing critical invariants: write-read consistency, directory creation, JSON roundtrip, path normalization, array/set/map operations, and timeout prevention
+- **Enhanced test suite** - Total 17 test suites now passing (was 15), all tests passing in 142.67s
+- **Test coverage** - Property-based and invariant testing follows corpus verification theory documentation
+
+### Documentation
+
+- **Added IDE MCP corpus** - New searchable documentation corpus for IDE and MCP development including Windsurf integration, MCP specification, VS Code extension API, and Continue code review
+- **Corpus location**: `ide_mcp_corpus/` with categories for windsurf, mcp_spec, vscode, and continue
+- **Documentation sources**: Windsurf docs, MCP spec, VS Code API, Continue docs
+
+**Files Modified:**
+- `lib/project-awareness.js` - Timeout, loop detection, depth limit
+- `lib/project-memory-core.js` - Timeout on file loads
+- `lib/tools/context-handlers.js` - Async git operations with timeout
+- `lib/tools/handlers-preflight.js` - Overall timeout protection
+- `lib/project-memory.js` - Initialization caching
+- `lib/tools/handlers-auto-enforcement.js` - Async file reads with timeout
+- `lib/tools/godot-handlers.js` - Async project detection with timeout
+- `tests/property-based-timeout-tests.js` - New property-based test suite
+- `tests/invariant-tests.js` - New invariant test suite
+- `tests/run-all-tests.js` - Updated to include new test suites
+- `ide_mcp_corpus/` - New documentation corpus
+- `CHANGELOG.md` - Updated with fixes and corpus addition
+
+## [4.2.1] - 2026-04-22
+
+### Bug Fixes
+
+- **Fixed `project_context` tool MCP response format** - All project awareness handlers now return proper MCP response format with content arrays instead of plain objects. Added missing `getAllProjects()` method to ProjectAwarenessManager. Fixed dispatcher handlers to properly pass through MCP responses.
+- **Fixed `project_rules` tool MCP response format** - Updated dispatcher to return proper MCP format.
+- **Fixed `project_track` tool MCP response format** - Updated dispatcher to return proper MCP format.
+
+**Files Modified:**
+- `lib/project-awareness.js` - Added missing getAllProjects() method
+- `lib/tools/project-awareness-handlers.js` - Updated all handlers to return MCP format with content arrays
+
 ## [4.2.0] - 2026-04-22
 
 ### Major Feature - Implementation Knowledge System
