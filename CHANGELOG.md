@@ -2,6 +2,43 @@
 
 All notable changes to SWEObeyMe will be documented in this file.
 
+## [4.2.3] - 2026-04-24
+
+### Refactoring
+
+- **Codebase orientation async refactor** - Converted all synchronous file system operations in `codebase-orientation-handlers.js` to async with timeout protection:
+  - Added `withTimeout` wrapper for timeout protection on all fs operations
+  - Added depth limit (50) and loop detection to directory traversal to prevent infinite recursion
+  - Converted `detectProjectType()` to async with 5000ms timeout
+  - Converted `identifyEntryPoints()` to async with 5000ms timeout
+  - Converted `inferModuleStructure()` to async with 5000ms timeout
+  - Updated all handlers to use async helpers with timeout protection
+  - Extracted utility functions to `codebase-orientation-utils.js` for proper separation of concerns
+  - Extracted analysis functions to `codebase-orientation-analysis.js` for modularity
+  - Reduced main file from 491 to 330 lines (under 500 limit)
+
+### Testing
+
+- **Added codebase orientation property tests** - New test suite testing timeout enforcement, async non-blocking, idempotence, error recovery, resource cleanup, monotonic performance, resource leaks, and async boundary consistency
+- **Added codebase orientation fuzzer cases** - New fuzzer suite testing timeout stress, deep directory traversal, large directories, permission denied, concurrent access, empty directories, non-existent paths, and special characters in paths
+- **Updated test runner** - Added new test suites to `run-all-tests.js`
+
+### Documentation
+
+- **Created design document** - Comprehensive design document for codebase orientation refactor including async boundary mapping, invariants, rollback plan, and implementation steps
+- **Design document location**: `docs/codebase-orientation-refactor-design.md`
+
+**Files Modified:**
+- `lib/tools/codebase-orientation-handlers.js` - Refactored to async with timeout (330 lines, was 491)
+- `lib/tools/codebase-orientation-utils.js` - New utility functions file
+- `lib/tools/codebase-orientation-analysis.js` - New analysis functions file
+- `tests/codebase-orientation-property-tests.js` - New property-based test suite
+- `tests/codebase-orientation-fuzzer-cases.js` - New fuzzer test suite
+- `tests/run-all-tests.js` - Updated to include new test suites
+- `docs/codebase-orientation-refactor-design.md` - New design document
+- `package.json` - Version bump to 4.2.3
+- `README.md` - Updated version shield to 4.2.3
+
 ## [4.2.2] - 2026-04-24
 
 ### Bug Fixes
