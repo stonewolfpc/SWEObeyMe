@@ -633,10 +633,15 @@ export class WindsurfRuntimeFuzzer {
       const transportBatch = this.transportFuzzer.generateFuzzBatch(15); // Reduced from 30 to 15
       const transportMessages = transportBatch
         .map((t) => {
-          if (typeof t.fuzzed === 'string') {
-            return JSON.parse(t.fuzzed);
-          } else if (Array.isArray(t.fuzzed)) {
-            return JSON.parse(t.fuzzed.join(''));
+          try {
+            if (typeof t.fuzzed === 'string') {
+              return JSON.parse(t.fuzzed);
+            } else if (Array.isArray(t.fuzzed)) {
+              return JSON.parse(t.fuzzed.join(''));
+            }
+          } catch (e) {
+            // Invalid JSON - skip this message
+            this.errors.push({ type: 'transport_fuzzer', error: `Invalid JSON: ${e.message}` });
           }
           return null;
         })

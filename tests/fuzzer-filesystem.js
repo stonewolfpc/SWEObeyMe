@@ -272,7 +272,15 @@ export class FilesystemFuzzer {
     ];
 
     const scenario = scenarios[Math.floor(Math.random() * scenarios.length)];
-    return await scenario();
+    try {
+      return await scenario();
+    } catch (e) {
+      return {
+        type: 'chaos_scenario',
+        success: false,
+        error: e.message,
+      };
+    }
   }
 
   /**
@@ -414,8 +422,16 @@ export class FilesystemFuzzer {
 
     const results = [];
     for (let i = 0; i < count; i++) {
-      const result = await this.generateChaosScenario();
-      results.push(result);
+      try {
+        const result = await this.generateChaosScenario();
+        results.push(result);
+      } catch (e) {
+        results.push({
+          type: 'fuzz_batch_error',
+          success: false,
+          error: e.message,
+        });
+      }
     }
 
     await this.cleanup();
