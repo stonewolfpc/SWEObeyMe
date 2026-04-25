@@ -16,6 +16,7 @@ class CodebaseOrientationFuzzer {
     this.passed = 0;
     this.failed = 0;
     this.testDir = path.join(__dirname, 'fuzzer-temp');
+    this.projectRoot = path.resolve(__dirname, '..');
   }
 
   /**
@@ -55,7 +56,7 @@ class CodebaseOrientationFuzzer {
         const start = Date.now();
         try {
           await Promise.race([
-            fs.readdir('d:\\SWEObeyMe-restored'),
+            fs.readdir(this.projectRoot),
             new Promise((_, reject) => 
               setTimeout(() => reject(new Error('Timeout')), timeout)
             )
@@ -252,7 +253,7 @@ class CodebaseOrientationFuzzer {
       
       const promises = Array(50).fill().map(() => 
         Promise.race([
-          fs.readdir('d:\\SWEObeyMe-restored'),
+          fs.readdir(this.projectRoot),
           new Promise((_, reject) => 
             setTimeout(() => reject(new Error('Timeout')), 10000)
           )

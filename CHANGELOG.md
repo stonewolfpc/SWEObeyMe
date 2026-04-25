@@ -2,6 +2,24 @@
 
 All notable changes to SWEObeyMe will be documented in this file.
 
+## [4.2.9] - 2026-04-25
+
+### Bug Fixes
+
+- **Fixed hardcoded Windows paths in codebase orientation tests** - Replaced hardcoded Windows paths with cross-platform paths to fix CI test failures:
+  - Added `fileURLToPath` and `__dirname` to both test files for cross-platform path resolution
+  - Added `projectRoot` variable to resolve paths relative to test directory
+  - Replaced all `d:\\SWEObeyMe-restored` paths with `this.projectRoot` or `path.join(this.projectRoot, ...)`
+  - This fixes the non-critical test failures in codebase-orientation-property-tests.js and codebase-orientation-fuzzer-cases.js
+  - Tests now work in both Windows and Linux CI environments
+
+**Files Modified:**
+- `tests/codebase-orientation-property-tests.js` - Fixed hardcoded Windows paths
+- `tests/codebase-orientation-fuzzer-cases.js` - Fixed hardcoded Windows paths
+- `package.json` - Version bump to 4.2.9
+- `README.md` - Updated version shield to 4.2.9
+- `CHANGELOG.md` - Added v4.2.9 entry
+
 ## [4.2.8] - 2026-04-25
 
 ### Bug Fixes

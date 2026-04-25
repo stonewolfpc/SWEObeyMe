@@ -5,12 +5,17 @@
 
 import fs from 'fs/promises';
 import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 class CodebaseOrientationPropertyTests {
   constructor() {
     this.results = [];
     this.passed = 0;
     this.failed = 0;
+    this.projectRoot = path.resolve(__dirname, '..');
   }
 
   /**
@@ -23,7 +28,7 @@ class CodebaseOrientationPropertyTests {
       // Test with very short timeout (1ms) - should timeout
       const startTime = Date.now();
       try {
-        await fs.readdir('d:\\SWEObeyMe-restored');
+        await fs.readdir(this.projectRoot);
         const duration = Date.now() - startTime;
         if (duration < 100) {
           this.recordResult(testName, true, 'Fast read completed successfully');
@@ -40,7 +45,7 @@ class CodebaseOrientationPropertyTests {
 
       // Test with reasonable timeout (5000ms) - should succeed
       const start2 = Date.now();
-      await fs.readdir('d:\\SWEObeyMe-restored');
+      await fs.readdir(this.projectRoot);
       const duration2 = Date.now() - start2;
       
       if (duration2 < 5000) {
@@ -64,9 +69,9 @@ class CodebaseOrientationPropertyTests {
       
       // Run multiple reads in parallel
       await Promise.all([
-        fs.readdir('d:\\SWEObeyMe-restored'),
-        fs.readdir('d:\\SWEObeyMe-restored\\lib'),
-        fs.readdir('d:\\SWEObeyMe-restored\\tests'),
+        fs.readdir(this.projectRoot),
+        fs.readdir(path.join(this.projectRoot, 'lib')),
+        fs.readdir(path.join(this.projectRoot, 'tests')),
       ]);
 
       const duration = Date.now() - startTime;
@@ -89,8 +94,8 @@ class CodebaseOrientationPropertyTests {
   async testIdempotence() {
     const testName = 'Idempotence';
     try {
-      const result1 = await fs.readdir('d:\\SWEObeyMe-restored\\lib');
-      const result2 = await fs.readdir('d:\\SWEObeyMe-restored\\lib');
+      const result1 = await fs.readdir(path.join(this.projectRoot, 'lib'));
+      const result2 = await fs.readdir(path.join(this.projectRoot, 'lib'));
       
       if (JSON.stringify(result1) === JSON.stringify(result2)) {
         this.recordResult(testName, true, 'Multiple calls produce identical results');
@@ -117,7 +122,7 @@ class CodebaseOrientationPropertyTests {
       }
 
       // Try to read valid path - should succeed
-      const result = await fs.readdir('d:\\SWEObeyMe-restored\\lib');
+      const result = await fs.readdir(path.join(this.projectRoot, 'lib'));
       
       if (Array.isArray(result) && result.length > 0) {
         this.recordResult(testName, true, 'Recovered from error, subsequent call succeeded');
@@ -138,7 +143,7 @@ class CodebaseOrientationPropertyTests {
     try {
       // Perform multiple operations
       for (let i = 0; i < 10; i++) {
-        await fs.readdir('d:\\SWEObeyMe-restored');
+        await fs.readdir(this.projectRoot);
       }
 
       // If we got here without hitting file descriptor limits, cleanup is working
@@ -163,7 +168,7 @@ class CodebaseOrientationPropertyTests {
       
       for (let i = 0; i < 5; i++) {
         const start = Date.now();
-        await fs.readdir('d:\\SWEObeyMe-restored');
+        await fs.readdir(this.projectRoot);
         times.push(Date.now() - start);
       }
 
@@ -197,7 +202,7 @@ class CodebaseOrientationPropertyTests {
 
       // Perform many operations
       for (let i = 0; i < 100; i++) {
-        await fs.readdir('d:\\SWEObeyMe-restored');
+        await fs.readdir(this.projectRoot);
       }
 
       if (global.gc) {
@@ -226,7 +231,7 @@ class CodebaseOrientationPropertyTests {
     const testName = 'Async Boundary Consistency';
     try {
       const fileContent = await fs.readFile(
-        'd:\\SWEObeyMe-restored\\lib\\tools\\codebase-orientation-handlers.js',
+        path.join(this.projectRoot, 'lib', 'tools', 'codebase-orientation-handlers.js'),
         'utf8'
       );
 
