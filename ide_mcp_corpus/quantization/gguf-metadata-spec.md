@@ -28,11 +28,13 @@ To minimize complexity and maximize compatibility, it is recommended that models
 ## Common Metadata Keys
 
 ### General
+
 - general.version: GGUF format version
 - general.architecture: Model architecture identifier
 - general.quantization_version: Quantization scheme version
 
 ### LLM
+
 - general.context_length: Maximum context size
 - general.embedding_length: Embedding dimension
 - general.block_count: Number of transformer blocks
@@ -40,6 +42,7 @@ To minimize complexity and maximize compatibility, it is recommended that models
 - general.layer_norm_rms_epsilon: Layer normalization epsilon
 
 ### Tokenizer
+
 - tokenizer.ggml.model: Tokenizer model type
 - tokenizer.ggml.tokens: Token vocabulary
 - tokenizer.ggml.merges: BPE merges
@@ -47,6 +50,7 @@ To minimize complexity and maximize compatibility, it is recommended that models
 - tokenizer.ggml.eos_token_id: End of sequence token ID
 
 ### RoPE Scaling
+
 - tokenizer.rope.freq_base: Rotary position encoding base frequency
 - tokenizer.rope.freq_scale: Rotary position encoding frequency scaling
 - tokenizer.rope.dimension_count: Number of rotary embedding dimensions
@@ -54,6 +58,7 @@ To minimize complexity and maximize compatibility, it is recommended that models
 ## Architecture Tags
 
 Standardized architecture identifiers:
+
 - llama: LLaMA and LLaMA 2
 - mistral: Mistral models
 - qwen: Qwen models

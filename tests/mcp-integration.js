@@ -32,7 +32,7 @@ function sendRequest(method, params = {}) {
       params: params,
     };
 
-    const responseHandler = line => {
+    const responseHandler = (line) => {
       try {
         const response = JSON.parse(line);
         if (response.id === request.id) {
@@ -50,12 +50,12 @@ function sendRequest(method, params = {}) {
       }
     };
 
-    const dataHandler = data => {
+    const dataHandler = (data) => {
       const lines = data
         .toString()
         .split('\n')
-        .filter(line => line.trim());
-      lines.forEach(line => responseHandler(line));
+        .filter((line) => line.trim());
+      lines.forEach((line) => responseHandler(line));
     };
 
     serverProcess.stdout.on('data', dataHandler);
@@ -74,7 +74,7 @@ async function runTests() {
 
   try {
     // Wait for server to start
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
     // Test 1: Initialize
     console.log('Test 1: Initialize...');
@@ -101,7 +101,7 @@ async function runTests() {
       const result = await sendRequest('tools/list');
       console.log('✓ List tools successful');
       console.log('   Tools found:', result.tools.length);
-      result.tools.slice(0, 5).forEach(tool => {
+      result.tools.slice(0, 5).forEach((tool) => {
         console.log('   -', tool.name);
       });
       if (result.tools.length > 5) {
@@ -240,7 +240,7 @@ async function runTests() {
     console.log(`✓ Passed: ${testsPassed}`);
     console.log(`✗ Failed: ${testsFailed}`);
     console.log(
-      `📊 Success Rate: ${((testsPassed / (testsPassed + testsFailed)) * 100).toFixed(1)}%`,
+      `📊 Success Rate: ${((testsPassed / (testsPassed + testsFailed)) * 100).toFixed(1)}%`
     );
 
     if (testsFailed > 0) {

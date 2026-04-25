@@ -3,7 +3,7 @@
 ## Supported Versions
 
 | Version | Supported          |
-|---------|--------------------|
+| ------- | ------------------ |
 | 1.3.x   | :white_check_mark: |
 | 1.2.x   | :white_check_mark: |
 | < 1.2   | :x:                |
@@ -104,6 +104,7 @@ Security updates will be released as:
 - **Low**: Next minor release
 
 Users will be notified through:
+
 - GitHub Security Advisories
 - VS Code Marketplace update notifications
 - Release notes with security bulletins

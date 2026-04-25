@@ -17,6 +17,7 @@ MBA is complementary to existing Intel RDT features such as Cache Allocation Tec
 ## Usage Considerations
 
 MBA is particularly useful for:
+
 - Memory bandwidth allocation for model loading and inference workloads
 - Preventing noisy neighbor effects in multi-tenant environments
 - Prioritizing critical workloads that require guaranteed memory bandwidth

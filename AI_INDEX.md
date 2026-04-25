@@ -15,6 +15,7 @@ SWEObeyMe is an MCP (Model Context Protocol) server that provides surgical gover
 ## Core Architecture
 
 ### lib/tools/ (68 MCP Tools)
+
 - **handlers.js**: Main tool handler registry
 - **registry.js**: Tool definitions and schemas
 - **csharp-handlers.js**: C# Bridge error detection tools
@@ -28,6 +29,7 @@ SWEObeyMe is an MCP (Model Context Protocol) server that provides surgical gover
 - **project-memory-handlers.js**: Project memory and convention tracking (NEW in v1.3.0)
 
 ### lib/ (Core Systems)
+
 - **enforcement.js**: Surgical rule enforcement
 - **validation.js**: Code validation (syntax, imports, anti-patterns)
 - **project.js**: Project contract and ignore rules
@@ -44,6 +46,7 @@ SWEObeyMe is an MCP (Model Context Protocol) server that provides surgical gover
 - **fallback-system.js**: Intelligent fallback behavior for failures (NEW in v1.3.0)
 
 ### Configuration Files
+
 - **.sweignore**: Files excluded from AI context
 - **.sweobeyme-contract.md**: Project architectural contract
 - **package.json**: Dependencies and scripts
@@ -52,10 +55,12 @@ SWEObeyMe is an MCP (Model Context Protocol) server that provides surgical gover
 ## Documentation
 
 ### docs/ (Offline Reference)
+
 - **llama/**: LlamaCpp.net and LlamaCppUnity documentation
 - **math/**: Mathematical reference (algorithms, linear algebra, probability, discrete math)
 
 ### README.md
+
 - Project description
 - License information (dual licensing: Community + Enterprise)
 - Changelog
@@ -64,10 +69,12 @@ SWEObeyMe is an MCP (Model Context Protocol) server that provides surgical gover
 ## Testing
 
 ### tests/
+
 - **mcp-protocol-compliance.js**: MCP protocol validation
 - **surgical-compliance.js**: Surgical rule enforcement tests
 
 ### test-tools/
+
 - **test-all-schemas.js**: Schema validation for all 68 tools
 - **test-csharp-tools.js**: C# Bridge tool registration tests
 - **golden-regression-tests.js**: Expected success/failure outputs for critical tools
@@ -85,6 +92,7 @@ SWEObeyMe is an MCP (Model Context Protocol) server that provides surgical gover
 ## Critical Workflows
 
 ### For File Modifications
+
 1. `read_file` (to see context and warnings)
 2. `get_file_context` (to understand dependencies)
 3. `obey_surgical_plan` (to check line count)
@@ -93,12 +101,14 @@ SWEObeyMe is an MCP (Model Context Protocol) server that provides surgical gover
 6. `run_related_tests` (to verify)
 
 ### For C# Files
+
 1. `read_file` (includes C# complexity analysis)
 2. `get_csharp_errors_for_file` (to check specific errors)
 3. `get_integrity_report` (to understand architectural impact)
 4. `toggle_csharp_error_type` (to enable/disable specific checks)
 
 ### For Code Analysis
+
 1. `search_code_files` (find code by pattern)
 2. `get_code_language_stats` (understand language distribution)
 3. `analyze_change_impact` (understand ripple effects)

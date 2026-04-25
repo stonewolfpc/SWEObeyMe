@@ -195,18 +195,18 @@ const colors = {
 #### Design Principles
 
 - **Human**: Human-centered design
-- **Simple': Simple and clear
-- **Consistent': Consistent experience
-- **Accessible': Accessible design
-- **Global': Global design
+- \*\*Simple': Simple and clear
+- \*\*Consistent': Consistent experience
+- \*\*Accessible': Accessible design
+- \*\*Global': Global design
 
 ### Best Practices
 
-- **Human-Centered': Human-centered design
-- **Simple': Simple design
-- **Consistent': Consistent design
-- **Accessible': Accessible design
-- **Global': Global design
+- \*\*Human-Centered': Human-centered design
+- \*\*Simple': Simple design
+- \*\*Consistent': Consistent design
+- \*\*Accessible': Accessible design
+- \*\*Global': Global design
 
 ## Stripe UI Patterns
 
@@ -241,75 +241,75 @@ const colors = {
 #### Design Patterns
 
 - **Forms**: Form patterns
-- **Navigation': Navigation patterns
-- **Feedback': Feedback patterns
-- **Data': Data display patterns
-- **Actions': Action patterns
+- \*\*Navigation': Navigation patterns
+- \*\*Feedback': Feedback patterns
+- \*\*Data': Data display patterns
+- \*\*Actions': Action patterns
 
 ### Best Practices
 
-- **Clarity': Clear design
-- **Simplicity': Simple design
-- **Consistency': Consistent design
-- **Accessibility': Accessible design
-- **Performance': Performant design
+- \*\*Clarity': Clear design
+- \*\*Simplicity': Simple design
+- \*\*Consistency': Consistent design
+- \*\*Accessibility': Accessible design
+- \*\*Performance': Performant design
 
 ## Common Patterns
 
 ### Component Architecture
 
-- **Atomic': Atomic design
-- **Modular': Modular components
-- **Reusable': Reusable components
-- **Composable': Composable components
-- **Documented': Documented components
+- \*\*Atomic': Atomic design
+- \*\*Modular': Modular components
+- \*\*Reusable': Reusable components
+- \*\*Composable': Composable components
+- \*\*Documented': Documented components
 
 ### Design Tokens
 
-- **Colors': Color tokens
-- **Typography': Typography tokens
-- **Spacing': Spacing tokens
-- **Shadows': Shadow tokens
-- **Motion': Motion tokens
+- \*\*Colors': Color tokens
+- \*\*Typography': Typography tokens
+- \*\*Spacing': Spacing tokens
+- \*\*Shadows': Shadow tokens
+- \*\*Motion': Motion tokens
 
 ### Documentation
 
-- **Storybook': Storybook documentation
-- **Guidelines': Design guidelines
-- **Examples': Usage examples
-- **API': API documentation
-- **Best Practices': Best practices
+- \*\*Storybook': Storybook documentation
+- \*\*Guidelines': Design guidelines
+- \*\*Examples': Usage examples
+- \*\*API': API documentation
+- \*\*Best Practices': Best practices
 
 ### Testing
 
-- **Unit': Unit tests
-- **Integration': Integration tests
-- **Visual': Visual regression tests
-- **Accessibility': Accessibility tests
-- **Performance': Performance tests
+- \*\*Unit': Unit tests
+- \*\*Integration': Integration tests
+- \*\*Visual': Visual regression tests
+- \*\*Accessibility': Accessibility tests
+- \*\*Performance': Performance tests
 
 ## Best Practices
 
 ### Design Systems
 
-- **Scalable': Scalable systems
-- **Maintainable': Maintainable systems
-- **Documented': Documented systems
-- **Versioned': Versioned systems
-- **Accessible': Accessible systems
+- \*\*Scalable': Scalable systems
+- \*\*Maintainable': Maintainable systems
+- \*\*Documented': Documented systems
+- \*\*Versioned': Versioned systems
+- \*\*Accessible': Accessible systems
 
 ### Components
 
-- **Reusable': Reusable components
-- **Composable': Composable components
-- **Accessible': Accessible components
-- **Performant': Performant components
-- **Tested': Tested components
+- \*\*Reusable': Reusable components
+- \*\*Composable': Composable components
+- \*\*Accessible': Accessible components
+- \*\*Performant': Performant components
+- \*\*Tested': Tested components
 
 ### Documentation
 
-- **Clear': Clear documentation
-- **Complete': Complete documentation
-- **Up-to-date': Up-to-date documentation
-- **Accessible': Accessible documentation
-- **Searchable': Searchable documentation
+- \*\*Clear': Clear documentation
+- \*\*Complete': Complete documentation
+- \*\*Up-to-date': Up-to-date documentation
+- \*\*Accessible': Accessible documentation
+- \*\*Searchable': Searchable documentation

@@ -17,7 +17,9 @@ const projectRoot = path.join(__dirname, '..', '..');
 const toolsDir = path.join(projectRoot, 'lib/tools');
 
 // Get all registry files
-const registryFiles = fs.readdirSync(toolsDir).filter(f => f.startsWith('registry') && f.endsWith('.js'));
+const registryFiles = fs
+  .readdirSync(toolsDir)
+  .filter((f) => f.startsWith('registry') && f.endsWith('.js'));
 
 // Extract all tools with exact locations
 const allTools = [];
@@ -25,7 +27,7 @@ const allTools = [];
 for (const file of registryFiles) {
   const content = fs.readFileSync(path.join(toolsDir, file), 'utf8');
   const lines = content.split('\n');
-  
+
   // Find all tool definitions with line numbers
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
@@ -36,7 +38,7 @@ for (const file of registryFiles) {
         name: toolName,
         file: file,
         line: i + 1,
-        fullLine: line.trim()
+        fullLine: line.trim(),
       });
     }
   }
@@ -50,13 +52,13 @@ const nameMap = new Map();
 
 for (const tool of allTools) {
   if (nameMap.has(tool.name)) {
-    if (!duplicates.find(d => d.name === tool.name)) {
+    if (!duplicates.find((d) => d.name === tool.name)) {
       duplicates.push({
         name: tool.name,
-        occurrences: [nameMap.get(tool.name), tool]
+        occurrences: [nameMap.get(tool.name), tool],
       });
     } else {
-      duplicates.find(d => d.name === tool.name).occurrences.push(tool);
+      duplicates.find((d) => d.name === tool.name).occurrences.push(tool);
     }
   } else {
     nameMap.set(tool.name, tool);
@@ -66,7 +68,7 @@ for (const tool of allTools) {
 // Find duplicates in the same file (redefinitions)
 const sameFileDuplicates = [];
 for (const file of registryFiles) {
-  const fileTools = allTools.filter(t => t.file === file);
+  const fileTools = allTools.filter((t) => t.file === file);
   const seen = new Set();
   for (const tool of fileTools) {
     if (seen.has(tool.name)) {
@@ -82,7 +84,7 @@ let hasErrors = false;
 if (duplicates.length > 0) {
   console.error('❌ CRITICAL: DUPLICATE TOOL NAMES FOUND');
   console.error('   WindSurf will REJECT the server with these duplicates!\n');
-  
+
   for (const dup of duplicates) {
     console.error(`   🔴 "${dup.name}" appears ${dup.occurrences.length} times:`);
     for (const occ of dup.occurrences) {

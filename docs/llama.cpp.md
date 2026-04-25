@@ -60,21 +60,22 @@ make GGML_METAL=1
 ### Model Loading
 
 Models are loaded in GGUF format, which contains:
+
 - Model weights (tensors)
 - Metadata (hyperparameters, vocabulary, etc.)
 - Tokenizer data
 
 ## Supported Backends
 
-| Backend | Target devices |
-| --- | --- |
-| Metal | Apple Silicon |
-| CUDA | NVIDIA GPU |
-| HIP | AMD GPU |
-| Vulkan | GPU (cross-platform) |
-| SYCL | Intel GPU |
-| OpenCL | GPU (various vendors) |
-| BLAS | CPU (optimized) |
+| Backend | Target devices        |
+| ------- | --------------------- |
+| Metal   | Apple Silicon         |
+| CUDA    | NVIDIA GPU            |
+| HIP     | AMD GPU               |
+| Vulkan  | GPU (cross-platform)  |
+| SYCL    | Intel GPU             |
+| OpenCL  | GPU (various vendors) |
+| BLAS    | CPU (optimized)       |
 
 ## API Usage
 

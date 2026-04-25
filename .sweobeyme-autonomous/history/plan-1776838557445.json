@@ -38,9 +38,7 @@
       "type": "validation",
       "status": "pending",
       "priority": "high",
-      "dependencies": [
-        "task-3"
-      ],
+      "dependencies": ["task-3"],
       "estimatedDuration": "15-30 minutes"
     },
     {
@@ -49,9 +47,7 @@
       "type": "testing",
       "status": "pending",
       "priority": "high",
-      "dependencies": [
-        "task-4"
-      ],
+      "dependencies": ["task-4"],
       "estimatedDuration": "20-40 minutes"
     }
   ],
@@ -107,9 +103,7 @@
           "type": "validation",
           "status": "pending",
           "priority": "high",
-          "dependencies": [
-            "task-3"
-          ],
+          "dependencies": ["task-3"],
           "estimatedDuration": "15-30 minutes"
         }
       ]
@@ -123,9 +117,7 @@
           "type": "testing",
           "status": "pending",
           "priority": "high",
-          "dependencies": [
-            "task-4"
-          ],
+          "dependencies": ["task-4"],
           "estimatedDuration": "20-40 minutes"
         }
       ]
@@ -135,12 +127,8 @@
     "estimatedDuration": null,
     "complexity": "low",
     "risks": [],
-    "prerequisites": [
-      "Test framework setup"
-    ],
-    "missingInformation": [
-      "Framework not specified"
-    ]
+    "prerequisites": ["Test framework setup"],
+    "missingInformation": ["Framework not specified"]
   },
   "lastModified": "2026-04-22T06:15:57.443Z",
   "version": "1.0.0"

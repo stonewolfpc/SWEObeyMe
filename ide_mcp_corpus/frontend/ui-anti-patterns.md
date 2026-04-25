@@ -71,8 +71,8 @@ function Parent() {
   return (
     <div>
       <Child />
-      <button onClick={() => setCount(c => c + 1)}>Count: {count}</button>
-      <input onChange={e => setName(e.target.value)} />
+      <button onClick={() => setCount((c) => c + 1)}>Count: {count}</button>
+      <input onChange={(e) => setName(e.target.value)} />
     </div>
   );
 }
@@ -191,11 +191,7 @@ function animate() {
 
 ```jsx
 function Card({ onEdit }) {
-  return (
-    <div onDoubleClick={onEdit}>
-      Double click to edit
-    </div>
-  );
+  return <div onDoubleClick={onEdit}>Double click to edit</div>;
 }
 ```
 
@@ -313,14 +309,14 @@ function Button({ onClick }) {
 
 ### UX
 
-- **Visible': Make interactions visible
-- **Affordances': Use affordances
-- **Feedback': Provide feedback
-- **Test': Test with users
+- \*\*Visible': Make interactions visible
+- \*\*Affordances': Use affordances
+- \*\*Feedback': Provide feedback
+- \*\*Test': Test with users
 
 ### Code Quality
 
 - **Structure**: Good structure
-- **Naming': Good naming
-- **Consistent': Be consistent
-- **Documented': Document code
+- \*\*Naming': Good naming
+- \*\*Consistent': Be consistent
+- \*\*Documented': Document code

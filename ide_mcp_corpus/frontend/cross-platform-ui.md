@@ -46,10 +46,7 @@ This document covers Desktop vs mobile patterns, Touch vs pointer, Native vs web
 ```jsx
 function Button({ isMobile }) {
   return (
-    <button
-      className={isMobile ? 'mobile-button' : 'desktop-button'}
-      onClick={onClick}
-    >
+    <button className={isMobile ? 'mobile-button' : 'desktop-button'} onClick={onClick}>
       {children}
     </button>
   );
@@ -151,13 +148,13 @@ function handleInteraction(event) {
 
 ### Comparison
 
-| Feature | Electron | Tauri | Native |
-|---------|----------|-------|--------|
-| Bundle Size | Large | Small | Small |
-| Performance | Good | Great | Best |
-| Security | Moderate | High | High |
-| Development | Fast | Fast | Slow |
-| Cross-Platform | Yes | Yes | No |
+| Feature        | Electron | Tauri | Native |
+| -------------- | -------- | ----- | ------ |
+| Bundle Size    | Large    | Small | Small  |
+| Performance    | Good     | Great | Best   |
+| Security       | Moderate | High  | High   |
+| Development    | Fast     | Fast  | Slow   |
+| Cross-Platform | Yes      | Yes   | No     |
 
 ## Windows vs macOS UI Conventions
 

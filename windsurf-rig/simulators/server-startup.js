@@ -21,13 +21,13 @@ class ServerStartupSimulation {
       skipped: 0,
       total: 0,
     };
-    
+
     this.indexPath = join(dirname(__dirname), '..', 'index.js');
   }
 
   async run() {
     console.log('[ServerStartup] Starting MCP server startup simulation...');
-    
+
     const tests = [
       'instant-startup',
       'no-stdout',
@@ -38,21 +38,21 @@ class ServerStartupSimulation {
       'correct-serverInfo',
       'correct-capabilities',
     ];
-    
+
     for (const test of tests) {
       await this.runTest(test);
     }
-    
+
     this.results.total = this.results.tests.length;
     return this.results;
   }
 
   async runTest(testName) {
     console.log(`[ServerStartup] Running: ${testName}...`);
-    
+
     let passed = false;
     let error = null;
-    
+
     try {
       switch (testName) {
         case 'instant-startup':
@@ -83,14 +83,14 @@ class ServerStartupSimulation {
     } catch (e) {
       error = e.message;
     }
-    
+
     this.results.tests.push({
       id: testName,
       name: `Server Startup - ${testName}`,
       passed,
       error,
     });
-    
+
     if (passed) {
       this.results.passed++;
       console.log(`[ServerStartup] ✅ ${testName}`);
@@ -103,15 +103,15 @@ class ServerStartupSimulation {
   async testInstantStartup() {
     // Test that server starts instantly (within 3 seconds)
     const startTime = Date.now();
-    
+
     try {
       const server = spawn('node', [this.indexPath], {
         stdio: ['pipe', 'pipe', 'pipe'],
       });
-      
+
       // Kill server after startup check
       server.kill();
-      
+
       const duration = Date.now() - startTime;
       return duration < 3000;
     } catch (e) {
@@ -125,17 +125,17 @@ class ServerStartupSimulation {
       const server = spawn('node', [this.indexPath], {
         stdio: ['pipe', 'pipe', 'pipe'],
       });
-      
+
       let stdout = '';
       server.stdout.on('data', (data) => {
         stdout += data.toString();
       });
-      
+
       // Wait a bit for startup
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
       server.kill();
-      
+
       // Stdout should be empty (no pollution)
       return stdout.length === 0;
     } catch (e) {
@@ -149,17 +149,17 @@ class ServerStartupSimulation {
       const server = spawn('node', [this.indexPath], {
         stdio: ['pipe', 'pipe', 'pipe'],
       });
-      
+
       let stderr = '';
       server.stderr.on('data', (data) => {
         stderr += data.toString();
       });
-      
+
       // Wait a bit for startup
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
       server.kill();
-      
+
       // Stderr is allowed, so this should pass
       return true;
     } catch (e) {
@@ -173,12 +173,12 @@ class ServerStartupSimulation {
       const server = spawn('node', [this.indexPath], {
         stdio: ['pipe', 'pipe', 'pipe'],
       });
-      
+
       let stdout = '';
       server.stdout.on('data', (data) => {
         stdout += data.toString();
       });
-      
+
       // Send initialize request
       const initializeRequest = JSON.stringify({
         jsonrpc: '2.0',
@@ -193,19 +193,19 @@ class ServerStartupSimulation {
           },
         },
       });
-      
+
       server.stdin.write(initializeRequest + '\n');
-      
+
       // Wait for response
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
       server.kill();
-      
+
       // Check for valid JSON-RPC response
       if (stdout.length === 0) {
         return false;
       }
-      
+
       try {
         const response = JSON.parse(stdout);
         return response.jsonrpc === '2.0' && response.result !== undefined;
@@ -231,7 +231,7 @@ class ServerStartupSimulation {
         },
       },
     };
-    
+
     // Validate response structure
     return true; // Would be validated in actual handshake
   }
@@ -247,7 +247,7 @@ class ServerStartupSimulation {
         required: [],
       },
     };
-    
+
     // Validate tools schema
     return true; // Would be validated from actual server response
   }
@@ -258,7 +258,7 @@ class ServerStartupSimulation {
       name: 'swe-obey-me',
       version: '2.0.0',
     };
-    
+
     // Validate serverInfo
     return true; // Would be validated from actual server response
   }
@@ -270,7 +270,7 @@ class ServerStartupSimulation {
       resources: {},
       prompts: {},
     };
-    
+
     // Validate capabilities
     return true; // Would be validated from actual server response
   }

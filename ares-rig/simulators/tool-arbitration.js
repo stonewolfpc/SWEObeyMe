@@ -20,7 +20,7 @@ class ToolArbitrationTest {
       skipped: 0,
       total: 0,
     };
-    
+
     this.testDir = join(__dirname, '..', 'fixtures', 'tool-arbitration');
     this.ensureTestDir();
   }
@@ -33,7 +33,7 @@ class ToolArbitrationTest {
 
   async run() {
     console.log('[ToolArbitrationTest] Starting tool arbitration test...');
-    
+
     const tests = [
       'model-ignoring-instructions',
       'model-hallucinating-tool-names',
@@ -44,21 +44,21 @@ class ToolArbitrationTest {
       'model-looping-tool-calls',
       'model-bypassing-resolve-tool',
     ];
-    
+
     for (const test of tests) {
       await this.runTest(test);
     }
-    
+
     this.results.total = this.results.tests.length;
     return this.results;
   }
 
   async runTest(testName) {
     console.log(`[ToolArbitrationTest] Running: ${testName}...`);
-    
+
     let passed = false;
     let error = null;
-    
+
     try {
       switch (testName) {
         case 'model-ignoring-instructions':
@@ -89,14 +89,14 @@ class ToolArbitrationTest {
     } catch (e) {
       error = e.message;
     }
-    
+
     this.results.tests.push({
       id: testName,
       name: `Tool Arbitration - ${testName}`,
       passed,
       error,
     });
-    
+
     if (passed) {
       this.results.passed++;
       console.log(`[ToolArbitrationTest] ✅ ${testName}`);
@@ -113,9 +113,9 @@ class ToolArbitrationTest {
       parameters: {},
       instructionIgnored: true,
     };
-    
+
     const arbitration = this.arbitrateToolCall(toolCall);
-    
+
     // Should catch and enforce
     return arbitration.enforced === true && arbitration.correction === 'instruction-enforced';
   }
@@ -126,9 +126,9 @@ class ToolArbitrationTest {
       tool: 'magical_tool_that_does_not_exist',
       parameters: {},
     };
-    
+
     const arbitration = this.arbitrateToolCall(toolCall);
-    
+
     // Should catch and correct
     return arbitration.enforced === true && arbitration.correction === 'invalid-tool-name';
   }
@@ -140,9 +140,9 @@ class ToolArbitrationTest {
       parameters: { file: 'test.txt', content: 'test' },
       context: { task: 'read file' },
     };
-    
+
     const arbitration = this.arbitrateToolCall(toolCall);
-    
+
     // Should detect and suggest correct tool
     return arbitration.enforced === true && arbitration.correction === 'wrong-tool-for-task';
   }
@@ -153,9 +153,9 @@ class ToolArbitrationTest {
       tool: 'read_file',
       parameters: {}, // Missing file_path
     };
-    
+
     const arbitration = this.arbitrateToolCall(toolCall);
-    
+
     // Should catch and request missing parameters
     return arbitration.enforced === true && arbitration.correction === 'missing-parameters';
   }
@@ -166,9 +166,9 @@ class ToolArbitrationTest {
       tool: 'read_file',
       parameters: { file_path: 123 }, // Should be string
     };
-    
+
     const arbitration = this.arbitrateToolCall(toolCall);
-    
+
     // Should catch and validate types
     return arbitration.enforced === true && arbitration.correction === 'invalid-parameter-type';
   }
@@ -179,9 +179,9 @@ class ToolArbitrationTest {
       tool: null,
       reason: 'I refuse to call tools',
     };
-    
+
     const arbitration = this.arbitrateToolCall(toolCall);
-    
+
     // Should escalate and enforce
     return arbitration.enforced === true && arbitration.correction === 'tool-refusal-escalated';
   }
@@ -195,9 +195,9 @@ class ToolArbitrationTest {
         parameters: { file_path: 'test.txt' },
       });
     }
-    
+
     const arbitration = this.arbitrateToolSequence(toolCalls);
-    
+
     // Should detect loop and break
     return arbitration.loopDetected === true && arbitration.broken === true;
   }
@@ -209,9 +209,9 @@ class ToolArbitrationTest {
       parameters: { file: 'sensitive.txt', content: 'secret' },
       bypassAttempt: true,
     };
-    
+
     const arbitration = this.arbitrateToolCall(toolCall);
-    
+
     // Should catch bypass attempt
     return arbitration.enforced === true && arbitration.correction === 'bypass-attempt-blocked';
   }
@@ -223,10 +223,10 @@ class ToolArbitrationTest {
       correction: null,
       message: null,
     };
-    
+
     // Check if tool exists
     const validTools = ['read_file', 'write_file', 'edit', 'search', 'resolve_tool'];
-    
+
     // Check for tool refusal BEFORE invalid tool check
     if (toolCall.tool === null && toolCall.reason) {
       result.enforced = true;
@@ -234,14 +234,14 @@ class ToolArbitrationTest {
       result.message = 'Tool refusal escalated to enforcement';
       return result;
     }
-    
+
     if (!toolCall.tool || !validTools.includes(toolCall.tool)) {
       result.enforced = true;
       result.correction = 'invalid-tool-name';
       result.message = 'Tool does not exist. Valid tools: ' + validTools.join(', ');
       return result;
     }
-    
+
     // Check if instruction was ignored
     if (toolCall.instructionIgnored) {
       result.enforced = true;
@@ -249,7 +249,7 @@ class ToolArbitrationTest {
       result.message = 'Instructions must be followed';
       return result;
     }
-    
+
     // Check for bypass attempts
     if (toolCall.bypassAttempt) {
       result.enforced = true;
@@ -257,7 +257,7 @@ class ToolArbitrationTest {
       result.message = 'Bypass attempt blocked';
       return result;
     }
-    
+
     // Validate parameters
     const validation = this.validateParameters(toolCall.tool, toolCall.parameters);
     if (!validation.valid) {
@@ -266,7 +266,7 @@ class ToolArbitrationTest {
       result.message = validation.message;
       return result;
     }
-    
+
     // Check if tool is appropriate for task
     if (toolCall.context) {
       const appropriateness = this.checkToolAppropriateness(toolCall.tool, toolCall.context.task);
@@ -277,7 +277,7 @@ class ToolArbitrationTest {
         return result;
       }
     }
-    
+
     return result;
   }
 
@@ -287,13 +287,13 @@ class ToolArbitrationTest {
       broken: false,
       message: null,
     };
-    
+
     // Detect loops
     const callCounts = {};
     for (const call of toolCalls) {
       const key = call.tool + JSON.stringify(call.parameters);
       callCounts[key] = (callCounts[key] || 0) + 1;
-      
+
       if (callCounts[key] > 3) {
         result.loopDetected = true;
         result.broken = true;
@@ -301,7 +301,7 @@ class ToolArbitrationTest {
         return result;
       }
     }
-    
+
     return result;
   }
 
@@ -328,15 +328,19 @@ class ToolArbitrationTest {
         types: {},
       },
     };
-    
+
     const schema = schemas[tool];
     if (!schema) {
       return { valid: true };
     }
-    
+
     // Check required parameters
     for (const required of schema.required) {
-      if (!(required in parameters) || parameters[required] === null || parameters[required] === undefined) {
+      if (
+        !(required in parameters) ||
+        parameters[required] === null ||
+        parameters[required] === undefined
+      ) {
         return {
           valid: false,
           error: 'missing-parameters',
@@ -344,7 +348,7 @@ class ToolArbitrationTest {
         };
       }
     }
-    
+
     // Check parameter types
     for (const [param, expectedType] of Object.entries(schema.types)) {
       if (param in parameters) {
@@ -358,7 +362,7 @@ class ToolArbitrationTest {
         }
       }
     }
-    
+
     return { valid: true };
   }
 
@@ -369,24 +373,24 @@ class ToolArbitrationTest {
       edit: ['modify', 'change', 'update', 'refactor'],
       search: ['find', 'search', 'locate', 'grep'],
     };
-    
+
     const appropriateTasks = toolTaskMap[tool];
     if (!appropriateTasks) {
       return { appropriate: true };
     }
-    
+
     const taskLower = task.toLowerCase();
-    const isAppropriate = appropriateTasks.some(t => taskLower.includes(t));
-    
+    const isAppropriate = appropriateTasks.some((t) => taskLower.includes(t));
+
     if (!isAppropriate) {
       // Suggest appropriate tool
       for (const [suggestedTool, tasks] of Object.entries(toolTaskMap)) {
-        if (tasks.some(t => taskLower.includes(t))) {
+        if (tasks.some((t) => taskLower.includes(t))) {
           return { appropriate: false, suggested: suggestedTool };
         }
       }
     }
-    
+
     return { appropriate: true };
   }
 }

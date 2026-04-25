@@ -41,6 +41,7 @@ The LLVM code generator operates through several phases:
 ### Phase Ordering
 
 Register allocation and instruction scheduling must be carefully ordered:
+
 - Pre-RA scheduling: Before register allocation
 - Post-RA scheduling: After register allocation
 - Interaction affects final code quality
@@ -50,6 +51,7 @@ Register allocation and instruction scheduling must be carefully ordered:
 ### Pipeline Stages
 
 Modern CPUs use deep pipelines:
+
 1. **Fetch**: Retrieve instructions from cache
 2. **Decode**: Interpret instruction encoding
 3. **Dispatch**: Allocate resources
@@ -66,6 +68,7 @@ Modern CPUs use deep pipelines:
 ### Out-of-Order Execution
 
 CPUs execute instructions out of program order when:
+
 - Dependencies are satisfied
 - Resources are available
 - Improves throughput by hiding latency
@@ -115,6 +118,7 @@ Branch prediction relies on hardware components that guess conditional branch ou
 ### Branchless Programming
 
 Replace branches with arithmetic:
+
 - Conditional moves (CMOV)
 - Bit manipulation tricks
 - Lookup tables
@@ -171,6 +175,7 @@ Map unlimited virtual registers to limited physical registers while minimizing s
 ### Spilling
 
 When registers exhausted:
+
 - Choose spill candidates (least frequently used)
 - Insert loads/stores
 - Try to spill in loops (reduces load/store overhead)
@@ -178,6 +183,7 @@ When registers exhausted:
 ### Register Classes
 
 Different register types:
+
 - General purpose
 - Floating point
 - Vector/SIMD
@@ -222,6 +228,7 @@ Different register types:
 ### False Sharing
 
 Multiple cores writing to same cache line cause:
+
 - Unnecessary cache invalidations
 - Performance degradation
 - Fix: Pad or align data to separate cache lines
@@ -235,6 +242,7 @@ Break large computations into smaller blocks that fit in cache.
 ### Matrix Multiplication Tiling
 
 Instead of computing full matrix product:
+
 - Compute tile by tile
 - Each tile fits in L1/L2 cache
 - Reuse tiles multiple times
@@ -249,6 +257,7 @@ Instead of computing full matrix product:
 ### Cache Oblivious Algorithms
 
 Algorithms that perform well without explicit cache size tuning:
+
 - Recursive divide and conquer
 - Automatically adapt to cache hierarchy
 - Example: Cache oblivious matrix multiplication
@@ -256,6 +265,7 @@ Algorithms that perform well without explicit cache size tuning:
 ### Loop Tiling
 
 Transform nested loops:
+
 ```c
 // Original
 for (i = 0; i < N; i++)
@@ -305,6 +315,7 @@ for (i = 0; i < N; i += TILE)
 ### Auto-Vectorization
 
 Compilers can automatically vectorize:
+
 - Requires simple loop patterns
 - Needs aliasing information
 - Pragma hints can help (e.g., `#pragma omp simd`)
@@ -312,6 +323,7 @@ Compilers can automatically vectorize:
 ### Manual Vectorization
 
 Use intrinsics for explicit control:
+
 - `_mm256_add_ps` (AVX add)
 - `_mm256_mul_ps` (AVX multiply)
 - `_mm256_fmadd_ps` (AVX fused multiply-add)
@@ -327,6 +339,7 @@ Use intrinsics for explicit control:
 ### Horizontal Operations
 
 Operations across vector elements:
+
 - Reductions (sum, min, max)
 - Permutations
 - Broadcasts
@@ -351,6 +364,7 @@ Operations across vector elements:
 ### Roofline Model
 
 Performance bounded by:
+
 - Peak compute (theoretical max FLOPS)
 - Peak bandwidth (memory bandwidth limit)
 - Actual performance: min(compute-bound, memory-bound)
@@ -358,6 +372,7 @@ Performance bounded by:
 ### Analysis
 
 Calculate arithmetic intensity:
+
 - FLOPs per byte transferred
 - If high: compute-bound
 - If low: memory-bound

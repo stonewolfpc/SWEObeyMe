@@ -2,7 +2,7 @@
 
 /**
  * Comprehensive GitHub Actions Error Detection Test
- * 
+ *
  * This test detects ALL possible GitHub Actions failure points:
  * - Exit code 1 (or any non-zero exit code)
  * - Unhandled errors in scripts
@@ -19,7 +19,7 @@
  * - Action version deprecations
  * - Environment variable issues
  * - Path issues
- * 
+ *
  * Goal: NEVER fail a GitHub Actions test when pushing. Period.
  */
 
@@ -72,7 +72,7 @@ async function checkNodeVersionCompatibility() {
     const content = await fs.readFile(packageJsonPath, 'utf-8');
     const packageJson = JSON.parse(content);
     const engines = packageJson.engines?.node;
-    
+
     if (!engines) {
       warnings.push('No Node.js version specified in package.json');
       console.log('  ⚠️  WARNING: No Node.js version specified in package.json\n');
@@ -97,15 +97,17 @@ async function checkNpmScripts() {
     const content = await fs.readFile(packageJsonPath, 'utf-8');
     const packageJson = JSON.parse(content);
     const scripts = packageJson.scripts || {};
-    
+
     const requiredScripts = ['test', 'build', 'package'];
-    const missingScripts = requiredScripts.filter(s => !scripts[s]);
-    
+    const missingScripts = requiredScripts.filter((s) => !scripts[s]);
+
     if (missingScripts.length > 0) {
       console.log(`  ❌ FAIL: Missing required scripts: ${missingScripts.join(', ')}\n`);
       failedChecks++;
     } else {
-      console.log(`  ✅ PASS: All required scripts present (${Object.keys(scripts).length} total)\n`);
+      console.log(
+        `  ✅ PASS: All required scripts present (${Object.keys(scripts).length} total)\n`
+      );
       passedChecks++;
     }
   } catch (error) {
@@ -123,8 +125,8 @@ async function checkWorkflowSyntax() {
   try {
     const workflowsDir = path.join(rootDir, '.github', 'workflows');
     const files = await fs.readdir(workflowsDir);
-    const yamlFiles = files.filter(f => f.endsWith('.yml') || f.endsWith('.yaml'));
-    
+    const yamlFiles = files.filter((f) => f.endsWith('.yml') || f.endsWith('.yaml'));
+
     let allValid = true;
     for (const file of yamlFiles) {
       try {
@@ -140,7 +142,7 @@ async function checkWorkflowSyntax() {
         allValid = false;
       }
     }
-    
+
     if (allValid) {
       console.log(`  ✅ PASS: ${yamlFiles.length} workflow files are valid\n`);
       passedChecks++;
@@ -162,29 +164,31 @@ async function checkGitHubActionsNodeVersions() {
   try {
     const workflowsDir = path.join(rootDir, '.github', 'workflows');
     const files = await fs.readdir(workflowsDir);
-    const yamlFiles = files.filter(f => f.endsWith('.yml') || f.endsWith('.yaml'));
-    
+    const yamlFiles = files.filter((f) => f.endsWith('.yml') || f.endsWith('.yaml'));
+
     let usesDeprecated = false;
     for (const file of yamlFiles) {
       const filePath = path.join(workflowsDir, file);
       const content = await fs.readFile(filePath, 'utf-8');
-      
+
       // Check for Node.js 18 or 20 (deprecated)
-      if (content.includes("node-version: '18'") || 
-          content.includes('node-version: "18"') ||
-          content.includes("node-version: '20'") ||
-          content.includes('node-version: "20"')) {
+      if (
+        content.includes("node-version: '18'") ||
+        content.includes('node-version: "18"') ||
+        content.includes("node-version: '20'") ||
+        content.includes('node-version: "20"')
+      ) {
         warnings.push(`Workflow ${file} uses deprecated Node.js version (18 or 20)`);
         usesDeprecated = true;
       }
-      
+
       // Check for actions/setup-node@v4 (deprecated)
       if (content.includes('actions/setup-node@v4')) {
         warnings.push(`Workflow ${file} uses deprecated actions/setup-node@v4 (should use @v5)`);
         usesDeprecated = true;
       }
     }
-    
+
     if (usesDeprecated) {
       console.log(`  ⚠️  WARNING: Workflows use deprecated Node.js versions or actions\n`);
     } else {
@@ -208,13 +212,10 @@ async function checkGitConfiguration() {
     try {
       await fs.access(gitConfigPath);
       const content = await fs.readFile(gitConfigPath, 'utf-8');
-      
+
       // Check for problematic settings
-      const problematicSettings = [
-        'core.sshCommand',
-        'http.https://github.com/.extraheader'
-      ];
-      
+      const problematicSettings = ['core.sshCommand', 'http.https://github.com/.extraheader'];
+
       let hasProblematicSettings = false;
       for (const setting of problematicSettings) {
         if (content.includes(setting)) {
@@ -222,7 +223,7 @@ async function checkGitConfiguration() {
           hasProblematicSettings = true;
         }
       }
-      
+
       if (hasProblematicSettings) {
         console.log(`  ⚠️  WARNING: Git config has potentially problematic settings\n`);
       } else {
@@ -247,20 +248,20 @@ async function checkTestFilesExitCodes() {
   try {
     const testDir = path.join(rootDir, 'test-tools');
     const files = await fs.readdir(testDir);
-    const testFiles = files.filter(f => f.endsWith('.js'));
-    
+    const testFiles = files.filter((f) => f.endsWith('.js'));
+
     let allValid = true;
     for (const file of testFiles) {
       const filePath = path.join(testDir, file);
       const content = await fs.readFile(filePath, 'utf-8');
-      
+
       // Check if file has process.exit() at the end
       if (!content.includes('process.exit')) {
         warnings.push(`Test file ${file} may not have proper exit code`);
         allValid = false;
       }
     }
-    
+
     if (allValid) {
       console.log(`  ✅ PASS: ${testFiles.length} test files have proper exit codes\n`);
       passedChecks++;
@@ -282,17 +283,17 @@ async function checkGitignore() {
   try {
     const gitignorePath = path.join(rootDir, '.gitignore');
     const content = await fs.readFile(gitignorePath, 'utf-8');
-    
+
     // Check that critical files are not ignored
     const criticalFiles = ['package.json', 'README.md', 'CHANGELOG.md'];
     const ignoredCritical = [];
-    
+
     for (const file of criticalFiles) {
       if (content.includes(file) && !content.startsWith('#')) {
         ignoredCritical.push(file);
       }
     }
-    
+
     if (ignoredCritical.length > 0) {
       console.log(`  ❌ FAIL: Critical files may be ignored: ${ignoredCritical.join(', ')}\n`);
       failedChecks++;
@@ -315,13 +316,13 @@ async function checkVersionConsistency() {
   try {
     const packageJsonPath = path.join(rootDir, 'package.json');
     const readmePath = path.join(rootDir, 'README.md');
-    
+
     const packageContent = await fs.readFile(packageJsonPath, 'utf-8');
     const readmeContent = await fs.readFile(readmePath, 'utf-8');
-    
+
     const packageJson = JSON.parse(packageContent);
     const packageVersion = packageJson.version;
-    
+
     // Check if README contains the version
     if (readmeContent.includes(packageVersion)) {
       console.log(`  ✅ PASS: README.md contains version ${packageVersion}\n`);
@@ -345,7 +346,7 @@ async function checkConsoleStatements() {
   try {
     const libDir = path.join(rootDir, 'lib');
     const files = await getAllFiles(libDir, ['.js']);
-    
+
     let hasConsole = false;
     for (const file of files) {
       const content = await fs.readFile(file, 'utf-8');
@@ -358,7 +359,7 @@ async function checkConsoleStatements() {
         }
       }
     }
-    
+
     if (hasConsole) {
       console.log(`  ⚠️  WARNING: Console statements found in production code\n`);
     } else {
@@ -380,10 +381,10 @@ async function checkToolHandlerRegistration() {
   try {
     const toolsPath = pathToFileURL(path.join(rootDir, 'lib', 'tools.js')).href;
     const { getToolDefinitions, toolHandlers } = await import(toolsPath);
-    
+
     const toolDefinitions = getToolDefinitions();
-    const toolNames = toolDefinitions.map(t => t.name);
-    
+    const toolNames = toolDefinitions.map((t) => t.name);
+
     let allRegistered = true;
     for (const toolName of toolNames) {
       if (!toolHandlers[toolName]) {
@@ -391,7 +392,7 @@ async function checkToolHandlerRegistration() {
         allRegistered = false;
       }
     }
-    
+
     if (allRegistered) {
       console.log(`  ✅ PASS: All ${toolNames.length} tools have registered handlers\n`);
       passedChecks++;
@@ -413,7 +414,7 @@ async function checkTodoComments() {
   try {
     const libDir = path.join(rootDir, 'lib');
     const files = await getAllFiles(libDir, ['.js']);
-    
+
     let hasTodo = false;
     for (const file of files) {
       const content = await fs.readFile(file, 'utf-8');
@@ -422,7 +423,7 @@ async function checkTodoComments() {
         warnings.push(`TODO/FIXME found in ${path.relative(rootDir, file)}`);
       }
     }
-    
+
     if (hasTodo) {
       console.log(`  ⚠️  WARNING: TODO/FIXME comments found in code\n`);
     } else {
@@ -444,7 +445,7 @@ async function checkFileLineCounts() {
   try {
     const libDir = path.join(rootDir, 'lib');
     const files = await getAllFiles(libDir, ['.js']);
-    
+
     let hasViolations = false;
     for (const file of files) {
       const content = await fs.readFile(file, 'utf-8');
@@ -454,7 +455,7 @@ async function checkFileLineCounts() {
         hasViolations = true;
       }
     }
-    
+
     if (hasViolations) {
       console.log(`  ⚠️  WARNING: Some files exceed 700 lines (pre-existing violations)\n`);
     } else {
@@ -476,7 +477,7 @@ async function checkNpmLockFileSync() {
   try {
     const packageJsonPath = path.join(rootDir, 'package.json');
     const lockJsonPath = path.join(rootDir, 'package-lock.json');
-    
+
     // Check if package-lock.json exists
     try {
       await fs.access(lockJsonPath);
@@ -485,28 +486,32 @@ async function checkNpmLockFileSync() {
       failedChecks++;
       return;
     }
-    
+
     // Try to parse both files
     const packageJsonContent = await fs.readFile(packageJsonPath, 'utf-8');
     const lockJsonContent = await fs.readFile(lockJsonPath, 'utf-8');
-    
+
     const packageJson = JSON.parse(packageJsonContent);
     const lockJson = JSON.parse(lockJsonContent);
-    
+
     // Check if versions match
     if (packageJson.version !== lockJson.version) {
-      console.log(`  ❌ FAIL: package.json version (${packageJson.version}) does not match package-lock.json version (${lockJson.version})\n`);
+      console.log(
+        `  ❌ FAIL: package.json version (${packageJson.version}) does not match package-lock.json version (${lockJson.version})\n`
+      );
       failedChecks++;
       return;
     }
-    
+
     // Check if package name matches
     if (packageJson.name !== lockJson.name) {
-      console.log(`  ❌ FAIL: package.json name (${packageJson.name}) does not match package-lock.json name (${lockJson.name})\n`);
+      console.log(
+        `  ❌ FAIL: package.json name (${packageJson.name}) does not match package-lock.json name (${lockJson.name})\n`
+      );
       failedChecks++;
       return;
     }
-    
+
     console.log(`  ✅ PASS: package-lock.json is in sync with package.json\n`);
     passedChecks++;
   } catch (error) {
@@ -521,17 +526,17 @@ async function checkNpmLockFileSync() {
 async function getAllFiles(dir, extensions = []) {
   const files = [];
   const entries = await fs.readdir(dir, { withFileTypes: true });
-  
+
   for (const entry of entries) {
     const fullPath = path.join(dir, entry.name);
     if (entry.isDirectory()) {
       const subFiles = await getAllFiles(fullPath, extensions);
       files.push(...subFiles);
-    } else if (extensions.length === 0 || extensions.some(ext => entry.name.endsWith(ext))) {
+    } else if (extensions.length === 0 || extensions.some((ext) => entry.name.endsWith(ext))) {
       files.push(fullPath);
     }
   }
-  
+
   return files;
 }
 
@@ -553,7 +558,7 @@ async function runAllChecks() {
   await checkTodoComments();
   await checkFileLineCounts();
   await checkNpmLockFileSync();
-  
+
   console.log('\n╔════════════════════════════════════════════════════════════╗');
   console.log('║                    TEST RESULTS                           ║');
   console.log('╚════════════════════════════════════════════════════════════╝\n');
@@ -561,16 +566,16 @@ async function runAllChecks() {
   console.log(`Passed:        ${passedChecks} ✅`);
   console.log(`Failed:        ${failedChecks} ❌`);
   console.log(`Warnings:      ${warnings.length} ⚠️\n`);
-  
+
   if (warnings.length > 0) {
     console.log('Warnings:');
-    warnings.forEach(w => console.log(`  - ${w}`));
+    warnings.forEach((w) => console.log(`  - ${w}`));
     console.log('');
   }
-  
+
   const successRate = totalChecks > 0 ? ((passedChecks / totalChecks) * 100).toFixed(1) : 0;
   console.log(`Success Rate: ${successRate}%\n`);
-  
+
   if (failedChecks === 0) {
     console.log('✅ ALL CRITICAL CHECKS PASSED! Project is ready for GitHub Actions.\n');
     process.exit(0);
@@ -581,7 +586,7 @@ async function runAllChecks() {
 }
 
 // Run the test suite
-runAllChecks().catch(error => {
+runAllChecks().catch((error) => {
   console.error('Fatal error running tests:', error);
   process.exit(1);
 });

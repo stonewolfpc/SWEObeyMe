@@ -28,7 +28,7 @@ This document covers Nielsen Norman heuristics, Cognitive load theory, Fitts's L
 
 - **Principle**: Consistent platform conventions
 - **Implementation**: Follow platform guidelines
-- **Example': Consistent button styles
+- \*\*Example': Consistent button styles
 
 ### 5. Error Prevention
 
@@ -64,7 +64,7 @@ This document covers Nielsen Norman heuristics, Cognitive load theory, Fitts's L
 
 - **Principle**: Help and documentation should be easy to search
 - **Implementation**: Searchable help, contextual help
-- **Example': In-app help center
+- \*\*Example': In-app help center
 
 ## Cognitive Load Theory
 
@@ -101,7 +101,7 @@ This document covers Nielsen Norman heuristics, Cognitive load theory, Fitts's L
 ### Principle
 
 - **Definition**: Time to acquire target is function of distance and size
-- **Formula**: T = a + b * log2(D/W + 1)
+- **Formula**: T = a + b \* log2(D/W + 1)
 - **Application**: Make important targets larger, closer
 
 ### Application
@@ -205,31 +205,31 @@ This document covers Nielsen Norman heuristics, Cognitive load theory, Fitts's L
 
 - **Summary**: Show summary, expand for details
 - **Use**: Large content sections
-- **Example': FAQ accordion
+- \*\*Example': FAQ accordion
 
 #### Tabs
 
 - **Categories**: Organize by category
 - **Use**: Multiple related sections
-- **Example': Settings tabs
+- \*\*Example': Settings tabs
 
 #### Tooltips
 
 - **Hover**: Show on hover
 - **Use**: Additional information
-- **Example': Icon with tooltip
+- \*\*Example': Icon with tooltip
 
 #### Modals
 
 - **Focus**: Focus on specific task
 - **Use**: Complex interactions
-- **Example': Edit modal
+- \*\*Example': Edit modal
 
 #### Progressive Enhancement
 
 - **Basic**: Show basic first
 - **Advanced**: Reveal advanced options
-- **Example': Simple search with advanced filters
+- \*\*Example': Simple search with advanced filters
 
 ## Affordances
 
@@ -238,21 +238,21 @@ This document covers Nielsen Norman heuristics, Cognitive load theory, Fitts's L
 - **Buttons**: Look clickable
 - **Links**: Look like links
 - **Inputs**: Look like inputs
-- **Example': Button with shadow and hover effect
+- \*\*Example': Button with shadow and hover effect
 
 ### Functional Affordances
 
 - **Drag**: Indicate draggable
 - **Resize**: Indicate resizable
 - **Sortable**: Indicate sortable
-- **Example': Handle for drag
+- \*\*Example': Handle for drag
 
 ### Perceived Affordances
 
 - **Convention**: Follow conventions
 - **Consistency**: Be consistent
 - **Familiar**: Use familiar patterns
-- **Example': Underlined text for links
+- \*\*Example': Underlined text for links
 
 ## Interaction Design Patterns
 
@@ -262,19 +262,19 @@ This document covers Nielsen Norman heuristics, Cognitive load theory, Fitts's L
 
 - **Hierarchy**: Show hierarchy
 - **Clickable**: Clickable to navigate
-- **Example': Home > Products > Category > Product
+- \*\*Example': Home > Products > Category > Product
 
 #### Pagination
 
 - **Controls**: Previous/Next controls
 - **Info**: Show page info
-- **Example': Previous 1 2 3 Next
+- \*\*Example': Previous 1 2 3 Next
 
 #### Tabs
 
 - **Categories**: Organize by category
 - **Active**: Show active tab
-- **Example': Profile, Settings, Account tabs
+- \*\*Example': Profile, Settings, Account tabs
 
 ### Form Patterns
 
@@ -282,19 +282,19 @@ This document covers Nielsen Norman heuristics, Cognitive load theory, Fitts's L
 
 - **Real-time**: Validate as user types
 - **Clear**: Clear error messages
-- **Example': Email validation on blur
+- \*\*Example': Email validation on blur
 
 #### Multi-step Forms
 
 - **Progress**: Show progress
 - **Save**: Save between steps
-- **Example': Wizard with progress indicator
+- \*\*Example': Wizard with progress indicator
 
 #### Smart Defaults
 
 - **Sensible**: Sensible defaults
 - **Context**: Context-aware defaults
-- **Example': Default country based on location
+- \*\*Example': Default country based on location
 
 ### Feedback Patterns
 
@@ -302,19 +302,19 @@ This document covers Nielsen Norman heuristics, Cognitive load theory, Fitts's L
 
 - **Indicators**: Show loading indicators
 - **Skeleton**: Use skeleton screens
-- **Example': Skeleton loader for content
+- \*\*Example': Skeleton loader for content
 
 #### Success States
 
 - **Clear**: Clear success message
 - **Action**: Next action available
-- **Example': Success message with continue button
+- \*\*Example': Success message with continue button
 
 #### Error States
 
 - **Clear**: Clear error message
 - **Solution**: Provide solution
-- **Example': Error message with fix suggestion
+- \*\*Example': Error message with fix suggestion
 
 ### Data Display Patterns
 
@@ -323,50 +323,50 @@ This document covers Nielsen Norman heuristics, Cognitive load theory, Fitts's L
 - **Sortable**: Sortable columns
 - **Filterable**: Filterable rows
 - **Paginated**: Paginated results
-- **Example': Data table with sort and filter
+- \*\*Example': Data table with sort and filter
 
 #### Cards
 
 - **Grouped**: Group related items
-- **Actions': Card-specific actions
-- **Example': Product cards
+- \*\*Actions': Card-specific actions
+- \*\*Example': Product cards
 
 #### Lists
 
-- **Grouped': Group related items
-- **Actions': List item actions
-- **Example': Task list with actions
+- \*\*Grouped': Group related items
+- \*\*Actions': List item actions
+- \*\*Example': Task list with actions
 
 ## Best Practices
 
 ### Design Principles
 
 - **User-Centered**: Design for users
-- **Consistent': Be consistent
-- **Simple': Keep it simple
-- **Accessible': Make it accessible
-- **Performant': Make it fast
+- \*\*Consistent': Be consistent
+- \*\*Simple': Keep it simple
+- \*\*Accessible': Make it accessible
+- \*\*Performant': Make it fast
 
 ### Interaction Design
 
-- **Intuitive': Make it intuitive
-- **Efficient': Make it efficient
-- **Forgiving': Be forgiving
-- **Responsive': Be responsive
-- **Delightful': Make it delightful
+- \*\*Intuitive': Make it intuitive
+- \*\*Efficient': Make it efficient
+- \*\*Forgiving': Be forgiving
+- \*\*Responsive': Be responsive
+- \*\*Delightful': Make it delightful
 
 ### Visual Design
 
-- **Clear': Clear visual hierarchy
-- **Consistent': Consistent styling
-- **Readable': Readable text
-- **Accessible': Accessible colors
-- **Beautiful': Beautiful design
+- \*\*Clear': Clear visual hierarchy
+- \*\*Consistent': Consistent styling
+- \*\*Readable': Readable text
+- \*\*Accessible': Accessible colors
+- \*\*Beautiful': Beautiful design
 
 ### Testing
 
-- **User Testing': Test with users
-- **A/B Testing': A/B test variations
-- **Analytics': Use analytics
-- **Feedback': Collect feedback
-- **Iterate': Iterate based on feedback
+- \*\*User Testing': Test with users
+- \*\*A/B Testing': A/B test variations
+- \*\*Analytics': Use analytics
+- \*\*Feedback': Collect feedback
+- \*\*Iterate': Iterate based on feedback

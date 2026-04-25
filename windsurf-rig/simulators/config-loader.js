@@ -20,7 +20,7 @@ class ConfigLoaderSimulation {
       skipped: 0,
       total: 0,
     };
-    
+
     // Windsurf-Next MCP config schema
     this.schema = {
       required: ['mcpServers'],
@@ -33,7 +33,7 @@ class ConfigLoaderSimulation {
 
   async run() {
     console.log('[ConfigLoader] Starting MCP config loader simulation...');
-    
+
     const tests = [
       'load-generated-config',
       'validate-schema',
@@ -51,21 +51,21 @@ class ConfigLoaderSimulation {
       'reject-missing-args',
       'reject-missing-transport',
     ];
-    
+
     for (const test of tests) {
       await this.runTest(test);
     }
-    
+
     this.results.total = this.results.tests.length;
     return this.results;
   }
 
   async runTest(testName) {
     console.log(`[ConfigLoader] Running: ${testName}...`);
-    
+
     let passed = false;
     let error = null;
-    
+
     try {
       switch (testName) {
         case 'load-generated-config':
@@ -117,14 +117,14 @@ class ConfigLoaderSimulation {
     } catch (e) {
       error = e.message;
     }
-    
+
     this.results.tests.push({
       id: testName,
       name: `Config Loader - ${testName}`,
       passed,
       error,
     });
-    
+
     if (passed) {
       this.results.passed++;
       console.log(`[ConfigLoader] ✅ ${testName}`);
@@ -137,18 +137,18 @@ class ConfigLoaderSimulation {
   async testLoadGeneratedConfig() {
     // Load the actual generated mcp_config.json
     const configPath = join(dirname(__dirname), '..', '.sweobeyme-config.json');
-    
+
     if (!existsSync(configPath)) {
       return { passed: true, error: 'Config file not found (expected in dev)' };
     }
-    
+
     try {
       const content = readFileSync(configPath, 'utf-8');
       const config = JSON.parse(content);
-      
+
       // Validate basic structure
       const hasMcpServers = 'mcpServers' in config;
-      
+
       return hasMcpServers;
     } catch (e) {
       return false;
@@ -158,25 +158,25 @@ class ConfigLoaderSimulation {
   async testValidateSchema() {
     // Validate against Windsurf-Next schema
     const config = this.getTestConfig();
-    
+
     if (!config) {
       return false;
     }
-    
+
     // Check required top-level keys
     for (const required of this.schema.required) {
       if (!(required in config)) {
         return false;
       }
     }
-    
+
     // Check for unknown keys
     for (const key of Object.keys(config)) {
       if (!this.schema.allowedKeys.includes(key)) {
         return false;
       }
     }
-    
+
     // Validate each server
     for (const [serverName, serverConfig] of Object.entries(config.mcpServers)) {
       // Check required server keys
@@ -185,43 +185,46 @@ class ConfigLoaderSimulation {
           return false;
         }
       }
-      
+
       // Check for unknown server keys
       for (const key of Object.keys(serverConfig)) {
         if (!this.schema.serverAllowedKeys.includes(key)) {
           return false;
         }
       }
-      
+
       // Validate transport if present
-      if (serverConfig.transport && !this.schema.transportAllowed.includes(serverConfig.transport)) {
+      if (
+        serverConfig.transport &&
+        !this.schema.transportAllowed.includes(serverConfig.transport)
+      ) {
         return false;
       }
     }
-    
+
     return true;
   }
 
   async testNormalizePaths() {
     const config = this.getTestConfig();
-    
+
     if (!config) {
       return false;
     }
-    
+
     // Normalize all paths according to Windsurf-Next rules
     for (const [serverName, serverConfig] of Object.entries(config.mcpServers)) {
       // Normalize args
       if (serverConfig.args && Array.isArray(serverConfig.args)) {
-        const normalizedArgs = serverConfig.args.map(arg => this.normalizePath(arg));
-        
+        const normalizedArgs = serverConfig.args.map((arg) => this.normalizePath(arg));
+
         // Compare
         const normalized = JSON.stringify(normalizedArgs) === JSON.stringify(serverConfig.args);
         if (!normalized) {
           return false;
         }
       }
-      
+
       // Normalize env values
       if (serverConfig.env) {
         for (const [key, value] of Object.entries(serverConfig.env)) {
@@ -232,7 +235,7 @@ class ConfigLoaderSimulation {
         }
       }
     }
-    
+
     return true;
   }
 
@@ -246,7 +249,7 @@ class ConfigLoaderSimulation {
         },
       },
     };
-    
+
     const validation = this.validateConfig(config);
     return validation.valid === false && validation.reason === 'backslashes-not-allowed';
   }
@@ -261,7 +264,7 @@ class ConfigLoaderSimulation {
         },
       },
     };
-    
+
     const validation = this.validateConfig(config);
     return validation.valid === false && validation.reason === 'uppercase-drive-not-allowed';
   }
@@ -269,7 +272,7 @@ class ConfigLoaderSimulation {
   async testRejectInvalidJSON() {
     // Test that invalid JSON is rejected
     const invalidJson = '{mcpServers: {test: {command: node}}}';
-    
+
     try {
       JSON.parse(invalidJson);
       return false;
@@ -281,7 +284,7 @@ class ConfigLoaderSimulation {
   async testRejectPartialWrites() {
     // Test that partial writes are rejected
     const partialJson = '{"mcpServers": {"swe-obey-me": {"command": "node"';
-    
+
     try {
       const config = JSON.parse(partialJson);
       return false;
@@ -301,16 +304,16 @@ class ConfigLoaderSimulation {
         },
       },
     };
-    
+
     const validation = this.validateConfig(config);
-    return validation.valid === false && validation.errors.some(e => e.includes('unknown-key'));
+    return validation.valid === false && validation.errors.some((e) => e.includes('unknown-key'));
   }
 
   async testRejectSlowStartup() {
     // Simulate slow MCP startup detection
     // Windsurf-Next rejects servers that take too long to start
     const startupTime = 5000; // 5 seconds
-    
+
     const rejected = startupTime > 3000; // Windsurf-Next timeout
     return rejected === true;
   }
@@ -319,7 +322,7 @@ class ConfigLoaderSimulation {
     // Test that stdout pollution is rejected
     // Windsurf-Next expects no stdout during startup
     const stdout = 'Some output that should not be there';
-    
+
     const rejected = stdout.length > 0;
     return rejected === true;
   }
@@ -342,7 +345,7 @@ class ConfigLoaderSimulation {
         },
       },
     };
-    
+
     const validation = this.validateConfig(config);
     return validation.valid === false;
   }
@@ -355,9 +358,12 @@ class ConfigLoaderSimulation {
         },
       },
     };
-    
+
     const validation = this.validateConfig(config);
-    return validation.valid === false && validation.errors.some(e => e.includes('missing-required-field'));
+    return (
+      validation.valid === false &&
+      validation.errors.some((e) => e.includes('missing-required-field'))
+    );
   }
 
   async testRejectMissingArgs() {
@@ -368,9 +374,12 @@ class ConfigLoaderSimulation {
         },
       },
     };
-    
+
     const validation = this.validateConfig(config);
-    return validation.valid === false && validation.errors.some(e => e.includes('missing-required-field'));
+    return (
+      validation.valid === false &&
+      validation.errors.some((e) => e.includes('missing-required-field'))
+    );
   }
 
   async testRejectMissingTransport() {
@@ -385,7 +394,7 @@ class ConfigLoaderSimulation {
         },
       },
     };
-    
+
     const validation = this.validateConfig(config);
     return validation.valid === false && validation.reason === 'invalid-transport';
   }
@@ -410,66 +419,66 @@ class ConfigLoaderSimulation {
     if (typeof path !== 'string') {
       return path;
     }
-    
+
     // Convert backslashes to forward slashes
     let normalized = path.replace(/\\/g, '/');
-    
+
     // Convert uppercase drive letters to lowercase (Windows)
     if (/^[A-Z]:/.test(normalized)) {
       normalized = normalized[0].toLowerCase() + normalized.slice(1);
     }
-    
+
     // Remove trailing slashes
     normalized = normalized.replace(/\/+$/, '');
-    
+
     // Remove double slashes
     normalized = normalized.replace(/\/+/g, '/');
-    
+
     // Remove .. segments
     normalized = normalized.replace(/\.\./g, '');
-    
+
     return normalized;
   }
 
   validateConfig(config) {
     // Validate against Windsurf-Next schema
     const errors = [];
-    
+
     // Check required top-level keys
     for (const required of this.schema.required) {
       if (!(required in config)) {
         errors.push(`missing-required-top-level: ${required}`);
       }
     }
-    
+
     // Check for unknown keys
     for (const key of Object.keys(config)) {
       if (!this.schema.allowedKeys.includes(key)) {
         errors.push(`unknown-top-level-key: ${key}`);
       }
     }
-    
+
     // Validate each server
     for (const [serverName, serverConfig] of Object.entries(config.mcpServers)) {
       // Check for empty server name
       if (!serverName || serverName.trim() === '') {
         errors.push('empty-server-name');
       }
-      
+
       // Check required server keys
       for (const required of this.schema.serverRequired) {
         if (!(required in serverConfig)) {
           errors.push(`missing-required-field: ${required}`);
         }
       }
-      
+
       // Check for unknown server keys
       for (const key of Object.keys(serverConfig)) {
         if (!this.schema.serverAllowedKeys.includes(key)) {
           errors.push(`unknown-key: ${key}`);
         }
       }
-      
+
       // Validate paths
       if (serverConfig.args && Array.isArray(serverConfig.args)) {
         for (const arg of serverConfig.args) {
@@ -481,7 +490,7 @@ class ConfigLoaderSimulation {
           }
         }
       }
-      
+
       // Validate env paths
       if (serverConfig.env) {
         for (const [key, value] of Object.entries(serverConfig.env)) {
@@ -493,17 +502,20 @@ class ConfigLoaderSimulation {
           }
         }
       }
-      
+
       // Validate transport
-      if (serverConfig.transport && !this.schema.transportAllowed.includes(serverConfig.transport)) {
+      if (
+        serverConfig.transport &&
+        !this.schema.transportAllowed.includes(serverConfig.transport)
+      ) {
         errors.push('invalid-transport');
       }
     }
-    
+
     if (errors.length > 0) {
       return { valid: false, errors, reason: errors[0] };
     }
-    
+
     return { valid: true };
   }
 }

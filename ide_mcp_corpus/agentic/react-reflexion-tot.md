@@ -11,10 +11,12 @@ This document covers agentic system design patterns including ReAct, Reflexion, 
 ReAct is a general paradigm that combines reasoning and acting with LLMs. It addresses the limitations of Chain-of-Thought (CoT) prompting, which lacks access to the external world and can lead to fact hallucination and error propagation.
 
 ReAct prompts LLMs to generate:
+
 1. **Verbal reasoning traces**: Thought processes
 2. **Actions**: Interactions with external environments
 
 This enables:
+
 - Dynamic reasoning to create, maintain, and adjust plans
 - Interaction with external environments (e.g., Wikipedia, APIs)
 - Information retrieval to support reasoning
@@ -130,6 +132,7 @@ Tree-of-Thought is a framework that generalizes chain-of-thought prompting and e
 ### How It Works
 
 ToT maintains a tree of thoughts where:
+
 - Thoughts are coherent language sequences
 - Thoughts serve as intermediate steps toward solving a problem
 - LM self-evaluates progress through intermediate thoughts
@@ -145,6 +148,7 @@ ToT maintains a tree of thoughts where:
 ### Thought Evaluation
 
 LM prompted to evaluate thoughts as:
+
 - "sure/maybe/impossible" for reaching goal
 - Numerical scores
 - Ranking by likelihood of success
@@ -160,6 +164,7 @@ LM prompted to evaluate thoughts as:
 ### Results
 
 ToT substantially outperforms:
+
 - Chain-of-Thought
 - Self-consistency
 - Other prompting methods

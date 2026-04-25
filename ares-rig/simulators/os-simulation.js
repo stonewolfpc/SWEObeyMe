@@ -5,7 +5,19 @@
 
 import { fileURLToPath } from 'url';
 import { join, sep, delimiter } from 'path';
-import { existsSync, mkdirSync, writeFileSync, readFileSync, unlinkSync, rmdirSync, statSync, lstatSync, readlinkSync, symlinkSync, chmodSync } from 'fs';
+import {
+  existsSync,
+  mkdirSync,
+  writeFileSync,
+  readFileSync,
+  unlinkSync,
+  rmdirSync,
+  statSync,
+  lstatSync,
+  readlinkSync,
+  symlinkSync,
+  chmodSync,
+} from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = join(__filename, '..');
@@ -52,18 +64,14 @@ class OSSimulator {
         caseSensitive: true,
         symlinkSupport: 'full',
         maxPathLength: 4096,
-        configLocations: [
-          '~/.config/sweobeyme',
-          '/etc/sweobeyme',
-          '/usr/local/etc/sweobeyme',
-        ],
+        configLocations: ['~/.config/sweobeyme', '/etc/sweobeyme', '/usr/local/etc/sweobeyme'],
         envVars: {
           HOME: '/home/$USER',
           PATH: '/usr/local/bin:/usr/bin:/bin',
         },
       },
     };
-    
+
     this.results = {
       tests: [],
       passed: 0,
@@ -71,7 +79,7 @@ class OSSimulator {
       skipped: 0,
       total: 0,
     };
-    
+
     this.testDir = join(__dirname, '..', 'fixtures', 'os-simulation');
     this.ensureTestDir();
   }
@@ -84,22 +92,20 @@ class OSSimulator {
 
   async run() {
     console.log('[OSSimulator] Starting OS matrix simulation...');
-    
-    const osToTest = this.options.os === 'all' 
-      ? Object.keys(this.osProfiles)
-      : [this.options.os];
-    
+
+    const osToTest = this.options.os === 'all' ? Object.keys(this.osProfiles) : [this.options.os];
+
     for (const os of osToTest) {
       await this.simulateOS(os);
     }
-    
+
     this.results.total = this.results.tests.length;
     return this.results;
   }
 
   async simulateOS(osName) {
     console.log(`[OSSimulator] Simulating ${osName}...`);
-    
+
     const osProfile = this.osProfiles[osName];
     const tests = [
       'path-normalization',
@@ -110,7 +116,7 @@ class OSSimulator {
       'config-locations',
       'environment-variables',
     ];
-    
+
     for (const test of tests) {
       await this.runTest(osName, test, osProfile);
     }
@@ -120,7 +126,7 @@ class OSSimulator {
     const testId = `${osName}-${testName}`;
     let passed = false;
     let error = null;
-    
+
     try {
       switch (testName) {
         case 'path-normalization':
@@ -148,14 +154,14 @@ class OSSimulator {
     } catch (e) {
       error = e.message;
     }
-    
+
     this.results.tests.push({
       id: testId,
       name: `${osName} - ${testName}`,
       passed,
       error,
     });
-    
+
     if (passed) {
       this.results.passed++;
       console.log(`[OSSimulator] ✅ ${testId}`);
@@ -166,36 +172,37 @@ class OSSimulator {
   }
 
   async testPathNormalization(osName, profile) {
-    const testPath = osName === 'windows' 
-      ? 'C:\\Users\\Test\\Documents\\file.txt'
-      : '/home/user/Documents/file.txt';
-    
+    const testPath =
+      osName === 'windows'
+        ? 'C:\\Users\\Test\\Documents\\file.txt'
+        : '/home/user/Documents/file.txt';
+
     const normalized = this.normalizePathForOS(testPath, profile);
-    
+
     // Check if path uses correct separator
     const hasCorrectSeparator = normalized.includes(profile.pathSeparator);
-    
+
     return hasCorrectSeparator;
   }
 
   async testCaseSensitivity(osName, profile) {
     const testFile = join(this.testDir, osName, 'TEST.txt');
-    
+
     try {
       mkdirSync(join(this.testDir, osName), { recursive: true });
       writeFileSync(testFile, 'test');
-      
+
       // Try to read with different case
       const lowerCase = testFile.toLowerCase();
       const upperCase = testFile.toUpperCase();
-      
+
       const lowerExists = existsSync(lowerCase);
       const upperExists = existsSync(upperCase);
-      
+
       // Cleanup
       unlinkSync(testFile);
       rmdirSync(join(this.testDir, osName));
-      
+
       if (!profile.caseSensitive) {
         // Case-insensitive: at least one should exist
         return lowerExists || upperExists || existsSync(testFile);
@@ -219,26 +226,26 @@ class OSSimulator {
       this.results.skipped++;
       return true;
     }
-    
+
     const targetFile = join(this.testDir, osName, 'target.txt');
     const linkFile = join(this.testDir, osName, 'link.txt');
-    
+
     try {
       mkdirSync(join(this.testDir, osName), { recursive: true });
       writeFileSync(targetFile, 'target content');
-      
+
       // Create symlink
       symlinkSync(targetFile, linkFile);
-      
+
       // Verify link works
       const linkContent = readFileSync(linkFile, 'utf-8');
       const works = linkContent === 'target content';
-      
+
       // Cleanup
       unlinkSync(linkFile);
       unlinkSync(targetFile);
       rmdirSync(join(this.testDir, osName));
-      
+
       return works;
     } catch (e) {
       // Cleanup on failure
@@ -249,37 +256,37 @@ class OSSimulator {
       } catch (cleanupError) {
         // Ignore cleanup errors
       }
-      
+
       // On Windows, symlinks require admin privileges
       if (osName === 'windows' && profile.symlinkSupport === 'admin-only') {
         this.results.skipped++;
         return true;
       }
-      
+
       return false;
     }
   }
 
   async testMaxPathLength(osName, profile) {
     const maxLength = profile.maxPathLength;
-    
+
     // Create a path that approaches the limit
     const baseDir = join(this.testDir, osName);
     mkdirSync(baseDir, { recursive: true });
-    
+
     try {
       const longName = 'a'.repeat(Math.min(maxLength - baseDir.length - 10, 200));
       const longPath = join(baseDir, longName);
-      
+
       writeFileSync(longPath, 'test');
-      
+
       const stats = statSync(longPath);
       const exists = stats.isFile();
-      
+
       // Cleanup
       unlinkSync(longPath);
       rmdirSync(baseDir);
-      
+
       return exists;
     } catch (e) {
       try {
@@ -293,14 +300,14 @@ class OSSimulator {
 
   async testPermissions(osName, profile) {
     const testFile = join(this.testDir, osName, 'perm-test.txt');
-    
+
     try {
       mkdirSync(join(this.testDir, osName), { recursive: true });
       writeFileSync(testFile, 'test');
-      
+
       // Try to set read-only
       chmodSync(testFile, 0o444);
-      
+
       // Try to write (should fail)
       let writeFailed = false;
       try {
@@ -309,14 +316,14 @@ class OSSimulator {
       } catch (e) {
         writeFailed = true;
       }
-      
+
       // Restore write permissions
       chmodSync(testFile, 0o644);
-      
+
       // Cleanup
       unlinkSync(testFile);
       rmdirSync(join(this.testDir, osName));
-      
+
       return writeFailed;
     } catch (e) {
       try {
@@ -331,20 +338,20 @@ class OSSimulator {
 
   async testConfigLocations(osName, profile) {
     const locations = profile.configLocations;
-    
+
     // Verify all locations are valid paths for the OS
-    const validPaths = locations.filter(loc => {
+    const validPaths = locations.filter((loc) => {
       // Check if path uses correct separator
       const hasCorrectSeparator = loc.includes(profile.pathSeparator);
       return hasCorrectSeparator;
     });
-    
+
     return validPaths.length === locations.length;
   }
 
   async testEnvironmentVariables(osName, profile) {
     const envVars = profile.envVars;
-    
+
     // Verify environment variable format
     const validFormat = Object.entries(envVars).every(([key, value]) => {
       // Check if value uses correct delimiter
@@ -353,7 +360,7 @@ class OSSimulator {
       }
       return true;
     });
-    
+
     return validFormat;
   }
 

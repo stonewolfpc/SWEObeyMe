@@ -29,16 +29,19 @@ The operation is exposed through GGML_OP_FLASH_ATTN_EXT which handles both causa
 ## Backend-Specific Implementations
 
 ### CUDA Flash Attention
+
 - Uses tensor cores for acceleration
 - Requires NVIDIA GPUs with tensor core support (Pascal and older not supported)
 - Optimized for Hopper and Blackwell GPUs
 
 ### Metal Flash Attention
+
 - Optimized for Apple Silicon
 - Uses threadgroup memory for tiling
 - Kernel dispatch with function constants
 
 ### Vulkan Flash Attention
+
 - Cooperative matrix support
 - Cross-platform GPU acceleration
 - Works with AMD and Intel GPUs
@@ -46,23 +49,28 @@ The operation is exposed through GGML_OP_FLASH_ATTN_EXT which handles both causa
 ## Performance Considerations
 
 ### Q/K Alignment
+
 - Proper alignment of query and key tensors is critical for performance
 - Misaligned loads can significantly impact throughput
 
 ### Head Dimension Constraints
+
 - Different backends have optimal head dimensions
 - Common optimal sizes: 64, 128, 256
 
 ### Rotary Edge Cases
+
 - Rotary position embeddings require special handling
 - Edge cases at sequence boundaries need careful implementation
 
 ### Fused vs Unfused Paths
+
 - Fused kernels are faster but less flexible
 - Unfused paths provide better compatibility
 - Automatic selection based on hardware capabilities
 
 ### AVX vs NEON vs CUDA Differences
+
 - AVX: CPU vectorization, limited by memory bandwidth
 - NEON: ARM CPU optimization, similar constraints to AVX
 - CUDA: GPU acceleration, limited by compute capability and VRAM

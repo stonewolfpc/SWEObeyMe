@@ -23,7 +23,7 @@ class ToolArbitrationFuzzer {
 
   async run() {
     console.log('[ToolArbitrationFuzzer] Starting tool arbitration fuzzer...');
-    
+
     const tests = [
       'malformed-tool-calls',
       'missing-params',
@@ -38,21 +38,21 @@ class ToolArbitrationFuzzer {
       'arbitration-warn',
       'arbitration-log',
     ];
-    
+
     for (const test of tests) {
       await this.runTest(test);
     }
-    
+
     this.results.total = this.results.tests.length;
     return this.results;
   }
 
   async runTest(testName) {
     console.log(`[ToolArbitrationFuzzer] Running: ${testName}...`);
-    
+
     let passed = false;
     let error = null;
-    
+
     try {
       switch (testName) {
         case 'malformed-tool-calls':
@@ -95,14 +95,14 @@ class ToolArbitrationFuzzer {
     } catch (e) {
       error = e.message;
     }
-    
+
     this.results.tests.push({
       id: testName,
       name: `Tool Arbitration Fuzzer - ${testName}`,
       passed,
       error,
     });
-    
+
     if (passed) {
       this.results.passed++;
       console.log(`[ToolArbitrationFuzzer] ✅ ${testName}`);
@@ -119,7 +119,7 @@ class ToolArbitrationFuzzer {
       method: 'tools/call',
       // Missing params
     };
-    
+
     const validation = this.validateToolCall(malformedCall);
     return validation.valid === false;
   }
@@ -134,9 +134,11 @@ class ToolArbitrationFuzzer {
         arguments: {}, // Missing file_path
       },
     };
-    
+
     const validation = this.validateToolCall(callWithMissing);
-    return validation.valid === false && Array.isArray(validation.errors) && validation.errors.length > 0;
+    return (
+      validation.valid === false && Array.isArray(validation.errors) && validation.errors.length > 0
+    );
   }
 
   async testExtraParams() {
@@ -152,7 +154,7 @@ class ToolArbitrationFuzzer {
         },
       },
     };
-    
+
     const validation = this.validateToolCall(callWithExtra);
     return validation.valid === true || validation.handled === true;
   }
@@ -169,9 +171,11 @@ class ToolArbitrationFuzzer {
         },
       },
     };
-    
+
     const validation = this.validateToolCall(callWithWrongType);
-    return validation.valid === false && Array.isArray(validation.errors) && validation.errors.length > 0;
+    return (
+      validation.valid === false && Array.isArray(validation.errors) && validation.errors.length > 0
+    );
   }
 
   async testEmptyObjects() {
@@ -184,14 +188,16 @@ class ToolArbitrationFuzzer {
         arguments: null,
       },
     };
-    
+
     const validation = this.validateToolCall(callWithEmpty);
-    return validation.valid === false && Array.isArray(validation.errors) && validation.errors.length > 0;
+    return (
+      validation.valid === false && Array.isArray(validation.errors) && validation.errors.length > 0
+    );
   }
 
   async testInvalidJSON() {
     const invalidJSON = '{invalid json}';
-    
+
     try {
       JSON.parse(invalidJSON);
       return false;
@@ -210,9 +216,11 @@ class ToolArbitrationFuzzer {
         arguments: {},
       },
     };
-    
+
     const validation = this.validateToolCall(hallucinatedCall);
-    return validation.valid === true || (validation.valid === false && Array.isArray(validation.errors));
+    return (
+      validation.valid === true || (validation.valid === false && Array.isArray(validation.errors))
+    );
   }
 
   async testArbitrationCatch() {
@@ -237,7 +245,7 @@ class ToolArbitrationFuzzer {
 
   validateToolCall(toolCall) {
     const errors = [];
-    
+
     if (!toolCall.jsonrpc || toolCall.jsonrpc !== '2.0') {
       errors.push('invalid-jsonrpc');
     }
@@ -248,34 +256,34 @@ class ToolArbitrationFuzzer {
       errors.push('missing-params');
       return { valid: false, errors };
     }
-    
+
     if (!toolCall.params.name) {
       errors.push('missing-tool-name');
     }
-    
+
     if (!toolCall.params.arguments) {
       errors.push('missing-arguments');
       return { valid: false, errors };
     }
-    
+
     // Check for missing required params
     if (toolCall.params.name === 'read_file') {
       if (!toolCall.params.arguments.file_path) {
         errors.push('missing-file_path');
       }
     }
-    
+
     // Check for wrong types
     if (toolCall.params.name === 'read_file' && toolCall.params.arguments.file_path) {
       if (typeof toolCall.params.arguments.file_path !== 'string') {
         errors.push('invalid-file_path-type');
       }
     }
-    
+
     if (errors.length > 0) {
       return { valid: false, errors };
     }
-    
+
     return { valid: true, errors: [] };
   }
 }

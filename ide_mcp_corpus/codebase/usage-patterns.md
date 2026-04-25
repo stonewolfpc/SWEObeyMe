@@ -35,9 +35,7 @@ The codebase orientation tools help AI agents understand project structure witho
   "success": true,
   "project_root": "/path/to/project",
   "project_type": ["javascript", "typescript"],
-  "entry_points": [
-    { "file": "index.js", "type": "main" }
-  ],
+  "entry_points": [{ "file": "index.js", "type": "main" }],
   "modules": [
     {
       "path": "lib",
@@ -191,9 +189,7 @@ AI: "What functions does the main entry point export?"
     "modules_to_consider": [
       { "path": "src/api", "type": "api", "inferredResponsibility": "api layer" }
     ],
-    "critical_dependencies": [
-      { "file": "path", "importCount": 271 }
-    ],
+    "critical_dependencies": [{ "file": "path", "importCount": 271 }],
     "suggested_files": []
   },
   "architecture_summary": {
@@ -220,19 +216,16 @@ AI: "Where should I add this new feature?"
 When first working with a new codebase:
 
 1. **Start with codebase_orientation**
-
    - Understand overall structure
    - Identify entry points
    - Detect project type and framework
 
 2. **Follow with dependency_analysis**
-
    - Identify hub files (critical dependencies)
    - Understand module relationships
    - Know what to be careful with
 
 3. **Use entry_point_mapper**
-
    - Understand API contracts
    - Know what functions are available
    - Understand initialization sequence
@@ -242,19 +235,16 @@ When first working with a new codebase:
 When planning to modify existing code:
 
 1. **Use dependency_analysis**
-
    - Check if file is a hub file
    - Identify what depends on it
    - Understand impact scope
 
 2. **Use codebase_explore**
-
    - Ask "what depends on X?"
    - Get guidance on affected modules
    - Understand ripple effects
 
 3. **Make changes with awareness**
-
    - Use read_file for details
    - Check dependent modules
    - Test thoroughly
@@ -264,19 +254,16 @@ When planning to modify existing code:
 When adding new functionality:
 
 1. **Use codebase_explore**
-
    - Ask "where should I add X?"
    - Get module suggestions
    - Understand dependencies
 
 2. **Use codebase_orientation**
-
    - Confirm module structure
    - Verify entry points
    - Check framework patterns
 
 3. **Use dependency_analysis**
-
    - Check hub files in target module
    - Understand integration points
    - Plan dependencies
@@ -284,28 +271,23 @@ When adding new functionality:
 ## Best Practices
 
 1. **Start with structure, not details**
-
    - Use codebase_orientation first to understand the big picture
    - Don't jump into reading files until you know where you are
 
 2. **Check dependencies before changes**
-
    - Always use dependency_analysis before modifying hub files
    - Understand what might break before you break it
 
 3. **Ask guided questions**
-
    - Use codebase_explore for "where do I..." questions
    - It provides structured guidance, not random file suggestions
 
 4. **Don't rely solely on these tools**
-
    - These provide structure, not implementation details
    - Use read_file for actual code content
    - Use Grep for specific pattern searches
 
 5. **Combine with existing SWEObeyMe tools**
-
    - Use project_context for current project state
    - Use project_rules for architectural constraints
    - Use docs_lookup for documentation
@@ -345,7 +327,6 @@ This system complements existing SWEObeyMe features:
 ## Limitations
 
 1. **Regex-based analysis**
-
    - Dependency analysis uses regex patterns
 
    - May have false positives in complex code
@@ -353,7 +334,6 @@ This system complements existing SWEObeyMe features:
    - Not a replacement for AST parsing
 
 2. **Heuristic module detection**
-
    - Module types inferred from directory names
 
    - May not match actual architecture
@@ -361,7 +341,6 @@ This system complements existing SWEObeyMe features:
    - Use as guidance, not absolute truth
 
 3. **No semantic understanding**
-
    - Tools analyze structure, not meaning
 
    - Can't tell you "what this code does"
@@ -369,7 +348,6 @@ This system complements existing SWEObeyMe features:
    - Use read_file for semantic understanding
 
 4. **Static analysis only**
-
    - Doesn't track runtime behavior
 
    - Doesn't understand dynamic imports

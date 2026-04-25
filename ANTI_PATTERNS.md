@@ -11,6 +11,7 @@ This document outlines common anti-patterns and mistakes that AI models make whe
 **Description:** Making edits without first searching for existing code or understanding the context.
 
 **Example:**
+
 ```
 AI: I'll add a new function called getUserData
 (Doesn't search for existing getUserData function)
@@ -18,12 +19,14 @@ AI: I'll add a new function called getUserData
 ```
 
 **Why It's Bad:**
+
 - Creates duplicate code
 - Misses existing implementations
 - Breaks DRY principle
 - Increases technical debt
 
 **How to Avoid:**
+
 ```
 1. Use search_code_files to find existing code
 2. Use get_file_context to understand context
@@ -36,6 +39,7 @@ AI: I'll add a new function called getUserData
 **Description:** Writing files without validating syntax, imports, or surgical compliance.
 
 **Example:**
+
 ```
 AI: I'll write the new file
 (Doesn't check line count)
@@ -44,12 +48,14 @@ AI: I'll write the new file
 ```
 
 **Why It's Bad:**
+
 - High rejection rate
 - Wastes time on rewrites
 - Broken code gets written
 - Frustrates users
 
 **How to Avoid:**
+
 ```
 1. Use obey_surgical_plan to check line count
 2. Use verify_syntax to check syntax
@@ -63,6 +69,7 @@ AI: I'll write the new file
 **Description:** Refactoring code without understanding dependencies or usage.
 
 **Example:**
+
 ```
 AI: I'll rename this function from getUser to fetchUser
 (Doesn't check where it's used)
@@ -70,12 +77,14 @@ AI: I'll rename this function from getUser to fetchUser
 ```
 
 **Why It's Bad:**
+
 - Breaking changes
 - Incomplete refactoring
 - Regressions
 - Difficult to debug
 
 **How to Avoid:**
+
 ```
 1. Use get_file_context to understand dependencies
 2. Use analyze_change_impact to check ripple effects
@@ -89,6 +98,7 @@ AI: I'll rename this function from getUser to fetchUser
 **Description:** Attempting to write files that exceed the 700-line limit.
 
 **Example:**
+
 ```
 AI: I'll add all these functions to index.js
 (File becomes 850 lines)
@@ -96,12 +106,14 @@ AI: I'll add all these functions to index.js
 ```
 
 **Why It's Bad:**
+
 - Write rejected
 - File bloat
 - Technical debt
 - Maintenance issues
 
 **How to Avoid:**
+
 ```
 1. Use obey_surgical_plan before writing
 2. If rejected, use refactor_move_block to split
@@ -114,6 +126,7 @@ AI: I'll add all these functions to index.js
 **Description:** Making changes without running tests to verify.
 
 **Example:**
+
 ```
 AI: I've fixed the bug
 (Doesn't run tests)
@@ -121,12 +134,14 @@ AI: I've fixed the bug
 ```
 
 **Why It's Bad:**
+
 - Regressions
 - Broken code in production
 - Difficult to debug later
 - Poor quality
 
 **How to Avoid:**
+
 ```
 1. Use run_related_tests after changes
 2. If tests fail, fix code
@@ -139,18 +154,21 @@ AI: I've fixed the bug
 **Description:** Including forbidden patterns like console.log, TODO, debugger.
 
 **Example:**
+
 ```
 AI: I'll add a console.log for debugging
 (Write rejected due to forbidden pattern)
 ```
 
 **Why It's Bad:**
+
 - Write rejected
 - Debug code in production
 - Poor code quality
 - Security issues
 
 **How to Avoid:**
+
 ```
 1. Remove all console.log statements
 2. Remove all TODO comments
@@ -164,6 +182,7 @@ AI: I'll add a console.log for debugging
 **Description:** Assuming files exist or inventing file paths without verification.
 
 **Example:**
+
 ```
 AI: I'll edit the config file at ./config/settings.json
 (File doesn't exist)
@@ -171,12 +190,14 @@ AI: I'll edit the config file at ./config/settings.json
 ```
 
 **Why It's Bad:**
+
 - Operations fail
 - Wastes time
 - Frustrating for users
 - Breaks trust
 
 **How to Avoid:**
+
 ```
 1. Use list_directory to check if file exists
 2. Use find_code_files to search for files
@@ -189,6 +210,7 @@ AI: I'll edit the config file at ./config/settings.json
 **Description:** Not following project naming conventions or folder structure.
 
 **Example:**
+
 ```
 AI: I'll create a new file called my_new_file.js
 (Project uses PascalCase for files)
@@ -196,12 +218,14 @@ AI: I'll create a new file called my_new_file.js
 ```
 
 **Why It's Bad:**
+
 - Inconsistent code
 - Confusing for developers
 - Violates project standards
 - Harder to maintain
 
 **How to Avoid:**
+
 ```
 1. Use analyze_project_conventions to detect patterns
 2. Follow naming conventions (camelCase, PascalCase, etc.)
@@ -214,6 +238,7 @@ AI: I'll create a new file called my_new_file.js
 **Description:** Attempting to refactor large codebases in a single operation.
 
 **Example:**
+
 ```
 AI: I'll refactor the entire src directory
 (Attempts massive change)
@@ -221,12 +246,14 @@ AI: I'll refactor the entire src directory
 ```
 
 **Why It's Bad:**
+
 - High failure rate
 - Difficult to debug
 - Hard to rollback
 - Risky
 
 **How to Avoid:**
+
 ```
 1. Use initiate_surgical_workflow for complex tasks
 2. Break into small steps
@@ -240,6 +267,7 @@ AI: I'll refactor the entire src directory
 **Description:** Not reading or understanding error messages and trying the same approach repeatedly.
 
 **Example:**
+
 ```
 AI: Write rejected for line count
 (Tries to write again with same content)
@@ -247,12 +275,14 @@ AI: Write rejected for line count
 ```
 
 **Why It's Bad:**
+
 - Infinite loops
 - Wastes time
 - Frustrating
 - No progress
 
 **How to Avoid:**
+
 ```
 1. Use explain_rejection to understand why
 2. Use suggest_alternatives to find alternatives
@@ -265,6 +295,7 @@ AI: Write rejected for line count
 **Description:** Not adding documentation to functions, classes, or complex code.
 
 **Example:**
+
 ```
 AI: I'll add this complex function
 (No JSDoc comments)
@@ -273,12 +304,14 @@ AI: I'll add this complex function
 ```
 
 **Why It's Bad:**
+
 - Poor maintainability
 - Difficult to understand
 - Violates documentation requirements
 - Technical debt
 
 **How to Avoid:**
+
 ```
 1. Add JSDoc comments to all functions/classes
 2. Add inline comments for complex logic
@@ -291,6 +324,7 @@ AI: I'll add this complex function
 **Description:** Using the wrong tool for the task or not using SWEObeyMe tools at all.
 
 **Example:**
+
 ```
 AI: I'll use the built-in file editor
 (Should use write_file)
@@ -298,12 +332,14 @@ AI: I'll use the built-in file editor
 ```
 
 **Why It's Bad:**
+
 - Bypasses surgical enforcement
 - No validation
 - No backups
 - Breaks governance
 
 **How to Avoid:**
+
 ```
 1. Always use read_file for reading
 2. Always use write_file for writing
@@ -316,6 +352,7 @@ AI: I'll use the built-in file editor
 **Description:** Not checking or addressing C# errors in C# projects.
 
 **Example:**
+
 ```
 AI: I'll fix the bug in Program.cs
 (Doesn't check C# errors)
@@ -323,12 +360,14 @@ AI: I'll fix the bug in Program.cs
 ```
 
 **Why It's Bad:**
+
 - Compilation errors
 - Broken code
 - Poor quality
 - Frustrating
 
 **How to Avoid:**
+
 ```
 1. Use get_csharp_errors_for_file before changes
 2. Fix existing errors
@@ -341,6 +380,7 @@ AI: I'll fix the bug in Program.cs
 **Description:** Creating duplicate implementations instead of reusing existing code.
 
 **Example:**
+
 ```
 AI: I'll create a new utility function
 (Function already exists in utils.js)
@@ -348,12 +388,14 @@ AI: I'll create a new utility function
 ```
 
 **Why It's Bad:**
+
 - Violates DRY principle
 - Maintenance burden
 - Inconsistent behavior
 - Technical debt
 
 **How to Avoid:**
+
 ```
 1. Use search_code_files to find existing code
 2. Reuse existing implementations
@@ -366,6 +408,7 @@ AI: I'll create a new utility function
 **Description:** Using magic numbers or hard-coded values instead of constants.
 
 **Example:**
+
 ```
 AI: I'll add this timeout value: 5000
 (Should be a constant)
@@ -373,12 +416,14 @@ AI: I'll add this timeout value: 5000
 ```
 
 **Why It's Bad:**
+
 - Difficult to maintain
 - No context for values
 - Hard to change
 - Poor quality
 
 **How to Avoid:**
+
 ```
 1. Extract constants for magic numbers
 2. Use descriptive names
@@ -391,6 +436,7 @@ AI: I'll add this timeout value: 5000
 **Description:** Creating deeply nested code that's hard to read and maintain.
 
 **Example:**
+
 ```
 AI: I'll add this logic
 (Nested 8 levels deep)
@@ -398,12 +444,14 @@ AI: I'll add this logic
 ```
 
 **Why It's Bad:**
+
 - Difficult to read
 - Hard to maintain
 - Cognitive load
 - Poor quality
 
 **How to Avoid:**
+
 ```
 1. Extract nested logic to functions
 2. Use early returns
@@ -417,6 +465,7 @@ AI: I'll add this logic
 **Description:** Using empty catch blocks that swallow errors without handling.
 
 **Example:**
+
 ```
 AI: I'll add error handling
 try { ... } catch (e) {}
@@ -424,12 +473,14 @@ try { ... } catch (e) {}
 ```
 
 **Why It's Bad:**
+
 - Swallows errors
 - Hard to debug
 - Poor error handling
 - Security risk
 
 **How to Avoid:**
+
 ```
 1. Always handle errors in catch blocks
 2. Log errors appropriately
@@ -442,6 +493,7 @@ try { ... } catch (e) {}
 **Description:** Creating functions that do too many things.
 
 **Example:**
+
 ```
 AI: I'll create a function that handles everything
 (Function does 10 different things)
@@ -449,12 +501,14 @@ AI: I'll create a function that handles everything
 ```
 
 **Why It's Bad:**
+
 - Violates single responsibility
 - Hard to test
 - Hard to maintain
 - Poor quality
 
 **How to Avoid:**
+
 ```
 1. Split functions by responsibility
 2. Use composition over complexity
@@ -468,6 +522,7 @@ AI: I'll create a function that handles everything
 **Description:** Creating circular import dependencies.
 
 **Example:**
+
 ```
 AI: I'll import this module
 (Creates circular dependency)
@@ -475,12 +530,14 @@ AI: I'll import this module
 ```
 
 **Why It's Bad:**
+
 - Breaks code
 - Runtime errors
 - Poor architecture
 - Difficult to debug
 
 **How to Avoid:**
+
 ```
 1. Use verify_imports to check
 2. Refactor to break cycles
@@ -493,6 +550,7 @@ AI: I'll import this module
 **Description:** Not using backups before risky operations.
 
 **Example:**
+
 ```
 AI: I'll delete this file
 (No backup)
@@ -500,12 +558,14 @@ AI: I'll delete this file
 ```
 
 **Why It's Bad:**
+
 - Data loss risk
 - No recovery option
 - Risky behavior
 - Poor practice
 
 **How to Avoid:**
+
 ```
 1. Use create_backup before risky operations
 2. Write_file automatically creates backups
@@ -518,6 +578,7 @@ AI: I'll delete this file
 **Description:** Not verifying that imports exist and are accessible.
 
 **Example:**
+
 ```
 AI: I'll import this module
 (Module doesn't exist)
@@ -525,12 +586,14 @@ AI: I'll import this module
 ```
 
 **Why It's Bad:**
+
 - Runtime errors
 - Broken code
 - Poor quality
 - Frustrating
 
 **How to Avoid:**
+
 ```
 1. Use verify_imports before writing
 2. Check that imported files exist
@@ -543,6 +606,7 @@ AI: I'll import this module
 **Description:** Not using project memory to understand project structure and conventions.
 
 **Example:**
+
 ```
 AI: I'll create this file
 (Doesn't check project structure)
@@ -550,12 +614,14 @@ AI: I'll create this file
 ```
 
 **Why It's Bad:**
+
 - Wrong file location
 - Violates conventions
 - Confusing structure
 - Poor organization
 
 **How to Avoid:**
+
 ```
 1. Use index_project_structure to build memory
 2. Use analyze_project_conventions to detect patterns
@@ -568,6 +634,7 @@ AI: I'll create this file
 **Description:** Using eval() or similar dangerous functions.
 
 **Example:**
+
 ```
 AI: I'll use eval() to parse this JSON
 (Dangerous)
@@ -575,12 +642,14 @@ AI: I'll use eval() to parse this JSON
 ```
 
 **Why It's Bad:**
+
 - Security risk
 - Code injection
 - Poor performance
 - Forbidden pattern
 
 **How to Avoid:**
+
 ```
 1. Never use eval()
 2. Use JSON.parse() for JSON
@@ -593,6 +662,7 @@ AI: I'll use eval() to parse this JSON
 **Description:** Repeatedly trying the same operation that keeps failing.
 
 **Example:**
+
 ```
 AI: Write file
 (Fails)
@@ -603,12 +673,14 @@ AI: Write file
 ```
 
 **Why It's Bad:**
+
 - Infinite loop
 - Wastes time
 - No progress
 - Frustrating
 
 **How to Avoid:**
+
 ```
 1. Use check_for_repetitive_patterns to detect
 2. Use explain_rejection to understand why
@@ -622,6 +694,7 @@ AI: Write file
 **Description:** Assuming you have permission to write or delete files without checking.
 
 **Example:**
+
 ```
 AI: I'll delete this file
 (No permission check)
@@ -629,12 +702,14 @@ AI: I'll delete this file
 ```
 
 **Why It's Bad:**
+
 - Operations fail
 - Wastes time
 - Frustrating
 - Poor error handling
 
 **How to Avoid:**
+
 ```
 1. Use confirm_dangerous_operation for destructive actions
 2. Check permissions if possible
@@ -646,22 +721,23 @@ AI: I'll delete this file
 
 ### Most Common Anti-Patterns
 
-| Anti-Pattern | Severity | How to Avoid |
-|--------------|----------|--------------|
-| Edit Without Search | High | Use search_code_files first |
-| Write Without Validation | High | Use preflight_change |
-| Refactor Without Context | High | Use get_file_context |
-| Ignore Line Count Limits | High | Use obey_surgical_plan |
-| Skip Testing | High | Use run_related_tests |
-| Ignore Forbidden Patterns | High | Remove console.log, TODO, etc. |
-| Invent Files | High | Use list_directory to verify |
-| Ignore Project Conventions | Medium | Use analyze_project_conventions |
-| Massive Refactor | High | Use initiate_surgical_workflow |
-| Ignore Error Messages | High | Use explain_rejection |
+| Anti-Pattern               | Severity | How to Avoid                    |
+| -------------------------- | -------- | ------------------------------- |
+| Edit Without Search        | High     | Use search_code_files first     |
+| Write Without Validation   | High     | Use preflight_change            |
+| Refactor Without Context   | High     | Use get_file_context            |
+| Ignore Line Count Limits   | High     | Use obey_surgical_plan          |
+| Skip Testing               | High     | Use run_related_tests           |
+| Ignore Forbidden Patterns  | High     | Remove console.log, TODO, etc.  |
+| Invent Files               | High     | Use list_directory to verify    |
+| Ignore Project Conventions | Medium   | Use analyze_project_conventions |
+| Massive Refactor           | High     | Use initiate_surgical_workflow  |
+| Ignore Error Messages      | High     | Use explain_rejection           |
 
 ## Anti-Pattern Detection Checklist
 
 Before any operation, check:
+
 - [ ] Have I searched for existing code?
 - [ ] Have I validated the change?
 - [ ] Do I understand the context?

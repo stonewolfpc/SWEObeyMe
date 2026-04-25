@@ -20,7 +20,7 @@ class EnterpriseLeakScanner {
       skipped: 0,
       total: 0,
     };
-    
+
     this.repoRoot = dirname(dirname(__dirname));
     this.enterpriseKeywords = [
       'TODO.*enterprise',
@@ -41,7 +41,7 @@ class EnterpriseLeakScanner {
 
   async run() {
     console.log('[EnterpriseLeakScanner] Starting enterprise leak scan...');
-    
+
     const tests = [
       'scan-todos',
       'scan-comments',
@@ -50,21 +50,21 @@ class EnterpriseLeakScanner {
       'scan-docs',
       'validate-no-leaks',
     ];
-    
+
     for (const test of tests) {
       await this.runTest(test);
     }
-    
+
     this.results.total = this.results.tests.length;
     return this.results;
   }
 
   async runTest(testName) {
     console.log(`[EnterpriseLeakScanner] Running: ${testName}...`);
-    
+
     let passed = false;
     let error = null;
-    
+
     try {
       switch (testName) {
         case 'scan-todos':
@@ -88,7 +88,7 @@ class EnterpriseLeakScanner {
         default:
           error = 'Unknown test name';
       }
-      
+
       // If test returned false but no error was thrown, set a descriptive error
       if (!passed && !error) {
         error = 'Test failed: enterprise leaks found';
@@ -96,14 +96,14 @@ class EnterpriseLeakScanner {
     } catch (e) {
       error = e.message;
     }
-    
+
     this.results.tests.push({
       id: testName,
       name: `Enterprise Leak Scanner - ${testName}`,
       passed,
       error,
     });
-    
+
     if (passed) {
       this.results.passed++;
       console.log(`[EnterpriseLeakScanner] ✅ ${testName}`);
@@ -149,11 +149,11 @@ class EnterpriseLeakScanner {
         join(this.repoRoot, '.sweobeyme-config.json'),
         join(this.repoRoot, 'package.json'),
       ];
-      
+
       for (const file of configFiles) {
         if (existsSync(file)) {
           const content = readFileSync(file, 'utf-8');
-          
+
           for (const keyword of this.enterpriseKeywords) {
             const regex = new RegExp(keyword, 'gi');
             if (regex.test(content)) {
@@ -162,7 +162,7 @@ class EnterpriseLeakScanner {
           }
         }
       }
-      
+
       return true;
     } catch (e) {
       console.log('[EnterpriseLeakScanner] Config scan failed:', e.message);
@@ -172,14 +172,12 @@ class EnterpriseLeakScanner {
 
   async testScanDocs() {
     try {
-      const docFiles = [
-        join(this.repoRoot, 'README.md'),
-      ];
-      
+      const docFiles = [join(this.repoRoot, 'README.md')];
+
       for (const file of docFiles) {
         if (existsSync(file)) {
           const content = readFileSync(file, 'utf-8');
-          
+
           for (const keyword of this.enterpriseKeywords) {
             const regex = new RegExp(keyword, 'gi');
             if (regex.test(content)) {
@@ -188,7 +186,7 @@ class EnterpriseLeakScanner {
           }
         }
       }
-      
+
       return true;
     } catch (e) {
       console.log('[EnterpriseLeakScanner] Doc scan failed:', e.message);
@@ -210,58 +208,78 @@ class EnterpriseLeakScanner {
     try {
       const leaks = [];
       const files = this.scanDirectory(this.repoRoot);
-      
+
       for (const file of files) {
         // Skip git-governor test files to avoid false positives
         if (file.includes('git-governor')) {
           continue;
         }
-        
+
         // Skip windsurf-rig and ares-rig test directories
         if (file.includes('windsurf-rig') || file.includes('ares-rig')) {
           continue;
         }
-        
+
         // Skip package.json and package-lock.json as they contain legitimate configuration
         if (file.endsWith('package.json') || file.endsWith('package-lock.json')) {
           continue;
         }
-        
+
         // Skip README.md and FAQ.md as they contain legitimate enterprise licensing information
         if (file.endsWith('README.md') || file.endsWith('FAQ.md')) {
           continue;
         }
-        
+
         // Skip ide_mcp_corpus and docs documentation
         if (file.includes('ide_mcp_corpus') || file.includes('docs/')) {
           continue;
         }
-        
+
         // Skip main documentation files
-        if (file.endsWith('ENTERPRISE.md') || file.endsWith('CHANGELOG.md') || 
-            file.endsWith('AUDIT_REPORT.md') || file.endsWith('ANALYSIS_ENGINE_PLAN.md') ||
-            file.endsWith('DECISION_TREE.md') || file.endsWith('BEST_PRACTICES.md') ||
-            file.endsWith('ANTI_PATTERNS.md') || file.endsWith('COMMON_PATTERNS.md') ||
-            file.endsWith('CODE_OF_CONDUCT.md') || file.endsWith('CONTRIBUTING.md') ||
-            file.endsWith('CONFIGURATION_EXAMPLES.md') || file.endsWith('AI_INDEX.md') ||
-            file.endsWith('ONBOARDING.md') || file.endsWith('QUICKSTART.md') ||
-            file.endsWith('TROUBLESHOOTING.md') || file.endsWith('PERFORMANCE_TIPS.md') ||
-            file.endsWith('SECURITY.md') || file.endsWith('ARCHITECTURE.md')) {
+        if (
+          file.endsWith('ENTERPRISE.md') ||
+          file.endsWith('CHANGELOG.md') ||
+          file.endsWith('AUDIT_REPORT.md') ||
+          file.endsWith('ANALYSIS_ENGINE_PLAN.md') ||
+          file.endsWith('DECISION_TREE.md') ||
+          file.endsWith('BEST_PRACTICES.md') ||
+          file.endsWith('ANTI_PATTERNS.md') ||
+          file.endsWith('COMMON_PATTERNS.md') ||
+          file.endsWith('CODE_OF_CONDUCT.md') ||
+          file.endsWith('CONTRIBUTING.md') ||
+          file.endsWith('CONFIGURATION_EXAMPLES.md') ||
+          file.endsWith('AI_INDEX.md') ||
+          file.endsWith('ONBOARDING.md') ||
+          file.endsWith('QUICKSTART.md') ||
+          file.endsWith('TROUBLESHOOTING.md') ||
+          file.endsWith('PERFORMANCE_TIPS.md') ||
+          file.endsWith('SECURITY.md') ||
+          file.endsWith('ARCHITECTURE.md')
+        ) {
           continue;
         }
-        
+
         // Skip runtime/generated JSON files
-        if (file.endsWith('error_patterns.json') || file.endsWith('error_log.json') || 
-            file.endsWith('tool-memory.json') || file.includes('project_registry') ||
-            file.includes('schemas/')) {
+        if (
+          file.endsWith('error_patterns.json') ||
+          file.endsWith('error_log.json') ||
+          file.endsWith('tool-memory.json') ||
+          file.includes('project_registry') ||
+          file.includes('schemas/')
+        ) {
           continue;
         }
-        
-        if (file.endsWith('.js') || file.endsWith('.json') || file.endsWith('.md') || file.endsWith('.ts')) {
+
+        if (
+          file.endsWith('.js') ||
+          file.endsWith('.json') ||
+          file.endsWith('.md') ||
+          file.endsWith('.ts')
+        ) {
           try {
             const content = readFileSync(file, 'utf-8');
             const matches = content.match(pattern);
-            
+
             if (matches && matches.length > 0) {
               leaks.push({ file, matches });
             }
@@ -270,7 +288,7 @@ class EnterpriseLeakScanner {
           }
         }
       }
-      
+
       return leaks;
     } catch (e) {
       console.log('[EnterpriseLeakScanner] Pattern scan failed:', e.message);
@@ -281,13 +299,13 @@ class EnterpriseLeakScanner {
   scanForAllLeaks() {
     try {
       const allLeaks = [];
-      
+
       for (const keyword of this.enterpriseKeywords) {
         const regex = new RegExp(keyword, 'gi');
         const leaks = this.scanForPattern(regex);
         allLeaks.push(...leaks);
       }
-      
+
       return allLeaks;
     } catch (e) {
       console.log('[EnterpriseLeakScanner] All leaks scan failed:', e.message);
@@ -297,24 +315,29 @@ class EnterpriseLeakScanner {
 
   scanDirectory(dirPath) {
     const files = [];
-    
+
     // Skip git-governor directory entirely to avoid false positives
     if (dirPath.includes('git-governor')) {
       return files;
     }
-    
+
     try {
       const items = readdirSync(dirPath);
-      
+
       for (const item of items) {
         const itemPath = join(dirPath, item);
-        
+
         try {
           const stats = statSync(itemPath);
-          
+
           if (stats.isDirectory()) {
             // Skip node_modules, .git, and test directories
-            if (!item.includes('node_modules') && !item.includes('.git') && !item.includes('windsurf-rig') && !item.includes('ares-rig')) {
+            if (
+              !item.includes('node_modules') &&
+              !item.includes('.git') &&
+              !item.includes('windsurf-rig') &&
+              !item.includes('ares-rig')
+            ) {
               files.push(...this.scanDirectory(itemPath));
             }
           } else {
@@ -327,7 +350,7 @@ class EnterpriseLeakScanner {
     } catch (e) {
       // Ignore permission errors
     }
-    
+
     return files;
   }
 }

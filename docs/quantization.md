@@ -19,26 +19,26 @@ Quantization is the process of reducing the precision of model weights to decrea
 
 K-quants provide excellent quality at low bit rates by mixing quantization levels:
 
-| Format | Bits/Weight | Description | Use Case |
-|--------|-------------|---------------|----------|
-| Q4_K_M | 4 | Medium 4-bit (recommended) | Balanced quality/size |
-| Q4_K_S | 4 | Small 4-bit | Maximum compression |
-| Q5_K_M | 5 | Medium 5-bit | Higher quality |
-| Q5_K_S | 5 | Small 5-bit | Quality/size balance |
-| Q6_K | 6 | 6-bit | High quality |
-| Q8_0 | 8 | 8-bit (legacy) | Near-FP16 quality |
+| Format | Bits/Weight | Description                | Use Case              |
+| ------ | ----------- | -------------------------- | --------------------- |
+| Q4_K_M | 4           | Medium 4-bit (recommended) | Balanced quality/size |
+| Q4_K_S | 4           | Small 4-bit                | Maximum compression   |
+| Q5_K_M | 5           | Medium 5-bit               | Higher quality        |
+| Q5_K_S | 5           | Small 5-bit                | Quality/size balance  |
+| Q6_K   | 6           | 6-bit                      | High quality          |
+| Q8_0   | 8           | 8-bit (legacy)             | Near-FP16 quality     |
 
 ### Legacy Formats
 
-| Format | Bits/Weight | Notes |
-|--------|-------------|-------|
-| Q4_0 | 4 | Original 4-bit, faster but lower quality |
-| Q4_1 | 4.5 | Improved 4-bit with bias |
-| Q5_0 | 5 | Original 5-bit |
-| Q5_1 | 5.5 | Improved 5-bit with bias |
-| Q8_0 | 8 | Original 8-bit |
-| F16 | 16 | Half precision, no quantization |
-| F32 | 32 | Full precision, no quantization |
+| Format | Bits/Weight | Notes                                    |
+| ------ | ----------- | ---------------------------------------- |
+| Q4_0   | 4           | Original 4-bit, faster but lower quality |
+| Q4_1   | 4.5         | Improved 4-bit with bias                 |
+| Q5_0   | 5           | Original 5-bit                           |
+| Q5_1   | 5.5         | Improved 5-bit with bias                 |
+| Q8_0   | 8           | Original 8-bit                           |
+| F16    | 16          | Half precision, no quantization          |
+| F32    | 32          | Full precision, no quantization          |
 
 ## Quantization Process
 
@@ -116,11 +116,11 @@ Lower perplexity = better quality. Small increases (5-10%) are usually acceptabl
 
 ## Memory Requirements
 
-| Model Size | F16 | Q4_K_M | Q5_K_M | Q8_0 |
-|------------|-----|--------|--------|------|
-| 7B | 14 GB | 4 GB | 5 GB | 7 GB |
-| 13B | 26 GB | 7.5 GB | 9.5 GB | 13 GB |
-| 70B | 140 GB | 40 GB | 50 GB | 70 GB |
+| Model Size | F16    | Q4_K_M | Q5_K_M | Q8_0  |
+| ---------- | ------ | ------ | ------ | ----- |
+| 7B         | 14 GB  | 4 GB   | 5 GB   | 7 GB  |
+| 13B        | 26 GB  | 7.5 GB | 9.5 GB | 13 GB |
+| 70B        | 140 GB | 40 GB  | 50 GB  | 70 GB |
 
 Note: Additional memory required for context/kv-cache.
 
@@ -145,25 +145,25 @@ def quantize_q4(weights):
     """
     group_size = 32
     shape = weights.shape
-    
+
     # Reshape into groups
     weights_flat = weights.reshape(-1)
     num_groups = len(weights_flat) // group_size
     weights_grouped = weights_flat[:num_groups * group_size].reshape(num_groups, group_size)
-    
+
     # Calculate scales and mins
     wmin = weights_grouped.min(axis=1, keepdims=True)
     wmax = weights_grouped.max(axis=1, keepdims=True)
     scale = (wmax - wmin) / 15.0  # 4-bit = 16 values (0-15)
-    
+
     # Quantize
     quantized = np.round((weights_grouped - wmin) / scale).astype(np.uint8)
-    
+
     # Pack into bytes (2 values per byte)
     packed = np.zeros(num_groups * group_size // 2, dtype=np.uint8)
     for i in range(0, group_size, 2):
         packed[i//2] = (quantized[:, i] & 0x0F) | ((quantized[:, i+1] & 0x0F) << 4)
-    
+
     return {
         'data': packed,
         'scales': scale.flatten(),
@@ -179,22 +179,22 @@ def dequantize_q4(quantized_dict):
     scales = quantized_dict['scales']
     mins = quantized_dict['mins']
     shape = quantized_dict['shape']
-    
+
     # Unpack bytes
     low = data & 0x0F
     high = (data >> 4) & 0x0F
     quantized = np.stack([low, high], axis=1).flatten()
-    
+
     # Dequantize
     group_size = 32
     num_groups = len(quantized) // group_size
     quantized_grouped = quantized[:num_groups * group_size].reshape(num_groups, group_size)
-    
+
     scales = scales.reshape(-1, 1)
     mins = mins.reshape(-1, 1)
-    
+
     weights = quantized_grouped * scales + mins
-    
+
     return weights.reshape(shape)
 ```
 

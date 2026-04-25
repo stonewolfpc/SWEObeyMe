@@ -65,14 +65,14 @@ describe('session-state module', () => {
       }
       // Clear in-memory state without writing to disk
       Object.assign(sessionState, defaultState);
-      
+
       const testState = {
         toolCallCounter: 42,
         currentTaskId: 'task-123',
         taskListSnapshot: [{ id: 'task-123', description: 'Test task' }],
         reminderInterval: 20,
       };
-      
+
       // Write test file directly
       fs.mkdirSync(path.dirname(TEST_SESSION_FILE), { recursive: true });
       fs.writeFileSync(TEST_SESSION_FILE, JSON.stringify(testState));

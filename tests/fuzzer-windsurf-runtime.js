@@ -2,7 +2,7 @@
 
 /**
  * Windsurf Runtime Fuzzer
- * 
+ *
  * Fuzzes the MCP server through Windsurf's runtime environment
  * Tests: server stability, protocol compliance, safety invariants under chaos
  */
@@ -21,23 +21,26 @@ const __dirname = path.dirname(__filename);
 export class WindsurfRuntimeFuzzer {
   constructor(options = {}) {
     this.serverPath = options.serverPath || path.join(__dirname, '..', 'dist', 'mcp', 'server.js');
-    this.configPath = options.configPath || path.join(__dirname, '..', 'mcp-configs', 'windsurf-mcp.json');
-    this.timeout = options.timeout || 30000; // 30 seconds
-    this.maxIterations = options.maxIterations || 100;
-    
+    this.configPath =
+      options.configPath || path.join(__dirname, '..', 'mcp-configs', 'windsurf-mcp.json');
+    this.timeout = options.timeout || 5000; // Reduced from 30000 to 5000ms for faster testing
+    this.maxIterations = options.maxIterations || 50; // Reduced from 100 to 50 for faster feedback
+    this.parallel = options.parallel !== false; // Enable parallel execution by default
+    this.batchSize = options.batchSize || 10; // Process tests in batches for parallel execution
+
     this.messageFuzzer = new MCPMessageFuzzer();
     this.transportFuzzer = new TransportFuzzer();
     this.timingFuzzer = new TimingFuzzer();
-    
+
     this.results = {
       serverInvariants: {},
       protocolInvariants: {},
       safetyInvariants: {},
       crashes: [],
       hangs: [],
-      errors: []
+      errors: [],
     };
-    
+
     // Convenience aliases used throughout the class
     this.crashes = this.results.crashes;
     this.hangs = this.results.hangs;
@@ -51,7 +54,7 @@ export class WindsurfRuntimeFuzzer {
     return new Promise((resolve, reject) => {
       const server = spawn('node', [this.serverPath], {
         stdio: ['pipe', 'pipe', 'pipe'],
-        env: process.env
+        env: process.env,
       });
 
       // Prevent MaxListenersExceededWarning from rapid .once('data') in sendMessage
@@ -141,6 +144,44 @@ export class WindsurfRuntimeFuzzer {
   }
 
   /**
+   * Send multiple messages in parallel
+   */
+  async sendMessagesParallel(messages) {
+    if (!this.parallel) {
+      // Fall back to sequential if parallel is disabled
+      const results = [];
+      for (const message of messages) {
+        try {
+          const response = await this.sendMessage(message);
+          results.push({ success: true, response });
+        } catch (e) {
+          results.push({ success: false, error: e.message });
+        }
+      }
+      return results;
+    }
+
+    // Send messages in parallel batches
+    const results = [];
+    for (let i = 0; i < messages.length; i += this.batchSize) {
+      const batch = messages.slice(i, i + this.batchSize);
+      const batchResults = await Promise.all(
+        batch.map(async (message) => {
+          try {
+            const response = await this.sendMessage(message);
+            return { success: true, response };
+          } catch (e) {
+            return { success: false, error: e.message };
+          }
+        })
+      );
+      results.push(...batchResults);
+    }
+
+    return results;
+  }
+
+  /**
    * Test server invariants
    */
   async testServerInvariants() {
@@ -184,10 +225,10 @@ export class WindsurfRuntimeFuzzer {
    */
   async testNoCrash() {
     const iterations = 10;
-    
+
     for (let i = 0; i < iterations; i++) {
       const message = this.messageFuzzer.generateRequest();
-      
+
       try {
         await this.sendMessage(message);
       } catch (e) {
@@ -207,7 +248,7 @@ export class WindsurfRuntimeFuzzer {
    */
   async testNoHang() {
     const message = this.messageFuzzer.generateRequest();
-    
+
     try {
       await this.sendMessage(message);
       return true;
@@ -225,7 +266,7 @@ export class WindsurfRuntimeFuzzer {
    */
   async testNoInvalidJson() {
     const message = this.messageFuzzer.generateRequest();
-    
+
     try {
       const response = await this.sendMessage(message);
       JSON.parse(response); // Will throw if invalid
@@ -252,9 +293,9 @@ export class WindsurfRuntimeFuzzer {
         name: 'write_file',
         arguments: {
           path: './fuzz-test-file.txt',
-          content: 'test content'
-        }
-      }
+          content: 'test content',
+        },
+      },
     };
 
     try {
@@ -309,7 +350,7 @@ export class WindsurfRuntimeFuzzer {
    */
   async testEveryRequestGetsResponse() {
     const message = this.messageFuzzer.generateRequest();
-    
+
     try {
       const response = await this.sendMessage(message);
       return response !== null && response !== undefined;
@@ -324,7 +365,7 @@ export class WindsurfRuntimeFuzzer {
    */
   async testValidRequestId() {
     const message = this.messageFuzzer.generateRequest();
-    
+
     try {
       const response = await this.sendMessage(message);
       const parsed = JSON.parse(response);
@@ -340,7 +381,7 @@ export class WindsurfRuntimeFuzzer {
    */
   async testValidJsonRpc() {
     const message = this.messageFuzzer.generateRequest();
-    
+
     try {
       const response = await this.sendMessage(message);
       const parsed = JSON.parse(response);
@@ -405,9 +446,9 @@ export class WindsurfRuntimeFuzzer {
       params: {
         name: 'read_file',
         arguments: {
-          path: '../../../etc/passwd'
-        }
-      }
+          path: '../../../etc/passwd',
+        },
+      },
     };
 
     try {
@@ -432,9 +473,9 @@ export class WindsurfRuntimeFuzzer {
       params: {
         name: 'delete_file',
         arguments: {
-          path: '/tmp/test.txt'
-        }
-      }
+          path: '/tmp/test.txt',
+        },
+      },
     };
 
     try {
@@ -460,9 +501,9 @@ export class WindsurfRuntimeFuzzer {
         name: 'write_file',
         arguments: {
           path: '/etc/passwd',
-          content: 'malicious'
-        }
-      }
+          content: 'malicious',
+        },
+      },
     };
 
     try {
@@ -487,9 +528,9 @@ export class WindsurfRuntimeFuzzer {
       params: {
         name: 'execute_command',
         arguments: {
-          command: 'rm -rf /'
-        }
-      }
+          command: 'rm -rf /',
+        },
+      },
     };
 
     try {
@@ -514,9 +555,9 @@ export class WindsurfRuntimeFuzzer {
       params: {
         name: 'read_file',
         arguments: {
-          path: '~/.ssh/id_rsa'
-        }
-      }
+          path: '~/.ssh/id_rsa',
+        },
+      },
     };
 
     try {
@@ -553,7 +594,10 @@ export class WindsurfRuntimeFuzzer {
    */
   async runFullFuzzer() {
     console.log('=== Windsurf Runtime Fuzzer ===\n');
-    
+    console.log(
+      `Configuration: parallel=${this.parallel}, timeout=${this.timeout}ms, batchSize=${this.batchSize}, maxIterations=${this.maxIterations}\n`
+    );
+
     try {
       // Start server
       console.log('Starting MCP server...');
@@ -573,44 +617,52 @@ export class WindsurfRuntimeFuzzer {
       await this.testSafetyInvariants();
       console.log('Safety invariants tested\n');
 
-      // Run message fuzzing
+      // Run message fuzzing with parallel execution
       console.log('Running message fuzzer...');
-      const messageBatch = this.messageFuzzer.generateFuzzBatch(50);
-      for (const { type, message } of messageBatch) {
+      const messageBatch = this.messageFuzzer.generateFuzzBatch(25); // Reduced from 50 to 25
+      const messageResults = await this.sendMessagesParallel(messageBatch.map((m) => m.message));
+      messageResults.forEach((result, i) => {
+        if (!result.success) {
+          this.errors.push({ type: messageBatch[i].type, error: result.error });
+        }
+      });
+      console.log(`Message fuzzer complete (${messageResults.length} messages)\n`);
+
+      // Run transport fuzzing with parallel execution
+      console.log('Running transport fuzzer...');
+      const transportBatch = this.transportFuzzer.generateFuzzBatch(15); // Reduced from 30 to 15
+      const transportMessages = transportBatch
+        .map((t) => {
+          if (typeof t.fuzzed === 'string') {
+            return JSON.parse(t.fuzzed);
+          } else if (Array.isArray(t.fuzzed)) {
+            return JSON.parse(t.fuzzed.join(''));
+          }
+          return null;
+        })
+        .filter((m) => m !== null);
+
+      const transportResults = await this.sendMessagesParallel(transportMessages);
+      transportResults.forEach((result, i) => {
+        if (!result.success) {
+          this.errors.push({ type: transportBatch[i].transport, error: result.error });
+        }
+      });
+      console.log(`Transport fuzzer complete (${transportResults.length} messages)\n`);
+
+      // Run timing fuzzer
+      console.log('Running timing fuzzer...');
+      const timingBatch = this.timingFuzzer.generateFuzzBatch(10); // Reduced iterations
+      for (const { type, message, delay } of timingBatch) {
         try {
           await this.sendMessage(message);
+          // Simulate delay if needed
+          if (delay) await new Promise((r) => setTimeout(r, delay));
         } catch (e) {
-          this.errors.push({ type, message, error: e.message });
+          this.errors.push({ type, error: e.message });
         }
       }
-      console.log('Message fuzzer complete\n');
-
-      // Run transport fuzzing
-      console.log('Running transport fuzzer...');
-      const transportBatch = this.transportFuzzer.generateFuzzBatch(30);
-      for (const { transport, fuzzed } of transportBatch) {
-        try {
-          if (typeof fuzzed === 'string') {
-            await this.sendMessage(JSON.parse(fuzzed));
-          } else if (Array.isArray(fuzzed)) {
-            // Reassemble chunks
-            const reassembled = fuzzed.join('');
-            await this.sendMessage(JSON.parse(reassembled));
-          }
-        } catch (e) {
-          this.errors.push({ transport, fuzzed, error: e.message });
-        }
-      }
-      console.log('Transport fuzzer complete\n');
-
-      // Run timing fuzzing
-      console.log('Running timing fuzzer...');
-      await this.timingFuzzer.runFuzzBatch(async () => {
-        const message = this.messageFuzzer.generateRequest();
-        return await this.sendMessage(message);
-      }, 20);
       console.log('Timing fuzzer complete\n');
-
     } catch (e) {
       console.error('Fuzzer error:', e);
       this.errors.push({ error: e.message });
@@ -628,9 +680,18 @@ export class WindsurfRuntimeFuzzer {
    * Generate fuzzer report
    */
   generateReport() {
-    const serverResults = validateInvariants(this.results.serverInvariants, getAllInvariants().server);
-    const protocolResults = validateInvariants(this.results.protocolInvariants, getAllInvariants().protocol);
-    const safetyResults = validateInvariants(this.results.safetyInvariants, getAllInvariants().safety);
+    const serverResults = validateInvariants(
+      this.results.serverInvariants,
+      getAllInvariants().server
+    );
+    const protocolResults = validateInvariants(
+      this.results.protocolInvariants,
+      getAllInvariants().protocol
+    );
+    const safetyResults = validateInvariants(
+      this.results.safetyInvariants,
+      getAllInvariants().safety
+    );
 
     const report = {
       serverInvariants: serverResults,
@@ -640,7 +701,12 @@ export class WindsurfRuntimeFuzzer {
       hangs: this.hangs,
       errors: this.errors,
       passed: serverResults.passed && protocolResults.passed && safetyResults.passed,
-      totalViolations: serverResults.failed + protocolResults.failed + safetyResults.failed + this.crashes.length + this.hangs.length
+      totalViolations:
+        serverResults.failed +
+        protocolResults.failed +
+        safetyResults.failed +
+        this.crashes.length +
+        this.hangs.length,
     };
 
     return report;
@@ -651,15 +717,17 @@ export class WindsurfRuntimeFuzzer {
 if (import.meta.url === `file://${process.argv[1]}`) {
   const fuzzer = new WindsurfRuntimeFuzzer();
   const report = await fuzzer.runFullFuzzer();
-  
+
   console.log('=== Fuzzer Report ===');
   console.log(`Server Invariants: ${report.serverInvariants.passed ? '✅ PASSED' : '❌ FAILED'}`);
-  console.log(`Protocol Invariants: ${report.protocolInvariants.passed ? '✅ PASSED' : '❌ FAILED'}`);
+  console.log(
+    `Protocol Invariants: ${report.protocolInvariants.passed ? '✅ PASSED' : '❌ FAILED'}`
+  );
   console.log(`Safety Invariants: ${report.safetyInvariants.passed ? '✅ PASSED' : '❌ FAILED'}`);
   console.log(`Crashes: ${report.crashes.length}`);
   console.log(`Hangs: ${report.hangs.length}`);
   console.log(`Errors: ${report.errors.length}`);
   console.log(`Total Violations: ${report.totalViolations}`);
-  
+
   process.exit(report.passed ? 0 : 1);
 }

@@ -3,10 +3,13 @@ Source: https://docs.continue.dev/index
 # What is Continue?
 
 ## Quickstart
+
 Quickstart
+
 1. Go to [continue.dev/check](https://continue.dev/check) to run checks on a pull request.
 
 ## How it works
+
 How it works
 
 ```

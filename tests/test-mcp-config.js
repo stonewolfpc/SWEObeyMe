@@ -52,15 +52,19 @@ function recordTest(name, passed, message = '') {
  */
 function testConfigPath() {
   const testName = 'MCP config uses native contributes.mcpServers (no manual config)';
-  
+
   // Since we removed manual config writing, this test now just verifies
   // that the extension declares the MCP server in package.json
   const packageJsonPath = path.join(process.cwd(), 'package.json');
   const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
-  
+
   const hasMcpServers = packageJson.contributes?.mcpServers?.length > 0;
-  
-  recordTest(testName, hasMcpServers, hasMcpServers ? 'Native MCP server declaration found' : 'Missing contributes.mcpServers');
+
+  recordTest(
+    testName,
+    hasMcpServers,
+    hasMcpServers ? 'Native MCP server declaration found' : 'Missing contributes.mcpServers'
+  );
 }
 
 /**
@@ -72,7 +76,11 @@ function testConfigExists() {
   // Skip this test since we removed manual config writing
   log(`⚠ ${testName} - Skipped (using native contributes.mcpServers)`, 'warn');
   results.skipped++;
-  results.tests.push({ name: testName, passed: null, message: 'Skipped - using native contributes.mcpServers' });
+  results.tests.push({
+    name: testName,
+    passed: null,
+    message: 'Skipped - using native contributes.mcpServers',
+  });
   return null;
 }
 
@@ -85,7 +93,11 @@ function testConfigStructure(config) {
   // Skip this test since we removed manual config writing
   log(`⚠ ${testName} - Skipped (using native contributes.mcpServers)`, 'warn');
   results.skipped++;
-  results.tests.push({ name: testName, passed: null, message: 'Skipped - using native contributes.mcpServers' });
+  results.tests.push({
+    name: testName,
+    passed: null,
+    message: 'Skipped - using native contributes.mcpServers',
+  });
 }
 
 /**
@@ -97,7 +109,11 @@ function testServerConfig(config) {
   // Skip this test since we removed manual config writing
   log(`⚠ ${testName} - Skipped (using native contributes.mcpServers)`, 'warn');
   results.skipped++;
-  results.tests.push({ name: testName, passed: null, message: 'Skipped - using native contributes.mcpServers' });
+  results.tests.push({
+    name: testName,
+    passed: null,
+    message: 'Skipped - using native contributes.mcpServers',
+  });
 }
 
 /**
@@ -109,7 +125,11 @@ function testPathNormalization(config) {
   // Skip this test since we removed manual config writing
   log(`⚠ ${testName} - Skipped (using native contributes.mcpServers)`, 'warn');
   results.skipped++;
-  results.tests.push({ name: testName, passed: null, message: 'Skipped - using native contributes.mcpServers' });
+  results.tests.push({
+    name: testName,
+    passed: null,
+    message: 'Skipped - using native contributes.mcpServers',
+  });
 }
 
 /**
@@ -121,7 +141,11 @@ function testNoAbsoluteUserPaths(config) {
   // Skip this test since we removed manual config writing
   log(`⚠ ${testName} - Skipped (using native contributes.mcpServers)`, 'warn');
   results.skipped++;
-  results.tests.push({ name: testName, passed: null, message: 'Skipped - using native contributes.mcpServers' });
+  results.tests.push({
+    name: testName,
+    passed: null,
+    message: 'Skipped - using native contributes.mcpServers',
+  });
 }
 
 /**
@@ -133,7 +157,11 @@ function testEnvironmentVariables(config) {
   // Skip this test since we removed manual config writing
   log(`⚠ ${testName} - Skipped (using native contributes.mcpServers)`, 'warn');
   results.skipped++;
-  results.tests.push({ name: testName, passed: null, message: 'Skipped - using native contributes.mcpServers' });
+  results.tests.push({
+    name: testName,
+    passed: null,
+    message: 'Skipped - using native contributes.mcpServers',
+  });
 }
 
 /**
@@ -145,7 +173,11 @@ function testConfigIntegrity() {
   // Skip this test since we removed manual config writing
   log(`⚠ ${testName} - Skipped (using native contributes.mcpServers)`, 'warn');
   results.skipped++;
-  results.tests.push({ name: testName, passed: null, message: 'Skipped - using native contributes.mcpServers' });
+  results.tests.push({
+    name: testName,
+    passed: null,
+    message: 'Skipped - using native contributes.mcpServers',
+  });
 }
 
 /**
@@ -153,17 +185,17 @@ function testConfigIntegrity() {
  */
 function testCrossPlatformPaths() {
   const testName = 'Path normalization works across platforms';
-  
+
   // Test Windows path normalization
   const windowsPath = 'C:\\Users\\test\\AppData\\Local\\Windsurf\\index.js';
   const normalizedWindows = windowsPath.replace(/\\/g, '/');
   const windowsNormalized = !normalizedWindows.includes('\\');
-  
+
   // Test Unix path (should remain unchanged)
   const unixPath = '/home/test/extension/index.js';
   const normalizedUnix = unixPath.replace(/\\/g, '/');
   const unixUnchanged = normalizedUnix === unixPath;
-  
+
   const allChecks = windowsNormalized && unixUnchanged;
   recordTest(testName, allChecks, allChecks ? '' : 'Path normalization failed');
 }
@@ -177,7 +209,11 @@ function testDeactivatePathConsistency() {
   // Skip this test since we removed manual config writing
   log(`⚠ ${testName} - Skipped (using native contributes.mcpServers)`, 'warn');
   results.skipped++;
-  results.tests.push({ name: testName, passed: null, message: 'Skipped - using native contributes.mcpServers' });
+  results.tests.push({
+    name: testName,
+    passed: null,
+    message: 'Skipped - using native contributes.mcpServers',
+  });
 }
 
 /**
@@ -185,51 +221,51 @@ function testDeactivatePathConsistency() {
  */
 function runAllTests() {
   log('\n=== MCP Configuration Test Suite ===\n', 'info');
-  
+
   // Test 1: Config path (native contributes.mcpServers)
   testConfigPath();
-  
+
   // Test 2: Config exists and valid (skipped for native approach)
   const config = testConfigExists();
-  
+
   if (config) {
     // Test 3: Config structure
     testConfigStructure(config);
-    
+
     // Test 4: Server configuration
     testServerConfig(config);
-    
+
     // Test 5: Path normalization
     testPathNormalization(config);
-    
+
     // Test 6: No absolute user paths
     testNoAbsoluteUserPaths(config);
-    
+
     // Test 7: Environment variables
     testEnvironmentVariables(config);
   }
-  
+
   // Test 8: Config integrity (skipped for native approach)
   testConfigIntegrity();
-  
+
   // Test 9: Cross-platform paths
   testCrossPlatformPaths();
-  
+
   // Test 10: Deactivate path consistency
   testDeactivatePathConsistency();
-  
+
   // Print summary
   log('\n=== Test Summary ===\n', 'info');
   log(`Total Tests: ${results.tests.length}`, 'info');
   log(`Passed: ${results.passed}`, 'pass');
   log(`Failed: ${results.failed}`, 'fail');
   log(`Skipped: ${results.skipped}`, 'warn');
-  
+
   // Calculate success rate excluding skipped tests
   const totalRan = results.tests.length - results.skipped;
   const successRate = totalRan > 0 ? ((results.passed / totalRan) * 100).toFixed(1) : '0.0';
   log(`Success Rate: ${successRate}%\n`, results.failed === 0 ? 'pass' : 'fail');
-  
+
   // Exit with appropriate code
   process.exit(results.failed > 0 ? 1 : 0);
 }

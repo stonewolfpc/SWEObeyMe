@@ -57,9 +57,7 @@ class CodebaseOrientationFuzzer {
         try {
           await Promise.race([
             fs.readdir(this.projectRoot),
-            new Promise((_, reject) => 
-              setTimeout(() => reject(new Error('Timeout')), timeout)
-            )
+            new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), timeout)),
           ]);
           const duration = Date.now() - start;
           results.push({ timeout, success: true, duration });
@@ -70,11 +68,15 @@ class CodebaseOrientationFuzzer {
       }
 
       // Verify pattern: very short timeouts should fail, longer should succeed
-      const fastFailures = results.filter(r => r.timeout < 100 && !r.success).length;
-      const slowSuccesses = results.filter(r => r.timeout >= 1000 && r.success).length;
+      const fastFailures = results.filter((r) => r.timeout < 100 && !r.success).length;
+      const slowSuccesses = results.filter((r) => r.timeout >= 1000 && r.success).length;
 
       if (fastFailures > 0 && slowSuccesses > 0) {
-        this.recordResult(testName, true, `Timeout pattern correct: ${fastFailures} fast failures, ${slowSuccesses} slow successes`);
+        this.recordResult(
+          testName,
+          true,
+          `Timeout pattern correct: ${fastFailures} fast failures, ${slowSuccesses} slow successes`
+        );
       } else {
         this.recordResult(testName, false, `Timeout pattern incorrect: ${JSON.stringify(results)}`);
       }
@@ -105,16 +107,22 @@ class CodebaseOrientationFuzzer {
       try {
         await Promise.race([
           this.traverseDirectory(this.testDir, 0, 100), // Max depth 100
-          new Promise((_, reject) => 
-            setTimeout(() => reject(new Error('Timeout')), 5000)
-          )
+          new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 5000)),
         ]);
         const duration = Date.now() - start;
-        this.recordResult(testName, true, `Deep traversal completed in ${duration}ms with depth limit`);
+        this.recordResult(
+          testName,
+          true,
+          `Deep traversal completed in ${duration}ms with depth limit`
+        );
       } catch (error) {
         const duration = Date.now() - start;
         if (error.message.includes('Timeout') || error.message.includes('depth')) {
-          this.recordResult(testName, true, `Deep traversal prevented by timeout/depth limit in ${duration}ms`);
+          this.recordResult(
+            testName,
+            true,
+            `Deep traversal prevented by timeout/depth limit in ${duration}ms`
+          );
         } else {
           this.recordResult(testName, false, `Unexpected error: ${error.message}`);
         }
@@ -158,16 +166,22 @@ class CodebaseOrientationFuzzer {
       try {
         const result = await Promise.race([
           fs.readdir(largeDir),
-          new Promise((_, reject) => 
-            setTimeout(() => reject(new Error('Timeout')), 5000)
-          )
+          new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 5000)),
         ]);
         const duration = Date.now() - start;
 
         if (result.length === 100 && duration < 5000) {
-          this.recordResult(testName, true, `Large directory read successfully: 100 files in ${duration}ms`);
+          this.recordResult(
+            testName,
+            true,
+            `Large directory read successfully: 100 files in ${duration}ms`
+          );
         } else {
-          this.recordResult(testName, false, `Large directory read failed: ${result.length} files in ${duration}ms`);
+          this.recordResult(
+            testName,
+            false,
+            `Large directory read failed: ${result.length} files in ${duration}ms`
+          );
         }
       } catch (error) {
         const duration = Date.now() - start;
@@ -214,17 +228,27 @@ class CodebaseOrientationFuzzer {
       try {
         await Promise.race([
           fs.readdir(restrictedDir),
-          new Promise((_, reject) => 
-            setTimeout(() => reject(new Error('Timeout')), 1000)
-          )
+          new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 1000)),
         ]);
         const duration = Date.now() - start;
-        this.recordResult(testName, false, `Permission check failed: read succeeded in ${duration}ms`);
+        this.recordResult(
+          testName,
+          false,
+          `Permission check failed: read succeeded in ${duration}ms`
+        );
       } catch (error) {
         const duration = Date.now() - start;
         // Should fail with permission error or timeout
-        if (error.code === 'EACCES' || error.code === 'EPERM' || error.message.includes('Timeout')) {
-          this.recordResult(testName, true, `Permission denied handled gracefully in ${duration}ms`);
+        if (
+          error.code === 'EACCES' ||
+          error.code === 'EPERM' ||
+          error.message.includes('Timeout')
+        ) {
+          this.recordResult(
+            testName,
+            true,
+            `Permission denied handled gracefully in ${duration}ms`
+          );
         } else {
           this.recordResult(testName, false, `Unexpected error: ${error.message}`);
         }
@@ -250,26 +274,34 @@ class CodebaseOrientationFuzzer {
     const testName = 'Concurrent Access';
     try {
       const start = Date.now();
-      
-      const promises = Array(50).fill().map(() => 
-        Promise.race([
-          fs.readdir(this.projectRoot),
-          new Promise((_, reject) => 
-            setTimeout(() => reject(new Error('Timeout')), 10000)
-          )
-        ])
-      );
+
+      const promises = Array(50)
+        .fill()
+        .map(() =>
+          Promise.race([
+            fs.readdir(this.projectRoot),
+            new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 10000)),
+          ])
+        );
 
       const results = await Promise.allSettled(promises);
       const duration = Date.now() - start;
 
-      const successful = results.filter(r => r.status === 'fulfilled').length;
-      const failed = results.filter(r => r.status === 'rejected').length;
+      const successful = results.filter((r) => r.status === 'fulfilled').length;
+      const failed = results.filter((r) => r.status === 'rejected').length;
 
       if (successful + failed === 50 && duration < 15000) {
-        this.recordResult(testName, true, `Concurrent access: ${successful} succeeded, ${failed} failed in ${duration}ms`);
+        this.recordResult(
+          testName,
+          true,
+          `Concurrent access: ${successful} succeeded, ${failed} failed in ${duration}ms`
+        );
       } else {
-        this.recordResult(testName, false, `Concurrent access issue: ${successful} succeeded, ${failed} failed in ${duration}ms`);
+        this.recordResult(
+          testName,
+          false,
+          `Concurrent access issue: ${successful} succeeded, ${failed} failed in ${duration}ms`
+        );
       }
     } catch (error) {
       this.recordResult(testName, false, `Error: ${error.message}`);
@@ -311,15 +343,21 @@ class CodebaseOrientationFuzzer {
       try {
         await Promise.race([
           fs.readdir('/nonexistent/path/that/does/not/exist'),
-          new Promise((_, reject) => 
-            setTimeout(() => reject(new Error('Timeout')), 1000)
-          )
+          new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 1000)),
         ]);
         const duration = Date.now() - start;
-        this.recordResult(testName, false, `Non-existent path did not throw error in ${duration}ms`);
+        this.recordResult(
+          testName,
+          false,
+          `Non-existent path did not throw error in ${duration}ms`
+        );
       } catch (error) {
         const duration = Date.now() - start;
-        if (error.code === 'ENOENT' || error.code === 'ENOTDIR' || error.message.includes('Timeout')) {
+        if (
+          error.code === 'ENOENT' ||
+          error.code === 'ENOTDIR' ||
+          error.message.includes('Timeout')
+        ) {
           this.recordResult(testName, true, `Non-existent path handled correctly in ${duration}ms`);
         } else {
           this.recordResult(testName, false, `Unexpected error: ${error.message}`);
@@ -352,11 +390,15 @@ class CodebaseOrientationFuzzer {
         }
       }
 
-      const successful = results.filter(r => r.success).length;
+      const successful = results.filter((r) => r.success).length;
       if (successful === specialChars.length) {
         this.recordResult(testName, true, `All special characters handled correctly`);
       } else {
-        this.recordResult(testName, false, `${specialChars.length - successful} special characters failed`);
+        this.recordResult(
+          testName,
+          false,
+          `${specialChars.length - successful} special characters failed`
+        );
       }
     } catch (error) {
       this.recordResult(testName, false, `Error: ${error.message}`);
@@ -380,7 +422,7 @@ class CodebaseOrientationFuzzer {
     console.log(`Passed: ${this.passed}`);
     console.log(`Failed: ${this.failed}`);
     console.log(`Success Rate: ${((this.passed / this.results.length) * 100).toFixed(1)}%`);
-    
+
     if (this.failed === 0) {
       console.log('\nALL FUZZER TESTS PASSED');
       process.exit(0);
@@ -392,9 +434,9 @@ class CodebaseOrientationFuzzer {
 
   async runAll() {
     console.log('Running Codebase Orientation Fuzzer Cases...\n');
-    
+
     await this.setup();
-    
+
     try {
       await this.testTimeoutStress();
       await this.testDeepDirectoryTraversal();
@@ -407,7 +449,7 @@ class CodebaseOrientationFuzzer {
     } finally {
       await this.cleanup();
     }
-    
+
     this.printSummary();
   }
 }
@@ -415,7 +457,7 @@ class CodebaseOrientationFuzzer {
 // Run fuzzer if executed directly
 if (import.meta.url === `file://${process.argv[1]}`) {
   const fuzzer = new CodebaseOrientationFuzzer();
-  fuzzer.runAll().catch(error => {
+  fuzzer.runAll().catch((error) => {
     console.error('Fuzzer error:', error);
     process.exit(1);
   });

@@ -20,13 +20,13 @@ class ToolInvocationSimulation {
       skipped: 0,
       total: 0,
     };
-    
+
     this.indexPath = join(dirname(__dirname), '..', 'index.js');
   }
 
   async run() {
     console.log('[ToolInvocation] Starting Windsurf-Next tool invocation simulation...');
-    
+
     const tests = [
       'real-tool-calls',
       'malformed-tool-calls',
@@ -36,21 +36,21 @@ class ToolInvocationSimulation {
       'empty-objects',
       'actionable-errors',
     ];
-    
+
     for (const test of tests) {
       await this.runTest(test);
     }
-    
+
     this.results.total = this.results.tests.length;
     return this.results;
   }
 
   async runTest(testName) {
     console.log(`[ToolInvocation] Running: ${testName}...`);
-    
+
     let passed = false;
     let error = null;
-    
+
     try {
       switch (testName) {
         case 'real-tool-calls':
@@ -78,14 +78,14 @@ class ToolInvocationSimulation {
     } catch (e) {
       error = e.message;
     }
-    
+
     this.results.tests.push({
       id: testName,
       name: `Tool Invocation - ${testName}`,
       passed,
       error,
     });
-    
+
     if (passed) {
       this.results.passed++;
       console.log(`[ToolInvocation] ✅ ${testName}`);
@@ -108,7 +108,7 @@ class ToolInvocationSimulation {
         },
       },
     };
-    
+
     const validation = this.validateToolCall(toolCall);
     return validation.valid === true;
   }
@@ -121,7 +121,7 @@ class ToolInvocationSimulation {
       method: 'tools/call',
       // Missing params
     };
-    
+
     const validation = this.validateToolCall(malformedCall);
     return validation.valid === false && validation.caught === true;
   }
@@ -137,7 +137,7 @@ class ToolInvocationSimulation {
         arguments: {}, // Missing file_path
       },
     };
-    
+
     const validation = this.validateToolCall(callWithMissingParams);
     return validation.valid === false && validation.reason === 'missing-parameters';
   }
@@ -156,7 +156,7 @@ class ToolInvocationSimulation {
         },
       },
     };
-    
+
     const validation = this.validateToolCall(callWithExtraParams);
     return validation.valid === true || validation.handled === true;
   }
@@ -174,7 +174,7 @@ class ToolInvocationSimulation {
         },
       },
     };
-    
+
     const validation = this.validateToolCall(callWithWrongType);
     return validation.valid === false && validation.reason === 'wrong-type';
   }
@@ -190,7 +190,7 @@ class ToolInvocationSimulation {
         arguments: null,
       },
     };
-    
+
     const validation = this.validateToolCall(callWithEmpty);
     return validation.valid === false || validation.handled === true;
   }
@@ -203,15 +203,17 @@ class ToolInvocationSimulation {
       method: 'tools/call',
       params: {},
     };
-    
+
     const validation = this.validateToolCall(malformedCall);
-    return validation.valid === false && Array.isArray(validation.errors) && validation.errors.length > 0;
+    return (
+      validation.valid === false && Array.isArray(validation.errors) && validation.errors.length > 0
+    );
   }
 
   // Helper methods
   validateToolCall(toolCall) {
     const errors = [];
-    
+
     // Check required fields
     if (!toolCall.jsonrpc || toolCall.jsonrpc !== '2.0') {
       errors.push('missing-or-invalid-jsonrpc');
@@ -223,21 +225,21 @@ class ToolInvocationSimulation {
       errors.push('missing-params');
       return { valid: false, caught: true, reason: 'missing-params', errors };
     }
-    
+
     // Check params
     if (!toolCall.params.name) {
       errors.push('missing-tool-name');
     }
-    
+
     if (!toolCall.params.arguments) {
       errors.push('missing-arguments');
       return { valid: false, caught: true, reason: 'missing-arguments', errors };
     }
-    
+
     // Check tool-specific parameters
     const toolName = toolCall.params.name;
     const args = toolCall.params.arguments;
-    
+
     if (toolName === 'read_file') {
       if (!args.file_path) {
         errors.push('missing-parameters');
@@ -248,11 +250,11 @@ class ToolInvocationSimulation {
         return { valid: false, caught: true, reason: 'wrong-type', errors };
       }
     }
-    
+
     if (errors.length > 0) {
       return { valid: false, caught: true, reason: errors[0], errors };
     }
-    
+
     return { valid: true, errors: [] };
   }
 }

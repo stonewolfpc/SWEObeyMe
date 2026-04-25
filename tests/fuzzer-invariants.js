@@ -2,7 +2,7 @@
 
 /**
  * Fuzzer Invariants Definition
- * 
+ *
  * Defines all invariants that must never be violated during fuzzing
  * These are the assertions that the fuzzer will validate
  */
@@ -13,7 +13,7 @@ export const SERVER_INVARIANTS = {
   NO_MEMORY_LEAK: 'Server must not leak memory beyond threshold',
   NO_INVALID_JSON: 'Server must never emit invalid MCP JSON',
   NO_FILE_CORRUPTION: 'Server must never corrupt files',
-  NO_UNHANDLED_EXCEPTIONS: 'Server must handle all exceptions gracefully'
+  NO_UNHANDLED_EXCEPTIONS: 'Server must handle all exceptions gracefully',
 };
 
 export const PROTOCOL_INVARIANTS = {
@@ -22,7 +22,7 @@ export const PROTOCOL_INVARIANTS = {
   NO_DOUBLE_REPLIES: 'No double-replies to the same request',
   VALID_REQUEST_ID: 'All requests must have valid IDs',
   VALID_JSON_RPC: 'All messages must be valid JSON-RPC 2.0',
-  TOOL_SIGNATURE_VALID: 'All tool calls must match tool signatures'
+  TOOL_SIGNATURE_VALID: 'All tool calls must match tool signatures',
 };
 
 export const SAFETY_INVARIANTS = {
@@ -31,7 +31,7 @@ export const SAFETY_INVARIANTS = {
   NO_DESTRUCTIVE_WITHOUT_CONFIRMATION: 'No destructive operations without confirmation',
   NO_ARBITRARY_CODE_EXECUTION: 'No arbitrary code execution',
   NO_SENSITIVE_DATA_EXPOSURE: 'No exposure of sensitive data',
-  NO_DENIAL_OF_SERVICE: 'No denial of service attacks via resource exhaustion'
+  NO_DENIAL_OF_SERVICE: 'No denial of service attacks via resource exhaustion',
 };
 
 export const TRANSPORT_INVARIANTS = {
@@ -39,7 +39,7 @@ export const TRANSPORT_INVARIANTS = {
   HTTP_MUST_RESPOND: 'HTTP transport must respond to all requests',
   SSE_MUST_STREAM: 'SSE transport must stream events correctly',
   NO_BUFFER_OVERFLOW: 'No buffer overflow in any transport',
-  NO_HANG_ON_DISCONNECT: 'No hang on client disconnect'
+  NO_HANG_ON_DISCONNECT: 'No hang on client disconnect',
 };
 
 export const TIMING_INVARIANTS = {
@@ -47,7 +47,7 @@ export const TIMING_INVARIANTS = {
   NO_RACE_CONDITIONS: 'No race conditions in concurrent operations',
   CANCELLATION_MUST_WORK: 'Cancellation must work mid-flight',
   OVERLAPPING_CALLS_SAFE: 'Overlapping calls must be safe',
-  BACKPRESSURE_HANDLED: 'Backpressure must be handled'
+  BACKPRESSURE_HANDLED: 'Backpressure must be handled',
 };
 
 /**
@@ -58,22 +58,22 @@ export const TIMING_INVARIANTS = {
  */
 export function validateInvariants(results, invariants) {
   const violations = [];
-  
+
   for (const [key, description] of Object.entries(invariants)) {
     if (!results[key]) {
       violations.push({
         invariant: key,
         description,
-        value: results[key]
+        value: results[key],
       });
     }
   }
-  
+
   return {
     passed: violations.length === 0,
     violations,
     total: Object.keys(invariants).length,
-    failed: violations.length
+    failed: violations.length,
   };
 }
 
@@ -87,6 +87,6 @@ export function getAllInvariants() {
     protocol: PROTOCOL_INVARIANTS,
     safety: SAFETY_INVARIANTS,
     transport: TRANSPORT_INVARIANTS,
-    timing: TIMING_INVARIANTS
+    timing: TIMING_INVARIANTS,
   };
 }

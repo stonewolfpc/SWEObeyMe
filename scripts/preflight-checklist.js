@@ -22,51 +22,51 @@ const checks = [
   {
     name: 'package.json exists',
     test: () => fs.existsSync(path.join(projectRoot, 'package.json')),
-    fix: 'Create package.json'
+    fix: 'Create package.json',
   },
   {
     name: 'extension.js exists',
     test: () => fs.existsSync(path.join(projectRoot, 'extension.js')),
-    fix: 'Create extension.js'
+    fix: 'Create extension.js',
   },
   {
     name: 'dist/ directory built',
     test: () => fs.existsSync(path.join(projectRoot, 'dist')),
-    fix: 'Run: npm run build'
+    fix: 'Run: npm run build',
   },
   {
     name: 'dist/extension.js exists',
     test: () => fs.existsSync(path.join(projectRoot, 'dist', 'extension.js')),
-    fix: 'Run: npm run build'
+    fix: 'Run: npm run build',
   },
   {
     name: 'dist/mcp/server.js exists',
     test: () => fs.existsSync(path.join(projectRoot, 'dist', 'mcp', 'server.js')),
-    fix: 'Run: npm run build'
+    fix: 'Run: npm run build',
   },
   {
     name: 'dist/mcp/package.json exists (CRITICAL)',
     test: () => fs.existsSync(path.join(projectRoot, 'dist', 'mcp', 'package.json')),
-    fix: 'CRITICAL: Run npm run build (esbuild should copy package.json)'
+    fix: 'CRITICAL: Run npm run build (esbuild should copy package.json)',
   },
   {
     name: '.vsix package exists',
     test: () => {
-      const files = fs.readdirSync(projectRoot).filter(f => f.endsWith('.vsix'));
+      const files = fs.readdirSync(projectRoot).filter((f) => f.endsWith('.vsix'));
       return files.length > 0;
     },
-    fix: 'Run: vsce package'
+    fix: 'Run: vsce package',
   },
   {
     name: 'lib/tools/ directory exists',
     test: () => fs.existsSync(path.join(projectRoot, 'lib', 'tools')),
-    fix: 'Create lib/tools/ directory'
+    fix: 'Create lib/tools/ directory',
   },
   {
     name: 'icon.png exists',
     test: () => fs.existsSync(path.join(projectRoot, 'icon.png')),
-    fix: 'Add icon.png'
-  }
+    fix: 'Add icon.png',
+  },
 ];
 
 let passed = 0;
@@ -74,7 +74,7 @@ let failed = 0;
 
 for (const check of checks) {
   process.stdout.write(`   ${check.name}... `);
-  
+
   try {
     const result = check.test();
     if (result) {

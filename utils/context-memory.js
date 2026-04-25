@@ -54,7 +54,7 @@ class ContextMemory {
               arguments: { entities: [entity] },
             },
           },
-          CallToolRequestSchema,
+          CallToolRequestSchema
         );
         console.error(`[ContextMemory] Entity created: ${name} (${entityType})`);
       } catch (error) {
@@ -83,7 +83,7 @@ class ContextMemory {
               arguments: { relations: [relation] },
             },
           },
-          CallToolRequestSchema,
+          CallToolRequestSchema
         );
         console.error(`[ContextMemory] Relation created: ${from} -> ${to} (${relationType})`);
       } catch (error) {
@@ -106,7 +106,7 @@ class ContextMemory {
               arguments: { query },
             },
           },
-          CallToolRequestSchema,
+          CallToolRequestSchema
         );
         return result.content[0]?.text ? JSON.parse(result.content[0].text) : [];
       } catch (error) {
@@ -128,7 +128,7 @@ class ContextMemory {
       if (
         entity.name.toLowerCase().includes(lowerQuery) ||
         entity.entityType.toLowerCase().includes(lowerQuery) ||
-        entity.observations.some(obs => obs.toLowerCase().includes(lowerQuery))
+        entity.observations.some((obs) => obs.toLowerCase().includes(lowerQuery))
       ) {
         results.push(entity);
       }
@@ -147,14 +147,14 @@ class ContextMemory {
 
     if (entities.length > 0) {
       summary += '\n[Entities]:\n';
-      entities.slice(0, 5).forEach(e => {
+      entities.slice(0, 5).forEach((e) => {
         summary += `- ${e.name} (${e.entityType}): ${e.observations[0] || 'No description'}\n`;
       });
     }
 
     if (recentFiles.length > 0) {
       summary += '\n[Recent Files]:\n';
-      recentFiles.slice(0, 5).forEach(f => {
+      recentFiles.slice(0, 5).forEach((f) => {
         summary += `- ${f.name}\n`;
       });
     }

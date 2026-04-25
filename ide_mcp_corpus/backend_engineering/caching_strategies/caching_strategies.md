@@ -24,17 +24,20 @@ A cache is a hardware or software component that temporarily stores data used by
 The most common caching strategy:
 
 **Process:**
+
 1. Application needs to read data from database
 2. Check cache first to determine if data is available
 3. If data is available (cache hit): return cached data to caller
 4. If data isn't available (cache miss): query database, populate cache with retrieved data, return data to caller
 
 **Advantages:**
+
 - Cache contains only data the application actually requests (cost-effective cache size)
 - Straightforward implementation with immediate performance gains
 - Works well with application frameworks that encapsulate lazy caching
 
 **Disadvantages:**
+
 - Initial response time overhead due to additional roundtrips to cache and database on cache miss
 - Data only loaded into cache after a cache miss
 
@@ -43,19 +46,23 @@ The most common caching strategy:
 Reverses the order of cache population by proactively updating the cache immediately following database updates.
 
 **Process:**
+
 1. Application updates primary database
 2. Immediately update cache with same data
 
 **Implementation:**
+
 - Almost always implemented along with lazy loading
 - If cache miss occurs (data not present or expired), lazy loading pattern updates the cache
 
 **Advantages:**
+
 - Cache is up-to-date with primary database, higher likelihood of cache hits
 - Better overall application performance and user experience
 - Optimal database performance due to fewer database reads
 
 **Disadvantages:**
+
 - Infrequently-requested data is also written to cache, resulting in larger, more expensive cache
 
 **Best Practice:**
@@ -68,16 +75,19 @@ Effective caching strategy combines both write-through and lazy loading with app
 Invalidates data based on a predetermined time interval. Often implemented by adding a timeout value within the cache entry in cache configuration files.
 
 **Use Cases:**
+
 - News sites displaying latest news hourly
 - Weather forecasting applications updating forecasts hourly
 - Stock trading applications updating prices every few minutes
 - Travel planning applications updating flight availability and prices every few hours
 
 **Advantages:**
+
 - Simple to implement
 - Predictable behavior
 
 **Disadvantages:**
+
 - May invalidate data too early or too late
 - Doesn't account for actual data changes
 
@@ -86,10 +96,12 @@ Invalidates data based on a predetermined time interval. Often implemented by ad
 Cache is invalidated when a specific event is triggered in the system. Useful when cached data is associated with a specific event or state change.
 
 **Example:**
+
 - Blog post is updated → previous cache data invalidated to ensure users see updated information
 - User profile is updated → profile cache invalidated
 
 **Advantages:**
+
 - Immediate invalidation when data changes
 - Ensures cache consistency
 
@@ -98,6 +110,7 @@ Cache is invalidated when a specific event is triggered in the system. Useful wh
 User triggers a specific defined command or action, resulting in an invalidation ID. A dependency ID is generated and associated with cached objects. When a command with an invalidation ID is executed, matching objects are invalidated.
 
 **Example:**
+
 - User deletes a file from storage → cache for that file invalidated to prevent reappearing in listings
 
 ### Group-Based Invalidation
@@ -105,6 +118,7 @@ User triggers a specific defined command or action, resulting in an invalidation
 Cache is invalidated based on a group or category. Useful when cached data is associated with a larger group of cache entries, making individual invalidation inefficient.
 
 **Example:**
+
 - News website politics section updated → all politics articles invalidated
 - eCommerce product category updated → all products in category invalidated
 
@@ -118,6 +132,7 @@ A label that identifies which cache entries to invalidate. Same label can be att
 Application first checks cache for requested data. If not found (cache miss), fetch from primary storage, store in cache, then return to user. Subsequent requests served from cache.
 
 **Implementation:**
+
 - Use cache keys to uniquely identify data in cache
 - Set appropriate expiration times
 - Handle cache misses gracefully
@@ -199,6 +214,7 @@ Multiple cache misses cause simultaneous database queries. Mitigation strategies
 ### Cache Partitioning
 
 Distribute cache data across multiple nodes for:
+
 - Horizontal scaling
 - Reduced single-node load
 - Improved availability

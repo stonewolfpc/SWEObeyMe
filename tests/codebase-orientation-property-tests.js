@@ -47,7 +47,7 @@ class CodebaseOrientationPropertyTests {
       const start2 = Date.now();
       await fs.readdir(this.projectRoot);
       const duration2 = Date.now() - start2;
-      
+
       if (duration2 < 5000) {
         this.recordResult(testName, true, 'Read completed within timeout');
       } else {
@@ -66,7 +66,7 @@ class CodebaseOrientationPropertyTests {
     const testName = 'Async Non-Blocking';
     try {
       const startTime = Date.now();
-      
+
       // Run multiple reads in parallel
       await Promise.all([
         fs.readdir(this.projectRoot),
@@ -75,7 +75,7 @@ class CodebaseOrientationPropertyTests {
       ]);
 
       const duration = Date.now() - startTime;
-      
+
       // Parallel should be faster than sequential
       if (duration < 3000) {
         this.recordResult(testName, true, `Parallel operations completed in ${duration}ms`);
@@ -96,7 +96,7 @@ class CodebaseOrientationPropertyTests {
     try {
       const result1 = await fs.readdir(path.join(this.projectRoot, 'lib'));
       const result2 = await fs.readdir(path.join(this.projectRoot, 'lib'));
-      
+
       if (JSON.stringify(result1) === JSON.stringify(result2)) {
         this.recordResult(testName, true, 'Multiple calls produce identical results');
       } else {
@@ -123,7 +123,7 @@ class CodebaseOrientationPropertyTests {
 
       // Try to read valid path - should succeed
       const result = await fs.readdir(path.join(this.projectRoot, 'lib'));
-      
+
       if (Array.isArray(result) && result.length > 0) {
         this.recordResult(testName, true, 'Recovered from error, subsequent call succeeded');
       } else {
@@ -165,7 +165,7 @@ class CodebaseOrientationPropertyTests {
     const testName = 'Monotonic Performance';
     try {
       const times = [];
-      
+
       for (let i = 0; i < 5; i++) {
         const start = Date.now();
         await fs.readdir(this.projectRoot);
@@ -175,7 +175,7 @@ class CodebaseOrientationPropertyTests {
       // Check if times are reasonably consistent (within 2x of first call)
       const firstTime = times[0];
       const maxTime = Math.max(...times);
-      
+
       if (maxTime < firstTime * 2) {
         this.recordResult(testName, true, `Performance stable: ${times.join('ms, ')}ms`);
       } else {
@@ -211,12 +211,21 @@ class CodebaseOrientationPropertyTests {
 
       const finalMemory = process.memoryUsage().heapUsed;
       const memoryIncrease = finalMemory - initialMemory;
-      
+
       // Allow some increase but not unbounded
-      if (memoryIncrease < 10 * 1024 * 1024) { // Less than 10MB
-        this.recordResult(testName, true, `Memory increase acceptable: ${(memoryIncrease / 1024 / 1024).toFixed(2)}MB`);
+      if (memoryIncrease < 10 * 1024 * 1024) {
+        // Less than 10MB
+        this.recordResult(
+          testName,
+          true,
+          `Memory increase acceptable: ${(memoryIncrease / 1024 / 1024).toFixed(2)}MB`
+        );
       } else {
-        this.recordResult(testName, false, `Memory leak detected: ${(memoryIncrease / 1024 / 1024).toFixed(2)}MB`);
+        this.recordResult(
+          testName,
+          false,
+          `Memory leak detected: ${(memoryIncrease / 1024 / 1024).toFixed(2)}MB`
+        );
       }
     } catch (error) {
       this.recordResult(testName, false, `Error: ${error.message}`);
@@ -236,12 +245,7 @@ class CodebaseOrientationPropertyTests {
       );
 
       // Check for sync fs operations (should not exist after refactor)
-      const syncPatterns = [
-        'fs.readdirSync',
-        'fs.readFileSync',
-        'fs.statSync',
-        'fs.existsSync',
-      ];
+      const syncPatterns = ['fs.readdirSync', 'fs.readFileSync', 'fs.statSync', 'fs.existsSync'];
 
       const foundSync = [];
       for (const pattern of syncPatterns) {
@@ -277,7 +281,7 @@ class CodebaseOrientationPropertyTests {
     console.log(`Passed: ${this.passed}`);
     console.log(`Failed: ${this.failed}`);
     console.log(`Success Rate: ${((this.passed / this.results.length) * 100).toFixed(1)}%`);
-    
+
     if (this.failed === 0) {
       console.log('\nALL TESTS PASSED');
       process.exit(0);
@@ -289,7 +293,7 @@ class CodebaseOrientationPropertyTests {
 
   async runAll() {
     console.log('Running Codebase Orientation Property Tests...\n');
-    
+
     await this.testTimeoutEnforcement();
     await this.testAsyncNonBlocking();
     await this.testIdempotence();
@@ -298,7 +302,7 @@ class CodebaseOrientationPropertyTests {
     await this.testMonotonicPerformance();
     await this.testNoResourceLeaks();
     await this.testAsyncBoundaryConsistency();
-    
+
     this.printSummary();
   }
 }
@@ -306,7 +310,7 @@ class CodebaseOrientationPropertyTests {
 // Run tests if executed directly
 if (import.meta.url === `file://${process.argv[1]}`) {
   const tests = new CodebaseOrientationPropertyTests();
-  tests.runAll().catch(error => {
+  tests.runAll().catch((error) => {
     console.error('Test suite error:', error);
     process.exit(1);
   });

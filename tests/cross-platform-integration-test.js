@@ -53,11 +53,14 @@ class CrossPlatformIntegrationTest {
    */
   async testBuildProcess() {
     console.log('Testing build process...');
-    
+
     try {
       // Check if dist directory exists
-      const distExists = await fs.access(path.join(__dirname, '../dist')).then(() => true).catch(() => false);
-      
+      const distExists = await fs
+        .access(path.join(__dirname, '../dist'))
+        .then(() => true)
+        .catch(() => false);
+
       if (!distExists) {
         this.results.build.errors.push('dist directory does not exist');
         console.log('  ❌ dist directory does not exist');
@@ -65,8 +68,11 @@ class CrossPlatformIntegrationTest {
       }
 
       // Check if dist/mcp/server.js exists
-      const serverExists = await fs.access(path.join(__dirname, '../dist/mcp/server.js')).then(() => true).catch(() => false);
-      
+      const serverExists = await fs
+        .access(path.join(__dirname, '../dist/mcp/server.js'))
+        .then(() => true)
+        .catch(() => false);
+
       if (!serverExists) {
         this.results.build.errors.push('dist/mcp/server.js does not exist');
         console.log('  ❌ dist/mcp/server.js does not exist');
@@ -74,8 +80,11 @@ class CrossPlatformIntegrationTest {
       }
 
       // Check if dist/extension.js exists (for VS Code)
-      const extensionExists = await fs.access(path.join(__dirname, '../dist/extension.js')).then(() => true).catch(() => false);
-      
+      const extensionExists = await fs
+        .access(path.join(__dirname, '../dist/extension.js'))
+        .then(() => true)
+        .catch(() => false);
+
       if (!extensionExists) {
         this.results.build.errors.push('dist/extension.js does not exist');
         console.log('  ❌ dist/extension.js does not exist');
@@ -122,7 +131,7 @@ class CrossPlatformIntegrationTest {
         }
 
         const server = config.mcpServers.sweobeyme;
-        
+
         if (!server.command) {
           this.results.configFiles.errors.push(`${configPath}: missing command`);
           console.log(`  ❌ ${configPath}: missing command`);
@@ -155,7 +164,7 @@ class CrossPlatformIntegrationTest {
 
     return new Promise((resolve) => {
       const serverPath = path.join(__dirname, '../dist/mcp/server.js');
-      
+
       const serverProcess = spawn('node', [serverPath], {
         stdio: ['pipe', 'pipe', 'pipe'],
       });
@@ -166,9 +175,11 @@ class CrossPlatformIntegrationTest {
 
       serverProcess.stdout.on('data', (data) => {
         output += data.toString();
-        if (output.includes('MCP server listening') || 
-            output.includes('Server started') || 
-            output.includes('connected and ready')) {
+        if (
+          output.includes('MCP server listening') ||
+          output.includes('Server started') ||
+          output.includes('connected and ready')
+        ) {
           started = true;
         }
       });
@@ -176,9 +187,11 @@ class CrossPlatformIntegrationTest {
       serverProcess.stderr.on('data', (data) => {
         errors += data.toString();
         // Also check stderr for startup message (some servers log there)
-        if (errors.includes('MCP server listening') || 
-            errors.includes('Server started') || 
-            errors.includes('connected and ready')) {
+        if (
+          errors.includes('MCP server listening') ||
+          errors.includes('Server started') ||
+          errors.includes('connected and ready')
+        ) {
           started = true;
         }
       });
@@ -216,7 +229,7 @@ class CrossPlatformIntegrationTest {
 
       // Validate Windsurf-specific requirements
       const server = config.mcpServers.sweobeyme;
-      
+
       if (server.command !== 'node') {
         this.results.windsurf.errors.push('Windsurf requires "node" command');
         console.log('  ❌ Windsurf requires "node" command');
@@ -250,7 +263,7 @@ class CrossPlatformIntegrationTest {
 
       // Validate Cursor-specific requirements
       const server = config.mcpServers.sweobeyme;
-      
+
       if (server.command !== 'node') {
         this.results.cursor.errors.push('Cursor requires "node" command');
         console.log('  ❌ Cursor requires "node" command');
@@ -296,7 +309,7 @@ class CrossPlatformIntegrationTest {
       }
 
       const mcpServer = packageJson.contributes.mcpServers[0];
-      
+
       if (!mcpServer || mcpServer.id !== 'sweobeyme') {
         this.results.vscode.errors.push('VS Code MCP server not properly configured');
         console.log('  ❌ VS Code MCP server not properly configured');
@@ -336,7 +349,7 @@ class CrossPlatformIntegrationTest {
 
       // Validate LM Studio-specific requirements (follows Cursor notation)
       const server = config.mcpServers.sweobeyme;
-      
+
       if (server.command !== 'node') {
         this.results.lmstudio.errors.push('LM Studio requires "node" command');
         console.log('  ❌ LM Studio requires "node" command');
@@ -361,7 +374,7 @@ class CrossPlatformIntegrationTest {
    * Check if all tests passed
    */
   allPassed() {
-    return Object.values(this.results).every(result => result.passed);
+    return Object.values(this.results).every((result) => result.passed);
   }
 
   /**
@@ -377,9 +390,9 @@ class CrossPlatformIntegrationTest {
     for (const [name, result] of Object.entries(this.results)) {
       const status = result.passed ? '✅ PASS' : '❌ FAIL';
       console.log(`${status} ${name}`);
-      
+
       if (result.errors.length > 0) {
-        result.errors.forEach(error => {
+        result.errors.forEach((error) => {
           console.log(`    - ${error}`);
         });
       }
@@ -387,22 +400,25 @@ class CrossPlatformIntegrationTest {
 
     console.log();
     console.log('='.repeat(60));
-    
+
     if (this.allPassed()) {
       console.log('ALL TESTS PASSED ✅');
     } else {
       console.log('SOME TESTS FAILED ❌');
     }
-    
+
     console.log('='.repeat(60));
   }
 }
 
 // Run tests
 const test = new CrossPlatformIntegrationTest();
-test.runAll().then(passed => {
-  process.exit(passed ? 0 : 1);
-}).catch(error => {
-  console.error('Test execution failed:', error);
-  process.exit(1);
-});
+test
+  .runAll()
+  .then((passed) => {
+    process.exit(passed ? 0 : 1);
+  })
+  .catch((error) => {
+    console.error('Test execution failed:', error);
+    process.exit(1);
+  });

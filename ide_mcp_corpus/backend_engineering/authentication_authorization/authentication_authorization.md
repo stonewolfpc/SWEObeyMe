@@ -19,6 +19,7 @@ JSON Web Tokens (JWTs) are common in OAuth and OpenID Connect. JWT is not a prot
 ### JWT Structure
 
 A JWT is a compact, URL-safe way of passing a JSON message between two parties. The token is divided into parts separated by dots, each base64 URL-encoded:
+
 - Header: Algorithm and token type
 - Payload: Claims (data)
 - Signature: Cryptographic signature
@@ -38,12 +39,14 @@ JWTs are by-value tokens containing data. Client developers can access data insi
 ### Proof of Possession (PoP) Tokens
 
 Access tokens are typically bearer tokens (like cash). If bearer tokens pose problems, consider PoP tokens:
+
 - Demonstrating Proof of Possession standard
 - Mutual-TLS with confirmation (cnf) claim containing client certificate fingerprint
 
 ### Avoid Sensitive Data on Front Channel
 
 ID tokens are always JWTs. Extra care needed for what's available:
+
 - Safer to call user info endpoint instead of keeping data in ID token
 - Clear tokens of sensitive data to eliminate need for encryption
 - Encryption is hard to configure and maintain, requires computational resources
@@ -51,17 +54,20 @@ ID tokens are always JWTs. Extra care needed for what's available:
 ### JWT Signing and Encryption
 
 **Best Algorithms:**
+
 - Signing: RS256 (RSA with SHA-256) or ES256 (ECDSA with SHA-256)
 - Avoid: none algorithm, HS256 with weak secrets
 - Encryption: Use JWE (JSON Web Encryption) when needed, but prefer not to encrypt
 
 **Symmetric vs Asymmetric:**
+
 - Symmetric: Simpler, key distribution challenges
 - Asymmetric: Better security, centralized key management recommended
 
 ### JWT Validation
 
 Always validate:
+
 1. Signature using issuer's public key
 2. Issuer (iss) claim matches expected issuer
 3. Audience (aud) claim matches expected audience
@@ -95,22 +101,26 @@ Always validate:
 ### OAuth 2.0 Flows
 
 **Authorization Code Flow:**
+
 - Most secure for server-side applications
 - User redirected to authorization server
 - Authorization code exchanged for tokens
 - PKCE (Proof Key for Code Exchange) recommended for public clients
 
 **Implicit Flow:**
+
 - Deprecated for security reasons
 - Tokens returned in URL fragment
 - Vulnerable to token leakage
 
 **Client Credentials Flow:**
+
 - For service-to-service communication
 - No user context
 - Direct token exchange
 
 **Resource Owner Password Credentials Flow:**
+
 - Deprecated for security reasons
 - Requires storing user credentials
 - Only use for legacy systems
@@ -118,6 +128,7 @@ Always validate:
 ### OpenID Connect
 
 Built on top of OAuth 2.0:
+
 - Adds authentication layer
 - Provides ID tokens (JWTs)
 - Standardizes user info endpoint

@@ -173,48 +173,48 @@ components/
 
 - **Early**: Early involvement
 - **Regular**: Regular communication
-- **Feedback': Feedback loops
-- **Tools': Shared tools
-- **Process': Clear process
+- \*\*Feedback': Feedback loops
+- \*\*Tools': Shared tools
+- \*\*Process': Clear process
 
 ### Design Reviews
 
-- **Regular': Regular reviews
-- **Constructive': Constructive feedback
-- **Documented': Documented decisions
-- **Actionable': Actionable feedback
-- **Follow-up': Follow-up on actions
+- \*\*Regular': Regular reviews
+- \*\*Constructive': Constructive feedback
+- \*\*Documented': Documented decisions
+- \*\*Actionable': Actionable feedback
+- \*\*Follow-up': Follow-up on actions
 
 ### Design Tokens
 
-- **Shared': Shared tokens
-- **Versioned': Versioned tokens
-- **Documented': Documented tokens
-- **Accessible': Accessible tokens
-- **Automated': Automated sync
+- \*\*Shared': Shared tokens
+- \*\*Versioned': Versioned tokens
+- \*\*Documented': Documented tokens
+- \*\*Accessible': Accessible tokens
+- \*\*Automated': Automated sync
 
 ## Best Practices
 
 ### Workflow
 
-- **Process': Clear process
-- **Tools': Right tools
-- **Communication': Good communication
-- **Documentation': Good documentation
-- **Iteration': Continuous iteration
+- \*\*Process': Clear process
+- \*\*Tools': Right tools
+- \*\*Communication': Good communication
+- \*\*Documentation': Good documentation
+- \*\*Iteration': Continuous iteration
 
 ### Collaboration
 
-- **Early': Early involvement
-- **Regular': Regular communication
-- **Feedback': Feedback loops
-- **Respect': Respect each other
-- **Learn': Learn from each other
+- \*\*Early': Early involvement
+- \*\*Regular': Regular communication
+- \*\*Feedback': Feedback loops
+- \*\*Respect': Respect each other
+- \*\*Learn': Learn from each other
 
 ### Design Systems
 
-- **Scalable': Scalable system
-- **Maintainable': Maintainable system
-- **Documented': Documented system
-- **Versioned': Versioned system
-- **Accessible': Accessible system
+- \*\*Scalable': Scalable system
+- \*\*Maintainable': Maintainable system
+- \*\*Documented': Documented system
+- \*\*Versioned': Versioned system
+- \*\*Accessible': Accessible system

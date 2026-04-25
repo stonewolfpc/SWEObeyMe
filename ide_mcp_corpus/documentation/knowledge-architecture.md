@@ -209,17 +209,17 @@ type User {
   Unique identifier for the user
   """
   id: ID!
-  
+
   """
   User's full name
   """
   name: String!
-  
+
   """
   User's email address
   """
   email: String!
-  
+
   """
   Posts created by this user
   """

@@ -26,9 +26,9 @@ describe('MCP Server E2E', () => {
       },
       {
         capabilities: { tools: {}, prompts: {} },
-      },
+      }
     );
-    
+
     transport = new StdioServerTransport();
     // In production, you'd actually start the server
     // await server.connect(transport);
@@ -57,11 +57,8 @@ describe('MCP Server E2E', () => {
     it('should have required tools registered', async () => {
       // This would test that tools like project_track are registered
       // In a real E2E test, you'd call ListToolsRequestSchema
-      const tools = await server.request(
-        { method: 'tools/list' },
-        ListToolsRequestSchema
-      );
-      
+      const tools = await server.request({ method: 'tools/list' }, ListToolsRequestSchema);
+
       expect(tools).toBeDefined();
       expect(tools.tools).toBeInstanceOf(Array);
     });
@@ -82,7 +79,7 @@ describe('MCP Server E2E', () => {
         },
         CallToolRequestSchema
       );
-      
+
       expect(result).toBeDefined();
     });
   });

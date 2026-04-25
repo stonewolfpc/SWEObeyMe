@@ -105,7 +105,7 @@ class UserCreated:
 class UserService:
     def __init__(self, event_bus: EventBus):
         self.event_bus = event_bus
-    
+
     def create_user(self, name: str):
         user_id = generate_id()
         self.event_bus.publish(UserCreated(user_id, name))
@@ -222,13 +222,13 @@ class OrderState(Enum):
 class Order:
     def __init__(self):
         self.state = OrderState.PENDING
-    
+
     def pay(self):
         if self.state == OrderState.PENDING:
             self.state = OrderState.PAID
         else:
             raise InvalidTransition()
-    
+
     def ship(self):
         if self.state == OrderState.PAID:
             self.state = OrderState.SHIPPED
@@ -281,7 +281,7 @@ class Plugin(ABC):
     @abstractmethod
     def initialize(self, context: PluginContext):
         pass
-    
+
     @abstractmethod
     def execute(self, request: Request) -> Response:
         pass
@@ -290,12 +290,12 @@ class Plugin(ABC):
 class PluginManager:
     def __init__(self):
         self.plugins = []
-    
+
     def load_plugins(self, directory: str):
         for file in os.listdir(directory):
             plugin = load_plugin(file)
             self.plugins.append(plugin)
-    
+
     def execute(self, request: Request):
         for plugin in self.plugins:
             response = plugin.execute(request)

@@ -18,6 +18,7 @@ MCP Prompts are parameterized prompts that intervene when the AI model exhibits 
 **Purpose:** Reasserts enforcement rules and constitution when the model shows signs of forgetting or violating architectural rules.
 
 **When it triggers:**
+
 - Model expresses uncertainty ("I think", "maybe", "not sure")
 - Model hesitates to use tools ("should I", "how about")
 - Model attempts manual edits or direct file access
@@ -25,6 +26,7 @@ MCP Prompts are parameterized prompts that intervene when the AI model exhibits 
 - Model shows signs of structural drift
 
 **Usage:**
+
 - Automatically triggered when ambiguity or hesitation is detected
 - Can be manually retrieved via `prompts/get` with arguments:
   - `projectType`: The type of project (node, python, godot, etc.)
@@ -32,6 +34,7 @@ MCP Prompts are parameterized prompts that intervene when the AI model exhibits 
   - `severity`: Severity of the violation (info, warning, error)
 
 **Example:**
+
 ```
 prompts/get?name=rule-templates&arguments={"projectType":"node","integrityScore":75}
 ```
@@ -48,11 +51,13 @@ prompts/get?name=rule-templates&arguments={"projectType":"node","integrityScore"
 **Purpose:** Detects project type, loads rule sets, and announces architectural boundaries with project-specific guidance.
 
 **When it triggers:**
+
 - Model is unsure about project structure or conventions
 - Model shows signs of not understanding the project context
 - Model attempts operations that may not fit the project type
 
 **Usage:**
+
 - Automatically triggered when project context is unclear
 - Can be manually retrieved via `prompts/get` with arguments:
   - `currentProject`: Current project path
@@ -60,6 +65,7 @@ prompts/get?name=rule-templates&arguments={"projectType":"node","integrityScore"
   - `forceRefresh`: Force reload of project context (boolean)
 
 **Example:**
+
 ```
 prompts/get?name=project-awareness&arguments={"currentProject":"d:/my-project","detectedProjectType":"node"}
 ```
@@ -76,11 +82,13 @@ prompts/get?name=project-awareness&arguments={"currentProject":"d:/my-project","
 **Purpose:** Enables explicit context switching between projects with state preservation and validation.
 
 **When it triggers:**
+
 - Model attempts to work on a different project without explicit switch
 - Model shows signs of confusion between project contexts
 - Model needs to preserve state between projects
 
 **Usage:**
+
 - Manually triggered when switching between projects
 - Retrieved via `prompts/get` with arguments:
   - `targetProject`: Path to target project
@@ -88,6 +96,7 @@ prompts/get?name=project-awareness&arguments={"currentProject":"d:/my-project","
   - `currentProject`: Current project path
 
 **Example:**
+
 ```
 prompts/get?name=context-switching&arguments={"targetProject":"d:/new-project","preserveState":true,"currentProject":"d:/SWEObeyMe-restored"}
 ```
@@ -104,12 +113,14 @@ prompts/get?name=context-switching&arguments={"targetProject":"d:/new-project","
 **Purpose:** Pre-flight validation that checks for rule violations and enforces surgical compliance before file modifications.
 
 **When it triggers:**
+
 - File approaches or exceeds 700-line limit
 - Preflight validation fails
 - Line limit violations are detected
 - Separation of concerns violations are detected
 
 **Usage:**
+
 - Automatically triggered by `preflight_change` handler when violations are detected
 - Retrieved via `prompts/get` with arguments:
   - `targetFile`: Path to file being modified
@@ -119,6 +130,7 @@ prompts/get?name=context-switching&arguments={"targetProject":"d:/new-project","
   - `violations`: Array of detected violations
 
 **Example:**
+
 ```
 prompts/get?name=preflight-correction&arguments={"targetFile":"index.js","currentLineCount":680,"estimatedAddition":50}
 ```
@@ -135,11 +147,13 @@ prompts/get?name=preflight-correction&arguments={"targetFile":"index.js","curren
 **Purpose:** Enforces optimal implementations over literal ones, prevents bad patterns, ensures architectural quality with governor-style review.
 
 **When it triggers:**
+
 - Proposed changes violate architectural standards
 - Model suggests suboptimal implementations
 - Structural drift or line limit violations are detected
 
 **Usage:**
+
 - Automatically triggered when architectural violations are detected
 - Retrieved via `prompts/get` with arguments:
   - `targetFile`: Path to file being rewritten
@@ -148,6 +162,7 @@ prompts/get?name=preflight-correction&arguments={"targetFile":"index.js","curren
   - `betterApproach`: Suggested optimal implementation (optional)
 
 **Example:**
+
 ```
 prompts/get?name=governor-rewrite&arguments={"targetFile":"utils.js","proposedChange":"Add new function","violations":["SEPARATION_OF_CONCERNS"]}
 ```
@@ -215,6 +230,7 @@ The prompt system has minimal performance impact and can be used frequently with
 The `preflight_change` handler automatically includes prompt trigger detection as Step 6 of the validation process. When violations are detected, the handler recommends appropriate prompts in the validation report.
 
 **Example output:**
+
 ```
 === PREFLIGHT VALIDATION REPORT ===
 

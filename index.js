@@ -33,12 +33,26 @@ import { initializeAuditSystem, getAuditSystem } from './lib/audit-system.js';
 import { initializeDuplicateScanner, getDuplicateScanner } from './lib/duplicate-scanner.js';
 import { initializeSessionTracker, getSessionTracker } from './lib/session-tracker.js';
 import { initializeShadowMemoryLedger, getShadowMemoryLedger } from './lib/shadow-memory-ledger.js';
-import { initializeStartupPromptInjector, getStartupPromptInjector } from './lib/startup-prompt-injector.js';
-import { initializeProjectMemorySystem, getProjectMemoryManager } from './lib/project-memory-system.js';
+import {
+  initializeStartupPromptInjector,
+  getStartupPromptInjector,
+} from './lib/startup-prompt-injector.js';
+import {
+  initializeProjectMemorySystem,
+  getProjectMemoryManager,
+} from './lib/project-memory-system.js';
 import { initializeProjectRegistry, getProjectRegistry } from './lib/project-registry.js';
 import { initializeArchiveManager, getArchiveManager } from './lib/archive-manager.js';
 import { setBackupCallback } from './lib/backup.js';
-import { loadSessionState, incrementToolCallCounter, shouldShowReminder, updateLastReminder, getSessionState, setTaskListSnapshot, setCurrentTaskId } from './lib/session-state.js';
+import {
+  loadSessionState,
+  incrementToolCallCounter,
+  shouldShowReminder,
+  updateLastReminder,
+  getSessionState,
+  setTaskListSnapshot,
+  setCurrentTaskId,
+} from './lib/session-state.js';
 
 // Read version from package.json (single source of truth)
 const __filename = fileURLToPath(import.meta.url);
@@ -47,7 +61,7 @@ const packageJson = JSON.parse(fs.readFileSync(path.join(__dirname, 'package.jso
 const VERSION = packageJson.version;
 
 const DEBUG_LOGS = process.env.SWEOBEYME_DEBUG === '1';
-const log = msg => {
+const log = (msg) => {
   if (!DEBUG_LOGS) return;
   process.stderr.write(`[SWEObeyMe-Audit]: ${msg}\n`);
 };
@@ -160,13 +174,7 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
         maxFunctionCount: 10,
         maxClassCount: 5,
       },
-      forbiddenPatterns: [
-        /console\.log\(/,
-        /debugger/,
-        /TODO/,
-        /FIXME/,
-        /XXX/,
-      ],
+      forbiddenPatterns: [/console\.log\(/, /debugger/, /TODO/, /FIXME/, /XXX/],
     });
     console.log('[SWEObeyMe] Automated rule enforcement initialized');
   } catch (error) {
@@ -264,18 +272,20 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
 
       // Find project for this file
       const projects = projectRegistry.getAllProjects();
-      const project = projects.find(p => filePath.startsWith(p.projectPath));
-      
+      const project = projects.find((p) => filePath.startsWith(p.projectPath));
+
       if (project) {
         const memoryManager = await getProjectMemoryManager(project.projectName);
         if (memoryManager) {
           // Include current task context in backup metadata
           const sessionState = getSessionState();
-          const taskContext = sessionState.currentTaskId ? {
-            taskId: sessionState.currentTaskId,
-            taskList: sessionState.taskListSnapshot || [],
-          } : null;
-          
+          const taskContext = sessionState.currentTaskId
+            ? {
+                taskId: sessionState.currentTaskId,
+                taskList: sessionState.taskListSnapshot || [],
+              }
+            : null;
+
           memoryManager.linkToBackup(filePath, backupPath, taskContext);
         }
       }
@@ -305,7 +315,7 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
     },
     {
       capabilities: { tools: {}, prompts: {} },
-    },
+    }
   );
 
   // Ensure backup directory exists
@@ -318,22 +328,27 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
   const diagnostics = getServerDiagnostics();
 
   // Run initial diagnostics in background (non-blocking)
-  diagnostics.runDiagnostics().then(results => {
-    diagnostics.lastResults = results;
-    log(`Diagnostics completed: ${results.summary.overall} (${results.summary.pass}/${results.summary.total} passed)`);
-  }).catch(error => {
-    log(`Diagnostics failed: ${error.message}`);
-  });
+  diagnostics
+    .runDiagnostics()
+    .then((results) => {
+      diagnostics.lastResults = results;
+      log(
+        `Diagnostics completed: ${results.summary.overall} (${results.summary.pass}/${results.summary.total} passed)`
+      );
+    })
+    .catch((error) => {
+      log(`Diagnostics failed: ${error.message}`);
+    });
 
   // Initialize handler - REQUIRED for handshake
   server.setRequestHandler(InitializeRequestSchema, (request) => {
     const injector = getStartupPromptInjector();
     const ledger = getShadowMemoryLedger();
-    
+
     // Detect new conversation
     const modelInfo = request.params?.clientInfo?.name || 'unknown';
     const isNewConversation = injector.detectNewConversation(modelInfo);
-    
+
     if (isNewConversation) {
       console.log(`[SWEObeyMe] New conversation detected: ${modelInfo}`);
       ledger.startNewSession();
@@ -348,8 +363,8 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
     return {
       protocolVersion: '2025-11-25',
       capabilities: { tools: {}, prompts: {} },
-      serverInfo: { 
-        name: 'SWEObeyMe', 
+      serverInfo: {
+        name: 'SWEObeyMe',
         version: VERSION,
         // Add diagnostic metadata for Windsurf UI
         _diagnostics: {
@@ -375,7 +390,7 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
     const prompts = registry.getAllPrompts();
 
     return {
-      prompts: prompts.map(prompt => ({
+      prompts: prompts.map((prompt) => ({
         name: prompt.name,
         description: prompt.description,
         arguments: prompt.arguments || [],
@@ -384,7 +399,7 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
   });
 
   // GetPrompt handler - REQUIRED for prompt retrieval
-  server.setRequestHandler(GetPromptRequestSchema, async request => {
+  server.setRequestHandler(GetPromptRequestSchema, async (request) => {
     const { name, arguments: args = {} } = request.params;
     const registry = await getPromptRegistry();
     const prompt = registry.getPrompt(name);
@@ -401,7 +416,7 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
 
     // Replace argument placeholders in messages
     if (args && messages.length > 0) {
-      messages = messages.map(msg => ({
+      messages = messages.map((msg) => ({
         ...msg,
         content: msg.content.replace(/\{\{(\w+)\}\}/g, (match, key) => args[key] || match),
       }));
@@ -414,7 +429,7 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
   });
 
   // CallTool handler - Core MCP interaction
-  server.setRequestHandler(CallToolRequestSchema, async request => {
+  server.setRequestHandler(CallToolRequestSchema, async (request) => {
     const { name, arguments: args } = request.params;
     const injector = getStartupPromptInjector();
     const ledger = getShadowMemoryLedger();
@@ -429,7 +444,7 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
     let memoryManager = null;
     if (projectRegistry && args?.path) {
       const projects = projectRegistry.getAllProjects();
-      const project = projects.find(p => args.path.startsWith(p.projectPath));
+      const project = projects.find((p) => args.path.startsWith(p.projectPath));
       if (project) {
         memoryManager = await getProjectMemoryManager(project.projectName);
       }
@@ -462,19 +477,28 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
 
       // Inject task reminder if applicable
       // Only on pertinent tools: read_file, write_file, obey_surgical_plan, refactor_manage, etc.
-      const pertinentTools = ['read_file', 'write_file', 'obey_surgical_plan', 'preflight_change', 'refactor_manage', 'backup_manage', 'analyze_file', 'code_analyze'];
+      const pertinentTools = [
+        'read_file',
+        'write_file',
+        'obey_surgical_plan',
+        'preflight_change',
+        'refactor_manage',
+        'backup_manage',
+        'analyze_file',
+        'code_analyze',
+      ];
       if (pertinentTools.includes(name) && shouldShowReminder()) {
         const sessionState = getSessionState();
         const currentTaskId = sessionState.currentTaskId;
         const taskList = sessionState.taskListSnapshot || [];
-        
+
         if (taskList.length > 0) {
-          const currentTask = taskList.find(t => t.id === currentTaskId) || taskList[0];
-          const currentIndex = taskList.findIndex(t => t.id === currentTaskId);
-          const remaining = taskList.filter(t => t.status !== 'completed').length;
-          
+          const currentTask = taskList.find((t) => t.id === currentTaskId) || taskList[0];
+          const currentIndex = taskList.findIndex((t) => t.id === currentTaskId);
+          const remaining = taskList.filter((t) => t.status !== 'completed').length;
+
           const reminderText = `[CONTEXT REMINDER] Call ${callCount}. Task ${currentIndex + 1}/${taskList.length}: "${currentTask.description || currentTask}" (${currentTask.status || 'pending'}). Remaining: ${remaining}. Resume with project_track when complete.`;
-          
+
           // Ensure result.content exists before pushing
           if (!result.content) {
             result.content = [];
@@ -483,7 +507,7 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
             type: 'text',
             text: reminderText,
           });
-          
+
           updateLastReminder(callCount);
         }
       }
@@ -502,7 +526,9 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
       } else if (name === 'write_file' && args?.path) {
         ledger.recordFileEvent(args.path, 'file_edit', { path: args.path });
       } else if (name === 'obey_surgical_plan' && args?.target_file) {
-        ledger.recordFileEvent(args.target_file, 'surgical_plan', { target_file: args.target_file });
+        ledger.recordFileEvent(args.target_file, 'surgical_plan', {
+          target_file: args.target_file,
+        });
       }
 
       // Record in project memory system if available
@@ -512,7 +538,9 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
         } else if (name === 'write_file' && args?.path) {
           memoryManager.recordFileEvent(args.path, 'file_edit', { path: args.path });
         } else if (name === 'obey_surgical_plan' && args?.target_file) {
-          memoryManager.recordFileEvent(args.target_file, 'surgical_plan', { target_file: args.target_file });
+          memoryManager.recordFileEvent(args.target_file, 'surgical_plan', {
+            target_file: args.target_file,
+          });
           memoryManager.recordArchitecture({
             decision: 'Surgical plan approved for file modification',
             targetFile: args.target_file,
@@ -537,7 +565,7 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
         internalAudit.consecutiveFailures = 0;
         internalAudit.surgicalIntegrityScore = Math.min(
           100,
-          internalAudit.surgicalIntegrityScore + 1,
+          internalAudit.surgicalIntegrityScore + 1
         );
       }
 
@@ -547,7 +575,7 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
       // Add proactive recommendations to result
       if (proactiveAnalysis.recommendations.length > 0) {
         const recommendationsText = proactiveAnalysis.recommendations
-          .map(rec => {
+          .map((rec) => {
             let text = `\n[${rec.priority.toUpperCase()}] ${rec.message}`;
             if (rec.prompt) {
               text += `\n  Recommended prompt: ${rec.prompt}`;
@@ -574,7 +602,7 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
         }
         result.content.push({
           type: 'text',
-          text: '\n[SYSTEM ALERT]: High failure rate detected. Call \'get_architectural_directive\' before your next move.',
+          text: "\n[SYSTEM ALERT]: High failure rate detected. Call 'get_architectural_directive' before your next move.",
         });
       }
 
@@ -585,10 +613,10 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
       internalAudit.surgicalIntegrityScore -= 5;
 
       log(`ERROR: ${error.message}`);
-      
+
       const errorMessage = error.message;
       const validationStatus = `\n\n[VALIDATION STATUS]\nSurgical Integrity Score: ${internalAudit.surgicalIntegrityScore}/100\nConsecutive Failures: ${internalAudit.consecutiveFailures}\nRecommended Action: Call get_validation_status for details`;
-      
+
       return {
         isError: true,
         content: [{ type: 'text', text: errorMessage + validationStatus }],
@@ -616,13 +644,13 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
   } else if (TRANSPORT_MODE === 'http') {
     // HTTP REST API mode - Express server only (no MCP transport)
     const app = express();
-    
+
     // Add request logging middleware
     app.use((req, res, next) => {
       process.stderr.write(`[HTTP] ${req.method} ${req.url}\n`);
       next();
     });
-    
+
     app.use(cors());
     app.use(express.json());
 
@@ -667,7 +695,7 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
           return res.status(503).json({ error: 'OAuth manager not initialized' });
         }
         const { provider, code, state, codeVerifier } = req.body;
-        
+
         if (!provider || !code || !state) {
           return res.status(400).json({ error: 'Missing required parameters' });
         }
@@ -696,7 +724,7 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
         }
         const { provider } = req.params;
         const token = oauthManager.getToken(provider);
-        
+
         if (!token) {
           return res.status(404).json({ error: 'Token not found' });
         }
@@ -921,11 +949,14 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
         }
 
         const { preWorkAuditor } = getAuditSystem();
-        preWorkAuditor.auditBeforeWork(taskDescription).then(audit => {
-          res.json(audit);
-        }).catch(error => {
-          res.status(500).json({ error: error.message });
-        });
+        preWorkAuditor
+          .auditBeforeWork(taskDescription)
+          .then((audit) => {
+            res.json(audit);
+          })
+          .catch((error) => {
+            res.status(500).json({ error: error.message });
+          });
       } catch (error) {
         res.status(500).json({ error: error.message });
       }
@@ -975,10 +1006,14 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
 
     // Start HTTP server
     app.listen(HTTP_PORT, HTTP_HOST, () => {
-      process.stderr.write(`[SWEObeyMe] MCP server listening on http://${HTTP_HOST}:${HTTP_PORT} (${TRANSPORT_MODE} transport)\n`);
+      process.stderr.write(
+        `[SWEObeyMe] MCP server listening on http://${HTTP_HOST}:${HTTP_PORT} (${TRANSPORT_MODE} transport)\n`
+      );
     });
   } else {
-    process.stderr.write(`[ERROR]: Unknown transport mode: ${TRANSPORT_MODE}. Use 'stdio' or 'sse'.\n`);
+    process.stderr.write(
+      `[ERROR]: Unknown transport mode: ${TRANSPORT_MODE}. Use 'stdio' or 'sse'.\n`
+    );
     process.exit(1);
   }
 
@@ -989,7 +1024,7 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
   log('Server started successfully.');
 
   // Simple error handling - let process exit naturally on stdio close
-  process.on('uncaughtException', err => {
+  process.on('uncaughtException', (err) => {
     process.stderr.write(`[CRITICAL ERROR] ${err.message}\n`);
   });
 })();

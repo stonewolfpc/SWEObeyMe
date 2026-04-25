@@ -2,7 +2,7 @@
 
 /**
  * Timing Fuzzer
- * 
+ *
  * Fuzzes timing aspects: delays, race conditions, overlapping calls, cancellation mid-flight
  */
 
@@ -26,14 +26,14 @@ export class TimingFuzzer {
    * Sleep for specified milliseconds
    */
   sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
   /**
    * Simulate race condition with overlapping operations
    */
   async simulateRaceCondition(operations) {
-    const promises = operations.map(op => {
+    const promises = operations.map((op) => {
       // Add random delay to each operation
       const delay = Math.random() * 100;
       return this.sleep(delay).then(() => op());
@@ -69,9 +69,9 @@ export class TimingFuzzer {
   async simulateTimeout(operation, timeout = 5000) {
     return Promise.race([
       operation(),
-      new Promise((_, reject) => 
+      new Promise((_, reject) =>
         setTimeout(() => reject(new Error('Operation timed out')), timeout)
-      )
+      ),
     ]);
   }
 
@@ -97,13 +97,11 @@ export class TimingFuzzer {
    */
   async simulateOverlappingCalls(operation, count = 10) {
     const promises = [];
-    
+
     for (let i = 0; i < count; i++) {
       // Start all operations with slight delays
       const delay = Math.random() * 50;
-      promises.push(
-        this.sleep(delay).then(() => operation(i))
-      );
+      promises.push(this.sleep(delay).then(() => operation(i)));
     }
 
     return Promise.allSettled(promises);
@@ -114,7 +112,7 @@ export class TimingFuzzer {
    */
   async simulateRapidFire(operation, count = 100) {
     const results = [];
-    
+
     for (let i = 0; i < count; i++) {
       try {
         results.push(await operation(i));
@@ -168,7 +166,7 @@ export class TimingFuzzer {
   async simulateResourceExhaustion(operation) {
     // Simulate memory pressure by creating large objects
     const largeArrays = [];
-    
+
     for (let i = 0; i < 10; i++) {
       largeArrays.push(new Array(1000000).fill(0));
     }
@@ -197,7 +195,7 @@ export class TimingFuzzer {
       () => this.simulateLongRunning(() => operation(), 5000),
       () => this.simulateIntermittentFailure(() => operation(), 0.3),
       () => this.simulateNetworkJitter(() => operation()),
-      () => this.simulateResourceExhaustion(() => operation())
+      () => this.simulateResourceExhaustion(() => operation()),
     ];
 
     const scenario = scenarios[Math.floor(Math.random() * scenarios.length)];
@@ -209,7 +207,7 @@ export class TimingFuzzer {
    */
   async runFuzzBatch(operation, count = 50) {
     const results = [];
-    
+
     for (let i = 0; i < count; i++) {
       const scenarioType = [
         'race_condition',
@@ -221,7 +219,7 @@ export class TimingFuzzer {
         'long_running',
         'intermittent_failure',
         'network_jitter',
-        'resource_exhaustion'
+        'resource_exhaustion',
       ][i % 10];
 
       const startTime = Date.now();
@@ -241,7 +239,7 @@ export class TimingFuzzer {
         success: error === null,
         result,
         error,
-        elapsed
+        elapsed,
       });
     }
 
@@ -274,7 +272,7 @@ export class TimingFuzzer {
       p50,
       p95,
       p99,
-      times
+      times,
     };
   }
 
@@ -304,7 +302,7 @@ export class TimingFuzzer {
       memoryGrowth,
       avgGrowth,
       memorySnapshots,
-      hasLeak: memoryGrowth > 10 * 1024 * 1024 // 10MB threshold
+      hasLeak: memoryGrowth > 10 * 1024 * 1024, // 10MB threshold
     };
   }
 }

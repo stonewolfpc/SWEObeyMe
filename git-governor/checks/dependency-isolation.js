@@ -20,7 +20,7 @@ class DependencyIsolationTest {
       skipped: 0,
       total: 0,
     };
-    
+
     this.repoRoot = dirname(dirname(__dirname));
     this.enterpriseModules = [
       'EnterpriseManager',
@@ -32,7 +32,7 @@ class DependencyIsolationTest {
       'Webhooks',
       'AdminDashboard',
     ];
-    
+
     this.mainFiles = [
       join(this.repoRoot, 'extension.js'),
       join(this.repoRoot, 'index.js'),
@@ -43,7 +43,7 @@ class DependencyIsolationTest {
 
   async run() {
     console.log('[DependencyIsolation] Starting dependency isolation test...');
-    
+
     const tests = [
       'scan-extension-js',
       'scan-index-js',
@@ -53,21 +53,21 @@ class DependencyIsolationTest {
       'check-enterprise-imports',
       'validate-isolation',
     ];
-    
+
     for (const test of tests) {
       await this.runTest(test);
     }
-    
+
     this.results.total = this.results.tests.length;
     return this.results;
   }
 
   async runTest(testName) {
     console.log(`[DependencyIsolation] Running: ${testName}...`);
-    
+
     let passed = false;
     let error = null;
-    
+
     try {
       switch (testName) {
         case 'scan-extension-js':
@@ -94,7 +94,7 @@ class DependencyIsolationTest {
         default:
           error = 'Unknown test name';
       }
-      
+
       // If test returned false but no error was thrown, set a descriptive error
       if (!passed && !error) {
         error = 'Test failed: enterprise imports found';
@@ -102,14 +102,14 @@ class DependencyIsolationTest {
     } catch (e) {
       error = e.message;
     }
-    
+
     this.results.tests.push({
       id: testName,
       name: `Dependency Isolation - ${testName}`,
       passed,
       error,
     });
-    
+
     if (passed) {
       this.results.passed++;
       console.log(`[DependencyIsolation] ${testName}`);
@@ -187,11 +187,11 @@ class DependencyIsolationTest {
   async testValidateIsolation() {
     try {
       const enterpriseExists = existsSync(join(this.repoRoot, 'enterprise'));
-      
+
       if (!enterpriseExists) {
         return true;
       }
-      
+
       // Check if enterprise is imported in main files
       const hasImports = await this.testCheckEnterpriseImports();
       return typeof hasImports === 'boolean' ? hasImports : true;
@@ -206,9 +206,9 @@ class DependencyIsolationTest {
       if (!existsSync(filePath)) {
         return true; // File doesn't exist, no imports
       }
-      
+
       const content = readFileSync(filePath, 'utf-8');
-      
+
       for (const module of this.enterpriseModules) {
         const importPatterns = [
           `import.*\\b${module}\\b`,
@@ -217,7 +217,7 @@ class DependencyIsolationTest {
           `from.*'../enterprise`,
           `from.*"../enterprise`,
         ];
-        
+
         for (const pattern of importPatterns) {
           const regex = new RegExp(pattern, 'i');
           if (regex.test(content)) {
@@ -225,7 +225,7 @@ class DependencyIsolationTest {
           }
         }
       }
-      
+
       return true;
     } catch (e) {
       console.log('[DependencyIsolation] File scan failed:', e.message);
@@ -236,24 +236,24 @@ class DependencyIsolationTest {
   scanFileForEnterpriseImportsList(filePath) {
     try {
       const imports = [];
-      
+
       if (!existsSync(filePath)) {
         return imports;
       }
-      
+
       const content = readFileSync(filePath, 'utf-8');
-      
+
       for (const module of this.enterpriseModules) {
         const regex = new RegExp(`\\b${module}\\b`, 'i');
         if (regex.test(content)) {
           imports.push({ file: filePath, module });
         }
       }
-      
+
       if (/\benterprise\b/.test(content) || content.includes('../enterprise')) {
         imports.push({ file: filePath, module: 'enterprise-path' });
       }
-      
+
       return imports;
     } catch (e) {
       console.log('[DependencyIsolation] Import list scan failed:', e.message);
@@ -264,12 +264,12 @@ class DependencyIsolationTest {
   scanAllFilesForEnterpriseImports() {
     try {
       const allImports = [];
-      
+
       for (const file of this.mainFiles) {
         const imports = this.scanFileForEnterpriseImportsList(file);
         allImports.push(...imports);
       }
-      
+
       return allImports;
     } catch (e) {
       console.log('[DependencyIsolation] All files scan failed:', e.message);

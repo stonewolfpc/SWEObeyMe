@@ -24,6 +24,7 @@ When specifying a list of tools in the parameters to the API request, it is gene
 ### Tool Definition Format
 
 Each tool should have:
+
 - Clear name
 - Concise description
 - Well-defined parameters with types
@@ -32,6 +33,7 @@ Each tool should have:
 ### Sampling Parameters
 
 For function calling:
+
 - Temperature: Lower values (0.0-0.3) for more deterministic function selection
 - Top P: Use with temperature for nucleus sampling
 - Max tokens: Sufficient for both reasoning and function output
@@ -63,6 +65,7 @@ For exact and factual answers, keep temperature low. For more diverse responses,
 ## Open-Source LLM Considerations
 
 When using open-source models for function calling:
+
 - Verify the model has been fine-tuned for function calling
 - Check supported function calling formats
 - May require specific prompt templates

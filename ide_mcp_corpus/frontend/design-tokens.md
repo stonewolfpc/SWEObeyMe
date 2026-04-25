@@ -388,7 +388,7 @@ This document covers Design token standards (W3C), Color systems, Typography sca
   --color-text: #0f172a;
 }
 
-[data-theme="dark"] {
+[data-theme='dark'] {
   --color-primary: #60a5fa;
   --color-background: #0f172a;
   --color-text: #f8fafc;
@@ -425,7 +425,7 @@ export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState('light');
 
   const toggleTheme = () => {
-    setTheme(t => t === 'light' ? 'dark' : 'light');
+    setTheme((t) => (t === 'light' ? 'dark' : 'light'));
   };
 
   return (

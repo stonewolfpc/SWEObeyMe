@@ -2,7 +2,7 @@
 
 /**
  * MCP Message Fuzzer
- * 
+ *
  * Generates random/mutated MCP protocol messages to test server robustness
  * Fuzzes: toolCalls, params, IDs, partial JSON, wrong types, huge payloads
  */
@@ -21,13 +21,18 @@ export class MCPMessageFuzzer {
    */
   generateRequest(toolName = 'test_tool') {
     const id = this.generateRandomId();
-    const method = this.randomChoice(['tools/call', 'tools/list', 'prompts/list', 'resources/list']);
-    
+    const method = this.randomChoice([
+      'tools/call',
+      'tools/list',
+      'prompts/list',
+      'resources/list',
+    ]);
+
     let params = {};
     if (method === 'tools/call') {
       params = {
         name: toolName,
-        arguments: this.generateRandomObject()
+        arguments: this.generateRandomObject(),
       };
     }
 
@@ -35,7 +40,7 @@ export class MCPMessageFuzzer {
       jsonrpc: '2.0',
       id,
       method,
-      params
+      params,
     };
   }
 
@@ -44,7 +49,7 @@ export class MCPMessageFuzzer {
    */
   generateResponse(id = null) {
     const hasError = Math.random() < 0.1;
-    
+
     if (hasError) {
       return {
         jsonrpc: '2.0',
@@ -52,15 +57,15 @@ export class MCPMessageFuzzer {
         error: {
           code: this.randomChoice([-32700, -32600, -32601, -32602, -32603]),
           message: this.generateRandomString(50),
-          data: this.generateRandomObject()
-        }
+          data: this.generateRandomObject(),
+        },
       };
     }
 
     return {
       jsonrpc: '2.0',
       id,
-      result: this.generateRandomObject()
+      result: this.generateRandomObject(),
     };
   }
 
@@ -71,7 +76,7 @@ export class MCPMessageFuzzer {
     return {
       jsonrpc: '2.0',
       method,
-      params: this.generateRandomObject()
+      params: this.generateRandomObject(),
     };
   }
 
@@ -85,7 +90,7 @@ export class MCPMessageFuzzer {
       () => this.mutateIds(message),
       () => this.corruptJson(message),
       () => this.addExtraFields(message),
-      () => this.removeRequiredFields(message)
+      () => this.removeRequiredFields(message),
     ];
 
     // Apply random mutations
@@ -137,9 +142,9 @@ export class MCPMessageFuzzer {
       params: {
         name: 'test_tool',
         arguments: {
-          hugeData
-        }
-      }
+          hugeData,
+        },
+      },
     };
   }
 
@@ -152,7 +157,7 @@ export class MCPMessageFuzzer {
     }
 
     const type = this.randomChoice(['object', 'array', 'value']);
-    
+
     if (type === 'object') {
       const obj = {};
       const numKeys = Math.floor(Math.random() * 5) + 1;
@@ -197,7 +202,8 @@ export class MCPMessageFuzzer {
    * Generate random string
    */
   generateRandomString(length) {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}|;:,.<>?';
+    const chars =
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}|;:,.<>?';
     let result = '';
     for (let i = 0; i < length; i++) {
       result += chars.charAt(Math.floor(Math.random() * chars.length));
@@ -258,7 +264,7 @@ export class MCPMessageFuzzer {
       if (Math.random() < this.mutationRate) {
         const types = ['string', 'number', 'boolean', 'object', 'array', 'null'];
         const newType = this.randomChoice(types);
-        
+
         switch (newType) {
           case 'string':
             obj[key] = this.generateRandomString(10);
@@ -339,7 +345,7 @@ export class MCPMessageFuzzer {
 
     const requiredFields = ['jsonrpc', 'id', 'method', 'params'];
     const field = this.randomChoice(requiredFields);
-    
+
     if (field in obj && Math.random() < 0.3) {
       delete obj[field];
     }
@@ -353,7 +359,14 @@ export class MCPMessageFuzzer {
     const toolNames = ['test_tool', 'analyze', 'search', 'write', 'read', 'execute'];
 
     for (let i = 0; i < count; i++) {
-      const type = this.randomChoice(['request', 'response', 'notification', 'partial', 'malformed', 'huge']);
+      const type = this.randomChoice([
+        'request',
+        'response',
+        'notification',
+        'partial',
+        'malformed',
+        'huge',
+      ]);
       const toolName = this.randomChoice(toolNames);
 
       let message;

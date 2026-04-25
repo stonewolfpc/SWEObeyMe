@@ -20,7 +20,7 @@ class PrePushHook {
 
   async run() {
     console.log('[PrePushHook] Running Git Publish Governor checks...');
-    
+
     try {
       // Run the governor
       const command = `node "${this.governorPath}" --all`;
@@ -28,10 +28,9 @@ class PrePushHook {
         cwd: this.repoRoot,
         stdio: 'inherit',
       });
-      
+
       console.log('[PrePushHook] ✅ All checks passed. Push allowed.');
       process.exit(0);
-      
     } catch (error) {
       console.error('[PrePushHook] ❌ Governor checks failed. Push blocked.');
       console.error('[PrePushHook] Fix the issues or use --override to bypass (emergency only).');

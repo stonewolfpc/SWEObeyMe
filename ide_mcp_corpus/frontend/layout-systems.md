@@ -96,15 +96,23 @@ This document covers CSS Grid, Flexbox, Intrinsic design, Container queries, Res
 ```css
 .grid {
   grid-template-areas:
-    "header header header"
-    "sidebar main main"
-    "footer footer footer";
+    'header header header'
+    'sidebar main main'
+    'footer footer footer';
 }
 
-.header { grid-area: header; }
-.sidebar { grid-area: sidebar; }
-.main { grid-area: main; }
-.footer { grid-area: footer; }
+.header {
+  grid-area: header;
+}
+.sidebar {
+  grid-area: sidebar;
+}
+.main {
+  grid-area: main;
+}
+.footer {
+  grid-area: footer;
+}
 ```
 
 ### Grid Alignment
@@ -548,9 +556,9 @@ const isDesktop = !isMobile && !isTablet;
   grid-template-rows: auto 1fr auto;
   grid-template-columns: 250px 1fr 250px;
   grid-template-areas:
-    "header header header"
-    "sidebar main ads"
-    "footer footer footer";
+    'header header header'
+    'sidebar main ads'
+    'footer footer footer';
   min-height: 100vh;
 }
 ```

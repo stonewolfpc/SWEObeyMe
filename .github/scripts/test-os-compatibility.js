@@ -27,11 +27,11 @@ console.log('1️⃣  Testing path separator handling...');
 const testPaths = [
   'lib/tools/registry.js',
   'lib\\tools\\registry.js',
-  path.join('lib', 'tools', 'registry.js')
+  path.join('lib', 'tools', 'registry.js'),
 ];
 
-const normalizedPaths = testPaths.map(p => path.normalize(p));
-const allSame = normalizedPaths.every(p => p === normalizedPaths[0]);
+const normalizedPaths = testPaths.map((p) => path.normalize(p));
+const allSame = normalizedPaths.every((p) => p === normalizedPaths[0]);
 
 if (allSame) {
   console.log(`   ✅ Path normalization works correctly`);
@@ -66,8 +66,9 @@ const extensionJsPath = path.join(projectRoot, 'extension.js');
 const extensionJs = fs.readFileSync(extensionJsPath, 'utf8');
 
 // Look for platform checks
-const hasWin32Check = extensionJs.includes('win32') || extensionJs.includes('platform === \'win32\'');
-const hasPlatformCheck = extensionJs.includes('process.platform') || extensionJs.includes('os.platform');
+const hasWin32Check = extensionJs.includes('win32') || extensionJs.includes("platform === 'win32'");
+const hasPlatformCheck =
+  extensionJs.includes('process.platform') || extensionJs.includes('os.platform');
 const hasPathJoin = extensionJs.includes('path.join') || extensionJs.includes('path.resolve');
 
 if (hasPathJoin) {
@@ -123,15 +124,16 @@ if (fs.existsSync(indexPath)) {
   const content = fs.readFileSync(indexPath);
   const hasCRLF = content.includes('\r\n');
   const hasLF = content.includes('\n') && !hasCRLF;
-  
+
   if (hasCRLF) {
     console.log('   ℹ️  Files use CRLF (Windows style)');
   } else if (hasLF) {
     console.log('   ℹ️  Files use LF (Unix style)');
   }
-  
+
   // Git should handle this, but warn if mixed
-  const mixed = content.toString().includes('\r\n') && content.toString().replace(/\r\n/g, '').includes('\n');
+  const mixed =
+    content.toString().includes('\r\n') && content.toString().replace(/\r\n/g, '').includes('\n');
   if (mixed) {
     warnings.push('Mixed line endings detected');
     console.warn('   ⚠️  Mixed line endings in files');
@@ -146,7 +148,7 @@ if (platform !== 'win32') {
   try {
     const serverStat = fs.statSync(serverPath);
     const isExecutable = (serverStat.mode & 0o111) !== 0;
-    
+
     if (isExecutable) {
       console.log('   ✅ Server file is executable');
     } else {
@@ -160,7 +162,7 @@ if (platform !== 'win32') {
 // Test 8: Environment variable handling
 console.log('\n8️⃣  Testing environment handling...');
 const envVars = ['PATH', 'HOME', 'USERPROFILE'];
-const foundVars = envVars.filter(v => process.env[v] !== undefined);
+const foundVars = envVars.filter((v) => process.env[v] !== undefined);
 
 if (foundVars.length >= 2) {
   console.log(`   ✅ Environment variables accessible (${foundVars.join(', ')})`);
@@ -200,7 +202,7 @@ console.log(`   Warnings: ${warnings.length}`);
 if (errors.length > 0) {
   console.error('\n❌ OS COMPATIBILITY TESTS FAILED');
   console.error('   Critical issues found:');
-  errors.forEach(e => console.error(`      - ${e}`));
+  errors.forEach((e) => console.error(`      - ${e}`));
   process.exit(1);
 } else if (warnings.length > 0) {
   console.warn('\n⚠️  OS COMPATIBILITY PASSED WITH WARNINGS');

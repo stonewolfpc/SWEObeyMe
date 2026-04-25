@@ -2,7 +2,7 @@
 
 /**
  * Property-Based Timeout Tests
- * 
+ *
  * Based on verification theory best practices from corpus
  * Tests timeout invariants: operations should complete within timeout or fail gracefully
  */
@@ -23,12 +23,10 @@ class PropertyBasedTimeoutTests {
     try {
       await Promise.race([
         operation(),
-        new Promise((_, reject) => 
-          setTimeout(() => reject(new Error('Timeout')), timeout)
-        )
+        new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), timeout)),
       ]);
       const elapsed = Date.now() - startTime;
-      
+
       // Property: elapsed time should not significantly exceed timeout
       const withinBounds = elapsed <= timeout + 100; // Allow 100ms overhead
       this.results.push({
@@ -36,9 +34,9 @@ class PropertyBasedTimeoutTests {
         passed: withinBounds,
         elapsed,
         timeout,
-        maxExpected: maxExpectedTime
+        maxExpected: maxExpectedTime,
       });
-      
+
       if (withinBounds) {
         this.passed++;
         console.log('✓ Timeout prevents hangs');
@@ -46,21 +44,21 @@ class PropertyBasedTimeoutTests {
         this.failed++;
         console.log('✗ Timeout prevents hangs - exceeded timeout');
       }
-      
+
       return withinBounds;
     } catch (error) {
       const elapsed = Date.now() - startTime;
       // Timeout is acceptable if it prevented a hang
       const acceptableTimeout = error.message === 'Timeout' && elapsed <= timeout + 100;
-      
+
       this.results.push({
         property: 'timeout_prevents_hangs',
         passed: acceptableTimeout,
         elapsed,
         timeout,
-        error: error.message
+        error: error.message,
       });
-      
+
       if (acceptableTimeout) {
         this.passed++;
         console.log('✓ Timeout prevents hangs');
@@ -68,7 +66,7 @@ class PropertyBasedTimeoutTests {
         this.failed++;
         console.log('✗ Timeout prevents hangs');
       }
-      
+
       return acceptableTimeout;
     }
   }
@@ -79,15 +77,15 @@ class PropertyBasedTimeoutTests {
   async testIdempotence(operation) {
     const result1 = await operation();
     const result2 = await operation();
-    
+
     const isIdempotent = JSON.stringify(result1) === JSON.stringify(result2);
     this.results.push({
       property: 'idempotence',
       passed: isIdempotent,
       result1,
-      result2
+      result2,
     });
-    
+
     if (isIdempotent) {
       this.passed++;
       console.log('✓ Idempotence property holds');
@@ -95,7 +93,7 @@ class PropertyBasedTimeoutTests {
       this.failed++;
       console.log('✗ Idempotence property violated');
     }
-    
+
     return isIdempotent;
   }
 
@@ -108,33 +106,33 @@ class PropertyBasedTimeoutTests {
       this.results.push({
         property: 'no_resource_leaks',
         passed: null,
-        reason: 'Memory detection not available'
+        reason: 'Memory detection not available',
       });
       return null;
     }
 
     const initialMemory = process.memoryUsage().heapUsed;
-    
+
     for (let i = 0; i < iterations; i++) {
       await operation();
     }
-    
+
     const finalMemory = process.memoryUsage().heapUsed;
     const memoryGrowth = finalMemory - initialMemory;
     const avgGrowth = memoryGrowth / iterations;
-    
+
     // Property: average growth per iteration should be minimal (< 1KB)
     const noLeaks = avgGrowth < 1024;
-    
+
     this.results.push({
       property: 'no_resource_leaks',
       passed: noLeaks,
       initialMemory,
       finalMemory,
       memoryGrowth,
-      avgGrowth
+      avgGrowth,
     });
-    
+
     if (noLeaks) {
       this.passed++;
       console.log('✓ No resource leaks');
@@ -142,7 +140,7 @@ class PropertyBasedTimeoutTests {
       this.failed++;
       console.log('✗ Resource leaks detected');
     }
-    
+
     return noLeaks;
   }
 
@@ -151,31 +149,31 @@ class PropertyBasedTimeoutTests {
    */
   async testMonotonicPerformance(operation, iterations = 50) {
     const times = [];
-    
+
     for (let i = 0; i < iterations; i++) {
       const start = Date.now();
       await operation();
       times.push(Date.now() - start);
     }
-    
+
     // Check if performance degrades significantly over time
     const firstHalf = times.slice(0, Math.floor(iterations / 2));
     const secondHalf = times.slice(Math.floor(iterations / 2));
-    
+
     const avgFirst = firstHalf.reduce((a, b) => a + b, 0) / firstHalf.length;
     const avgSecond = secondHalf.reduce((a, b) => a + b, 0) / secondHalf.length;
-    
+
     // Property: second half should not be more than 2x slower than first half
     const isMonotonic = avgSecond <= avgFirst * 2;
-    
+
     this.results.push({
       property: 'monotonic_performance',
       passed: isMonotonic,
       avgFirst,
       avgSecond,
-      degradationRatio: avgSecond / avgFirst
+      degradationRatio: avgSecond / avgFirst,
     });
-    
+
     if (isMonotonic) {
       this.passed++;
       console.log('✓ Monotonic performance');
@@ -183,7 +181,7 @@ class PropertyBasedTimeoutTests {
       this.failed++;
       console.log('✗ Performance degradation detected');
     }
-    
+
     return isMonotonic;
   }
 
@@ -193,29 +191,29 @@ class PropertyBasedTimeoutTests {
   async runAll() {
     console.log('Property-Based Timeout Tests\n');
     console.log('Based on verification theory best practices\n');
-    
+
     // Test 1: Timeout prevents hangs
     await this.testTimeoutPreventsHangs(
-      () => new Promise(resolve => setTimeout(resolve, 100)),
+      () => new Promise((resolve) => setTimeout(resolve, 100)),
       5000,
       5000
     );
-    
+
     // Test 2: Idempotence
     await this.testIdempotence(() => ({ test: 'data', number: 42 }));
-    
+
     // Test 3: No resource leaks
     await this.testNoResourceLeaks(() => Promise.resolve(), 50);
-    
+
     // Test 4: Monotonic performance
     await this.testMonotonicPerformance(() => Promise.resolve(), 30);
-    
+
     this.printSummary();
   }
 
   printSummary() {
-    const skipped = this.results.filter(r => r.passed === null).length;
-    
+    const skipped = this.results.filter((r) => r.passed === null).length;
+
     console.log('\n' + '='.repeat(50));
     console.log('Property-Based Test Summary');
     console.log('='.repeat(50));
@@ -223,16 +221,18 @@ class PropertyBasedTimeoutTests {
     console.log(`Failed: ${this.failed}`);
     console.log(`Skipped: ${skipped}`);
     console.log(`Total: ${this.results.length}`);
-    
+
     if (this.failed > 0) {
       console.log('\nFailed Properties:');
-      this.results.filter(r => r.passed === false).forEach(r => {
-        console.log(`  - ${r.property}`);
-      });
+      this.results
+        .filter((r) => r.passed === false)
+        .forEach((r) => {
+          console.log(`  - ${r.property}`);
+        });
     }
-    
+
     console.log('='.repeat(50));
-    
+
     if (this.failed === 0) {
       console.log('\nALL TESTS PASSED');
       process.exit(0);
@@ -245,7 +245,7 @@ class PropertyBasedTimeoutTests {
 
 // Run tests
 const tests = new PropertyBasedTimeoutTests();
-tests.runAll().catch(error => {
+tests.runAll().catch((error) => {
   console.error('Test execution failed:', error);
   process.exit(1);
 });

@@ -2,19 +2,22 @@
 
 /**
  * Comprehensive MCP Server Stress Test
- * 
+ *
  * This test stress-tests the entire MCP server to ensure:
  * - docs_lookup doesn't freeze with any corpus
  * - add_project_error doesn't freeze
  * - Timeout protection works
  * - Async file operations don't block
  * - Parallel operations work correctly
- * 
+ *
  * Run with: node scripts/mcp-stress-test.js
  */
 
 import { docs_lookup_handler } from '../lib/tools/docs-handlers.js';
-import { add_project_error_handler, add_pending_task_handler } from '../lib/tools/project-awareness-handlers.js';
+import {
+  add_project_error_handler,
+  add_pending_task_handler,
+} from '../lib/tools/project-awareness-handlers.js';
 import { godot_lookup_handler } from '../lib/tools/godot-handlers.js';
 
 const TEST_RESULTS = {
@@ -27,7 +30,7 @@ function logTest(name, status, details = '') {
   const timestamp = new Date().toISOString();
   const statusSymbol = status === 'PASS' ? '✓' : status === 'FAIL' ? '✗' : '⚠';
   console.log(`[${timestamp}] ${statusSymbol} ${name}${details ? ` - ${details}` : ''}`);
-  
+
   if (status === 'PASS') {
     TEST_RESULTS.passed++;
   } else if (status === 'FAIL') {
@@ -42,7 +45,7 @@ async function testWithTimeout(testFn, testName, timeoutMs) {
     const timeoutPromise = new Promise((_, reject) => {
       timeoutId = setTimeout(() => reject(new Error(`Timeout after ${timeoutMs}ms`)), timeoutMs);
     });
-    
+
     try {
       const result = await Promise.race([testFn(), timeoutPromise]);
       clearTimeout(timeoutId);
@@ -56,10 +59,10 @@ async function testWithTimeout(testFn, testName, timeoutMs) {
 
 async function testDocsLookupAllCorpora() {
   console.log('\n=== Testing docs_lookup with all corpora ===\n');
-  
+
   const corpora = ['unified', 'math', 'fdq', 'training', 'godot', 'llama'];
   const queries = ['async', 'error', 'validation', 'project', 'file'];
-  
+
   for (const corpus of corpora) {
     for (const query of queries) {
       const testName = `docs_lookup(${corpus}, "${query}")`;
@@ -68,7 +71,7 @@ async function testDocsLookupAllCorpora() {
         testName,
         10000 // 10 second timeout
       );
-      
+
       if (success) {
         logTest(testName, 'PASS');
       } else {
@@ -76,7 +79,7 @@ async function testDocsLookupAllCorpora() {
       }
     }
   }
-  
+
   // Test without corpus (search all)
   const testName = 'docs_lookup(all corpora, "async")';
   const { success, error } = await testWithTimeout(
@@ -84,7 +87,7 @@ async function testDocsLookupAllCorpora() {
     testName,
     30000 // 30 second timeout for all corpora
   );
-  
+
   if (success) {
     logTest(testName, 'PASS');
   } else {
@@ -94,7 +97,7 @@ async function testDocsLookupAllCorpora() {
 
 async function testProjectAwareness() {
   console.log('\n=== Testing project awareness operations ===\n');
-  
+
   // Test add_project_error
   const testName1 = 'add_project_error';
   const { success: success1, error: error1 } = await testWithTimeout(
@@ -102,13 +105,13 @@ async function testProjectAwareness() {
     testName1,
     5000
   );
-  
+
   if (success1) {
     logTest(testName1, 'PASS');
   } else {
     logTest(testName1, 'FAIL', error1);
   }
-  
+
   // Test add_pending_task
   const testName2 = 'add_pending_task';
   const { success: success2, error: error2 } = await testWithTimeout(
@@ -116,7 +119,7 @@ async function testProjectAwareness() {
     testName2,
     5000
   );
-  
+
   if (success2) {
     logTest(testName2, 'PASS');
   } else {
@@ -126,9 +129,9 @@ async function testProjectAwareness() {
 
 async function testUnifiedHandlers() {
   console.log('\n=== Testing unified handlers directly ===\n');
-  
+
   const queries = ['async', 'error', 'validation', 'git', 'security'];
-  
+
   for (const query of queries) {
     const testName = `unified_lookup("${query}")`;
     const { success, error } = await testWithTimeout(
@@ -136,7 +139,7 @@ async function testUnifiedHandlers() {
       testName,
       10000
     );
-    
+
     if (success) {
       logTest(testName, 'PASS');
     } else {
@@ -147,7 +150,7 @@ async function testUnifiedHandlers() {
 
 async function testOtherCorpusHandlers() {
   console.log('\n=== Testing other corpus handlers ===\n');
-  
+
   // Test math handler
   const testName1 = 'math_lookup';
   const { success: success1, error: error1 } = await testWithTimeout(
@@ -155,13 +158,13 @@ async function testOtherCorpusHandlers() {
     testName1,
     5000
   );
-  
+
   if (success1) {
     logTest(testName1, 'PASS');
   } else {
     logTest(testName1, 'FAIL', error1);
   }
-  
+
   // Test FDQ handler
   const testName2 = 'fdq_lookup';
   const { success: success2, error: error2 } = await testWithTimeout(
@@ -169,13 +172,13 @@ async function testOtherCorpusHandlers() {
     testName2,
     5000
   );
-  
+
   if (success2) {
     logTest(testName2, 'PASS');
   } else {
     logTest(testName2, 'FAIL', error2);
   }
-  
+
   // Test training handler
   const testName3 = 'training_lookup';
   const { success: success3, error: error3 } = await testWithTimeout(
@@ -183,7 +186,7 @@ async function testOtherCorpusHandlers() {
     testName3,
     5000
   );
-  
+
   if (success3) {
     logTest(testName3, 'PASS');
   } else {
@@ -193,7 +196,7 @@ async function testOtherCorpusHandlers() {
 
 async function testParallelOperations() {
   console.log('\n=== Testing parallel operations ===\n');
-  
+
   const testName = 'Parallel docs_lookup calls';
   const { success, error } = await testWithTimeout(
     async () => {
@@ -206,7 +209,7 @@ async function testParallelOperations() {
     testName,
     60000 // 60 second timeout for parallel ops
   );
-  
+
   if (success) {
     logTest(testName, 'PASS');
   } else {
@@ -216,7 +219,7 @@ async function testParallelOperations() {
 
 async function testTimeoutProtection() {
   console.log('\n=== Testing timeout protection ===\n');
-  
+
   // Test with a query that should timeout if corpus is slow
   const testName = 'Timeout protection (slow corpus)';
   const { success, error } = await testWithTimeout(
@@ -224,7 +227,7 @@ async function testTimeoutProtection() {
     testName,
     10000 // Should complete within 10s even if slow
   );
-  
+
   if (success) {
     logTest(testName, 'PASS');
   } else {
@@ -236,9 +239,9 @@ async function runAllTests() {
   console.log('========================================');
   console.log('  MCP Server Comprehensive Stress Test');
   console.log('========================================\n');
-  
+
   const startTime = Date.now();
-  
+
   try {
     await testDocsLookupAllCorpora();
     await testProjectAwareness();
@@ -250,9 +253,9 @@ async function runAllTests() {
     console.error('\n❌ Test suite crashed:', error);
     TEST_RESULTS.errors.push({ name: 'Test Suite', details: error.message });
   }
-  
+
   const duration = Date.now() - startTime;
-  
+
   console.log('\n========================================');
   console.log('  Test Results');
   console.log('========================================\n');
@@ -260,7 +263,7 @@ async function runAllTests() {
   console.log(`✓ Passed: ${TEST_RESULTS.passed}`);
   console.log(`✗ Failed: ${TEST_RESULTS.failed}`);
   console.log(`Duration: ${(duration / 1000).toFixed(2)}s`);
-  
+
   if (TEST_RESULTS.failed > 0) {
     console.log('\nFailed Tests:');
     TEST_RESULTS.errors.forEach(({ name, details }) => {

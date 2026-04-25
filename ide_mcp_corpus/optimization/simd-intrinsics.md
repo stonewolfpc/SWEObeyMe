@@ -12,9 +12,9 @@ The most notable distinction between SIMD extensions is the support for wider re
 
 C/C++ compilers implement special vector types:
 
-- 128-bit: __m128, __m128d, __m128i (single-precision FP, double-precision FP, integer)
-- 256-bit: __m256, __m256d, __m256i
-- 512-bit: __m512, __m512d, __m512i
+- 128-bit: **m128, **m128d, \_\_m128i (single-precision FP, double-precision FP, integer)
+- 256-bit: **m256, **m256d, \_\_m256i
+- 512-bit: **m512, **m512d, \_\_m512i
 
 ## Instruction Categories
 

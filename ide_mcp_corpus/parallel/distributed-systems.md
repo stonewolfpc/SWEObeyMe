@@ -58,12 +58,14 @@ Work stealing is designed for a strict fork-join model of parallel computation. 
 Each processor has a double-ended queue (deque) of threads:
 
 **Special behaviors:**
+
 1. **Spawn**: New thread created, current thread pushed to bottom, execute new thread
 2. **Stall**: Temporarily halt, pop from bottom of deque
 3. **Die**: Same as stall
 4. **Enable**: Other thread pushed to bottom, continue current
 
 **Work stealing (when idle):**
+
 1. Pick random processor
 2. If their deque non-empty, pop from top and execute
 3. Else, repeat
@@ -90,6 +92,7 @@ Each processor has a double-ended queue (deque) of threads:
 ### NUMA Awareness
 
 Work stealing can be NUMA-sensitive:
+
 - Prefer stealing from same NUMA node
 - Reduces remote memory access
 - HPX: `--hpx:numa-sensitive` option
@@ -99,6 +102,7 @@ Work stealing can be NUMA-sensitive:
 ### Motivation
 
 Lock-based synchronization causes:
+
 - Contention on lock
 - Context switching
 - Priority inversion
@@ -121,6 +125,7 @@ Lock-based synchronization causes:
 ### Work-Stealing Queue (WSQ)
 
 Double-ended queue with:
+
 - Lock-free push/pop from bottom (owner)
 - Synchronized pop from top (thief)
 - Private end for owner, public for thieves
@@ -144,6 +149,7 @@ Double-ended queue with:
 ### Concept
 
 Multi-socket systems have:
+
 - Multiple NUMA nodes (sockets)
 - Each node has local memory (fast access)
 - Remote memory access is slower
@@ -183,6 +189,7 @@ Multi-socket systems have:
 ### Concepts
 
 Async runtimes provide:
+
 - Non-blocking I/O
 - Task scheduling
 - Futures/promises
@@ -206,6 +213,7 @@ Async runtimes provide:
 ### Event Loops
 
 Single-threaded event loop:
+
 - Process events sequentially
 - Non-blocking I/O
 - Good for I/O-bound work
@@ -274,6 +282,7 @@ Single-threaded event loop:
 ### Request Batching
 
 Combine multiple requests into single batch:
+
 - Reduces per-request overhead
 - Improves throughput
 - Increases latency (trade-off)
@@ -310,16 +319,19 @@ Combine multiple requests into single batch:
 ### Batching for LLMs
 
 **Prefill batching:**
+
 - Batch multiple prompts for prefill
 - Parallelize attention computation
 - Reduces prefill time
 
 **Decode batching:**
+
 - Batch multiple generation requests
 - Continuous batching for efficiency
 - Trade-off: throughput vs latency
 
 **Pipeline parallelism:**
+
 - Batch across pipeline stages
 - Overlap computation
 - Improve hardware utilization
@@ -420,6 +432,7 @@ Combine multiple requests into single batch:
 ### Concept
 
 Predict multiple next tokens in parallel:
+
 - Draft model predicts N tokens
 - Verify with main model
 - Accept correct predictions

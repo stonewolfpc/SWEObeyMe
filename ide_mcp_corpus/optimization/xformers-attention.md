@@ -9,6 +9,7 @@ xFormers is a PyTorch extension library providing composable and optimized Trans
 ### Available Implementations
 
 xFormers provides multiple implementations of memory-efficient attention:
+
 - Flash Attention implementation
 - Non-autograd implementations for inference-only scenarios
 - Partial attention support for specific use cases

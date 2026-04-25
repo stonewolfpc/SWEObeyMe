@@ -22,25 +22,25 @@ let hasErrors = false;
 
 // Check 1: Verify vscode.Uri.file() usage
 console.log('Check 1: vscode.Uri.file() usage');
-const libFiles = fs.readdirSync(libDir).filter(f => f.endsWith('.js'));
+const libFiles = fs.readdirSync(libDir).filter((f) => f.endsWith('.js'));
 let uriFileUsageCorrect = true;
 
 for (const file of libFiles) {
   const filePath = path.join(libDir, file);
   const content = fs.readFileSync(filePath, 'utf-8');
-  
+
   // Check for bare paths being passed to VS Code APIs
   const problematicPatterns = [
     /vscode\.workspace\.fs\.writeFile\([^)]*[^)]fsPath[^)]*\)/g,
     /vscode\.workspace\.openTextDocument\([^)]*[^)]fsPath[^)]*\)/g,
     /vscode\.window\.showTextDocument\([^)]*[^)]fsPath[^)]*\)/g,
   ];
-  
+
   for (const pattern of problematicPatterns) {
     const matches = content.match(pattern);
     if (matches) {
       console.log(`  ❌ ERROR in ${file}: Bare path passed to VS Code API`);
-      matches.forEach(m => console.log(`     ${m}`));
+      matches.forEach((m) => console.log(`     ${m}`));
       hasErrors = true;
       uriFileUsageCorrect = false;
     }
@@ -58,9 +58,11 @@ let uriConversionCorrect = true;
 for (const file of libFiles) {
   const filePath = path.join(libDir, file);
   const content = fs.readFileSync(filePath, 'utf-8');
-  
+
   // Check for file paths being used with VS Code APIs without URI conversion
-  const fileOperations = content.match(/vscode\.workspace\.(fs|openTextDocument|showTextDocument)\([^)]+\)/g);
+  const fileOperations = content.match(
+    /vscode\.workspace\.(fs|openTextDocument|showTextDocument)\([^)]+\)/g
+  );
   if (fileOperations) {
     for (const op of fileOperations) {
       if (!op.includes('vscode.Uri') && op.includes('fsPath')) {
@@ -81,14 +83,14 @@ if (uriConversionCorrect) {
 console.log('\nCheck 3: extension.js VS Code API usage');
 if (fs.existsSync(extensionFile)) {
   const extensionContent = fs.readFileSync(extensionFile, 'utf-8');
-  
+
   // Only check APIs that expect URIs (file operations, text document operations)
   const uriRequiringApis = [
     /vscode\.workspace\.fs\.[a-zA-Z]+\([^)]*path[^)]*\)/gi,
     /vscode\.workspace\.openTextDocument\([^)]*path[^)]*\)/gi,
     /vscode\.window\.showTextDocument\([^)]*path[^)]*\)/gi,
   ];
-  
+
   let extensionIssuesFound = false;
   for (const pattern of uriRequiringApis) {
     const matches = extensionContent.match(pattern);
@@ -103,7 +105,7 @@ if (fs.existsSync(extensionFile)) {
       }
     }
   }
-  
+
   if (!extensionIssuesFound) {
     console.log('  ✅ extension.js uses proper URI conversion');
   }

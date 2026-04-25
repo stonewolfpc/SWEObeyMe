@@ -273,7 +273,9 @@ function MyComponent() {
   return (
     <Box p={4} bg="blue.500" borderRadius="md">
       <Text color="white">Hello, World!</Text>
-      <Button mt={2} colorScheme="whiteAlpha">Click me</Button>
+      <Button mt={2} colorScheme="whiteAlpha">
+        Click me
+      </Button>
     </Box>
   );
 }
@@ -392,11 +394,7 @@ const theme = createTheme({
 
 ```jsx
 function Button({ children, variant = 'primary', size = 'medium' }) {
-  return (
-    <button className={`btn btn-${variant} btn-${size}`}>
-      {children}
-    </button>
-  );
+  return <button className={`btn btn-${variant} btn-${size}`}>{children}</button>;
 }
 ```
 
@@ -407,11 +405,7 @@ function Input({ label, placeholder, value, onChange }) {
   return (
     <div className="input-group">
       <label>{label}</label>
-      <input
-        placeholder={placeholder}
-        value={value}
-        onChange={onChange}
-      />
+      <input placeholder={placeholder} value={value} onChange={onChange} />
     </div>
   );
 }
@@ -468,7 +462,7 @@ function Header({ logo, navigation, user }) {
 function ProductList({ products }) {
   return (
     <div className="product-list">
-      {products.map(product => (
+      {products.map((product) => (
         <Card key={product.id} {...product} />
       ))}
     </div>

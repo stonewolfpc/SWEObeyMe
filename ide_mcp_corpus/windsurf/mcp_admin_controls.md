@@ -1,6 +1,7 @@
 Source: https://docs.windsurf.com/plugins/cascade/mcp
 
 ## Admin Controls (Teams & Enterprises)
+
 Team admins can toggle MCP access for their team, as well as whitelist approved MCP servers for their team to use:
 
 <Card title="MCP Team Settings" icon="hammer" href="https://windsurf.com/team/settings">
@@ -12,13 +13,14 @@ Team admins can toggle MCP access for their team, as well as whitelist approved 
 By default, users within a team will be able to configure their own MCP servers. However, once you whitelist even a single MCP server, **all non-whitelisted servers will be blocked** for your team.
 
 ### How Server Matching Works
+
 When you whitelist an MCP server, the system uses **regex pattern matching** with the following rules:
 
-* **Full String Matching**: All patterns are automatically anchored (wrapped with `^(?:pattern)$`) to prevent partial matches
-* **Command Field**: Must match exactly or according to your regex pattern
-* **Arguments Array**: Each argument is matched individually against its corresponding pattern
-* **Array Length**: The number of arguments must match exactly between whitelist and user config
-* **Special Characters**: Characters like `$`, `.`, `[`, `]`, `(`, `)` have special regex meaning and should be escaped with `\\` if you want literal matching
+- **Full String Matching**: All patterns are automatically anchored (wrapped with `^(?:pattern)$`) to prevent partial matches
+- **Command Field**: Must match exactly or according to your regex pattern
+- **Arguments Array**: Each argument is matched individually against its corresponding pattern
+- **Array Length**: The number of arguments must match exactly between whitelist and user config
+- **Special Characters**: Characters like `$`, `.`, `[`, `]`, `(`, `)` have special regex meaning and should be escaped with `\\` if you want literal matching
 
 ### Configuration Options
 

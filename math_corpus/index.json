@@ -168,7 +168,12 @@
           "author": "Duke University",
           "description": "Taylor series and approximation theory for error bounds",
           "license": "Educational",
-          "topics": ["Taylor series", "approximation theory", "error bounds", "polynomial approximation"]
+          "topics": [
+            "Taylor series",
+            "approximation theory",
+            "error bounds",
+            "polynomial approximation"
+          ]
         },
         {
           "filename": "introduction_to_quadratic_forms.pdf",
@@ -191,7 +196,12 @@
           "author": "Allen Gersho, Robert M. Gray",
           "description": "Comprehensive vector quantization theory for multi-stage FDQ",
           "license": "Springer",
-          "topics": ["vector quantization", "signal compression", "multi-stage quantization", "distortion"]
+          "topics": [
+            "vector quantization",
+            "signal compression",
+            "multi-stage quantization",
+            "distortion"
+          ]
         }
       ]
     },

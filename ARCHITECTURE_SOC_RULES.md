@@ -10,17 +10,19 @@
 ## 1. The Iron Rule of Separation of Concerns
 
 ### Definition
+
 **Separation of Concerns (SoC)** is the architectural principle that a software module should have **one, and only one, primary responsibility**. Mixing concerns creates **tight coupling**, **reduced testability**, and **technical debt**.
 
 ### The Three Concern Categories
 
-| Category | Responsibility | Examples |
-|----------|---------------|----------|
-| **Presentation (UI)** | User interface, webviews, HTML/CSS | Sidebar panels, settings UI, status messages |
-| **Business Logic** | Domain rules, orchestration, workflows | Tool orchestration, validation logic, governance |
-| **Data Access** | File operations, API calls, persistence | MCP server communication, file I/O, storage |
+| Category              | Responsibility                          | Examples                                         |
+| --------------------- | --------------------------------------- | ------------------------------------------------ |
+| **Presentation (UI)** | User interface, webviews, HTML/CSS      | Sidebar panels, settings UI, status messages     |
+| **Business Logic**    | Domain rules, orchestration, workflows  | Tool orchestration, validation logic, governance |
+| **Data Access**       | File operations, API calls, persistence | MCP server communication, file I/O, storage      |
 
 ### The Forbidden Pattern
+
 ```javascript
 // ❌ GOD FILE - VIOLATES SoC
 // File: extension.js (1130 lines)
@@ -33,11 +35,11 @@
 
 ### 2.1 File Size Limits (NON-NEGOTIABLE)
 
-| Metric | Maximum | Enforcement |
-|--------|---------|-------------|
-| Lines of Code | 700 | Hard limit - files exceeding must be split |
-| Functions per file | 10 | Soft limit - consider extraction |
-| Responsibilities | 1 | Hard limit - single primary concern |
+| Metric             | Maximum | Enforcement                                |
+| ------------------ | ------- | ------------------------------------------ |
+| Lines of Code      | 700     | Hard limit - files exceeding must be split |
+| Functions per file | 10      | Soft limit - consider extraction           |
+| Responsibilities   | 1       | Hard limit - single primary concern        |
 
 ### 2.2 Module Organization
 
@@ -81,18 +83,19 @@ External APIs / File System
 
 ### 3.1 Automatic Detection Patterns
 
-| Pattern | Detection | Severity |
-|---------|-----------|----------|
-| **God File** | >700 lines | CRITICAL |
-| **Mixed Concerns** | UI + Business + Data in one file | CRITICAL |
-| **Circular Dependency** | Module A imports B, B imports A | HIGH |
-| **UI Leakage** | Data layer references vscode API | HIGH |
-| **Logic in UI** | Business rules in HTML generators | MEDIUM |
-| **Multiple Domains** | C# handlers + Godot handlers in one file | MEDIUM |
+| Pattern                 | Detection                                | Severity |
+| ----------------------- | ---------------------------------------- | -------- |
+| **God File**            | >700 lines                               | CRITICAL |
+| **Mixed Concerns**      | UI + Business + Data in one file         | CRITICAL |
+| **Circular Dependency** | Module A imports B, B imports A          | HIGH     |
+| **UI Leakage**          | Data layer references vscode API         | HIGH     |
+| **Logic in UI**         | Business rules in HTML generators        | MEDIUM   |
+| **Multiple Domains**    | C# handlers + Godot handlers in one file | MEDIUM   |
 
 ### 3.2 Current Violations (v3.0.0)
 
 #### CRITICAL: extension.js - God File
+
 - **Lines:** 1130 (61% OVER LIMIT)
 - **Concerns Mixed:**
   1. Extension activation/lifecycle
@@ -109,6 +112,7 @@ External APIs / File System
 **Required Action:** Extract to 5-7 separate files
 
 #### CRITICAL: csharp-handlers.js - Over Limit
+
 - **Lines:** 765 (9% OVER LIMIT)
 - **Responsibilities:**
   1. C# error detection
@@ -120,6 +124,7 @@ External APIs / File System
 **Required Action:** Split into handlers + services
 
 #### HIGH: handlers.js - Mixed Responsibilities
+
 - **Lines:** ~450
 - **Concerns:** Multiple tool handler domains mixed
 
@@ -148,7 +153,7 @@ export const handlers = {
 // lib/tools/handlers-csharp.js
 export const csharpHandlers = { detection, reporting };
 
-// lib/tools/handlers-godot.js  
+// lib/tools/handlers-godot.js
 export const godotHandlers = { detection, validation };
 
 // lib/services/backup-service.js
@@ -198,6 +203,7 @@ export class SidebarProvider {
 ### 5.1 Before Any File Operation
 
 The AI MUST ask:
+
 1. Does this file exceed 700 lines?
 2. Does this file mix concerns (UI/Business/Data)?
 3. Would this change increase coupling?
@@ -259,20 +265,21 @@ SWEObeyMe/
 ```javascript
 // ❌ NEVER: Business logic in UI file
 // lib/ui/sidebar.js
-export function handleToolExecution() {  // VIOLATION!
+export function handleToolExecution() {
+  // VIOLATION!
   // Tool execution logic should be in business layer
 }
 
 // ❌ NEVER: UI references in data layer
 // lib/data/mcp-client.js
-vscode.window.showInformationMessage('...');  // VIOLATION!
+vscode.window.showInformationMessage('...'); // VIOLATION!
 
 // ❌ NEVER: Multiple domains in one handler file
 // lib/tools/handlers.js
 export const handlers = {
-  csharp_detect,    // Different domain
-  godot_detect,     // Different domain
-  validate_soc,    // Different domain
+  csharp_detect, // Different domain
+  godot_detect, // Different domain
+  validate_soc, // Different domain
 };
 ```
 
@@ -282,16 +289,17 @@ export const handlers = {
 
 ### 7.1 SoC Health Score
 
-| Metric | Weight | Target |
-|--------|--------|--------|
-| Files under 700 lines | 30% | 100% |
-| Single concern per file | 30% | 100% |
-| No circular dependencies | 20% | 100% |
-| Proper layer separation | 20% | 100% |
+| Metric                   | Weight | Target |
+| ------------------------ | ------ | ------ |
+| Files under 700 lines    | 30%    | 100%   |
+| Single concern per file  | 30%    | 100%   |
+| No circular dependencies | 20%    | 100%   |
+| Proper layer separation  | 20%    | 100%   |
 
 ### 7.2 Current Project Score: 72/100
 
 **Violations:**
+
 - 3 files over 700 lines (-9 points)
 - 5 files with mixed concerns (-15 points)
 - 2 circular dependencies (-4 points)

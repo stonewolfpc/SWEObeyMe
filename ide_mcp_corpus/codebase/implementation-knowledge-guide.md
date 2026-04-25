@@ -89,7 +89,7 @@ manager.recordError({
   error: 'Attempted to load LNN GGUF with standard tensor alignment',
   outcome: 'FAILURE',
   validationReference: 'Works in LM Studio with custom alignment',
-  relatedAttemptId: previousAttemptId
+  relatedAttemptId: previousAttemptId,
 });
 ```
 
@@ -100,7 +100,7 @@ When making an assumption:
 ```javascript
 manager.recordDecision({
   description: 'GGUF loading follows standard pattern',
-  assumptionStatus: 'ASSUMED'
+  assumptionStatus: 'ASSUMED',
 });
 ```
 
@@ -113,7 +113,7 @@ manager.recordPattern({
   pattern: 'Custom tensor alignment for LNN GGUF',
   overrideReason: 'Standard alignment fails for LNN models',
   whenToUse: 'Loading LNN models in GGUF format',
-  isNonStandard: true
+  isNonStandard: true,
 });
 ```
 
@@ -149,7 +149,7 @@ manager.recordDependencyImpact(
 ```javascript
 query_implementation_knowledge({
   queryType: 'all',
-  relatedTo: 'model-loader/lnn-handler.js'
+  relatedTo: 'model-loader/lnn-handler.js',
 });
 ```
 
@@ -158,7 +158,7 @@ query_implementation_knowledge({
 ```javascript
 query_implementation_knowledge({
   queryType: 'assumptions',
-  filters: { status: 'INVALIDATED' }
+  filters: { status: 'INVALIDATED' },
 });
 ```
 
@@ -167,7 +167,7 @@ query_implementation_knowledge({
 ```javascript
 query_implementation_knowledge({
   queryType: 'patterns',
-  filters: { isNonStandard: true }
+  filters: { isNonStandard: true },
 });
 ```
 
@@ -176,7 +176,7 @@ query_implementation_knowledge({
 ```javascript
 query_implementation_knowledge({
   queryType: 'attempts',
-  filters: { outcome: 'FAILURE' }
+  filters: { outcome: 'FAILURE' },
 });
 ```
 

@@ -59,11 +59,11 @@ function sendRequest(method, params = {}) {
       }
     }, 5000);
 
-    const dataHandler = data => {
+    const dataHandler = (data) => {
       const lines = data
         .toString()
         .split('\n')
-        .filter(line => line.trim());
+        .filter((line) => line.trim());
       for (const line of lines) {
         try {
           const response = JSON.parse(line);
@@ -150,7 +150,7 @@ async function runMCPComplianceTests() {
     });
 
     // Wait for server to start
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
     // Test 1: Initialize handshake
     console.log('\n=== Test 1: Initialize Handshake ===');
@@ -165,7 +165,7 @@ async function runMCPComplianceTests() {
       });
 
       const validationErrors = validateJsonRpcResponse(initResponse, 'Initialize response');
-      validationErrors.forEach(err => console.log(`  ✗ ${err}`));
+      validationErrors.forEach((err) => console.log(`  ✗ ${err}`));
       assert(validationErrors.length === 0, 'Initialize response format is valid');
 
       assert(initResponse.result.serverInfo, 'Server info present');
@@ -185,7 +185,7 @@ async function runMCPComplianceTests() {
       const toolsResponse = await sendRequest('tools/list');
 
       const validationErrors = validateJsonRpcResponse(toolsResponse, 'List tools response');
-      validationErrors.forEach(err => console.log(`  ✗ ${err}`));
+      validationErrors.forEach((err) => console.log(`  ✗ ${err}`));
       assert(validationErrors.length === 0, 'List tools response format is valid');
 
       assert(Array.isArray(toolsResponse.result.tools), 'Tools is an array');
@@ -205,7 +205,7 @@ async function runMCPComplianceTests() {
       });
 
       const validationErrors = validateJsonRpcResponse(toolResponse, 'Tool call response');
-      validationErrors.forEach(err => console.log(`  ✗ ${err}`));
+      validationErrors.forEach((err) => console.log(`  ✗ ${err}`));
       assert(validationErrors.length === 0, 'Tool call response format is valid');
 
       assert(toolResponse.result.content, 'Tool response has content');
@@ -227,7 +227,7 @@ async function runMCPComplianceTests() {
 
     if (testResults.failed > 0) {
       console.log('\nFailed Tests:');
-      testResults.errors.forEach(e => {
+      testResults.errors.forEach((e) => {
         console.log(`  ✗ ${e.test}`);
         if (e.details) console.log(`    ${e.details}`);
       });

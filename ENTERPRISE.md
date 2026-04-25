@@ -21,11 +21,13 @@ By default, enterprise features are disabled to maintain backward compatibility 
 ### 1. Role-Based Access Control (RBAC)
 
 **Configuration:**
+
 - `sweObeyMe.enterprise.rbac.enabled` - Enable RBAC system
 - `sweObeyMe.enterprise.rbac.defaultRole` - Default role for new users (admin, user, readonly)
 - `sweObeyMe.enterprise.rbac.permissions` - Custom role permissions configuration
 
 **Features:**
+
 - Granular permission management across all extension features
 - Pre-defined roles: Admin (full access), User (standard access), Read Only (read-only access)
 - Custom role creation with specific permissions
@@ -34,11 +36,13 @@ By default, enterprise features are disabled to maintain backward compatibility 
 - Audit logging of all permission checks
 
 **Default Permissions:**
+
 - **Admin**: Full system access including configuration changes, role management, and all operations
 - **User**: Standard access to checkpoints, diff review, tool usage (file, terminal, network)
 - **Read Only**: Read-only access to attribution, analytics, checkpoints, and diff review
 
 **Usage:**
+
 ```javascript
 // Check if user has permission
 const hasPermission = rbacManager.hasPermission(userId, 'checkpoint.create');
@@ -47,18 +51,24 @@ const hasPermission = rbacManager.hasPermission(userId, 'checkpoint.create');
 rbacManager.setUserRole(userId, 'admin');
 
 // Create custom role
-rbacManager.createRole('custom-role', ['checkpoint.create', 'file.write'], 'Custom role description');
+rbacManager.createRole(
+  'custom-role',
+  ['checkpoint.create', 'file.write'],
+  'Custom role description'
+);
 ```
 
 ### 2. Audit Logging
 
 **Configuration:**
+
 - `sweObeyMe.enterprise.auditLogging.enabled` - Enable audit logging
 - `sweObeyMe.enterprise.auditLogging.directory` - Directory for audit logs
 - `sweObeyMe.enterprise.auditLogging.retentionDays` - Retention period (default: 90 days)
 - `sweObeyMe.enterprise.auditLogging.logLevel` - Log level (debug, info, warn, error)
 
 **Features:**
+
 - Comprehensive logging of all surgical operations
 - Structured JSONL format for easy parsing
 - Automatic log rotation based on retention policy
@@ -67,6 +77,7 @@ rbacManager.createRole('custom-role', ['checkpoint.create', 'file.write'], 'Cust
 - Support for multiple log levels
 
 **Logged Events:**
+
 - Checkpoint operations (create, revert, delete)
 - File writes with line counts
 - Tool usage with success/failure status
@@ -77,6 +88,7 @@ rbacManager.createRole('custom-role', ['checkpoint.create', 'file.write'], 'Cust
 - Errors with stack traces
 
 **Usage:**
+
 ```javascript
 // Log checkpoint creation
 auditLogger.logCheckpointCreate(userId, checkpointId, name);
@@ -91,11 +103,13 @@ const results = await auditLogger.searchLogs('checkpoint.create');
 ### 3. Encryption
 
 **Configuration:**
+
 - `sweObeyMe.enterprise.encryption.enabled` - Enable encryption for sensitive data
 - `sweObeyMe.enterprise.encryption.algorithm` - Encryption algorithm (default: aes-256-gcm)
 - `sweObeyMe.enterprise.encryption.keyRotationDays` - Key rotation period (default: 90 days)
 
 **Features:**
+
 - AES-256-GCM encryption for sensitive data
 - Automatic key rotation based on schedule
 - Secure key storage
@@ -104,6 +118,7 @@ const results = await auditLogger.searchLogs('checkpoint.create');
 - Backup key support for decryption
 
 **Usage:**
+
 ```javascript
 // Encrypt text
 const encrypted = encryptionManager.encrypt('sensitive data');
@@ -121,6 +136,7 @@ await encryptionManager.encryptFile(inputPath, outputPath);
 ### 4. Policy-as-Code
 
 **Configuration:**
+
 - `sweObeyMe.enterprise.systemRules.enabled` - Enable system-level rules
 - `sweObeyMe.enterprise.systemRules.directory` - Directory for system-level rules
 - `sweObeyMe.enterprise.systemWorkflows.enabled` - Enable system-level workflows
@@ -129,6 +145,7 @@ await encryptionManager.encryptFile(inputPath, outputPath);
 - `sweObeyMe.enterprise.systemSkills.directory` - Directory for system-level skills
 
 **Features:**
+
 - System-level rules that apply across all workspaces
 - System-level workflows for organization-wide processes
 - System-level skills for enterprise skills distribution
@@ -137,22 +154,20 @@ await encryptionManager.encryptFile(inputPath, outputPath);
 - Policy precedence (system > organization > workspace > user)
 
 **System-Level Directories:**
+
 - **macOS**: `/Library/Application Support/Windsurf/rules/`
 - **Linux**: `/etc/windsurf/rules/`
 - **Windows**: `C:\ProgramData\Windsurf\rules\`
 
 **Usage:**
+
 ```javascript
 // Create policy
 const policyId = policyAsCodeManager.createPolicy({
   name: 'Security Policy',
   enabled: true,
-  conditions: [
-    { field: 'operation', operator: 'equals', value: 'network' }
-  ],
-  actions: [
-    { type: 'require_permission', parameters: { permission: 'network_access' } }
-  ]
+  conditions: [{ field: 'operation', operator: 'equals', value: 'network' }],
+  actions: [{ type: 'require_permission', parameters: { permission: 'network_access' } }],
 });
 
 // Evaluate policy
@@ -162,6 +177,7 @@ const result = policyAsCodeManager.evaluatePolicy(policyId, context);
 ### 5. Metrics and Health Checks
 
 **Configuration:**
+
 - `sweObeyMe.enterprise.metrics.enabled` - Enable metrics collection
 - `sweObeyMe.enterprise.metrics.endpoint` - Metrics endpoint URL
 - `sweObeyMe.enterprise.metrics.format` - Export format (prometheus, json, influxdb)
@@ -169,6 +185,7 @@ const result = policyAsCodeManager.evaluatePolicy(policyId, context);
 - `sweObeyMe.enterprise.healthChecks.intervalSeconds` - Health check interval
 
 **Metrics Features:**
+
 - Prometheus-compatible metrics export
 - Counter metrics for operations, errors, checkpoints
 - Gauge metrics for active operations, memory usage, uptime
@@ -176,6 +193,7 @@ const result = policyAsCodeManager.evaluatePolicy(policyId, context);
 - Multiple export formats (Prometheus, JSON, InfluxDB)
 
 **Health Check Features:**
+
 - Memory usage monitoring
 - Disk space checks
 - MCP connection verification
@@ -183,6 +201,7 @@ const result = policyAsCodeManager.evaluatePolicy(policyId, context);
 - Overall health status aggregation
 
 **Usage:**
+
 ```javascript
 // Record operation
 metricsManager.recordOperation('file.write', duration, true);
@@ -200,6 +219,7 @@ const health = healthCheckManager.getOverallHealth();
 ### 6. Rate Limiting and Quotas
 
 **Configuration:**
+
 - `sweObeyMe.enterprise.rateLimiting.enabled` - Enable rate limiting
 - `sweObeyMe.enterprise.rateLimiting.requestsPerMinute` - Requests per minute limit
 - `sweObeyMe.enterprise.quotas.enabled` - Enable quota-based limits
@@ -208,6 +228,7 @@ const health = healthCheckManager.getOverallHealth();
 - `sweObeyMe.enterprise.quotas.maxCheckpoints` - Maximum checkpoints per workspace
 
 **Features:**
+
 - Per-identifier rate limiting
 - Sliding window rate limiter
 - Daily and hourly quota tracking
@@ -216,6 +237,7 @@ const health = healthCheckManager.getOverallHealth();
 - Quota usage statistics
 
 **Usage:**
+
 ```javascript
 // Check rate limit
 const limit = rateLimitManager.checkRateLimit(userId);
@@ -236,10 +258,12 @@ const summary = quotaManager.getQuotaSummary(userId, workspaceId);
 ### 7. API Key Management
 
 **Configuration:**
+
 - `sweObeyMe.enterprise.apiKeys.enabled` - Enable API key management
 - `sweObeyMe.enterprise.apiKeys.rotationDays` - Key rotation period (default: 30 days)
 
 **Features:**
+
 - Secure API key generation
 - Automatic key rotation based on schedule
 - Scope-based access control
@@ -248,6 +272,7 @@ const summary = quotaManager.getQuotaSummary(userId, workspaceId);
 - Key usage tracking
 
 **Usage:**
+
 ```javascript
 // Create API key
 const { id, secret, expiresAt } = await apiKeyManager.createApiKey('My Key', ['read', 'write']);
@@ -265,11 +290,13 @@ await apiKeyManager.revokeKey(id);
 ### 8. Backup and Restore
 
 **Configuration:**
+
 - `sweObeyMe.enterprise.disasterRecovery.enabled` - Enable disaster recovery
 - `sweObeyMe.enterprise.disasterRecovery.backupSchedule` - Backup schedule (hourly, daily, weekly)
 - `sweObeyMe.enterprise.disasterRecovery.retentionDays` - Backup retention period
 
 **Features:**
+
 - Scheduled automated backups
 - Configuration backup
 - Checkpoint backup
@@ -281,6 +308,7 @@ await apiKeyManager.revokeKey(id);
 - Restore from specific backup point
 
 **Usage:**
+
 ```javascript
 // Create backup
 const backupId = await backupManager.createBackup();
@@ -298,11 +326,13 @@ await backupManager.deleteBackup(backupId);
 ### 9. Compliance Reporting
 
 **Configuration:**
+
 - `sweObeyMe.enterprise.compliance.enabled` - Enable compliance reporting
 - `sweObeyMe.enterprise.compliance.standards` - Compliance standards (SOC2, GDPR, HIPAA, ISO27001)
 - `sweObeyMe.enterprise.compliance.reportSchedule` - Report generation schedule
 
 **Features:**
+
 - SOC2 compliance checks
 - GDPR compliance checks
 - HIPAA compliance checks
@@ -313,12 +343,14 @@ await backupManager.deleteBackup(backupId);
 - Report history tracking
 
 **Compliance Checks:**
+
 - **SOC2**: Encryption, audit logging, RBAC, log retention
 - **GDPR**: Data encryption, processing records, retention policy
 - **HIPAA**: Encryption at rest, audit trail, access controls
 - **ISO27001**: Security policy, access control, asset management
 
 **Usage:**
+
 ```javascript
 // Generate compliance report
 const report = await complianceManager.generateReport();
@@ -333,10 +365,12 @@ const html = complianceManager.exportReport(reportId, 'html');
 ### 10. Webhook Integrations
 
 **Configuration:**
+
 - `sweObeyMe.enterprise.webhooks.enabled` - Enable webhook notifications
 - `sweObeyMe.enterprise.webhooks.endpoints` - Webhook endpoint configurations
 
 **Features:**
+
 - Event-driven webhook notifications
 - HMAC signature verification
 - Event filtering
@@ -345,6 +379,7 @@ const html = complianceManager.exportReport(reportId, 'html');
 - Event queue processing
 
 **Supported Events:**
+
 - `checkpoint.action` - Checkpoint operations
 - `file.action` - File operations
 - `tool.execution` - Tool usage
@@ -357,12 +392,13 @@ const html = complianceManager.exportReport(reportId, 'html');
 - `quota.limit` - Quota limit events
 
 **Usage:**
+
 ```javascript
 // Register webhook
 const webhookId = webhookManager.registerWebhook({
   url: 'https://example.com/webhook',
   events: ['checkpoint.action', 'file.action'],
-  secret: 'webhook-secret'
+  secret: 'webhook-secret',
 });
 
 // Emit event
@@ -375,10 +411,12 @@ await webhookManager.testWebhook(webhookId);
 ### 11. Configuration Inheritance
 
 **Configuration:**
+
 - `sweObeyMe.enterprise.configurationInheritance.enabled` - Enable configuration inheritance
 - `sweObeyMe.enterprise.configurationInheritance.precedence` - Precedence order (default: system, organization, workspace, user)
 
 **Features:**
+
 - Multi-level configuration hierarchy
 - System-level configuration
 - Organization-level configuration
@@ -388,12 +426,14 @@ await webhookManager.testWebhook(webhookId);
 - Configuration override support
 
 **Configuration Levels:**
+
 1. **System**: OS-specific directories (highest priority)
 2. **Organization**: Per-organization configuration
 3. **Workspace**: Per-workspace configuration
 4. **User**: VS Code user settings (lowest priority)
 
 **Usage:**
+
 ```javascript
 // Get configuration with inheritance
 const config = configInheritanceManager.getConfig('maxLines');
@@ -408,10 +448,12 @@ const chain = configInheritanceManager.getConfigChain('maxLines');
 ### 12. Tenant Isolation
 
 **Configuration:**
+
 - `sweObeyMe.enterprise.multiTenant.enabled` - Enable multi-tenant isolation
 - `sweObeyMe.enterprise.multiTenant.isolationLevel` - Isolation level (workspace, organization, user)
 
 **Features:**
+
 - Per-tenant resource isolation
 - Checkpoint isolation
 - Policy isolation
@@ -421,11 +463,13 @@ const chain = configInheritanceManager.getConfigChain('maxLines');
 - Resource migration between tenants
 
 **Isolation Levels:**
+
 - **Workspace**: Isolate by workspace folder
 - **Organization**: Isolate by organization ID
 - **User**: Isolate by user/machine ID
 
 **Usage:**
+
 ```javascript
 // Get current tenant
 const tenantId = tenantIsolationManager.getCurrentTenantId();
@@ -443,6 +487,7 @@ const usage = tenantIsolationManager.getCurrentTenantQuotaUsage();
 ### 13. Single Sign-On (SSO)
 
 **Configuration:**
+
 - `sweObeyMe.enterprise.sso.enabled` - Enable SSO
 - `sweObeyMe.enterprise.sso.provider` - SSO provider (google, azure, okta, saml, oidc)
 - `sweObeyMe.enterprise.sso.ssoUrl` - SSO URL from identity provider
@@ -452,6 +497,7 @@ const usage = tenantIsolationManager.getCurrentTenantQuotaUsage();
 - `sweObeyMe.enterprise.sso.spEntityId` - SP Entity ID
 
 **Features:**
+
 - SAML 2.0 support
 - SSO URL generation
 - SAML response validation
@@ -461,6 +507,7 @@ const usage = tenantIsolationManager.getCurrentTenantQuotaUsage();
 - Configuration testing
 
 **Supported Providers:**
+
 - Google Workspace
 - Microsoft Entra ID (Azure AD)
 - Okta
@@ -468,6 +515,7 @@ const usage = tenantIsolationManager.getCurrentTenantQuotaUsage();
 - OpenID Connect
 
 **Usage:**
+
 ```javascript
 // Get SSO URL
 const ssoUrl = ssoManager.getSSOUrl();
@@ -485,9 +533,11 @@ const validation = ssoManager.validateSession(sessionId);
 ### 14. Admin Dashboard
 
 **Configuration:**
+
 - Enterprise features must be enabled to access the dashboard
 
 **Features:**
+
 - Overview panel with system statistics
 - RBAC management interface
 - Audit log viewer with search
@@ -499,6 +549,7 @@ const validation = ssoManager.validateSession(sessionId);
 - Enterprise settings configuration
 
 **Access:**
+
 - Open the SWEObeyMe activity bar
 - Click on "SWEObeyMe Admin Dashboard"
 - Navigate between tabs for different features
@@ -521,6 +572,7 @@ For individual users, enterprise features are disabled by default. The extension
 For enterprise deployment:
 
 1. **Enable Enterprise Features:**
+
    ```json
    {
      "sweObeyMe.enterprise.enabled": true
@@ -547,21 +599,25 @@ For enterprise deployment:
 ## Security Considerations
 
 ### Encryption
+
 - All sensitive data is encrypted using AES-256-GCM
 - Keys are automatically rotated based on schedule
 - Keys are stored securely in the user's home directory
 
 ### Audit Logging
+
 - All operations are logged for compliance
 - Logs are retained based on retention policy
 - Logs can be exported for external analysis
 
 ### RBAC
+
 - Least privilege principle enforced
 - Custom roles can be created for specific needs
 - All permission checks are logged
 
 ### SSO
+
 - SAML 2.0 protocol support
 - Session expiration handling
 - Secure callback URL validation
@@ -569,21 +625,25 @@ For enterprise deployment:
 ## Troubleshooting
 
 ### Enterprise Features Not Appearing
+
 - Verify `sweObeyMe.enterprise.enabled` is set to `true`
 - Reload VS Code after changing configuration
 - Check the output panel for initialization errors
 
 ### Audit Logs Not Writing
+
 - Verify the audit log directory exists and is writable
 - Check retention days configuration
 - Ensure audit logging is enabled
 
 ### Encryption Errors
+
 - Verify encryption is enabled
 - Check key directory permissions
 - Ensure sufficient disk space for key storage
 
 ### Backup Failures
+
 - Verify backup directory exists and is writable
 - Check available disk space
 - Review backup schedule configuration
@@ -600,6 +660,7 @@ All enterprise features are designed to be backward compatible:
 ## Support
 
 For enterprise support and documentation, refer to:
+
 - Main README.md
 - ONBOARDING.md
 - Windsurf documentation: https://docs.windsurf.com

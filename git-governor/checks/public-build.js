@@ -20,7 +20,7 @@ class PublicBuildTest {
       skipped: 0,
       total: 0,
     };
-    
+
     this.repoRoot = dirname(dirname(__dirname));
     this.enterprisePaths = [
       '/enterprise/',
@@ -37,7 +37,7 @@ class PublicBuildTest {
 
   async run() {
     console.log('[PublicBuild] Starting public build mode test...');
-    
+
     const tests = [
       'exclude-enterprise-modules',
       'exclude-enterprise-configs',
@@ -49,21 +49,21 @@ class PublicBuildTest {
       'exclude-enterprise-policy-engine',
       'validate-build',
     ];
-    
+
     for (const test of tests) {
       await this.runTest(test);
     }
-    
+
     this.results.total = this.results.tests.length;
     return this.results;
   }
 
   async runTest(testName) {
     console.log(`[PublicBuild] Running: ${testName}...`);
-    
+
     let passed = false;
     let error = null;
-    
+
     try {
       switch (testName) {
         case 'exclude-enterprise-modules':
@@ -96,7 +96,7 @@ class PublicBuildTest {
         default:
           error = 'Unknown test name';
       }
-      
+
       // If test returned false but no error was thrown, set a descriptive error
       if (!passed && !error) {
         error = 'Test failed: enterprise files found in build';
@@ -104,14 +104,14 @@ class PublicBuildTest {
     } catch (e) {
       error = e.message;
     }
-    
+
     this.results.tests.push({
       id: testName,
       name: `Public Build - ${testName}`,
       passed,
       error,
     });
-    
+
     if (passed) {
       this.results.passed++;
       console.log(`[PublicBuild] ✅ ${testName}`);
@@ -125,12 +125,12 @@ class PublicBuildTest {
     // Check that restricted modules are not in the public build
     for (const path of this.enterprisePaths) {
       const enterprisePath = join(this.repoRoot, path.replace(/^\//, ''));
-      
+
       if (existsSync(enterprisePath)) {
         return false;
       }
     }
-    
+
     return true;
   }
 
@@ -140,13 +140,13 @@ class PublicBuildTest {
       join(this.repoRoot, '.sweobeyme-enterprise.json'),
       join(this.repoRoot, 'enterprise-config.json'),
     ];
-    
+
     for (const config of enterpriseConfigs) {
       if (existsSync(config)) {
         return false;
       }
     }
-    
+
     return true;
   }
 
@@ -154,16 +154,14 @@ class PublicBuildTest {
     // Check for enterprise documentation
     // For development, ENTERPRISE.md is allowed (documentation only)
     // The docs/enterprise directory should not exist
-    const enterpriseDocs = [
-      join(this.repoRoot, 'docs', 'enterprise'),
-    ];
-    
+    const enterpriseDocs = [join(this.repoRoot, 'docs', 'enterprise')];
+
     for (const doc of enterpriseDocs) {
       if (existsSync(doc)) {
         return false;
       }
     }
-    
+
     return true;
   }
 
@@ -173,13 +171,13 @@ class PublicBuildTest {
       join(this.repoRoot, 'lib', 'admin-dashboard'),
       join(this.repoRoot, 'views', 'admin'),
     ];
-    
+
     for (const file of dashboardFiles) {
       if (existsSync(file)) {
         return false;
       }
     }
-    
+
     return true;
   }
 
@@ -197,13 +195,13 @@ class PublicBuildTest {
         join(this.repoRoot, 'lib', 'rbac-manager.js'),
         join(this.repoRoot, 'lib', 'rbac'),
       ];
-      
+
       for (const file of rbacFiles) {
         if (existsSync(file)) {
           return false;
         }
       }
-      
+
       return true;
     } catch (e) {
       console.log('[PublicBuild] RBAC check failed:', e.message);
@@ -218,13 +216,13 @@ class PublicBuildTest {
         join(this.repoRoot, 'lib', 'encryption-manager.js'),
         join(this.repoRoot, 'lib', 'encryption'),
       ];
-      
+
       for (const file of encryptionFiles) {
         if (existsSync(file)) {
           return false;
         }
       }
-      
+
       return true;
     } catch (e) {
       console.log('[PublicBuild] Encryption check failed:', e.message);
@@ -239,13 +237,13 @@ class PublicBuildTest {
         join(this.repoRoot, 'lib', 'policy-engine.js'),
         join(this.repoRoot, 'lib', 'policy'),
       ];
-      
+
       for (const file of policyFiles) {
         if (existsSync(file)) {
           return false;
         }
       }
-      
+
       return true;
     } catch (e) {
       console.log('[PublicBuild] Policy engine check failed:', e.message);
@@ -259,7 +257,7 @@ class PublicBuildTest {
       // For development, we allow enterprise keywords in documentation
       // But they should not be in the main activation code
       const hasEnterpriseCodeInMain = this.scanForEnterpriseCodeInMain();
-      
+
       return typeof hasEnterpriseCodeInMain === 'boolean' ? !hasEnterpriseCodeInMain : true;
     } catch (e) {
       console.log('[PublicBuild] Build validation failed:', e.message);
@@ -268,15 +266,12 @@ class PublicBuildTest {
   }
 
   scanForEnterpriseCodeInMain() {
-    const mainFiles = [
-      join(this.repoRoot, 'extension.js'),
-      join(this.repoRoot, 'index.js'),
-    ];
-    
+    const mainFiles = [join(this.repoRoot, 'extension.js'), join(this.repoRoot, 'index.js')];
+
     for (const file of mainFiles) {
       if (existsSync(file)) {
         const content = readFileSync(file, 'utf-8');
-        
+
         // Check for actual enterprise module imports, not just keywords
         const enterprisePatterns = [
           /import.*from.*enterprise/i,
@@ -285,7 +280,7 @@ class PublicBuildTest {
           /RBACManager/i,
           /SSOManager/i,
         ];
-        
+
         for (const pattern of enterprisePatterns) {
           if (pattern.test(content)) {
             return true;
@@ -293,7 +288,7 @@ class PublicBuildTest {
         }
       }
     }
-    
+
     return false;
   }
 }

@@ -64,11 +64,19 @@ class MarketplacePackagingTest {
       const vscodeIgnorePath = path.join(__dirname, '..', '.vscodeignore');
       const gitIgnorePath = path.join(__dirname, '..', '.gitignore');
 
-      const hasVscodeIgnore = await fs.access(vscodeIgnorePath).then(() => true).catch(() => false);
-      const hasGitIgnore = await fs.access(gitIgnorePath).then(() => true).catch(() => false);
+      const hasVscodeIgnore = await fs
+        .access(vscodeIgnorePath)
+        .then(() => true)
+        .catch(() => false);
+      const hasGitIgnore = await fs
+        .access(gitIgnorePath)
+        .then(() => true)
+        .catch(() => false);
 
       if (!hasVscodeIgnore && !hasGitIgnore) {
-        this.results.noExtraFiles.errors.push('No .vscodeignore or .gitignore found - extra files may be packaged');
+        this.results.noExtraFiles.errors.push(
+          'No .vscodeignore or .gitignore found - extra files may be packaged'
+        );
         console.log('  ⚠️  No .vscodeignore or .gitignore found');
       }
 
@@ -105,7 +113,10 @@ class MarketplacePackagingTest {
 
       for (const file of requiredFiles) {
         const fullPath = path.join(__dirname, '..', file);
-        const exists = await fs.access(fullPath).then(() => true).catch(() => false);
+        const exists = await fs
+          .access(fullPath)
+          .then(() => true)
+          .catch(() => false);
         if (!exists) {
           this.results.noMissingFiles.errors.push(`Missing required file: ${file}`);
           console.log(`  ❌ Missing required file: ${file}`);
@@ -136,14 +147,18 @@ class MarketplacePackagingTest {
       if (packageJson.devDependencies) {
         const devDeps = Object.keys(packageJson.devDependencies);
         if (devDeps.length > 0) {
-          this.results.noDevDependencies.errors.push(`Dev dependencies found: ${devDeps.join(', ')}`);
+          this.results.noDevDependencies.errors.push(
+            `Dev dependencies found: ${devDeps.join(', ')}`
+          );
           console.log(`  ⚠️  Dev dependencies found: ${devDeps.join(', ')}`);
         }
       }
 
       // This is a warning - dev deps may be excluded during packaging
       this.results.noDevDependencies.passed = true;
-      console.log('  ✅ No dev dependencies test passed (dev deps may be excluded during packaging)');
+      console.log(
+        '  ✅ No dev dependencies test passed (dev deps may be excluded during packaging)'
+      );
     } catch (error) {
       this.results.noDevDependencies.errors.push(error.message);
       console.log(`  ❌ No dev dependencies test failed: ${error.message}`);
@@ -158,7 +173,10 @@ class MarketplacePackagingTest {
 
     try {
       const distDir = path.join(__dirname, '..', 'dist');
-      const distExists = await fs.access(distDir).then(() => true).catch(() => false);
+      const distExists = await fs
+        .access(distDir)
+        .then(() => true)
+        .catch(() => false);
 
       if (!distExists) {
         this.results.noLargeBundles.errors.push('dist directory does not exist');
@@ -175,8 +193,12 @@ class MarketplacePackagingTest {
           const fullPath = path.join(distDir, file);
           const stat = await fs.stat(fullPath);
           if (stat.isFile() && stat.size > maxSize) {
-            this.results.noLargeBundles.errors.push(`Bundle too large: ${file} (${(stat.size / 1024 / 1024).toFixed(2)}MB)`);
-            console.log(`  ❌ Bundle too large: ${file} (${(stat.size / 1024 / 1024).toFixed(2)}MB)`);
+            this.results.noLargeBundles.errors.push(
+              `Bundle too large: ${file} (${(stat.size / 1024 / 1024).toFixed(2)}MB)`
+            );
+            console.log(
+              `  ❌ Bundle too large: ${file} (${(stat.size / 1024 / 1024).toFixed(2)}MB)`
+            );
             return;
           }
         }
@@ -206,7 +228,9 @@ class MarketplacePackagingTest {
       const matches = content.match(absolutePathPattern);
 
       if (matches) {
-        this.results.noAbsolutePaths.errors.push(`Absolute paths found in package.json: ${matches.join(', ')}`);
+        this.results.noAbsolutePaths.errors.push(
+          `Absolute paths found in package.json: ${matches.join(', ')}`
+        );
         console.log(`  ❌ Absolute paths found in package.json: ${matches.join(', ')}`);
         return;
       }
@@ -236,11 +260,14 @@ class MarketplacePackagingTest {
 
       for (const file of filesToCheck) {
         const fullPath = path.join(__dirname, '..', file);
-        const exists = await fs.access(fullPath).then(() => true).catch(() => false);
+        const exists = await fs
+          .access(fullPath)
+          .then(() => true)
+          .catch(() => false);
         if (!exists) continue;
 
         const content = await fs.readFile(fullPath, 'utf-8');
-        
+
         // Check for hardcoded OS-specific paths or code
         const osSpecificPatterns = [
           /C:\\\\[^\\]/,
@@ -252,7 +279,9 @@ class MarketplacePackagingTest {
 
         for (const pattern of osSpecificPatterns) {
           if (pattern.test(content)) {
-            this.results.noOSSpecificCode.errors.push(`OS-specific code found in ${file}: ${pattern}`);
+            this.results.noOSSpecificCode.errors.push(
+              `OS-specific code found in ${file}: ${pattern}`
+            );
             console.log(`  ⚠️  OS-specific code found in ${file}`);
           }
         }
@@ -267,7 +296,7 @@ class MarketplacePackagingTest {
   }
 
   allPassed() {
-    return Object.values(this.results).every(result => result.passed);
+    return Object.values(this.results).every((result) => result.passed);
   }
 
   printResults() {
@@ -280,9 +309,9 @@ class MarketplacePackagingTest {
     for (const [name, result] of Object.entries(this.results)) {
       const status = result.passed ? '✅ PASS' : '❌ FAIL';
       console.log(`${status} ${name}`);
-      
+
       if (result.errors.length > 0) {
-        result.errors.forEach(error => {
+        result.errors.forEach((error) => {
           console.log(`    - ${error}`);
         });
       }
@@ -290,21 +319,24 @@ class MarketplacePackagingTest {
 
     console.log();
     console.log('='.repeat(60));
-    
+
     if (this.allPassed()) {
       console.log('ALL TESTS PASSED ✅');
     } else {
       console.log('SOME TESTS FAILED ❌');
     }
-    
+
     console.log('='.repeat(60));
   }
 }
 
 const test = new MarketplacePackagingTest();
-test.runAll().then(passed => {
-  process.exit(passed ? 0 : 1);
-}).catch(error => {
-  console.error('Test execution failed:', error);
-  process.exit(1);
-});
+test
+  .runAll()
+  .then((passed) => {
+    process.exit(passed ? 0 : 1);
+  })
+  .catch((error) => {
+    console.error('Test execution failed:', error);
+    process.exit(1);
+  });

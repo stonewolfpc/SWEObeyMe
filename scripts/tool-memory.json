@@ -8,22 +8,13 @@
       "domain": "io",
       "priority": 100,
       "description": "READ_FILE IS THE ONLY WAY TO READ FILES - DO NOT USE DIRECT FILE ACCESS. This tool enforces .sweignore rules and injects architectural context including line count, last modified time, and project con...",
-      "arguments": [
-        "path"
-      ],
+      "arguments": ["path"],
       "usage_example": "Read index.js to see it has 156 lines and any surgical warnings",
       "fallback": "list_directory",
-      "conflicts": [
-        "direct_file_access"
-      ],
+      "conflicts": ["direct_file_access"],
       "required_for": [],
-      "best_next_tool": [
-        ""
-      ],
-      "triggers": [
-        "",
-        ""
-      ]
+      "best_next_tool": [""],
+      "triggers": ["", ""]
     },
     "write_file": {
       "name": "write_file",
@@ -31,24 +22,13 @@
       "domain": "io",
       "priority": 100,
       "description": "WRITE_FILE IS THE ONLY WAY TO WRITE FILES - DO NOT USE DIRECT FILE EDITING. This tool enforces surgical rules including: 1) Line count limit (max 700), 2) Forbidden pattern detection (console.log, deb...",
-      "arguments": [
-        "path",
-        "content"
-      ],
+      "arguments": ["path", "content"],
       "usage_example": "Write to index.js after obey_surgical_plan approval",
       "fallback": "edit",
-      "conflicts": [
-        "manual_edit",
-        "direct_write"
-      ],
+      "conflicts": ["manual_edit", "direct_write"],
       "required_for": [],
-      "best_next_tool": [
-        ""
-      ],
-      "triggers": [
-        "",
-        ""
-      ]
+      "best_next_tool": [""],
+      "triggers": ["", ""]
     },
     "obey_surgical_plan": {
       "name": "obey_surgical_plan",
@@ -56,24 +36,13 @@
       "domain": "validation",
       "priority": 95,
       "description": "CRITICAL: MUST call this BEFORE using write_file to validate your surgical plan complies with architectural rules. This prevents file bloat by checking if your changes will exceed the 700-line limit. ...",
-      "arguments": [
-        "target_file",
-        "current_line_count",
-        "estimated_addition"
-      ],
+      "arguments": ["target_file", "current_line_count", "estimated_addition"],
       "usage_example": "Call with current_line_count=650 and estimated_addition=100 to check if adding 100 lines to a 650-line file is safe",
       "fallback": "preflight_change",
       "conflicts": [],
-      "required_for": [
-        "write_file"
-      ],
-      "best_next_tool": [
-        ""
-      ],
-      "triggers": [
-        "",
-        ""
-      ]
+      "required_for": ["write_file"],
+      "best_next_tool": [""],
+      "triggers": ["", ""]
     },
     "preflight_change": {
       "name": "preflight_change",
@@ -81,24 +50,13 @@
       "domain": "validation",
       "priority": 95,
       "description": "CRITICAL: MUST call this BEFORE write_file for any non-trivial change. This orchestrates the complete validation sequence: 1) get_file_context, 2) analyze_change_impact, 3) verify_imports, 4) check_te...",
-      "arguments": [
-        "path",
-        "content",
-        "changes"
-      ],
+      "arguments": ["path", "content", "changes"],
       "usage_example": "See tool description",
       "fallback": null,
       "conflicts": [],
-      "required_for": [
-        "write_file"
-      ],
-      "best_next_tool": [
-        ""
-      ],
-      "triggers": [
-        "",
-        ""
-      ]
+      "required_for": ["write_file"],
+      "best_next_tool": [""],
+      "triggers": ["", ""]
     },
     "get_file_context": {
       "name": "get_file_context",
@@ -106,23 +64,13 @@
       "domain": "context",
       "priority": 80,
       "description": "MUST use this tool BEFORE refactoring - this is the ONLY way to get comprehensive file context. Never attempt to refactor without understanding file context. Get comprehensive context about a file inc...",
-      "arguments": [
-        "path"
-      ],
+      "arguments": ["path"],
       "usage_example": "Get context for a file before refactoring to understand what depends on it",
       "fallback": null,
       "conflicts": [],
-      "required_for": [
-        "refactor_move_block",
-        "extract_to_new_file"
-      ],
-      "best_next_tool": [
-        ""
-      ],
-      "triggers": [
-        "",
-        ""
-      ]
+      "required_for": ["refactor_move_block", "extract_to_new_file"],
+      "best_next_tool": [""],
+      "triggers": ["", ""]
     },
     "analyze_change_impact": {
       "name": "analyze_change_impact",
@@ -130,24 +78,13 @@
       "domain": "impact",
       "priority": 80,
       "description": "Analyze the impact of proposed changes on the codebase. Lists affected files, functions, and classes. Identifies potential breaking changes and dependencies. CRITICAL for understanding ripple effects....",
-      "arguments": [
-        "path",
-        "changes"
-      ],
+      "arguments": ["path", "changes"],
       "usage_example": "Analyze impact before refactoring a function to see what depends on it",
       "fallback": null,
       "conflicts": [],
-      "required_for": [
-        "refactor_move_block",
-        "extract_to_new_file"
-      ],
-      "best_next_tool": [
-        ""
-      ],
-      "triggers": [
-        "",
-        ""
-      ]
+      "required_for": ["refactor_move_block", "extract_to_new_file"],
+      "best_next_tool": [""],
+      "triggers": ["", ""]
     },
     "index_project_structure": {
       "name": "index_project_structure",
@@ -155,18 +92,13 @@
       "domain": "project",
       "priority": 80,
       "description": "Index the entire project structure to build a comprehensive file and directory map. This is REQUIRED for anti-hallucination and proper project awareness. Use this when: starting work on a new project,...",
-      "arguments": [
-        "directory"
-      ],
+      "arguments": ["directory"],
       "usage_example": "Index project structure to understand the codebase layout",
       "fallback": null,
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "",
-        ""
-      ]
+      "triggers": ["", ""]
     },
     "analyze_project_conventions": {
       "name": "analyze_project_conventions",
@@ -180,9 +112,7 @@
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "get_project_memory_summary": {
       "name": "get_project_memory_summary",
@@ -196,9 +126,7 @@
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "suggest_file_location": {
       "name": "suggest_file_location",
@@ -206,18 +134,13 @@
       "domain": "project",
       "priority": 65,
       "description": "Suggest the appropriate location for a new file based on project conventions and existing structure. Use this before creating new files to ensure proper placement. Example: Suggest location for a new ...",
-      "arguments": [
-        "fileType",
-        "purpose"
-      ],
+      "arguments": ["fileType", "purpose"],
       "usage_example": "Suggest location for a new utility file",
       "fallback": null,
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "record_project_decision": {
       "name": "record_project_decision",
@@ -225,17 +148,13 @@
       "domain": "general",
       "priority": 60,
       "description": "Record a significant architectural or design decision to project memory. This maintains documentation and context for future work. Use this for: major refactoring decisions, architectural changes, or ...",
-      "arguments": [
-        "decision"
-      ],
+      "arguments": ["decision"],
       "usage_example": "Record decision to extract a module for maintainability",
       "fallback": null,
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "obey_me_status": {
       "name": "obey_me_status",
@@ -249,9 +168,7 @@
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "list_directory": {
       "name": "list_directory",
@@ -259,17 +176,13 @@
       "domain": "io",
       "priority": 10,
       "description": "List files and directories in a given path. Use this to explore project structure before making changes....",
-      "arguments": [
-        "path"
-      ],
+      "arguments": ["path"],
       "usage_example": "See tool description",
       "fallback": null,
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "get_session_context": {
       "name": "get_session_context",
@@ -283,9 +196,7 @@
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "record_decision": {
       "name": "record_decision",
@@ -293,17 +204,13 @@
       "domain": "general",
       "priority": 10,
       "description": "Record a decision to session memory for accountability. Use this to document architectural decisions and rationale....",
-      "arguments": [
-        "decision"
-      ],
+      "arguments": ["decision"],
       "usage_example": "See tool description",
       "fallback": null,
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "enforce_surgical_rules": {
       "name": "enforce_surgical_rules",
@@ -311,18 +218,13 @@
       "domain": "validation",
       "priority": 10,
       "description": "MUST call this tool BEFORE write_file - this is the ONLY way to validate your code against surgical rules. Checks for line count limits, forbidden patterns (console.log, debugger, eval, TODO), and ens...",
-      "arguments": [
-        "proposed_code",
-        "file_path"
-      ],
+      "arguments": ["proposed_code", "file_path"],
       "usage_example": "See tool description",
       "fallback": null,
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "sanitize_request": {
       "name": "sanitize_request",
@@ -330,17 +232,13 @@
       "domain": "safety",
       "priority": 10,
       "description": "Sanitize a request through SWEObeyMe filters. Use this for complex operations to verify your approach is sound....",
-      "arguments": [
-        "logic_intent"
-      ],
+      "arguments": ["logic_intent"],
       "usage_example": "See tool description",
       "fallback": null,
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "auto_repair_submission": {
       "name": "auto_repair_submission",
@@ -348,18 +246,13 @@
       "domain": "general",
       "priority": 10,
       "description": "Attempt to repair malformed submissions automatically. Use this when write_file rejects your content with JSON or syntax errors....",
-      "arguments": [
-        "raw_content",
-        "type"
-      ],
+      "arguments": ["raw_content", "type"],
       "usage_example": "See tool description",
       "fallback": null,
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "analyze_file_health": {
       "name": "analyze_file_health",
@@ -367,17 +260,13 @@
       "domain": "general",
       "priority": 10,
       "description": "Analyze file health for code smells and complexity. Use this before refactoring to identify issues like deep nesting, silent catch blocks, and complexity....",
-      "arguments": [
-        "path"
-      ],
+      "arguments": ["path"],
       "usage_example": "See tool description",
       "fallback": null,
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "detect_architectural_drift": {
       "name": "detect_architectural_drift",
@@ -385,17 +274,13 @@
       "domain": "general",
       "priority": 10,
       "description": "Detect architectural drift from documentation standards. Use this to check if files have adequate documentation (min 10% comment ratio)....",
-      "arguments": [
-        "path"
-      ],
+      "arguments": ["path"],
       "usage_example": "See tool description",
       "fallback": null,
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "create_backup": {
       "name": "create_backup",
@@ -403,17 +288,13 @@
       "domain": "general",
       "priority": 10,
       "description": "Create a manual backup of a file. Use this before risky operations. Note: write_file automatically creates backups for existing files....",
-      "arguments": [
-        "path"
-      ],
+      "arguments": ["path"],
       "usage_example": "See tool description",
       "fallback": null,
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "restore_backup": {
       "name": "restore_backup",
@@ -421,18 +302,13 @@
       "domain": "general",
       "priority": 10,
       "description": "Restore a file from backup. Use this when a change breaks the code and you need to revert....",
-      "arguments": [
-        "path",
-        "backup_index"
-      ],
+      "arguments": ["path", "backup_index"],
       "usage_example": "See tool description",
       "fallback": null,
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "initiate_surgical_workflow": {
       "name": "initiate_surgical_workflow",
@@ -440,18 +316,13 @@
       "domain": "workflow",
       "priority": 10,
       "description": "Initiate a multi-step surgical workflow for complex operations. Use this for tasks requiring multiple coordinated steps (e.g., refactoring a large file into multiple modules)....",
-      "arguments": [
-        "goal",
-        "steps"
-      ],
+      "arguments": ["goal", "steps"],
       "usage_example": "See tool description",
       "fallback": null,
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "get_workflow_status": {
       "name": "get_workflow_status",
@@ -465,9 +336,7 @@
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "refactor_move_block": {
       "name": "refactor_move_block",
@@ -475,19 +344,13 @@
       "domain": "code",
       "priority": 10,
       "description": "Move a code block from one file to another while maintaining surgical compliance. Use this when obey_surgical_plan rejects your plan due to file size....",
-      "arguments": [
-        "code_block",
-        "source_path",
-        "target_path"
-      ],
+      "arguments": ["code_block", "source_path", "target_path"],
       "usage_example": "See tool description",
       "fallback": "extract_to_new_file",
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "extract_to_new_file": {
       "name": "extract_to_new_file",
@@ -495,20 +358,13 @@
       "domain": "code",
       "priority": 10,
       "description": "Extract a code block to a new file while maintaining surgical compliance. Use this when you need to create a new module from existing code....",
-      "arguments": [
-        "code_block",
-        "description",
-        "new_file_path",
-        "source_path"
-      ],
+      "arguments": ["code_block", "description", "new_file_path", "source_path"],
       "usage_example": "See tool description",
       "fallback": null,
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "get_architectural_directive": {
       "name": "get_architectural_directive",
@@ -522,9 +378,7 @@
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "request_surgical_recovery": {
       "name": "request_surgical_recovery",
@@ -532,17 +386,13 @@
       "domain": "general",
       "priority": 10,
       "description": "Reset session state when you encounter repeated failures. Call this after 3 consecutive errors to clear history and start fresh....",
-      "arguments": [
-        "reason"
-      ],
+      "arguments": ["reason"],
       "usage_example": "See tool description",
       "fallback": null,
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "query_the_oracle": {
       "name": "query_the_oracle",
@@ -556,9 +406,7 @@
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "get_config": {
       "name": "get_config",
@@ -572,9 +420,7 @@
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "set_config": {
       "name": "set_config",
@@ -582,17 +428,13 @@
       "domain": "config",
       "priority": 10,
       "description": "Set SWEObeyMe configuration values. Use this to change settings like line count limits and feature toggles....",
-      "arguments": [
-        "settings"
-      ],
+      "arguments": ["settings"],
       "usage_example": "See tool description",
       "fallback": null,
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "reset_config": {
       "name": "reset_config",
@@ -606,9 +448,7 @@
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "get_config_schema": {
       "name": "get_config_schema",
@@ -622,9 +462,7 @@
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "dry_run_write_file": {
       "name": "dry_run_write_file",
@@ -632,19 +470,13 @@
       "domain": "general",
       "priority": 10,
       "description": "MUST use this tool BEFORE write_file when requireDryRun is enabled - this is the ONLY way to simulate write operations. Simulates a write operation without actually writing to the file. CRITICAL for l...",
-      "arguments": [
-        "content",
-        "path"
-      ],
+      "arguments": ["content", "path"],
       "usage_example": "Dry run a file write to validate it will succeed",
       "fallback": null,
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "",
-        ""
-      ]
+      "triggers": ["", ""]
     },
     "validate_change_before_apply": {
       "name": "validate_change_before_apply",
@@ -652,18 +484,13 @@
       "domain": "general",
       "priority": 10,
       "description": "MUST use this tool BEFORE applying any changes - this is the ONLY way to perform comprehensive validation. Never apply changes without this validation. Checks syntax, imports, anti-patterns, naming co...",
-      "arguments": [
-        "content",
-        "path"
-      ],
+      "arguments": ["content", "path"],
       "usage_example": "Validate a refactoring before applying changes",
       "fallback": null,
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "diff_changes": {
       "name": "diff_changes",
@@ -671,18 +498,13 @@
       "domain": "general",
       "priority": 10,
       "description": "Generate detailed diff between current and proposed file content. Shows line-by-line additions, deletions, and modifications. Helps understand exactly what will change. Example: Generate diff to see w...",
-      "arguments": [
-        "path",
-        "proposed_content"
-      ],
+      "arguments": ["path", "proposed_content"],
       "usage_example": "Generate diff to see what changes will be made to a file",
       "fallback": null,
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "verify_syntax": {
       "name": "verify_syntax",
@@ -690,18 +512,13 @@
       "domain": "validation",
       "priority": 10,
       "description": "MUST use this tool BEFORE writing code - this is the ONLY way to validate syntax. Never write code without syntax validation. Validates syntax of JavaScript/TypeScript code. Checks for unmatched brace...",
-      "arguments": [
-        "code",
-        "language"
-      ],
+      "arguments": ["code", "language"],
       "usage_example": "Verify syntax of code before writing",
       "fallback": null,
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "check_for_anti_patterns": {
       "name": "check_for_anti_patterns",
@@ -709,17 +526,13 @@
       "domain": "general",
       "priority": 10,
       "description": "Detect common anti-patterns and code smells in code. Checks for god functions, deep nesting, magic numbers, and more. Returns specific issues with line numbers. Example: Check code for anti-patterns b...",
-      "arguments": [
-        "path"
-      ],
+      "arguments": ["path"],
       "usage_example": "Check code for anti-patterns before committing",
       "fallback": null,
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "validate_naming_conventions": {
       "name": "validate_naming_conventions",
@@ -727,17 +540,13 @@
       "domain": "general",
       "priority": 10,
       "description": "Enforce naming conventions (camelCase, PascalCase, UPPER_SNAKE_CASE). Validates function, class, and constant naming. Returns violations with suggestions. Example: Validate naming conventions in a fil...",
-      "arguments": [
-        "path"
-      ],
+      "arguments": ["path"],
       "usage_example": "Validate naming conventions in a file",
       "fallback": null,
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "verify_imports": {
       "name": "verify_imports",
@@ -745,18 +554,13 @@
       "domain": "validation",
       "priority": 10,
       "description": "Validate all imports in code. Checks that imported files exist and are accessible. Detects circular dependencies. Returns specific import errors. Example: Verify imports before writing code....",
-      "arguments": [
-        "content",
-        "path"
-      ],
+      "arguments": ["content", "path"],
       "usage_example": "Verify imports before writing code",
       "fallback": null,
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "check_test_coverage": {
       "name": "check_test_coverage",
@@ -764,17 +568,13 @@
       "domain": "general",
       "priority": 10,
       "description": "Calculate test coverage for changed code. Returns coverage percentage and identifies untested code. Requires minimum coverage threshold when enabled. Example: Check test coverage for a file....",
-      "arguments": [
-        "path"
-      ],
+      "arguments": ["path"],
       "usage_example": "Check test coverage for a file",
       "fallback": null,
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "require_documentation": {
       "name": "require_documentation",
@@ -782,18 +582,13 @@
       "domain": "general",
       "priority": 10,
       "description": "Enforce documentation requirements. Checks for function/class comments and minimum documentation ratio. Returns specific documentation issues. Example: Check documentation for a file....",
-      "arguments": [
-        "content",
-        "path"
-      ],
+      "arguments": ["content", "path"],
       "usage_example": "Check documentation for a file",
       "fallback": null,
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "generate_change_summary": {
       "name": "generate_change_summary",
@@ -801,18 +596,13 @@
       "domain": "general",
       "priority": 10,
       "description": "Generate a summary of changes made. Lists files modified, functions added/removed, and creates a commit message draft. Helps with accountability and tracking. Example: Generate summary after making ch...",
-      "arguments": [
-        "changes",
-        "path"
-      ],
+      "arguments": ["changes", "path"],
       "usage_example": "Generate summary after making changes",
       "fallback": null,
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "confirm_dangerous_operation": {
       "name": "confirm_dangerous_operation",
@@ -820,17 +610,13 @@
       "domain": "safety",
       "priority": 10,
       "description": "Check if an operation is dangerous and requires confirmation. Returns warning and requires user approval for destructive operations. Example: Check before deleting a file....",
-      "arguments": [
-        "operation"
-      ],
+      "arguments": ["operation"],
       "usage_example": "Check before deleting a file",
       "fallback": null,
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "check_for_repetitive_patterns": {
       "name": "check_for_repetitive_patterns",
@@ -838,17 +624,13 @@
       "domain": "general",
       "priority": 10,
       "description": "Detect repetitive operations that indicate a loop. Warns about stuck patterns and suggests breaking out. CRITICAL for preventing infinite loops. Example: Check for repetitive file operations....",
-      "arguments": [
-        "operations"
-      ],
+      "arguments": ["operations"],
       "usage_example": "Check for repetitive file operations",
       "fallback": null,
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "explain_rejection": {
       "name": "explain_rejection",
@@ -856,18 +638,13 @@
       "domain": "general",
       "priority": 10,
       "description": "Explain why an operation was rejected. Provides specific reasons, explanations, suggestions, and recommended tools. Helps model learn from mistakes. Example: Get explanation for a rejected write opera...",
-      "arguments": [
-        "context",
-        "reason"
-      ],
+      "arguments": ["context", "reason"],
       "usage_example": "Get explanation for a rejected write operation",
       "fallback": null,
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "suggest_alternatives": {
       "name": "suggest_alternatives",
@@ -875,18 +652,13 @@
       "domain": "general",
       "priority": 10,
       "description": "Suggest alternative approaches when operations fail. Provides specific tools and methods to try next. Helps model find better solutions. Example: Get alternatives when write_file is rejected....",
-      "arguments": [
-        "context",
-        "failed_operation"
-      ],
+      "arguments": ["context", "failed_operation"],
       "usage_example": "Get alternatives when write_file is rejected",
       "fallback": null,
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "get_historical_context": {
       "name": "get_historical_context",
@@ -894,17 +666,13 @@
       "domain": "general",
       "priority": 10,
       "description": "Get historical context about a file. Shows previous changes, last modified time, and change markers. Helps understand file evolution. Example: Get historical context before refactoring....",
-      "arguments": [
-        "path"
-      ],
+      "arguments": ["path"],
       "usage_example": "Get historical context before refactoring",
       "fallback": null,
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "get_operation_guidance": {
       "name": "get_operation_guidance",
@@ -912,18 +680,13 @@
       "domain": "general",
       "priority": 10,
       "description": "Get guidance on how to use a specific operation. Provides prerequisites, warnings, and best practices. Helps model use tools correctly. Example: Get guidance for write_file operation....",
-      "arguments": [
-        "context",
-        "operation"
-      ],
+      "arguments": ["context", "operation"],
       "usage_example": "Get guidance for write_file operation",
       "fallback": null,
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "run_related_tests": {
       "name": "run_related_tests",
@@ -931,17 +694,13 @@
       "domain": "general",
       "priority": 10,
       "description": "Run tests for files affected by changes. Returns test results and coverage. Fails changes that break tests. Prevents regressions. Example: Run tests after modifying a file....",
-      "arguments": [
-        "path"
-      ],
+      "arguments": ["path"],
       "usage_example": "Run tests after modifying a file",
       "fallback": null,
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "search_code_files": {
       "name": "search_code_files",
@@ -962,9 +721,7 @@
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "get_code_language_stats": {
       "name": "get_code_language_stats",
@@ -972,18 +729,13 @@
       "domain": "general",
       "priority": 10,
       "description": "Get language statistics for a directory. Shows file counts per programming language. Example: Get stats to understand project language distribution....",
-      "arguments": [
-        "directory",
-        "excludeDirs"
-      ],
+      "arguments": ["directory", "excludeDirs"],
       "usage_example": "Get stats to understand project language distribution",
       "fallback": null,
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "search_code_pattern": {
       "name": "search_code_pattern",
@@ -991,21 +743,13 @@
       "domain": "code",
       "priority": 10,
       "description": "Search by language-specific regex pattern. Allows complex pattern matching within specific languages. Example: Search for \"classs+w+\" in cpp to find class definitions....",
-      "arguments": [
-        "directory",
-        "excludeDirs",
-        "language",
-        "maxResults",
-        "pattern"
-      ],
+      "arguments": ["directory", "excludeDirs", "language", "maxResults", "pattern"],
       "usage_example": "Search for \"classs+w+\" in cpp to find class definitions",
       "fallback": null,
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "detect_file_language": {
       "name": "detect_file_language",
@@ -1013,17 +757,13 @@
       "domain": "general",
       "priority": 10,
       "description": "Detect programming language from file extension. Identifies language based on file extension mapping. Example: Detect language for \"main.py\" returns \"python\"....",
-      "arguments": [
-        "filepath"
-      ],
+      "arguments": ["filepath"],
       "usage_example": "Detect language for \"main.py\" returns \"python\"",
       "fallback": null,
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "find_code_files": {
       "name": "find_code_files",
@@ -1031,19 +771,13 @@
       "domain": "code",
       "priority": 10,
       "description": "Find all code files in a directory by language. Returns list of file paths for specified languages. Example: Find all Python files in a project directory....",
-      "arguments": [
-        "directory",
-        "excludeDirs",
-        "languages"
-      ],
+      "arguments": ["directory", "excludeDirs", "languages"],
       "usage_example": "Find all Python files in a project directory",
       "fallback": null,
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "search_llama_docs": {
       "name": "search_llama_docs",
@@ -1051,18 +785,13 @@
       "domain": "docs",
       "priority": 10,
       "description": "Search llama.cpp documentation for specific terms. Provides offline access to llama documentation without requiring internet. Documentation includes LlamaCpp.net .NET bindings and LlamaCppUnity for Un...",
-      "arguments": [
-        "maxResults",
-        "query"
-      ],
+      "arguments": ["maxResults", "query"],
       "usage_example": "Search for \"Unity\" or \"model\" to find relevant documentation",
       "fallback": null,
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "list_llama_docs": {
       "name": "list_llama_docs",
@@ -1076,9 +805,7 @@
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "search_math_docs": {
       "name": "search_math_docs",
@@ -1086,18 +813,13 @@
       "domain": "docs",
       "priority": 10,
       "description": "Search mathematical documentation for specific terms. Provides offline access to mathematical concepts for AI/ML programming. Documentation includes algorithm complexity, linear algebra, probability/s...",
-      "arguments": [
-        "maxResults",
-        "query"
-      ],
+      "arguments": ["maxResults", "query"],
       "usage_example": "Search for \"matrix\" or \"probability\" to find relevant mathematical concepts",
       "fallback": null,
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "list_math_docs": {
       "name": "list_math_docs",
@@ -1111,9 +833,7 @@
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "get_csharp_errors": {
       "name": "get_csharp_errors",
@@ -1121,17 +841,13 @@
       "domain": "csharp",
       "priority": 10,
       "description": "Get C# errors in the workspace with severity colors and line ranges....",
-      "arguments": [
-        "severity_threshold"
-      ],
+      "arguments": ["severity_threshold"],
       "usage_example": "See tool description",
       "fallback": null,
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "get_csharp_errors_for_file": {
       "name": "get_csharp_errors_for_file",
@@ -1139,18 +855,13 @@
       "domain": "csharp",
       "priority": 10,
       "description": "MUST use this tool to get C# errors for a specific file - this is the ONLY way to check individual files. Returns errors with severity colors and line ranges. Only returns broken nodes (Edit, Do not R...",
-      "arguments": [
-        "path",
-        "severity_threshold"
-      ],
+      "arguments": ["path", "severity_threshold"],
       "usage_example": "Check errors in Program.cs before making changes",
       "fallback": null,
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "get_integrity_report": {
       "name": "get_integrity_report",
@@ -1158,17 +869,13 @@
       "domain": "csharp",
       "priority": 10,
       "description": "MUST use this tool to get detailed integrity report for C# errors - this is the ONLY way to understand error context in relation to high-value rules. Returns integrity score, error breakdown by rule, ...",
-      "arguments": [
-        "path"
-      ],
+      "arguments": ["path"],
       "usage_example": "Get integrity report for Program.cs to understand architectural impact",
       "fallback": null,
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "toggle_csharp_error_type": {
       "name": "toggle_csharp_error_type",
@@ -1176,18 +883,13 @@
       "domain": "general",
       "priority": 10,
       "description": "MUST use this tool to enable/disable specific C# error checks - this is the ONLY way to configure error detection. Allows fine-grained control over which errors are reported. Example: Disable \"string_...",
-      "arguments": [
-        "enabled",
-        "error_id"
-      ],
+      "arguments": ["enabled", "error_id"],
       "usage_example": "Disable \"string_concatenation\" check if it produces false positives",
       "fallback": null,
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "set_csharp_ai_informed": {
       "name": "set_csharp_ai_informed",
@@ -1195,17 +897,13 @@
       "domain": "general",
       "priority": 10,
       "description": "MUST use this tool to toggle \"Keep AI Informed\" feature - this is the ONLY way to control automatic error injection. When enabled, C# errors are automatically injected into file reads based on Surgica...",
-      "arguments": [
-        "enabled"
-      ],
+      "arguments": ["enabled"],
       "usage_example": "Enable to automatically inform AI about critical errors without being asked",
       "fallback": null,
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "update_csharp_config": {
       "name": "update_csharp_config",
@@ -1213,20 +911,13 @@
       "domain": "general",
       "priority": 10,
       "description": "MUST use this tool to update C# Bridge configuration - this is the ONLY way to update analysis settings at runtime. Updates confidence threshold, deduplication, cooldown, and detector settings. Clears...",
-      "arguments": [
-        "alertCooldown",
-        "confidenceThreshold",
-        "deduplicateAlerts",
-        "detectors"
-      ],
+      "arguments": ["alertCooldown", "confidenceThreshold", "deduplicateAlerts", "detectors"],
       "usage_example": "Update confidence threshold to 80 to reduce false positives",
       "fallback": null,
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     },
     "undo_last_surgical_edit": {
       "name": "undo_last_surgical_edit",
@@ -1234,17 +925,13 @@
       "domain": "general",
       "priority": 10,
       "description": "MUST use this tool to revert a file to its last \"Pass\" state - this is the ONLY way to rollback when AI fixes lower Surgical Integrity Score. Reverts file to last state with Integrity Score > 90. CRIT...",
-      "arguments": [
-        "path"
-      ],
+      "arguments": ["path"],
       "usage_example": "Undo last edit to Program.cs if it lowered the integrity score",
       "fallback": null,
       "conflicts": [],
       "required_for": [],
       "best_next_tool": [],
-      "triggers": [
-        "general use"
-      ]
+      "triggers": ["general use"]
     }
   },
   "categories": {
@@ -1324,11 +1011,7 @@
   "domains": {
     "io": {
       "description": "Input/output operations",
-      "tools": [
-        "read_file",
-        "write_file",
-        "list_directory"
-      ]
+      "tools": ["read_file", "write_file", "list_directory"]
     },
     "validation": {
       "description": "Validation and rule enforcement",
@@ -1342,25 +1025,15 @@
     },
     "context": {
       "description": "Context and dependency analysis",
-      "tools": [
-        "get_file_context",
-        "analyze_project_conventions",
-        "get_session_context"
-      ]
+      "tools": ["get_file_context", "analyze_project_conventions", "get_session_context"]
     },
     "impact": {
       "description": "Change impact analysis",
-      "tools": [
-        "analyze_change_impact"
-      ]
+      "tools": ["analyze_change_impact"]
     },
     "project": {
       "description": "Project structure and memory",
-      "tools": [
-        "index_project_structure",
-        "get_project_memory_summary",
-        "suggest_file_location"
-      ]
+      "tools": ["index_project_structure", "get_project_memory_summary", "suggest_file_location"]
     },
     "general": {
       "description": "General operations",
@@ -1401,17 +1074,11 @@
     },
     "safety": {
       "description": "Safety and permission checks",
-      "tools": [
-        "sanitize_request",
-        "confirm_dangerous_operation"
-      ]
+      "tools": ["sanitize_request", "confirm_dangerous_operation"]
     },
     "workflow": {
       "description": "Workflow orchestration",
-      "tools": [
-        "initiate_surgical_workflow",
-        "get_workflow_status"
-      ]
+      "tools": ["initiate_surgical_workflow", "get_workflow_status"]
     },
     "code": {
       "description": "Code manipulation and refactoring",
@@ -1425,28 +1092,15 @@
     },
     "config": {
       "description": "Configuration management",
-      "tools": [
-        "get_config",
-        "set_config",
-        "reset_config"
-      ]
+      "tools": ["get_config", "set_config", "reset_config"]
     },
     "docs": {
       "description": "Documentation access",
-      "tools": [
-        "search_llama_docs",
-        "list_llama_docs",
-        "search_math_docs",
-        "list_math_docs"
-      ]
+      "tools": ["search_llama_docs", "list_llama_docs", "search_math_docs", "list_math_docs"]
     },
     "csharp": {
       "description": "C# diagnostics and error detection",
-      "tools": [
-        "get_csharp_errors",
-        "get_csharp_errors_for_file",
-        "get_integrity_report"
-      ]
+      "tools": ["get_csharp_errors", "get_csharp_errors_for_file", "get_integrity_report"]
     }
   },
   "heuristics": {
@@ -1459,17 +1113,12 @@
   "conflicts": [
     {
       "tool": "write_file",
-      "conflicts_with": [
-        "manual_edit",
-        "direct_write"
-      ],
+      "conflicts_with": ["manual_edit", "direct_write"],
       "reason": "Write_file enforces surgical rules and creates backups"
     },
     {
       "tool": "read_file",
-      "conflicts_with": [
-        "direct_file_access"
-      ],
+      "conflicts_with": ["direct_file_access"],
       "reason": "Read_file enforces .sweignore rules and injects architectural context"
     }
   ]

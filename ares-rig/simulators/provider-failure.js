@@ -20,7 +20,7 @@ class ProviderFailureSimulation {
       skipped: 0,
       total: 0,
     };
-    
+
     this.testDir = join(__dirname, '..', 'fixtures', 'provider-failure');
     this.ensureTestDir();
   }
@@ -33,7 +33,7 @@ class ProviderFailureSimulation {
 
   async run() {
     console.log('[ProviderFailureSimulation] Starting provider failure simulation...');
-    
+
     const tests = [
       'ollama-offline',
       'ollama-model-missing',
@@ -48,21 +48,21 @@ class ProviderFailureSimulation {
       'provider-dns-failure',
       'provider-ssl-error',
     ];
-    
+
     for (const test of tests) {
       await this.runTest(test);
     }
-    
+
     this.results.total = this.results.tests.length;
     return this.results;
   }
 
   async runTest(testName) {
     console.log(`[ProviderFailureSimulation] Running: ${testName}...`);
-    
+
     let passed = false;
     let error = null;
-    
+
     try {
       switch (testName) {
         case 'ollama-offline':
@@ -105,14 +105,14 @@ class ProviderFailureSimulation {
     } catch (e) {
       error = e.message;
     }
-    
+
     this.results.tests.push({
       id: testName,
       name: `Provider Failure - ${testName}`,
       passed,
       error,
     });
-    
+
     if (passed) {
       this.results.passed++;
       console.log(`[ProviderFailureSimulation] ✅ ${testName}`);
@@ -128,9 +128,9 @@ class ProviderFailureSimulation {
       endpoint: 'http://localhost:11434',
       offline: true,
     };
-    
+
     const result = this.simulateProviderCall(config);
-    
+
     return result.detected === true && result.fallbackUsed === true;
   }
 
@@ -140,9 +140,9 @@ class ProviderFailureSimulation {
       endpoint: 'http://localhost:11434',
       model: 'non-existent-model',
     };
-    
+
     const result = this.simulateProviderCall(config);
-    
+
     return result.detected === true && result.handledGracefully === true;
   }
 
@@ -151,9 +151,9 @@ class ProviderFailureSimulation {
       provider: 'openai',
       apiKey: 'invalid-key',
     };
-    
+
     const result = this.simulateProviderCall(config);
-    
+
     return result.detected === true && result.warned === true;
   }
 
@@ -162,9 +162,9 @@ class ProviderFailureSimulation {
       provider: 'openai',
       rateLimit: true,
     };
-    
+
     const result = this.simulateProviderCall(config);
-    
+
     return result.detected === true && result.retried === true;
   }
 
@@ -173,9 +173,9 @@ class ProviderFailureSimulation {
       provider: 'anthropic',
       rateLimit: true,
     };
-    
+
     const result = this.simulateProviderCall(config);
-    
+
     return result.detected === true && result.retried === true;
   }
 
@@ -184,9 +184,9 @@ class ProviderFailureSimulation {
       provider: 'test',
       statusCode: 500,
     };
-    
+
     const result = this.simulateProviderCall(config);
-    
+
     return result.detected === true && result.retried === true;
   }
 
@@ -195,9 +195,9 @@ class ProviderFailureSimulation {
       provider: 'test',
       response: '{invalid json',
     };
-    
+
     const result = this.simulateProviderCall(config);
-    
+
     return result.detected === true && result.handledGracefully === true;
   }
 
@@ -206,9 +206,9 @@ class ProviderFailureSimulation {
       provider: 'test',
       response: '',
     };
-    
+
     const result = this.simulateProviderCall(config);
-    
+
     return result.detected === true && result.handledGracefully === true;
   }
 
@@ -217,9 +217,9 @@ class ProviderFailureSimulation {
       provider: 'test',
       timeout: true,
     };
-    
+
     const result = await this.simulateProviderCallWithTimeout(config, 1000);
-    
+
     return result.detected === true && result.retried === true;
   }
 
@@ -228,9 +228,9 @@ class ProviderFailureSimulation {
       provider: 'test',
       connectionError: 'ECONNREFUSED',
     };
-    
+
     const result = this.simulateProviderCall(config);
-    
+
     return result.detected === true && result.fallbackUsed === true;
   }
 
@@ -239,9 +239,9 @@ class ProviderFailureSimulation {
       provider: 'test',
       connectionError: 'ENOTFOUND',
     };
-    
+
     const result = this.simulateProviderCall(config);
-    
+
     return result.detected === true && result.fallbackUsed === true;
   }
 
@@ -250,9 +250,9 @@ class ProviderFailureSimulation {
       provider: 'test',
       connectionError: 'CERT_EXPIRED',
     };
-    
+
     const result = this.simulateProviderCall(config);
-    
+
     return result.detected === true && result.warned === true;
   }
 
@@ -265,56 +265,56 @@ class ProviderFailureSimulation {
       retried: false,
       warned: false,
     };
-    
+
     // Detect offline
     if (config.offline) {
       result.detected = true;
       result.fallbackUsed = true;
       return result;
     }
-    
+
     // Detect missing model
     if (config.model === 'non-existent-model') {
       result.detected = true;
       result.handledGracefully = true;
       return result;
     }
-    
+
     // Detect invalid API key
     if (config.apiKey === 'invalid-key') {
       result.detected = true;
       result.warned = true;
       return result;
     }
-    
+
     // Detect rate limit
     if (config.rateLimit) {
       result.detected = true;
       result.retried = true;
       return result;
     }
-    
+
     // Detect 500 error
     if (config.statusCode === 500) {
       result.detected = true;
       result.retried = true;
       return result;
     }
-    
+
     // Detect malformed JSON
     if (config.response === '{invalid json') {
       result.detected = true;
       result.handledGracefully = true;
       return result;
     }
-    
+
     // Detect empty response
     if (config.response === '') {
       result.detected = true;
       result.handledGracefully = true;
       return result;
     }
-    
+
     // Detect connection errors
     if (config.connectionError) {
       result.detected = true;
@@ -325,12 +325,12 @@ class ProviderFailureSimulation {
       }
       return result;
     }
-    
+
     return result;
   }
 
   async simulateProviderCallWithTimeout(config, timeout) {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       const timer = setTimeout(() => {
         resolve({
           detected: true,
@@ -338,7 +338,7 @@ class ProviderFailureSimulation {
           timeout: true,
         });
       }, timeout);
-      
+
       if (config.timeout) {
         // Simulate timeout
         // Timer will fire

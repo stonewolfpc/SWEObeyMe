@@ -91,21 +91,64 @@ async function generateToolMemory() {
 
 function categorizeTool(toolName) {
   const categories = {
-    file_operations: ['read_file', 'write_file', 'list_directory', 'create_backup', 'restore_backup'],
-    governance: ['obey_surgical_plan', 'preflight_change', 'enforce_surgical_rules', 'obey_me_status', 'enforce_strict_mode'],
-    analysis: ['get_file_context', 'analyze_change_impact', 'analyze_file_health', 'detect_architectural_drift', 'get_symbol_references'],
-    project: ['index_project_structure', 'analyze_project_conventions', 'get_project_memory_summary', 'suggest_file_location', 'record_project_decision'],
+    file_operations: [
+      'read_file',
+      'write_file',
+      'list_directory',
+      'create_backup',
+      'restore_backup',
+    ],
+    governance: [
+      'obey_surgical_plan',
+      'preflight_change',
+      'enforce_surgical_rules',
+      'obey_me_status',
+      'enforce_strict_mode',
+    ],
+    analysis: [
+      'get_file_context',
+      'analyze_change_impact',
+      'analyze_file_health',
+      'detect_architectural_drift',
+      'get_symbol_references',
+    ],
+    project: [
+      'index_project_structure',
+      'analyze_project_conventions',
+      'get_project_memory_summary',
+      'suggest_file_location',
+      'record_project_decision',
+    ],
     exploration: ['list_directory', 'get_session_context'],
     refactoring: ['refactor_move_block', 'extract_to_new_file'],
-    validation: ['verify_syntax', 'verify_imports', 'validate_naming_conventions', 'check_test_coverage', 'require_documentation'],
+    validation: [
+      'verify_syntax',
+      'verify_imports',
+      'validate_naming_conventions',
+      'check_test_coverage',
+      'require_documentation',
+    ],
     search: ['search_code_files', 'search_code_pattern', 'find_code_files'],
     config: ['get_config', 'set_config', 'reset_config', 'get_config_schema'],
     workflow: ['initiate_surgical_workflow', 'get_workflow_status'],
-    csharp: ['get_csharp_errors', 'get_csharp_errors_for_file', 'get_integrity_report', 'toggle_csharp_error_type', 'set_csharp_ai_informed', 'update_csharp_config', 'undo_last_surgical_edit'],
+    csharp: [
+      'get_csharp_errors',
+      'get_csharp_errors_for_file',
+      'get_integrity_report',
+      'toggle_csharp_error_type',
+      'set_csharp_ai_informed',
+      'update_csharp_config',
+      'undo_last_surgical_edit',
+    ],
     docs: ['search_llama_docs', 'list_llama_docs', 'search_math_docs', 'list_math_docs'],
     safety: ['confirm_dangerous_operation', 'sanitize_request'],
     recovery: ['auto_repair_submission', 'request_surgical_recovery'],
-    feedback: ['check_for_anti_patterns', 'check_for_repetitive_patterns', 'explain_rejection', 'suggest_alternatives'],
+    feedback: [
+      'check_for_anti_patterns',
+      'check_for_repetitive_patterns',
+      'explain_rejection',
+      'suggest_alternatives',
+    ],
     memory: ['record_decision', 'get_historical_context', 'get_operation_guidance'],
     testing: ['run_related_tests'],
   };
@@ -122,10 +165,22 @@ function categorizeTool(toolName) {
 function categorizeDomain(toolName) {
   const domains = {
     io: ['read_file', 'write_file', 'list_directory'],
-    validation: ['obey_surgical_plan', 'preflight_change', 'enforce_surgical_rules', 'verify_syntax', 'verify_imports'],
+    validation: [
+      'obey_surgical_plan',
+      'preflight_change',
+      'enforce_surgical_rules',
+      'verify_syntax',
+      'verify_imports',
+    ],
     context: ['get_file_context', 'analyze_project_conventions', 'get_session_context'],
     impact: ['analyze_change_impact', 'get_symbol_references'],
-    code: ['search_code_files', 'search_code_pattern', 'find_code_files', 'refactor_move_block', 'extract_to_new_file'],
+    code: [
+      'search_code_files',
+      'search_code_pattern',
+      'find_code_files',
+      'refactor_move_block',
+      'extract_to_new_file',
+    ],
     project: ['index_project_structure', 'get_project_memory_summary', 'suggest_file_location'],
     config: ['get_config', 'set_config', 'reset_config'],
     workflow: ['initiate_surgical_workflow', 'get_workflow_status'],
@@ -144,10 +199,7 @@ function categorizeDomain(toolName) {
 }
 
 function extractTriggers(description) {
-  const triggerPatterns = [
-    /use this when: (.*?)\.?/i,
-    /when: (.*?)\.?/i,
-  ];
+  const triggerPatterns = [/use this when: (.*?)\.?/i, /when: (.*?)\.?/i];
 
   const triggers = [];
   for (const pattern of triggerPatterns) {
@@ -204,7 +256,7 @@ function determineRequiredFor(toolName) {
 function determineBestNext(description) {
   const match = description.match(/best next tool after this: (.*?)\.?/i);
   if (match) {
-    const tools = match[1].split(',').map(t => t.trim());
+    const tools = match[1].split(',').map((t) => t.trim());
     return tools.slice(0, 2);
   }
   return [];

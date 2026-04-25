@@ -1,7 +1,9 @@
 Source: https://code.visualstudio.com/api
 
 ## What can extensions do?
+
 Here are some examples of what you can achieve with the Extension API:
+
 - Change the look of VS Code with a color or file icon theme - [Theming](https://code.visualstudio.com/api/extension-capabilities/theming)
 - Add custom components & views in the UI - [Extending the Workbench](https://code.visualstudio.com/api/extension-capabilities/extending-workbench)
 - Create a Webview to display a custom webpage built with HTML/CSS/JS - [Webview Guide](https://code.visualstudio.com/api/extension-guides/webview)
@@ -9,7 +11,9 @@ Here are some examples of what you can achieve with the Extension API:
 - Support debugging a specific runtime - [Debugger Extension Guide](https://code.visualstudio.com/api/extension-guides/debugger-extension)
 
 ## How to build extensions?
+
 Building a good extension can take a lot of time and effort. Here is what each section of the API docs can help you with:
+
 - Get Started teaches fundamental concepts for building extensions with the [Hello World](https://github.com/microsoft/vscode-extension-samples/tree/main/helloworld-sample) sample.
 - Extension Capabilities dissects VS Code's vast API into smaller categories and points you to more detailed topics.
 - Extension Guides includes guides and code samples that explain specific usages of VS Code Extension API.
@@ -20,4 +24,5 @@ Building a good extension can take a lot of time and effort. Here is what each s
 - References contains exhaustive references for the VS Code API, [Contribution Points](https://code.visualstudio.com/api/references/contribution-points), and many other topics.
 
 ## What's new?
+
 VS Code updates on a monthly cadence, and that applies to the Extension API as well. New features and APIs become available every month to increase the power and scope of VS Code extensions.

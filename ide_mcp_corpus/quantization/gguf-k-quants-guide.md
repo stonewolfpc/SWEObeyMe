@@ -8,6 +8,7 @@ Most GGUF weight formats are blockwise.
 A matrix is split into fixed-size blocks, each block is represented with compact integer parameters, and a small set of per-block parameters reconstructs approximate floating weights at inference.
 
 The design space is defined by three choices:
+
 - The number of bits used for the parameters
 - The block size
 - The dequantization rule (linear scale and zero-point, multi-scale hierarchies, or non-linear/LUT-assisted schemes)
@@ -22,7 +23,7 @@ In the next sections, "bits/weight" refers to the effective average once overhea
 
 ## Legacy Formats: Q_0 and Q_1
 
-The legacy family of GGUF formats, Q4_0, Q4_1, Q5_0, Q5_1, Q8_0, implements classic per-block linear quantization. A block stores n-bit weight codes and either one scale (the "_0" variants, symmetric) or one scale plus one offset/zero-point (the "_1" variants, asymmetric). Dequantization is a single affine transform per block.
+The legacy family of GGUF formats, Q4_0, Q4_1, Q5_0, Q5_1, Q8_0, implements classic per-block linear quantization. A block stores n-bit weight codes and either one scale (the "\_0" variants, symmetric) or one scale plus one offset/zero-point (the "\_1" variants, asymmetric). Dequantization is a single affine transform per block.
 
 These formats are simple to decode and therefore fast. Their weakness is representational: one affine map per block cannot model skewed or heavy-tailed weight distributions as well as newer schemes.
 
@@ -32,7 +33,7 @@ A concise way to think about the legacy set is that Q8_0 is a safe INT8 baseline
 
 ## K-quants: Modern Default for 3–6 Bits
 
-K-quants (Q2_K, Q3_K, Q4_K, Q5_K, Q6_K, and their mixed variants like _S, _M, _L) introduce structure beyond a single affine per block.
+K-quants (Q2_K, Q3_K, Q4_K, Q5_K, Q6_K, and their mixed variants like \_S, \_M, \_L) introduce structure beyond a single affine per block.
 
 The most common pattern is a two-level scheme: small blocks with their own scale and zero-point grouped into a super-block with an additional scale/offset. In practice, this behaves like a piecewise-affine approximation that captures both local and global variation with little overhead.
 
@@ -43,9 +44,10 @@ The result is lower error at the same storage. For example, a typical Q4_K lands
 Decoding remains lightweight. The extra parameters are compact, and arithmetic is still simple integer unpacking plus a handful of multiplies and adds. On modern CPUs and GPUs, K-quants generally match or beat legacy formats in throughput because you move fewer bytes for the same quality.
 
 The suffixes encode "mix levels" across tensors. Examples for Q4_K:
-- Q4_K_S (small): Keeps almost everything at 4-bit 
+
+- Q4_K_S (small): Keeps almost everything at 4-bit
 - Q4_K_M (medium): Selectively raises precision for more sensitive tensors (for example, attention value projections or final layers) using 5–6 bits
-- Q4_K_L (larger): Even more relaxed than Q4_K_M. 
+- Q4_K_L (larger): Even more relaxed than Q4_K_M.
 
 Q4_K_S (small): Keeps almost everything at 4-bit
 Q4_K_M (medium): Selectively raises precision for more sensitive tensors (for example, attention value projections or final layers) using 5–6 bits

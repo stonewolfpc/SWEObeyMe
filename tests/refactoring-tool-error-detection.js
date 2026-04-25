@@ -1,9 +1,9 @@
 /**
  * Refactoring Tool Error Detection Tests
- * 
+ *
  * This test suite detects error patterns encountered during refactoring work
  * to prevent future occurrences and ensure robust error handling.
- * 
+ *
  * Error Types Tested:
  * 1. SWEObeyMe MCP Tool Failure
  * 2. Backup Directory Missing
@@ -68,7 +68,7 @@ test('Backup directory is writable', async () => {
 test('File registry exports all required functions', async () => {
   const fileRegistryPath = path.join(process.cwd(), 'lib', 'file-registry.js');
   const content = await fs.readFile(fileRegistryPath, 'utf-8');
-  
+
   const requiredExports = [
     'findDuplicateFiles',
     'findSameNameFiles',
@@ -82,24 +82,30 @@ test('File registry exports all required functions', async () => {
     'removeFileFromRegistry',
     'getRegistryStatistics',
   ];
-  
+
   // Check if all required exports are present
   // Duplicate detection functions use "as" pattern, others use regular export function
   const duplicateDetectionExports = ['findDuplicateFiles', 'findSameNameFiles', 'findSimilarFiles'];
-  const allExportsFound = requiredExports.every(exportName => {
+  const allExportsFound = requiredExports.every((exportName) => {
     if (duplicateDetectionExports.includes(exportName)) {
       return content.includes(`as ${exportName}`);
     } else {
-      return content.includes(`export function ${exportName}`) || content.includes(`export async function ${exportName}`);
+      return (
+        content.includes(`export function ${exportName}`) ||
+        content.includes(`export async function ${exportName}`)
+      );
     }
   });
-  
+
   if (!allExportsFound) {
-    const missing = requiredExports.filter(name => {
+    const missing = requiredExports.filter((name) => {
       if (duplicateDetectionExports.includes(name)) {
         return !content.includes(`as ${name}`);
       } else {
-        return !content.includes(`export function ${name}`) && !content.includes(`export async function ${name}`);
+        return (
+          !content.includes(`export function ${name}`) &&
+          !content.includes(`export async function ${name}`)
+        );
       }
     });
     throw new Error(`Missing exports: ${missing.join(', ')}`);
@@ -112,11 +118,11 @@ test('File registry exports all required functions', async () => {
 test('File registry has no duplicate function declarations', async () => {
   const fileRegistryPath = path.join(process.cwd(), 'lib', 'file-registry.js');
   const content = await fs.readFile(fileRegistryPath, 'utf-8');
-  
+
   const functionPattern = /export function (\w+)/g;
   const matches = [];
   let match;
-  
+
   while ((match = functionPattern.exec(content)) !== null) {
     const functionName = match[1];
     if (matches.includes(functionName)) {
@@ -132,11 +138,9 @@ test('File registry has no duplicate function declarations', async () => {
 test('Refactoring handlers exports all required functions', async () => {
   const handlersPath = path.join(process.cwd(), 'lib', 'tools', 'handlers-refactoring.js');
   const content = await fs.readFile(handlersPath, 'utf-8');
-  
-  const requiredExports = [
-    'refactoringHandlers',
-  ];
-  
+
+  const requiredExports = ['refactoringHandlers'];
+
   for (const exportName of requiredExports) {
     if (!content.includes(`export const ${exportName}`)) {
       throw new Error(`Missing export: ${exportName}`);
@@ -159,7 +163,7 @@ test('All refactoring module files exist', async () => {
     'refactoring-delete.js',
     'refactoring-split.js',
   ];
-  
+
   for (const fileName of requiredFiles) {
     const filePath = path.join(refactoringDir, fileName);
     try {
@@ -181,7 +185,7 @@ test('File registry module files exist', async () => {
     'file-similarity.js',
     'file-duplicate-detector.js',
   ];
-  
+
   for (const fileName of requiredFiles) {
     const filePath = path.join(fileRegistryDir, fileName);
     try {
@@ -198,14 +202,14 @@ test('File registry module files exist', async () => {
 test('File registry imports match extracted modules', async () => {
   const fileRegistryPath = path.join(process.cwd(), 'lib', 'file-registry.js');
   const content = await fs.readFile(fileRegistryPath, 'utf-8');
-  
+
   const requiredImports = [
     './file-registry/file-indexer.js',
     './file-registry/file-hash.js',
     './file-registry/file-similarity.js',
     './file-registry/file-duplicate-detector.js',
   ];
-  
+
   for (const importPath of requiredImports) {
     if (!content.includes(importPath)) {
       throw new Error(`Missing import: ${importPath}`);
@@ -252,7 +256,7 @@ test('SWEObeyMe MCP tools are available', async () => {
 test('Refactoring handlers imports match extracted modules', async () => {
   const handlersPath = path.join(process.cwd(), 'lib', 'tools', 'handlers-refactoring.js');
   const content = await fs.readFile(handlersPath, 'utf-8');
-  
+
   const requiredImports = [
     './refactoring/bracket-validator.js',
     './refactoring/refactoring-move.js',
@@ -263,7 +267,7 @@ test('Refactoring handlers imports match extracted modules', async () => {
     './refactoring/refactoring-delete.js',
     './refactoring/refactoring-split.js',
   ];
-  
+
   for (const importPath of requiredImports) {
     if (!content.includes(importPath)) {
       throw new Error(`Missing import: ${importPath}`);
@@ -276,7 +280,7 @@ test('Refactoring handlers imports match extracted modules', async () => {
  */
 async function runTests() {
   console.log('Running Refactoring Tool Error Detection Tests...\n');
-  
+
   // Run all tests
   await Promise.all([
     // Test 1 & 2 are async, run them separately
@@ -307,12 +311,12 @@ async function runTests() {
       }
     })(),
   ]);
-  
+
   // Run synchronous tests
   test('File registry exports all required functions', async () => {
     const fileRegistryPath = path.join(process.cwd(), 'lib', 'file-registry.js');
     const content = await fs.readFile(fileRegistryPath, 'utf-8');
-    
+
     const requiredExports = [
       'findDuplicateFiles',
       'findSameNameFiles',
@@ -326,22 +330,25 @@ async function runTests() {
       'removeFileFromRegistry',
       'getRegistryStatistics',
     ];
-    
+
     for (const exportName of requiredExports) {
-      if (!content.includes(`export function ${exportName}`) && !content.includes(`export { ${exportName}`)) {
+      if (
+        !content.includes(`export function ${exportName}`) &&
+        !content.includes(`export { ${exportName}`)
+      ) {
         throw new Error(`Missing export: ${exportName}`);
       }
     }
   });
-  
+
   test('File registry has no duplicate function declarations', async () => {
     const fileRegistryPath = path.join(process.cwd(), 'lib', 'file-registry.js');
     const content = await fs.readFile(fileRegistryPath, 'utf-8');
-    
+
     const functionPattern = /export function (\w+)/g;
     const matches = [];
     let match;
-    
+
     while ((match = functionPattern.exec(content)) !== null) {
       const functionName = match[1];
       if (matches.includes(functionName)) {
@@ -350,16 +357,16 @@ async function runTests() {
       matches.push(functionName);
     }
   });
-  
+
   test('Refactoring handlers exports all required functions', async () => {
     const handlersPath = path.join(process.cwd(), 'lib', 'tools', 'handlers-refactoring.js');
     const content = await fs.readFile(handlersPath, 'utf-8');
-    
+
     if (!content.includes('export const refactoringHandlers')) {
       throw new Error('Missing export: refactoringHandlers');
     }
   });
-  
+
   test('All refactoring module files exist', async () => {
     const refactoringDir = path.join(process.cwd(), 'lib', 'tools', 'refactoring');
     const requiredFiles = [
@@ -372,13 +379,13 @@ async function runTests() {
       'refactoring-delete.js',
       'refactoring-split.js',
     ];
-    
+
     for (const fileName of requiredFiles) {
       const filePath = path.join(refactoringDir, fileName);
       await fs.access(filePath);
     }
   });
-  
+
   test('File registry module files exist', async () => {
     const fileRegistryDir = path.join(process.cwd(), 'lib', 'file-registry');
     const requiredFiles = [
@@ -387,22 +394,22 @@ async function runTests() {
       'file-similarity.js',
       'file-duplicate-detector.js',
     ];
-    
+
     for (const fileName of requiredFiles) {
       const filePath = path.join(fileRegistryDir, fileName);
       await fs.access(filePath);
     }
   });
-  
+
   test('Refactoring modules have no syntax errors', async () => {
     const refactoringDir = path.join(process.cwd(), 'lib', 'tools', 'refactoring');
     const files = await fs.readdir(refactoringDir);
-    
+
     for (const file of files) {
       if (file.endsWith('.js')) {
         const filePath = path.join(refactoringDir, file);
         const content = await fs.readFile(filePath, 'utf-8');
-        
+
         // Check for common syntax error patterns from incomplete edits
         if (content.includes('},        ],')) {
           throw new Error(`Syntax error pattern in ${file}: orphaned closing braces`);
@@ -410,29 +417,29 @@ async function runTests() {
       }
     }
   });
-  
+
   test('File registry imports match extracted modules', async () => {
     const fileRegistryPath = path.join(process.cwd(), 'lib', 'file-registry.js');
     const content = await fs.readFile(fileRegistryPath, 'utf-8');
-    
+
     const requiredImports = [
       './file-registry/file-indexer.js',
       './file-registry/file-hash.js',
       './file-registry/file-similarity.js',
       './file-registry/file-duplicate-detector.js',
     ];
-    
+
     for (const importPath of requiredImports) {
       if (!content.includes(importPath)) {
         throw new Error(`Missing import: ${importPath}`);
       }
     }
   });
-  
+
   test('Refactoring handlers imports match extracted modules', async () => {
     const handlersPath = path.join(process.cwd(), 'lib', 'tools', 'handlers-refactoring.js');
     const content = await fs.readFile(handlersPath, 'utf-8');
-    
+
     const requiredImports = [
       './refactoring/bracket-validator.js',
       './refactoring/refactoring-move.js',
@@ -443,30 +450,30 @@ async function runTests() {
       './refactoring/refactoring-delete.js',
       './refactoring/refactoring-split.js',
     ];
-    
+
     for (const importPath of requiredImports) {
       if (!content.includes(importPath)) {
         throw new Error(`Missing import: ${importPath}`);
       }
     }
   });
-  
+
   // Print results
   console.log('\n' + '='.repeat(50));
   console.log('TEST RESULTS');
   console.log('='.repeat(50));
   console.log(`Passed: ${TEST_RESULTS.passed}`);
   console.log(`Failed: ${TEST_RESULTS.failed}`);
-  
+
   if (TEST_RESULTS.errors.length > 0) {
     console.log('\nErrors:');
     TEST_RESULTS.errors.forEach(({ test, error }) => {
       console.log(`  - ${test}: ${error}`);
     });
   }
-  
+
   console.log('='.repeat(50));
-  
+
   if (TEST_RESULTS.failed > 0) {
     process.exit(1);
   }
@@ -474,7 +481,7 @@ async function runTests() {
 
 // Run tests if executed directly
 if (import.meta.url === `file://${process.argv[1]}`) {
-  runTests().catch(error => {
+  runTests().catch((error) => {
     console.error('Test runner error:', error);
     process.exit(1);
   });

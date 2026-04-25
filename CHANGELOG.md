@@ -2,6 +2,103 @@
 
 All notable changes to SWEObeyMe will be documented in this file.
 
+## [4.3.0] - 2026-04-25
+
+### Major Update - Developer Mode & Comprehensive Error Detection
+
+**New Features:**
+
+- **Tool Guidance Beacon** - AI tool awareness system:
+  - Added `get_tool_guidance` MCP tool for tool discovery and usage guidance
+  - Returns structured summary of all 88 tools with purpose, when_to_use, notes, category
+  - Includes SWEObeyMe philosophy: core rules, project goals, anti-vibe-coding, safety rules
+  - Provides usage examples for common scenarios (bug fix, new feature, refactor, etc.)
+  - Lists common mistakes with consequences and fixes
+  - Solves AI cognitive bottleneck by providing tool awareness without user instruction
+
+- **Comprehensive Error Detection System** - Industrial-grade correctness infrastructure:
+  - TypeScript type checking (optional, opt-in)
+  - ESLint strict mode (optional, opt-in)
+  - Prettier formatting (optional, opt-in)
+  - madge circular dependency detection (optional, opt-in)
+  - npm audit security scanning (optional, opt-in)
+  - husky git hooks (optional, opt-in)
+  - lint-staged pre-commit linting (optional, opt-in)
+  - Graceful degradation - works with or without optional dependencies
+  - MCP tools for comprehensive_error_detection, comprehensive_error_detection_file, get_error_detection_status
+
+- **Developer Mode (Opt-In)** - Two installation modes:
+  - Mode A (Default): Minimal install - no additional dependencies required
+  - Mode B (Opt-In): Full correctness suite with version-locked dependencies
+  - Added `npm run dev:install` script for easy full suite installation
+  - Version-locked dependencies prevent conflicts (TypeScript 5.9.x, ESLint 9.39.4, etc.)
+
+- **Peer Dependency Warnings** - Added to package.json:
+  - TypeScript: >=5.9.0 <6.0.0 (optional)
+  - ESLint: >=9.0.0 (optional)
+  - TypeScript 6.x not supported by madge 8.x - documented constraint
+
+**Bug Fixes:**
+
+- **Fixed C++ Bridge false positive** - Added word boundaries to buffer overflow pattern:
+  - Changed pattern from `/(strcpy|strcat|sprintf|gets)\s*\(/g` to `/(strcpy|strcat|sprintf|\bgets\b)\s*\(/g`
+  - Prevents matching `fgets()` as `gets()` - was causing false positives
+
+- **Fixed C# Bridge UI not showing up** - Corrected template path:
+  - Fixed path in `lib/ui/generators/csharp-bridge-html.js` from `../../../` to `../../`
+  - Template now correctly resolves to `lib/csharp-settings-template.html`
+
+- **Fixed C# Bridge settings tabs flashing/vanishing** - Added CSP to template:
+  - Added Content-Security-Policy meta tag to `lib/csharp-settings-template.html`
+  - Changed background color from `var(--vscode-editor-background)` to `var(--vscode-sideBar-background)`
+  - Tabs now display correctly without collapsing
+
+- **Fixed duplicate import in handlers-file-ops.js** - Removed duplicate import:
+  - Removed duplicate `readFileSafe, withTimeout` import on line 39
+  - Fixes SyntaxError during integration tests
+
+**Build Configuration:**
+
+- **Added external dependencies to esbuild.config.js** - Prevents bundling:
+  - @vue/compiler-sfc
+  - typescript
+  - madge
+  - eslint
+  - prettier
+  - These are now external and won't be bundled into production build
+
+**Documentation:**
+
+- **Updated README.md** - Added Developer Mode section:
+  - Documented Mode A (Minimal) vs Mode B (Full Suite)
+  - Added dependency constraints warnings
+  - Added installation instructions for full suite
+  - Documented graceful degradation behavior
+
+- **Updated version badges** - Changed from 4.2.10 to 4.3.0
+
+**Files Modified:**
+
+- `package.json` - Version bump to 4.3.0, added dev:install script, added peerDependencies
+- `esbuild.config.js` - Added external dependencies list
+- `lib/comprehensive-error-detection.js` - Added optional dependency checks
+- `lib/cpp-bridge.js` - Fixed gets/fgets false positive
+- `lib/ui/generators/csharp-bridge-html.js` - Fixed template path
+- `lib/csharp-settings-template.html` - Added CSP, fixed background color
+- `lib/tools/handlers-file-ops.js` - Removed duplicate import
+- `README.md` - Added Developer Mode section, updated version
+- `CHANGELOG.md` - Added v4.3.0 entry
+
+**Breaking Changes:**
+
+None - All changes are backward compatible. Developer mode is opt-in.
+
+**Upgrade Notes:**
+
+- Users can upgrade without any changes - default mode remains minimal
+- Developers wanting full correctness suite should run `npm run dev:install`
+- TypeScript users should use 5.9.x for full madge compatibility
+
 ## [4.2.10] - 2026-04-25
 
 ### Bug Fixes
@@ -14,6 +111,7 @@ All notable changes to SWEObeyMe will be documented in this file.
   - Tests can be re-enabled later after investigating CI environment issues
 
 **Files Modified:**
+
 - `tests/run-all-tests.js` - Commented out codebase orientation tests
 - `package.json` - Version bump to 4.2.10
 - `README.md` - Updated version shield to 4.2.10
@@ -31,6 +129,7 @@ All notable changes to SWEObeyMe will be documented in this file.
   - Tests now work in both Windows and Linux CI environments
 
 **Files Modified:**
+
 - `tests/codebase-orientation-property-tests.js` - Fixed hardcoded Windows paths
 - `tests/codebase-orientation-fuzzer-cases.js` - Fixed hardcoded Windows paths
 - `package.json` - Version bump to 4.2.9
@@ -47,6 +146,7 @@ All notable changes to SWEObeyMe will be documented in this file.
   - Corrected relative import path to match actual file structure
 
 **Files Modified:**
+
 - `lib/project-memory-structure.js` - Fixed import path
 - `package.json` - Version bump to 4.2.8
 - `README.md` - Updated version shield to 4.2.8
@@ -66,6 +166,7 @@ All notable changes to SWEObeyMe will be documented in this file.
   - The scanDirectory function is called during project memory initialization, which was causing read_file to hang on subsequent reads
 
 **Files Modified:**
+
 - `lib/project-memory-structure.js` - Added timeout protection to scanDirectory
 - `package.json` - Version bump to 4.2.7
 - `README.md` - Updated version shield to 4.2.7
@@ -82,6 +183,7 @@ All notable changes to SWEObeyMe will be documented in this file.
   - Previously read_file could hang indefinitely on slow file systems or large files
 
 **Files Modified:**
+
 - `lib/tools/handlers-file-ops.js` - Added timeout protection to read_file handler
 - `package.json` - Version bump to 4.2.6
 - `README.md` - Updated version shield to 4.2.6
@@ -99,6 +201,7 @@ All notable changes to SWEObeyMe will be documented in this file.
   - This fixes the hanging issue when using refactoring tools (rename, extract, move, split) on large projects like MasterControl-V2-CPP
 
 **Files Modified:**
+
 - `lib/tools/refactoring/refactoring-utils.js` - Added timeout protection and depth limits to findSymbolReferences
 - `package.json` - Version bump to 4.2.5
 - `README.md` - Updated version shield to 4.2.5
@@ -145,6 +248,7 @@ All notable changes to SWEObeyMe will be documented in this file.
 - **Timeout enforcement** - All async operations have timeout limits to prevent indefinite hangs
 
 **Files Modified:**
+
 - `lib/shared/async-utils.js` - New shared async utilities with timeout wrappers
 - `lib/project-awareness.js` - Async refactor with timeout
 - `lib/session-state.js` - Full async refactor, all functions async
@@ -192,6 +296,7 @@ All notable changes to SWEObeyMe will be documented in this file.
 - **Design document location**: `docs/codebase-orientation-refactor-design.md`
 
 **Files Modified:**
+
 - `lib/tools/codebase-orientation-handlers.js` - Refactored to async with timeout (330 lines, was 491)
 - `lib/tools/codebase-orientation-utils.js` - New utility functions file
 - `lib/tools/codebase-orientation-analysis.js` - New analysis functions file
@@ -229,6 +334,7 @@ All notable changes to SWEObeyMe will be documented in this file.
 - **Documentation sources**: Windsurf docs, MCP spec, VS Code API, Continue docs
 
 **Files Modified:**
+
 - `lib/project-awareness.js` - Timeout, loop detection, depth limit
 - `lib/project-memory-core.js` - Timeout on file loads
 - `lib/tools/context-handlers.js` - Async git operations with timeout
@@ -251,6 +357,7 @@ All notable changes to SWEObeyMe will be documented in this file.
 - **Fixed `project_track` tool MCP response format** - Updated dispatcher to return proper MCP format.
 
 **Files Modified:**
+
 - `lib/project-awareness.js` - Added missing getAllProjects() method
 - `lib/tools/project-awareness-handlers.js` - Updated all handlers to return MCP format with content arrays
 
@@ -320,6 +427,7 @@ All notable changes to SWEObeyMe will be documented in this file.
 - **Extends existing infrastructure** - Uses existing `getProjectMemoryManager` and extends existing `recordError`, `recordPattern`, `recordDecision` methods.
 
 **Files Modified:**
+
 - `lib/project-memory-system.js` - Extended with contextAnnotations and dependencyImpacts arrays, load/save methods, and new record methods
 - `lib/tools/project-memory-handlers.js` - Added query_implementation_knowledge handler
 - `lib/tools/registry-core.js` - Registered query_implementation_knowledge as hidden AI-query-only tool
@@ -350,12 +458,14 @@ All notable changes to SWEObeyMe will be documented in this file.
 The project awareness manager constructor was not calling `loadCurrentProject()` to initialize the currentProject state from the saved file. This caused arrays to be undefined when tools tried to push to them.
 
 **Testing:**
+
 - All error detection tests passing (10/10)
 - All integration tests passing (9/9)
 - All protocol compliance tests passing (12/12)
 - All schema validation tests passing (78/78)
 
 **Files Modified:**
+
 - `lib/project-awareness.js` - Added `loadCurrentProject()` method and called it in constructor
 - `lib/tools/math-handlers.js` - Added safety checks for checks array
 - `lib/tools/docs-handlers.js` - Added corpus ID mapping and better error handling
@@ -403,7 +513,7 @@ The project awareness manager constructor was not calling `loadCurrentProject()`
 - **Made CI-incompatible tests non-critical** - Backend MCP File System Safety and Windsurf Runtime Behavior tests marked as non-critical due to CI environment limitations (chmod restrictions, process spawning issues)
 - **Added platform-specific command validation** - Git Configuration Validation test now Check 7: Platform-specific command validation to prevent future CI failures from wrong commands for platform
 - **Added error handling to prevent test crashes** - Both failing tests now have comprehensive error handling with stack trace logging
-- **Converted git-configuration-validation.js to ES module** - Fixed __dirname error by using fileURLToPath
+- **Converted git-configuration-validation.js to ES module** - Fixed \_\_dirname error by using fileURLToPath
 
 **New Features:**
 
@@ -445,6 +555,7 @@ The project awareness manager constructor was not calling `loadCurrentProject()`
 **Theme:** If you can't make the AI smarter, you make the architecture so firm it can't deny you.
 
 **Highlights:**
+
 - **Complete README rewrite** — Positioned for non-coders and pros alike. New voice: direct, honest, no fluff
 - **Windsurf Runtime Behavior Test Suite** — 88 tests across 10 phases simulating real Windsurf MCP quirks:
   - Startup validation (18 tests): spawn timing, handshake delays, partial/malformed JSON, tool list hydration
@@ -461,10 +572,12 @@ The project awareness manager constructor was not calling `loadCurrentProject()`
 - **MCP server bulletproofing** — Survives garbage input, partial JSON, delayed stdout, corrupted reloads, model swaps mid-session
 
 ### Architecture
+
 - No breaking changes — fully backward compatible with 3.x configurations
 - All dev tests excluded from `.vsix` packaging via `.vscodeignore`
 
 ### Testing
+
 - **Windsurf Runtime Behavior Tests** — `tests/windsurf-runtime-behavior.js` (88 tests, 10 phases)
 - **Full comprehensive suite** — 13 suites, 216+ tests, 100% pass rate
 - **Pre-install validation** — 105 tests covering server readiness across all platforms
@@ -476,6 +589,7 @@ The project awareness manager constructor was not calling `loadCurrentProject()`
 ### Patch - Async I/O Fixes & Pre-Install Validation
 
 **Highlights:**
+
 - **docs_lookup freeze resolved** - Converted synchronous file operations to async (fs/promises) to prevent event loop blocking
 - **add_project_error freeze resolved** - Fixed synchronous file write that was blocking the main thread
 - **Pre-install validation suite** - New comprehensive test (105 tests) validates server readiness across all platforms before deployment
@@ -485,12 +599,14 @@ The project awareness manager constructor was not calling `loadCurrentProject()`
 This release includes compatibility updates for Windsurf-Next's enhanced MCP integration. The server now properly handles Windsurf-Next's updated MCP configuration paths (`~/.codeium/windsurf-next/mcp_config.json`) and maintains full compatibility with both Windsurf-Next and standard Windsurf environments. No breaking changes to existing functionality.
 
 ### Bug Fixes
+
 - Fixed docs_lookup freeze caused by synchronous corpus index loading (fs.readFileSync → fs/promises.readFile)
 - Fixed add_project_error freeze caused by synchronous file write (fs.writeFileSync → async operations)
 - Fixed ESM import errors on Windows by using relative import paths instead of absolute paths with join()
 - Added timeout protection to docs_lookup (30s global, 5s per corpus) to prevent indefinite hangs
 
 ### Testing
+
 - **Pre-install validation test** - New `scripts/preinstall-validation.js` with 105 tests covering:
   - Server initialization and dependencies
   - Module imports (ESM compatibility)
@@ -507,6 +623,7 @@ This release includes compatibility updates for Windsurf-Next's enhanced MCP int
 - All tests passing: 55 passed, 0 failed, 47 warnings (warnings are non-critical schema properties)
 
 ### Performance
+
 - Eliminated synchronous file I/O blocking in critical paths
 - Improved responsiveness under load with async/await patterns
 - Memory usage stable (+1.22MB for 10 docs_lookup operations)
@@ -516,6 +633,7 @@ This release includes compatibility updates for Windsurf-Next's enhanced MCP int
 ### Patch - Tool Compliance & Governance Enforcement
 
 **Highlights:**
+
 - **`.windsurfrules`** - New workspace rules file injected into every Cascade session as hard session-start mandates
 - **Workflow fixed** - Removed 23 phantom tool references from `swe-obeyme-automation.md` that were causing model hallucination
 - **`create_backup` MCP handler** - Was registered in schema but had no implementation; now fully functional
@@ -524,6 +642,7 @@ This release includes compatibility updates for Windsurf-Next's enhanced MCP int
 - **Response injection expanded** - `REQUIRED NEXT:` guidance now fires from error, search, and new-file contexts in addition to read/write
 
 ### Bug Fixes
+
 - `create_backup` tool existed in registry schema with no handler — added implementation
 - Backup system end-to-end verified: create → list → restore → stats all pass
 - Workflow file referenced 23 non-existent tools; replaced with actual registry tools
@@ -535,6 +654,7 @@ This release includes compatibility updates for Windsurf-Next's enhanced MCP int
 **Status:** ✅ CERTIFIED FOR PRODUCTION
 
 **Highlights:**
+
 - **95 MCP Tools** - Consolidated from 105 (under 100 limit)
 - **Enterprise Certification Framework** - 216-test matrix with anti-faking
 - **Zero Beta Artifacts** - Full stable release
@@ -544,6 +664,7 @@ This release includes compatibility updates for Windsurf-Next's enhanced MCP int
 ### Major Changes
 
 #### Separation of Concerns (SoC) Refactoring
+
 - **extension.js**: 1,130 → 147 lines (87% reduction)
   - Extracted UI generators to `lib/ui/generators/`
   - Extracted webview provider factory
@@ -559,6 +680,7 @@ This release includes compatibility updates for Windsurf-Next's enhanced MCP int
 - **All files under 700 lines** - Zero god files remaining
 
 #### Tool Consolidation
+
 - Unified documentation tools (14 → 4 tools)
   - `docs_lookup` - Search all corpora
   - `docs_list_corpora` - List collections
@@ -566,6 +688,7 @@ This release includes compatibility updates for Windsurf-Next's enhanced MCP int
   - `docs_verify` - Verify formulas
 
 #### Enterprise Certification
+
 - **Strict Logging Harness** - Anti-faking with phantom/silent edit detection
 - **Boundary Tests** - 9 hard enforcement tests
 - **Lunch Break Suite** - Unattended PR creation validation
@@ -573,6 +696,7 @@ This release includes compatibility updates for Windsurf-Next's enhanced MCP int
 - **GitHub Governance** - PR validation with governance enforcement
 
 ### Breaking Changes
+
 None - Fully backward compatible
 
 ---
@@ -586,7 +710,6 @@ None - Fully backward compatible
   - Optional integration with `clang-tidy` and `cppcheck` for deeper static analysis
   - Fallback to pattern matching when external tools unavailable
   - Does NOT override Windsurf diagnostics — ADDS additional custom diagnostics
-  
 - **Language Bridge Manager** — New centralized module (`lib/language-bridge-manager.js`) managing both C# and C++ diagnostics:
   - Unified diagnostic collection management
   - Separate diagnostic collections for C# and C++ (doesn't conflict with Windsurf)
@@ -738,17 +861,20 @@ None - Fully backward compatible
 ## [2.1.2-beta] - 2026-04-08
 
 ### Fixes
+
 - **Fixed GitHub test failure** - Resolved pre-release validation test that was failing in CI environment.
 
 ## [2.1.1-beta] - 2026-04-08
 
 ### Bug Fixes
+
 - **Fixed duplicate tool definitions** — Removed duplicate `get_file_context` and `analyze_change_impact` tools from `registry-core.js` that were causing WindSurf MCP server rejection. Now 98 unique tools.
 - **Fixed Unix file:// URL handling** — Corrected Unix fallback in `toFileUrl()` to properly handle relative paths by converting them to absolute paths first.
 - **Fixed MCP auto-configuration** — Removed manual config writing code (85 lines) that was conflicting with native `contributes.mcpServers`. Now uses VS Code/Windsurf native auto-registration like Puppeteer and other MCP servers.
 - **Fixed README.md version badge** — Updated version badge from 2.0.10-beta to 2.1.1-beta to match package.json.
 
 ### Testing
+
 - **Enhanced comprehensive test suite** — Added 10 automated tests including:
   - Strict duplicate detection (line numbers, cross-file analysis)
   - MCP server startup validation
@@ -763,21 +889,25 @@ None - Fully backward compatible
 ## [2.0.10-beta] - 2026-04-08
 
 ### Bug Fixes
+
 - **Fixed MCP config not propagating** — Windsurf-Next uses `~/.codeium/windsurf-next/mcp_config.json`, not `~/.codeium/mcp_config.json`. Extension now writes to all known locations (`windsurf-next`, `windsurf`, `.codeium`) that exist, always creating the `windsurf-next` directory. Only updates if the entry is missing or the path changed — prevents unnecessary rewrites.
 
 ## [2.0.9-beta] - 2026-04-08
 
 ### Bug Fixes
+
 - **Fixed Windows ESM activation crash** — `dynamic import()` requires `file://` URLs on Windows; bare `C:\...` paths throw "Only URLs with a scheme in: file, data, node, and electron are supported". All `await import(path.join(...))` calls now use `pathToFileURL(p).href` via a `toFileUrl` helper.
 
 ## [2.0.8-beta] - 2026-04-08
 
 ### Bug Fixes
+
 - **Fixed blank sidebar panels** — All three sidebar webview panels (Settings, C# Bridge Settings, Admin Dashboard) were empty due to broken dynamic imports in the bundled VSIX. Replaced with self-contained inline providers that have no external file dependencies.
-- **Eliminated tool duplication** — Root cause identified: extension was writing to `~/.codeium/mcp_config.json` manually *and* declaring `contributes.mcpServers` in `package.json`. Windsurf registered it twice, causing duplicate tools. Removed the manual write; Windsurf now handles MCP registration natively via `contributes.mcpServers`.
+- **Eliminated tool duplication** — Root cause identified: extension was writing to `~/.codeium/mcp_config.json` manually _and_ declaring `contributes.mcpServers` in `package.json`. Windsurf registered it twice, causing duplicate tools. Removed the manual write; Windsurf now handles MCP registration natively via `contributes.mcpServers`.
 - **Fixed `require()` crash in ESM module** — `deactivate()` was calling `require('fs')` inside a `"type": "module"` package, which throws at runtime. Simplified `deactivate()` to a no-op since Windsurf manages MCP server lifecycle.
 
 ### UI Improvements
+
 - **Settings panel** — Shows version badge, MCP active status, master enable/disable, inline tips toggle, C# Bridge toggle, and link to full settings.
 - **C# Bridge Settings panel** — Full controls: enable/disable, Keep AI Informed, deduplication, severity threshold slider, confidence % slider, and individual detector toggles for all 9 detectors.
 - **Admin Dashboard panel** — MCP governance config editor (max lines, warning threshold, backup count, loop attempts) and feature toggles (auto-correction, loop detection, workflow orchestration, session memory, oracle, debug logs) with live save to `~/.sweobeyme-config.json`.
@@ -785,6 +915,7 @@ None - Fully backward compatible
 ## [2.0.7-beta] - 2026-04-08
 
 ### Bug Fixes
+
 - **Fixed `package.json` not copied to `dist/mcp/`** — MCP server crashed at startup with ENOENT because it reads its own `package.json` for version info. Updated `esbuild.config.js` to copy `package.json` to `dist/mcp/` on every build.
 - **Fixed MCP server path** — `indexPath` was pointing to `index.js` at the extension root instead of the bundled `dist/mcp/server.js`.
 - **Fixed `.windsurf` installation detection** — `isInstalled` check was missing the `.windsurf` directory (only had `.windsurf-next` and `.vscode`).
@@ -799,6 +930,7 @@ This is a substantial release introducing the Project Awareness & Context Switch
 ### New Features
 
 #### Project Awareness & Context Switching Layer
+
 - **Automatic Project Detection**: Detects project type (Godot, Node, Python, C#, C++, Rust, Go, Unity, Unreal) from file indicators
 - **Context Switching**: Automatically switches project context when opening files from different projects
 - **Project-Specific Rule Sets**: Enforces project-specific constraints and best practices
@@ -807,6 +939,7 @@ This is a substantial release introducing the Project Awareness & Context Switch
 - **Project Registry**: Persistent registry of all detected projects with metadata
 
 #### New MCP Tools
+
 - `detect_project_type` - Detect project type from file path
 - `detect_project_switch` - Detect and handle project switches with automatic announcements
 - `get_current_project` - Get current project information
@@ -819,6 +952,7 @@ This is a substantial release introducing the Project Awareness & Context Switch
 - `get_all_projects` - List all registered projects
 
 #### Project-Specific Rule Sets
+
 - **Godot Projects**: Folder/node protection, scene tree preservation, autoload integrity
 - **Node Projects**: Dependency checks, SoC enforcement, module boundaries
 - **Python Projects**: PEP8 enforcement, module structure, dependency checks
@@ -830,11 +964,13 @@ This is a substantial release introducing the Project Awareness & Context Switch
 - **Unreal Projects**: Content folder protection, blueprint preservation
 
 #### Integration
+
 - Project awareness validation integrated into `write_file` handler
 - Project switch detection integrated into `read_file` handler
 - All tools registered with high priority (100) for automatic discovery
 
 ### Previous Features (v1.3.0)
+
 - ✅ Core MCP Server with surgical governance
 - ✅ C# Bridge integration with error detection
 - ✅ Governor Pattern for workspace operation interception
@@ -849,6 +985,7 @@ This is a substantial release introducing the Project Awareness & Context Switch
 - ✅ Plugin system foundation
 
 ### Technical Improvements
+
 - Created `lib/project-awareness.js` - Core project awareness system (300+ lines)
 - Created `lib/tools/project-awareness-handlers.js` - MCP tool handlers (270+ lines)
 - Created `lib/tools/registry-project-awareness.js` - Tool registration (110+ lines)
@@ -859,18 +996,22 @@ This is a substantial release introducing the Project Awareness & Context Switch
 - Updated `lib/tools/handlers-file-ops.js` - Integrated project awareness validation
 
 ### Breaking Changes
+
 None - This is a beta release designed to be backward compatible.
 
 ### Known Issues
+
 - 128 ESLint warnings about unused variables (not critical for beta)
 - Some test files have parsing errors (test files only, not core functionality)
 
 ### Testing
+
 - ESLint: 11 errors, 128 warnings (warnings are unused variables, not critical)
 - MCP server startup: To be tested
 - Project awareness system: To be tested with actual projects
 
 ### Next Steps
+
 - Address unused variable warnings in follow-up cleanup
 - Test project awareness with real projects of different types
 - Gather user feedback on project awareness features
@@ -878,7 +1019,9 @@ None - This is a beta release designed to be backward compatible.
 - Consider adding more project types if requested
 
 ### Migration Guide
+
 No migration required. The Project Awareness Layer is automatically activated when using MCP tools. The system will automatically detect your project type and apply appropriate rules.
 
 ### Credits
+
 This release represents a significant milestone in the SWEObeyMe project, bringing context-aware surgical governance to multi-project workflows.

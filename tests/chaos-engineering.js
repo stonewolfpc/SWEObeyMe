@@ -263,7 +263,7 @@ class ChaosEngineeringTest {
         task.status = 'completed';
       }
 
-      const lost = tasks.filter(t => t.status === 'pending').length;
+      const lost = tasks.filter((t) => t.status === 'pending').length;
       if (lost > 0) {
         this.results.noLostTasks.errors.push(`${lost} tasks were lost`);
         console.log(`  ❌ ${lost} tasks were lost`);
@@ -314,7 +314,7 @@ class ChaosEngineeringTest {
       }
 
       // Verify all specs preserved
-      const lost = specs.filter(s => !s.preserved).length;
+      const lost = specs.filter((s) => !s.preserved).length;
       if (lost > 0) {
         this.results.noLostSpecs.errors.push(`${lost} specs were lost`);
         console.log(`  ❌ ${lost} specs were lost`);
@@ -388,7 +388,7 @@ class ChaosEngineeringTest {
       }
 
       // Check for silent failures (operations that failed without reporting)
-      const silent = operations.filter(o => o.error && !o.reported).length;
+      const silent = operations.filter((o) => o.error && !o.reported).length;
       if (silent > 0) {
         this.results.noSilentFailures.errors.push(`${silent} silent failures detected`);
         console.log(`  ❌ ${silent} silent failures detected`);
@@ -405,31 +405,31 @@ class ChaosEngineeringTest {
 
   // Helper methods
   async recoverFromFailure() {
-    await new Promise(resolve => setTimeout(resolve, 10));
+    await new Promise((resolve) => setTimeout(resolve, 10));
   }
 
   async simulateReconnection() {
-    await new Promise(resolve => setTimeout(resolve, 10));
+    await new Promise((resolve) => setTimeout(resolve, 10));
   }
 
   async handlePartialResponse() {
-    await new Promise(resolve => setTimeout(resolve, 10));
+    await new Promise((resolve) => setTimeout(resolve, 10));
   }
 
   async handleCorruptedMessage() {
-    await new Promise(resolve => setTimeout(resolve, 10));
+    await new Promise((resolve) => setTimeout(resolve, 10));
   }
 
   async recoverAgent() {
-    await new Promise(resolve => setTimeout(resolve, 10));
+    await new Promise((resolve) => setTimeout(resolve, 10));
   }
 
   async realignSpec() {
-    await new Promise(resolve => setTimeout(resolve, 10));
+    await new Promise((resolve) => setTimeout(resolve, 10));
   }
 
   allPassed() {
-    return Object.values(this.results).every(result => result.passed);
+    return Object.values(this.results).every((result) => result.passed);
   }
 
   printResults() {
@@ -442,9 +442,9 @@ class ChaosEngineeringTest {
     for (const [name, result] of Object.entries(this.results)) {
       const status = result.passed ? '✅ PASS' : '❌ FAIL';
       console.log(`${status} ${name}`);
-      
+
       if (result.errors.length > 0) {
-        result.errors.forEach(error => {
+        result.errors.forEach((error) => {
           console.log(`    - ${error}`);
         });
       }
@@ -452,21 +452,24 @@ class ChaosEngineeringTest {
 
     console.log();
     console.log('='.repeat(60));
-    
+
     if (this.allPassed()) {
       console.log('ALL TESTS PASSED ✅');
     } else {
       console.log('SOME TESTS FAILED ❌');
     }
-    
+
     console.log('='.repeat(60));
   }
 }
 
 const test = new ChaosEngineeringTest();
-test.runAll().then(passed => {
-  process.exit(passed ? 0 : 1);
-}).catch(error => {
-  console.error('Test execution failed:', error);
-  process.exit(1);
-});
+test
+  .runAll()
+  .then((passed) => {
+    process.exit(passed ? 0 : 1);
+  })
+  .catch((error) => {
+    console.error('Test execution failed:', error);
+    process.exit(1);
+  });

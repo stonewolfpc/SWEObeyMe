@@ -36,10 +36,10 @@ This document covers Reconciliation & diffing, Virtual DOM vs signals, Render ba
 
 #### Key Best Practices
 
-- **Stable': Use stable keys
-- **Unique': Use unique keys
-- **Index': Don't use index as key
-- **ID': Use IDs when available
+- \*\*Stable': Use stable keys
+- \*\*Unique': Use unique keys
+- \*\*Index': Don't use index as key
+- \*\*ID': Use IDs when available
 
 ## Virtual DOM vs Signals
 
@@ -47,13 +47,13 @@ This document covers Reconciliation & diffing, Virtual DOM vs signals, Render ba
 
 - **Pros**: Declarative, simple
 - **Cons**: Overhead, batch updates
-- **Use Case': React, Vue
+- \*\*Use Case': React, Vue
 
 ### Signals
 
 - **Pros**: Fine-grained, no overhead
-- **Cons': Manual tracking
-- **Use Case': SolidJS, Preact, Angular
+- \*\*Cons': Manual tracking
+- \*\*Use Case': SolidJS, Preact, Angular
 
 ### Comparison
 
@@ -73,7 +73,7 @@ return <div>{count()}</div>;
 
 ```jsx
 function handleClick() {
-  setCount(c => c + 1);
+  setCount((c) => c + 1);
   setName('John');
   // Only one re-render
 }
@@ -86,7 +86,7 @@ import { unstable_batchedUpdates } from 'react-dom';
 
 function handleClick() {
   unstable_batchedUpdates(() => {
-    setCount(c => c + 1);
+    setCount((c) => c + 1);
     setName('John');
   });
 }
@@ -114,7 +114,13 @@ function ExpensiveComponent({ data }) {
     return data.sort((a, b) => a.id - b.id);
   }, [data]);
 
-  return <ul>{sortedData.map(item => <li key={item.id}>{item.name}</li>)}</ul>;
+  return (
+    <ul>
+      {sortedData.map((item) => (
+        <li key={item.id}>{item.name}</li>
+      ))}
+    </ul>
+  );
 }
 ```
 
@@ -170,7 +176,7 @@ async function loadComponent() {
 
 ```javascript
 const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
+  entries.forEach((entry) => {
     if (entry.isIntersecting) {
       // Load lazy content
       observer.unobserve(entry.target);
@@ -240,9 +246,7 @@ module.exports = {
 
 ```html
 <img
-  srcset="image-320w.jpg 320w,
-           image-640w.jpg 640w,
-           image-1280w.jpg 1280w"
+  srcset="image-320w.jpg 320w, image-640w.jpg 640w, image-1280w.jpg 1280w"
   sizes="(max-width: 640px) 320px,
          (max-width: 1280px) 640px,
          1280px"
@@ -309,9 +313,9 @@ module.exports = {
 
 #### TTI (Time to Interactive)
 
-- **Target': < 3.8s
-- **Measure': Time to interactive
-- **Optimize': Reduce JavaScript, optimize critical path
+- \*\*Target': < 3.8s
+- \*\*Measure': Time to interactive
+- \*\*Optimize': Reduce JavaScript, optimize critical path
 
 ### Measuring Web Vitals
 
@@ -327,28 +331,28 @@ getLCP(console.log);
 
 ### Rendering
 
-- **Memoize': Memoize expensive computations
-- **Batch': Batch updates
-- **Debounce': Debounce events
-- **Throttle': Throttle events
+- \*\*Memoize': Memoize expensive computations
+- \*\*Batch': Batch updates
+- \*\*Debounce': Debounce events
+- \*\*Throttle': Throttle events
 
 ### Loading
 
-- **Lazy Load': Lazy load components
-- **Code Split': Split code by route
-- **Priority': Load critical resources first
-- **Preload': Preload important resources
+- \*\*Lazy Load': Lazy load components
+- \*\*Code Split': Split code by route
+- \*\*Priority': Load critical resources first
+- \*\*Preload': Preload important resources
 
 ### Images
 
-- **Optimize': Optimize images
-- **Lazy Load': Lazy load images
-- **Responsive': Use responsive images
-- **Modern': Use modern formats
+- \*\*Optimize': Optimize images
+- \*\*Lazy Load': Lazy load images
+- \*\*Responsive': Use responsive images
+- \*\*Modern': Use modern formats
 
 ### Performance Monitoring
 
-- **Measure': Measure performance
-- **Monitor': Monitor Web Vitals
-- **Analyze': Analyze performance
-- **Optimize': Optimize based on data
+- \*\*Measure': Measure performance
+- \*\*Monitor': Monitor Web Vitals
+- \*\*Analyze': Analyze performance
+- \*\*Optimize': Optimize based on data

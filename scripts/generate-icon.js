@@ -20,14 +20,14 @@ async function generateIcon() {
       const width = Math.floor((y - 20) * 2.8);
       const startX = 64 - Math.floor(width / 2);
       for (let x = startX; x < startX + width; x++) {
-        image.setPixelColor(0xFFFFFFFF, x, y);
+        image.setPixelColor(0xffffffff, x, y);
       }
     }
 
     // Shield body (rounded rectangle)
     for (let y = 40; y < 80; y++) {
       for (let x = 36; x < 92; x++) {
-        image.setPixelColor(0xFFFFFFFF, x, y);
+        image.setPixelColor(0xffffffff, x, y);
       }
     }
 
@@ -36,7 +36,7 @@ async function generateIcon() {
       const width = Math.floor((100 - y) * 2.8);
       const startX = 64 - Math.floor(width / 2);
       for (let x = startX; x < startX + width; x++) {
-        image.setPixelColor(0xFFFFFFFF, x, y);
+        image.setPixelColor(0xffffffff, x, y);
       }
     }
 
@@ -82,10 +82,10 @@ function drawLine(image, x0, y0, x1, y1, color, thickness) {
   let x = x0;
   let y = y0;
 
-  const r = (color >> 24) & 0xFF;
-  const g = (color >> 16) & 0xFF;
-  const b = (color >> 8) & 0xFF;
-  const a = color & 0xFF;
+  const r = (color >> 24) & 0xff;
+  const g = (color >> 16) & 0xff;
+  const b = (color >> 8) & 0xff;
+  const a = color & 0xff;
 
   // eslint-disable-next-line no-constant-condition
   while (true) {

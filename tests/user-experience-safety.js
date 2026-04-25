@@ -89,22 +89,16 @@ class UserExperienceSafetyTest {
 
     try {
       // Check source files for jargon
-      const jargonTerms = [
-        'asdf',
-        'TODO',
-        'FIXME',
-        'HACK',
-        'XXX',
-      ];
+      const jargonTerms = ['asdf', 'TODO', 'FIXME', 'HACK', 'XXX'];
 
-      const filesToCheck = [
-        'lib/tools/handlers.js',
-        'lib/config.js',
-      ];
+      const filesToCheck = ['lib/tools/handlers.js', 'lib/config.js'];
 
       for (const file of filesToCheck) {
         const fullPath = path.join(__dirname, '..', file);
-        const exists = await fs.access(fullPath).then(() => true).catch(() => false);
+        const exists = await fs
+          .access(fullPath)
+          .then(() => true)
+          .catch(() => false);
         if (!exists) continue;
 
         const content = await fs.readFile(fullPath, 'utf-8');
@@ -141,20 +135,22 @@ class UserExperienceSafetyTest {
         'under construction',
       ];
 
-      const filesToCheck = [
-        'index.js',
-        'extension.js',
-      ];
+      const filesToCheck = ['index.js', 'extension.js'];
 
       for (const file of filesToCheck) {
         const fullPath = path.join(__dirname, '..', file);
-        const exists = await fs.access(fullPath).then(() => true).catch(() => false);
+        const exists = await fs
+          .access(fullPath)
+          .then(() => true)
+          .catch(() => false);
         if (!exists) continue;
 
         const content = await fs.readFile(fullPath, 'utf-8');
         for (const pattern of partialPatterns) {
           if (content.toLowerCase().includes(pattern)) {
-            this.results.noPartialImplementations.errors.push(`Partial implementation found in ${file}: ${pattern}`);
+            this.results.noPartialImplementations.errors.push(
+              `Partial implementation found in ${file}: ${pattern}`
+            );
             console.log(`  ⚠️  Partial implementation found in ${file}: ${pattern}`);
           }
         }
@@ -176,15 +172,14 @@ class UserExperienceSafetyTest {
 
     try {
       // Check for TODO comments
-      const filesToCheck = [
-        'index.js',
-        'extension.js',
-        'lib/',
-      ];
+      const filesToCheck = ['index.js', 'extension.js', 'lib/'];
 
       for (const file of filesToCheck) {
         const fullPath = path.join(__dirname, '..', file);
-        const exists = await fs.access(fullPath).then(() => true).catch(() => false);
+        const exists = await fs
+          .access(fullPath)
+          .then(() => true)
+          .catch(() => false);
         if (!exists) continue;
 
         // Check if directory
@@ -225,13 +220,18 @@ class UserExperienceSafetyTest {
 
       for (const file of filesToCheck) {
         const fullPath = path.join(__dirname, '..', file);
-        const exists = await fs.access(fullPath).then(() => true).catch(() => false);
+        const exists = await fs
+          .access(fullPath)
+          .then(() => true)
+          .catch(() => false);
         if (!exists) continue;
 
         const content = await fs.readFile(fullPath, 'utf-8');
         for (const pattern of excusePatterns) {
           if (content.toLowerCase().includes(pattern)) {
-            this.results.noRealImplementationExcuses.errors.push(`Excuse found in ${file}: ${pattern}`);
+            this.results.noRealImplementationExcuses.errors.push(
+              `Excuse found in ${file}: ${pattern}`
+            );
             console.log(`  ⚠️  Excuse found in ${file}: ${pattern}`);
           }
         }
@@ -253,13 +253,14 @@ class UserExperienceSafetyTest {
 
     try {
       // Check for syntax errors in key files
-      const filesToCheck = [
-        'package.json',
-      ];
+      const filesToCheck = ['package.json'];
 
       for (const file of filesToCheck) {
         const fullPath = path.join(__dirname, '..', file);
-        const exists = await fs.access(fullPath).then(() => true).catch(() => false);
+        const exists = await fs
+          .access(fullPath)
+          .then(() => true)
+          .catch(() => false);
         if (!exists) continue;
 
         const content = await fs.readFile(fullPath, 'utf-8');
@@ -293,7 +294,7 @@ class UserExperienceSafetyTest {
       const packageJson = JSON.parse(content);
 
       const deps = { ...packageJson.dependencies, ...packageJson.devDependencies };
-      
+
       if (Object.keys(deps).length === 0) {
         this.results.noMissingImports.errors.push('No dependencies found');
         console.log('  ⚠️  No dependencies found');
@@ -314,25 +315,24 @@ class UserExperienceSafetyTest {
     console.log('Testing: No unsafe operations...');
 
     try {
-      const unsafePatterns = [
-        'eval(',
-        'new Function(',
-        'child_process',
-        'exec(',
-        'shell_exec',
-      ];
+      const unsafePatterns = ['eval(', 'new Function(', 'child_process', 'exec(', 'shell_exec'];
 
       const filesToCheck = ['index.js', 'extension.js', 'lib/config.js'];
 
       for (const file of filesToCheck) {
         const fullPath = path.join(__dirname, '..', file);
-        const exists = await fs.access(fullPath).then(() => true).catch(() => false);
+        const exists = await fs
+          .access(fullPath)
+          .then(() => true)
+          .catch(() => false);
         if (!exists) continue;
 
         const content = await fs.readFile(fullPath, 'utf-8');
         for (const pattern of unsafePatterns) {
           if (content.includes(pattern)) {
-            this.results.noUnsafeOperations.errors.push(`Unsafe operation found in ${file}: ${pattern}`);
+            this.results.noUnsafeOperations.errors.push(
+              `Unsafe operation found in ${file}: ${pattern}`
+            );
             console.log(`  ⚠️  Unsafe operation found in ${file}: ${pattern}`);
           }
         }
@@ -390,9 +390,11 @@ class UserExperienceSafetyTest {
         { id: 3, status: 'completed' },
       ];
 
-      const completed = tasks.filter(t => t.status === 'completed').length;
+      const completed = tasks.filter((t) => t.status === 'completed').length;
       if (completed !== tasks.length) {
-        this.results.autopilotExecution.errors.push(`Only ${completed}/${tasks.length} tasks completed`);
+        this.results.autopilotExecution.errors.push(
+          `Only ${completed}/${tasks.length} tasks completed`
+        );
         console.log(`  ❌ Only ${completed}/${tasks.length} tasks completed`);
         return;
       }
@@ -443,7 +445,7 @@ class UserExperienceSafetyTest {
     try {
       // Simulate execution without spec drift
       const spec = { version: '1.0', requirements: ['req-1', 'req-2'] };
-      
+
       // Execute tasks
       for (let i = 0; i < 10; i++) {
         // Maintain spec alignment
@@ -477,7 +479,7 @@ class UserExperienceSafetyTest {
         { id: 3, status: 'completed' },
       ];
 
-      const abandoned = tasks.filter(t => t.status === 'abandoned').length;
+      const abandoned = tasks.filter((t) => t.status === 'abandoned').length;
       if (abandoned > 0) {
         this.results.autopilotNoAbandonment.errors.push(`${abandoned} tasks abandoned`);
         console.log(`  ❌ ${abandoned} tasks abandoned`);
@@ -506,9 +508,11 @@ class UserExperienceSafetyTest {
         { id: 3, status: 'completed', progress: 100 },
       ];
 
-      const halfDone = tasks.filter(t => t.progress < 100 && t.status === 'completed').length;
+      const halfDone = tasks.filter((t) => t.progress < 100 && t.status === 'completed').length;
       if (halfDone > 0) {
-        this.results.autopilotNoHalfDone.errors.push(`${halfDone} tasks marked complete but incomplete`);
+        this.results.autopilotNoHalfDone.errors.push(
+          `${halfDone} tasks marked complete but incomplete`
+        );
         console.log(`  ❌ ${halfDone} tasks marked complete but incomplete`);
         return;
       }
@@ -530,16 +534,19 @@ class UserExperienceSafetyTest {
     try {
       // Simulate memory pressure handling
       const memoryBefore = process.memoryUsage().heapUsed;
-      
+
       // Allocate some memory
       const temp = new Array(10000).fill('x');
-      
+
       const memoryAfter = process.memoryUsage().heapUsed;
       const growth = memoryAfter - memoryBefore;
 
       // Verify system handles memory pressure
-      if (growth > 100 * 1024 * 1024) { // 100MB growth
-        this.results.oomSimulation.errors.push(`Excessive memory growth: ${(growth / 1024 / 1024).toFixed(2)}MB`);
+      if (growth > 100 * 1024 * 1024) {
+        // 100MB growth
+        this.results.oomSimulation.errors.push(
+          `Excessive memory growth: ${(growth / 1024 / 1024).toFixed(2)}MB`
+        );
         console.log(`  ⚠️  Excessive memory growth: ${(growth / 1024 / 1024).toFixed(2)}MB`);
       }
 
@@ -593,7 +600,7 @@ class UserExperienceSafetyTest {
     try {
       // Simulate loading a large file
       const testFile = path.join(__dirname, '.test-giant-file.txt');
-      
+
       try {
         // Create a large file (10MB)
         const largeContent = 'x'.repeat(10 * 1024 * 1024);
@@ -633,7 +640,7 @@ class UserExperienceSafetyTest {
       }
 
       const diff = diffLines.join('\n');
-      
+
       if (diff.length === 0) {
         this.results.largeDiff.errors.push('Diff generation failed');
         console.log('  ❌ Diff generation failed');
@@ -657,7 +664,7 @@ class UserExperienceSafetyTest {
     try {
       // Simulate corrupted JSON handling
       const corruptedJSON = '{"invalid": json}';
-      
+
       try {
         JSON.parse(corruptedJSON);
         this.results.corruptedProject.errors.push('Corrupted JSON parsed successfully');
@@ -706,7 +713,7 @@ class UserExperienceSafetyTest {
   }
 
   allPassed() {
-    return Object.values(this.results).every(result => result.passed);
+    return Object.values(this.results).every((result) => result.passed);
   }
 
   printResults() {
@@ -719,9 +726,9 @@ class UserExperienceSafetyTest {
     for (const [name, result] of Object.entries(this.results)) {
       const status = result.passed ? '✅ PASS' : '❌ FAIL';
       console.log(`${status} ${name}`);
-      
+
       if (result.errors.length > 0) {
-        result.errors.forEach(error => {
+        result.errors.forEach((error) => {
           console.log(`    - ${error}`);
         });
       }
@@ -729,21 +736,24 @@ class UserExperienceSafetyTest {
 
     console.log();
     console.log('='.repeat(60));
-    
+
     if (this.allPassed()) {
       console.log('ALL TESTS PASSED ✅');
     } else {
       console.log('SOME TESTS FAILED ❌');
     }
-    
+
     console.log('='.repeat(60));
   }
 }
 
 const test = new UserExperienceSafetyTest();
-test.runAll().then(passed => {
-  process.exit(passed ? 0 : 1);
-}).catch(error => {
-  console.error('Test execution failed:', error);
-  process.exit(1);
-});
+test
+  .runAll()
+  .then((passed) => {
+    process.exit(passed ? 0 : 1);
+  })
+  .catch((error) => {
+    console.error('Test execution failed:', error);
+    process.exit(1);
+  });

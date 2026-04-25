@@ -22,7 +22,7 @@ class ARESRig {
       verbose: options.verbose || false,
       ...options,
     };
-    
+
     this.results = {
       totalTests: 0,
       passed: 0,
@@ -32,7 +32,7 @@ class ARESRig {
       startTime: Date.now(),
       endTime: null,
     };
-    
+
     this.initialize();
   }
 
@@ -41,20 +41,32 @@ class ARESRig {
     console.log('[ARES] Layer:', this.options.layer);
     console.log('[ARES] OS:', this.options.os);
     console.log('[ARES] Editor:', this.options.editor);
-    
+
     // Create directories
-    const dirs = ['config', 'simulators/editor', 'simulators/os', 'simulators/mcp', 
-                  'simulators/fs', 'simulators/provider', 'simulators/webview',
-                  'tests/mcp-loader', 'tests/tool-arbitration', 'tests/workspace',
-                  'tests/checkpoint', 'tests/e2e', 'fixtures', 'reports'];
-    
+    const dirs = [
+      'config',
+      'simulators/editor',
+      'simulators/os',
+      'simulators/mcp',
+      'simulators/fs',
+      'simulators/provider',
+      'simulators/webview',
+      'tests/mcp-loader',
+      'tests/tool-arbitration',
+      'tests/workspace',
+      'tests/checkpoint',
+      'tests/e2e',
+      'fixtures',
+      'reports',
+    ];
+
     for (const dir of dirs) {
       const dirPath = join(__dirname, dir);
       if (!existsSync(dirPath)) {
         mkdirSync(dirPath, { recursive: true });
       }
     }
-    
+
     console.log('[ARES] Directories created');
   }
 
@@ -77,7 +89,6 @@ class ARESRig {
 
       // Explicitly exit to prevent hanging
       process.exit(this.results.failed > 0 ? 1 : 0);
-
     } catch (error) {
       console.error('[ARES] Fatal error:', error);
       process.exit(1);
@@ -97,7 +108,7 @@ class ARESRig {
       'checkpoint-stress',
       'e2e-software-factory',
     ];
-    
+
     for (const layer of layers) {
       await this.runLayer(layer);
     }
@@ -142,11 +153,15 @@ class ARESRig {
       this.results.skipped += results.skipped;
 
       const duration = ((Date.now() - layerStartTime) / 1000).toFixed(2);
-      console.log(`[ARES] [${new Date().toISOString()}] Layer ${layerName} completed in ${duration}s: ${results.passed}/${results.total} passed`);
-
+      console.log(
+        `[ARES] [${new Date().toISOString()}] Layer ${layerName} completed in ${duration}s: ${results.passed}/${results.total} passed`
+      );
     } catch (error) {
       const duration = ((Date.now() - layerStartTime) / 1000).toFixed(2);
-      console.error(`[ARES] [${new Date().toISOString()}] Layer ${layerName} failed after ${duration}s:`, error.message);
+      console.error(
+        `[ARES] [${new Date().toISOString()}] Layer ${layerName} failed after ${duration}s:`,
+        error.message
+      );
       this.results.layers[layerName].error = error.message;
       this.results.layers[layerName].endTime = Date.now();
       this.results.failed++;
@@ -166,31 +181,33 @@ class ARESRig {
         passed: this.results.passed,
         failed: this.results.failed,
         skipped: this.results.skipped,
-        passRate: this.results.totalTests > 0 
-          ? ((this.results.passed / this.results.totalTests) * 100).toFixed(2) 
-          : 0,
+        passRate:
+          this.results.totalTests > 0
+            ? ((this.results.passed / this.results.totalTests) * 100).toFixed(2)
+            : 0,
       },
       layers: this.results.layers,
     };
-    
+
     const reportPath = join(__dirname, 'reports', `ares-report-${Date.now()}.json`);
     writeFileSync(reportPath, JSON.stringify(report, null, 2));
-    
+
     console.log(`[ARES] Report generated: ${reportPath}`);
-    
+
     if (this.options.report) {
       this.printDetailedReport(report);
     }
-    
+
     return report;
   }
 
   printSummary() {
     const duration = ((this.results.endTime - this.results.startTime) / 1000).toFixed(2);
-    const passRate = this.results.totalTests > 0 
-      ? ((this.results.passed / this.results.totalTests) * 100).toFixed(2) 
-      : 0;
-    
+    const passRate =
+      this.results.totalTests > 0
+        ? ((this.results.passed / this.results.totalTests) * 100).toFixed(2)
+        : 0;
+
     console.log('\n' + '='.repeat(60));
     console.log('ARES TEST RIG - SUMMARY');
     console.log('='.repeat(60));
@@ -201,7 +218,7 @@ class ARESRig {
     console.log(`Pass Rate: ${passRate}%`);
     console.log(`Duration: ${duration}s`);
     console.log('='.repeat(60));
-    
+
     if (this.results.failed > 0) {
       console.log('\n[ARES] ⚠️  Some tests failed. Review the report for details.');
       process.exit(1);
@@ -214,14 +231,14 @@ class ARESRig {
     console.log('\n' + '='.repeat(60));
     console.log('DETAILED REPORT');
     console.log('='.repeat(60));
-    
+
     for (const [layerName, layerData] of Object.entries(report.layers)) {
       console.log(`\n${layerName}:`);
       console.log(`  Tests: ${layerData.tests.length}`);
       console.log(`  Passed: ${layerData.passed}`);
       console.log(`  Failed: ${layerData.failed}`);
       console.log(`  Skipped: ${layerData.skipped}`);
-      
+
       if (layerData.tests && layerData.tests.length > 0) {
         for (const test of layerData.tests) {
           const status = test.passed ? '✅' : '❌';

@@ -1,9 +1,9 @@
 /**
  * SWEObeyMe VS Code Extension - Entry Point
- * 
+ *
  * Responsibility: Extension lifecycle management only
  * Follows SoC: Delegates all UI and business logic to extracted modules
- * 
+ *
  * @module extension
  * @version 3.0.0
  */
@@ -42,7 +42,9 @@ let diffReviewManager = null;
 // Lazy load modules to reduce startup time
 async function loadCheckpointManager(context) {
   if (!checkpointManager) {
-    const { CheckpointManager } = await import(toFileUrl(path.join(__dirname, 'lib', 'checkpoint-manager.js')));
+    const { CheckpointManager } = await import(
+      toFileUrl(path.join(__dirname, 'lib', 'checkpoint-manager.js'))
+    );
     checkpointManager = new CheckpointManager(context);
   }
   return checkpointManager;
@@ -50,7 +52,9 @@ async function loadCheckpointManager(context) {
 
 async function loadProviderManager() {
   if (!providerManager) {
-    const { ProviderManager } = await import(toFileUrl(path.join(__dirname, 'lib', 'provider-manager.js')));
+    const { ProviderManager } = await import(
+      toFileUrl(path.join(__dirname, 'lib', 'provider-manager.js'))
+    );
     providerManager = new ProviderManager();
   }
   return providerManager;
@@ -58,7 +62,9 @@ async function loadProviderManager() {
 
 async function loadDiffReviewManager() {
   if (!diffReviewManager) {
-    const { DiffReviewManager } = await import(toFileUrl(path.join(__dirname, 'lib', 'diff-review-manager.js')));
+    const { DiffReviewManager } = await import(
+      toFileUrl(path.join(__dirname, 'lib', 'diff-review-manager.js'))
+    );
     diffReviewManager = new DiffReviewManager();
   }
   return diffReviewManager;
@@ -66,7 +72,7 @@ async function loadDiffReviewManager() {
 
 /**
  * Extension activation - Entry point
- * @param {vscode.ExtensionContext} context 
+ * @param {vscode.ExtensionContext} context
  */
 async function activate(context) {
   // [REMOVED BY SWEObeyMe]: Forbidden Pattern('SWEObeyMe extension activated');
@@ -110,7 +116,11 @@ async function activate(context) {
         return;
       }
       const pick = await vscode.window.showQuickPick(
-        list.map(c => ({ label: c.name, description: new Date(c.timestamp).toLocaleString(), id: c.id })),
+        list.map((c) => ({
+          label: c.name,
+          description: new Date(c.timestamp).toLocaleString(),
+          id: c.id,
+        })),
         { placeHolder: 'Select a checkpoint' }
       );
       if (pick) vscode.window.showInformationMessage(`Checkpoint: ${pick.label} — ${pick.id}`);
@@ -118,9 +128,16 @@ async function activate(context) {
     vscode.commands.registerCommand('sweObeyMe.checkpoint.revert', async () => {
       const cpMgr = await loadCheckpointManager(context);
       const list = cpMgr.listCheckpoints();
-      if (list.length === 0) { vscode.window.showInformationMessage('No checkpoints found.'); return; }
+      if (list.length === 0) {
+        vscode.window.showInformationMessage('No checkpoints found.');
+        return;
+      }
       const pick = await vscode.window.showQuickPick(
-        list.map(c => ({ label: c.name, description: new Date(c.timestamp).toLocaleString(), id: c.id })),
+        list.map((c) => ({
+          label: c.name,
+          description: new Date(c.timestamp).toLocaleString(),
+          id: c.id,
+        })),
         { placeHolder: 'Revert to checkpoint' }
       );
       if (pick) await cpMgr.revertToCheckpoint(pick.id);
@@ -128,12 +145,22 @@ async function activate(context) {
     vscode.commands.registerCommand('sweObeyMe.checkpoint.delete', async () => {
       const cpMgr = await loadCheckpointManager(context);
       const list = cpMgr.listCheckpoints();
-      if (list.length === 0) { vscode.window.showInformationMessage('No checkpoints found.'); return; }
+      if (list.length === 0) {
+        vscode.window.showInformationMessage('No checkpoints found.');
+        return;
+      }
       const pick = await vscode.window.showQuickPick(
-        list.map(c => ({ label: c.name, description: new Date(c.timestamp).toLocaleString(), id: c.id })),
+        list.map((c) => ({
+          label: c.name,
+          description: new Date(c.timestamp).toLocaleString(),
+          id: c.id,
+        })),
         { placeHolder: 'Delete checkpoint' }
       );
-      if (pick) { cpMgr.deleteCheckpoint(pick.id); vscode.window.showInformationMessage(`Deleted: ${pick.label}`); }
+      if (pick) {
+        cpMgr.deleteCheckpoint(pick.id);
+        vscode.window.showInformationMessage(`Deleted: ${pick.label}`);
+      }
     }),
     vscode.commands.registerCommand('sweObeyMe.showMenu', () => {
       vscode.commands.executeCommand('workbench.view.extension.sweObeyMe');
@@ -177,26 +204,38 @@ async function activate(context) {
       vscode.window.showInformationMessage('[Oracle] The path is clear. The code is ready.');
     }),
     vscode.commands.registerCommand('sweObeyMe.showOnboarding', () => {
-      vscode.window.showInformationMessage('SWEObeyMe v3.0.0 — Surgical Governance Active. Use the sidebar to access Settings, C# Bridge, and Admin Dashboard.');
+      vscode.window.showInformationMessage(
+        'SWEObeyMe v3.0.0 — Surgical Governance Active. Use the sidebar to access Settings, C# Bridge, and Admin Dashboard.'
+      );
     }),
     vscode.commands.registerCommand('sweObeyMe.patreonAudit', () => {
       vscode.commands.executeCommand('workbench.action.openSettings', 'sweObeyMe');
-    }),
+    })
   );
 
   // Wire up C# and C++ Monaco diagnostics
   try {
-    const { setupLanguageBridges } = await import(toFileUrl(path.join(__dirname, 'lib', 'language-bridge-manager.js')));
+    const { setupLanguageBridges } = await import(
+      toFileUrl(path.join(__dirname, 'lib', 'language-bridge-manager.js'))
+    );
     setupLanguageBridges(context, __dirname);
   } catch (err) {
     console.error('[SWEObeyMe] Language bridges failed to load:', err);
   }
 
   // Register webview providers
-  const { makeWebviewProvider } = await import(toFileUrl(path.join(__dirname, 'lib', 'ui', 'providers', 'webview-provider-factory.js')));
-  const { getSettingsHtml } = await import(toFileUrl(path.join(__dirname, 'lib', 'ui', 'generators', 'settings-html.js')));
-  const { getCSharpBridgeHtml } = await import(toFileUrl(path.join(__dirname, 'lib', 'ui', 'generators', 'csharp-bridge-html.js')));
-  const { getAdminDashboardHtml } = await import(toFileUrl(path.join(__dirname, 'lib', 'ui', 'generators', 'admin-dashboard-html.js')));
+  const { makeWebviewProvider } = await import(
+    toFileUrl(path.join(__dirname, 'lib', 'ui', 'providers', 'webview-provider-factory.js'))
+  );
+  const { getSettingsHtml } = await import(
+    toFileUrl(path.join(__dirname, 'lib', 'ui', 'generators', 'settings-html.js'))
+  );
+  const { getCSharpBridgeHtml } = await import(
+    toFileUrl(path.join(__dirname, 'lib', 'ui', 'generators', 'csharp-bridge-html.js'))
+  );
+  const { getAdminDashboardHtml } = await import(
+    toFileUrl(path.join(__dirname, 'lib', 'ui', 'generators', 'admin-dashboard-html.js'))
+  );
 
   // Settings panel provider
   const settingsProvider = makeWebviewProvider(getSettingsHtml);
@@ -226,12 +265,12 @@ async function activate(context) {
  */
 function deactivate() {
   // [REMOVED BY SWEObeyMe]: Forbidden Pattern('SWEObeyMe extension deactivated');
-  
+
   // Clean up managers
   if (checkpointManager?.dispose) checkpointManager.dispose();
   if (providerManager?.dispose) providerManager.dispose();
   if (diffReviewManager?.dispose) diffReviewManager.dispose();
-  
+
   checkpointManager = null;
   providerManager = null;
   diffReviewManager = null;

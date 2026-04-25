@@ -4,7 +4,7 @@ import { toolHandlers, getToolDefinitions } from '../lib/tools.js';
 
 console.log('=== Testing C# Bridge Tool Registration ===\n');
 
-const toolNames = getToolDefinitions().map(t => t.name);
+const toolNames = getToolDefinitions().map((t) => t.name);
 const csharpTools = [
   'get_csharp_errors',
   'get_csharp_errors_for_file',
@@ -16,14 +16,23 @@ const csharpTools = [
 console.log('Total tools registered:', toolNames.length);
 console.log('\nChecking C# Bridge tools:');
 
-csharpTools.forEach(toolName => {
+csharpTools.forEach((toolName) => {
   const isRegistered = toolNames.includes(toolName);
   const hasHandler = !!toolHandlers[toolName];
-  console.log(`  ${toolName}: ${isRegistered ? '✓ Registered' : '✗ Missing'} | ${hasHandler ? '✓ Handler' : '✗ No handler'}`);
+  console.log(
+    `  ${toolName}: ${isRegistered ? '✓ Registered' : '✗ Missing'} | ${hasHandler ? '✓ Handler' : '✗ No handler'}`
+  );
 });
 
 console.log('\n=== Test Complete ===');
-console.log('\nAll tools registered:', csharpTools.every(t => toolNames.includes(t)) ? 'YES' : 'NO');
-console.log('All handlers present:', csharpTools.every(t => toolHandlers[t]) ? 'YES' : 'NO');
+console.log(
+  '\nAll tools registered:',
+  csharpTools.every((t) => toolNames.includes(t)) ? 'YES' : 'NO'
+);
+console.log('All handlers present:', csharpTools.every((t) => toolHandlers[t]) ? 'YES' : 'NO');
 
-process.exit(csharpTools.every(t => toolNames.includes(t)) && csharpTools.every(t => toolHandlers[t]) ? 0 : 1);
+process.exit(
+  csharpTools.every((t) => toolNames.includes(t)) && csharpTools.every((t) => toolHandlers[t])
+    ? 0
+    : 1
+);

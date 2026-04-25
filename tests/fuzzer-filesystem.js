@@ -2,7 +2,7 @@
 
 /**
  * Filesystem Fuzzer
- * 
+ *
  * Fuzzes filesystem operations: lock files, delete mid-op, flip permissions, weird paths
  */
 
@@ -52,7 +52,12 @@ export class FilesystemFuzzer {
       '/dev/null',
       '/proc/self/environ',
       '\\\\?\\C:\\Windows\\System32',
-      'CON', 'PRN', 'AUX', 'NUL', 'COM1', 'LPT1', // Reserved names on Windows
+      'CON',
+      'PRN',
+      'AUX',
+      'NUL',
+      'COM1',
+      'LPT1', // Reserved names on Windows
       'file:etc/passwd',
       'http://evil.com/malicious',
       'data:text/plain,evil',
@@ -138,7 +143,7 @@ export class FilesystemFuzzer {
       // On Windows, this is more limited
       const modes = [0o000, 0o444, 0o666, 0o777, 0o000];
       const mode = modes[Math.floor(Math.random() * modes.length)];
-      
+
       // Try to change mode (will fail on Windows for some modes)
       await fs.chmod(filePath, mode);
       return mode;
@@ -154,14 +159,14 @@ export class FilesystemFuzzer {
     try {
       const original = await fs.readFile(filePath);
       const corrupted = Buffer.from(original);
-      
+
       // Corrupt random bytes
       const numCorruptions = Math.floor(corrupted.length * 0.1);
       for (let i = 0; i < numCorruptions; i++) {
         const pos = Math.floor(Math.random() * corrupted.length);
         corrupted[pos] = Math.floor(Math.random() * 256);
       }
-      
+
       await fs.writeFile(filePath, corrupted);
       return true;
     } catch (e) {
@@ -174,15 +179,15 @@ export class FilesystemFuzzer {
    */
   async createWeirdDirectory(dirPath) {
     const fullPath = path.join(this.testDir, dirPath);
-    
+
     try {
       await fs.mkdir(fullPath, { recursive: true });
-      
+
       // Try weird permissions
       const modes = [0o000, 0o111, 0o444, 0o777];
       const mode = modes[Math.floor(Math.random() * modes.length)];
       await fs.chmod(fullPath, mode);
-      
+
       return fullPath;
     } catch (e) {
       return null;
@@ -235,11 +240,12 @@ export class FilesystemFuzzer {
    */
   async simulateRaceCondition(filePath) {
     const promises = [];
-    
+
     // Multiple operations on the same file
     for (let i = 0; i < 10; i++) {
       promises.push(
-        fs.writeFile(filePath, randomBytes(1024))
+        fs
+          .writeFile(filePath, randomBytes(1024))
           .then(() => fs.readFile(filePath))
           .then(() => fs.unlink(filePath))
           .catch(() => {})
@@ -262,7 +268,7 @@ export class FilesystemFuzzer {
       () => this.corruptionTest(),
       () => this.symlinkTest(),
       () => this.raceConditionTest(),
-      () => this.diskFullTest()
+      () => this.diskFullTest(),
     ];
 
     const scenario = scenarios[Math.floor(Math.random() * scenarios.length)];
@@ -281,7 +287,7 @@ export class FilesystemFuzzer {
       type: 'lock_file',
       success: lockPath !== null,
       filePath,
-      lockPath
+      lockPath,
     };
   }
 
@@ -296,7 +302,7 @@ export class FilesystemFuzzer {
     return {
       type: 'delete_mid_op',
       success: true,
-      filePath
+      filePath,
     };
   }
 
@@ -312,7 +318,7 @@ export class FilesystemFuzzer {
       type: 'permissions',
       success: mode !== null,
       filePath,
-      mode
+      mode,
     };
   }
 
@@ -321,20 +327,20 @@ export class FilesystemFuzzer {
    */
   async weirdPathTest() {
     const weirdPath = this.generateWeirdPath();
-    
+
     try {
       await fs.mkdir(path.join(this.testDir, weirdPath), { recursive: true });
       return {
         type: 'weird_path',
         success: true,
-        path: weirdPath
+        path: weirdPath,
       };
     } catch (e) {
       return {
         type: 'weird_path',
         success: false,
         path: weirdPath,
-        error: e.code
+        error: e.code,
       };
     }
   }
@@ -350,7 +356,7 @@ export class FilesystemFuzzer {
     return {
       type: 'corruption',
       success: corrupted,
-      filePath
+      filePath,
     };
   }
 
@@ -360,7 +366,7 @@ export class FilesystemFuzzer {
   async symlinkTest() {
     const target = await this.createTestFile('symlink-test/target.txt');
     const linkPath = path.join(this.testDir, 'symlink-test/link.txt');
-    
+
     if (!target) return { type: 'symlink', success: false };
 
     const created = await this.createSymlink(target, linkPath);
@@ -368,7 +374,7 @@ export class FilesystemFuzzer {
       type: 'symlink',
       success: created,
       target,
-      linkPath
+      linkPath,
     };
   }
 
@@ -383,7 +389,7 @@ export class FilesystemFuzzer {
     return {
       type: 'race_condition',
       success: true,
-      filePath
+      filePath,
     };
   }
 
@@ -396,7 +402,7 @@ export class FilesystemFuzzer {
     return {
       type: 'disk_full',
       success: simulated,
-      filePath
+      filePath,
     };
   }
 
@@ -405,7 +411,7 @@ export class FilesystemFuzzer {
    */
   async runFuzzBatch(count = 50) {
     await this.init();
-    
+
     const results = [];
     for (let i = 0; i < count; i++) {
       const result = await this.generateChaosScenario();

@@ -20,13 +20,13 @@ class ToolSchemaValidation {
       skipped: 0,
       total: 0,
     };
-    
+
     this.indexPath = join(dirname(__dirname), '..', 'index.js');
   }
 
   async run() {
     console.log('[ToolSchema] Starting tool schema validation...');
-    
+
     const tests = [
       'missing-inputSchema',
       'missing-required-fields',
@@ -38,21 +38,21 @@ class ToolSchemaValidation {
       'descriptions',
       'fallback-behavior',
     ];
-    
+
     for (const test of tests) {
       await this.runTest(test);
     }
-    
+
     this.results.total = this.results.tests.length;
     return this.results;
   }
 
   async runTest(testName) {
     console.log(`[ToolSchema] Running: ${testName}...`);
-    
+
     let passed = false;
     let error = null;
-    
+
     try {
       switch (testName) {
         case 'missing-inputSchema':
@@ -86,14 +86,14 @@ class ToolSchemaValidation {
     } catch (e) {
       error = e.message;
     }
-    
+
     this.results.tests.push({
       id: testName,
       name: `Tool Schema - ${testName}`,
       passed,
       error,
     });
-    
+
     if (passed) {
       this.results.passed++;
       console.log(`[ToolSchema] ✅ ${testName}`);
@@ -110,7 +110,7 @@ class ToolSchemaValidation {
       description: 'Test tool',
       // Missing inputSchema
     };
-    
+
     const validation = this.validateTool(invalidTool);
     return validation.valid === false && validation.reason === 'missing-inputSchema';
   }
@@ -125,9 +125,12 @@ class ToolSchemaValidation {
         properties: {},
       },
     };
-    
+
     const validation = this.validateTool(invalidTool);
-    return validation.valid === false && validation.errors.some(e => e.includes('missing-required-field'));
+    return (
+      validation.valid === false &&
+      validation.errors.some((e) => e.includes('missing-required-field'))
+    );
   }
 
   async testInvalidJSONSchema() {
@@ -140,9 +143,11 @@ class ToolSchemaValidation {
         properties: {},
       },
     };
-    
+
     const validation = this.validateTool(invalidTool);
-    return validation.valid === false && validation.errors.some(e => e.includes('invalid-json-schema'));
+    return (
+      validation.valid === false && validation.errors.some((e) => e.includes('invalid-json-schema'))
+    );
   }
 
   async testUnknownSchemaKeywords() {
@@ -156,9 +161,12 @@ class ToolSchemaValidation {
         properties: {},
       },
     };
-    
+
     const validation = this.validateTool(invalidTool);
-    return validation.valid === false && validation.errors.some(e => e.includes('unknown-schema-keyword'));
+    return (
+      validation.valid === false &&
+      validation.errors.some((e) => e.includes('unknown-schema-keyword'))
+    );
   }
 
   async testCircularReferences() {
@@ -174,7 +182,7 @@ class ToolSchemaValidation {
         },
       },
     };
-    
+
     const hasCircularRef = this.detectCircularReference(schemaWithCircularRef);
     return hasCircularRef === true;
   }
@@ -182,7 +190,7 @@ class ToolSchemaValidation {
   async testEmptyToolArrays() {
     // Test that empty tool arrays are rejected
     const emptyTools = [];
-    
+
     const validation = this.validateToolsArray(emptyTools);
     return validation.valid === false && validation.reason === 'empty-tool-array';
   }
@@ -201,9 +209,11 @@ class ToolSchemaValidation {
         },
       },
     };
-    
+
     const validation = this.validateTool(toolWithInvalidType);
-    return validation.valid === false && validation.errors.some(e => e.includes('invalid-json-schema'));
+    return (
+      validation.valid === false && validation.errors.some((e) => e.includes('invalid-json-schema'))
+    );
   }
 
   async testDescriptions() {
@@ -216,9 +226,11 @@ class ToolSchemaValidation {
         properties: {},
       },
     };
-    
+
     const validation = this.validateTool(toolWithoutDescription);
-    return validation.valid === false && Array.isArray(validation.errors) && validation.errors.length > 0;
+    return (
+      validation.valid === false && Array.isArray(validation.errors) && validation.errors.length > 0
+    );
   }
 
   async testFallbackBehavior() {
@@ -227,7 +239,7 @@ class ToolSchemaValidation {
       name: 'test-tool',
       // Missing required fields
     };
-    
+
     const validation = this.validateTool(invalidTool);
     return validation.fallbackUsed === true;
   }
@@ -235,7 +247,7 @@ class ToolSchemaValidation {
   // Helper methods
   validateTool(tool) {
     const errors = [];
-    
+
     // Check required fields
     if (!tool.name) {
       errors.push('missing-required-field: name');
@@ -249,7 +261,7 @@ class ToolSchemaValidation {
     if (tool.description && tool.description.trim() === '') {
       errors.push('empty-description');
     }
-    
+
     // Validate inputSchema
     if (tool.inputSchema) {
       const schemaValidation = this.validateJSONSchema(tool.inputSchema);
@@ -257,11 +269,11 @@ class ToolSchemaValidation {
         errors.push(...schemaValidation.errors);
       }
     }
-    
+
     if (errors.length > 0) {
       return { valid: false, errors, reason: errors[0], fallbackUsed: true };
     }
-    
+
     return { valid: true };
   }
 
@@ -269,14 +281,14 @@ class ToolSchemaValidation {
     if (!Array.isArray(tools) || tools.length === 0) {
       return { valid: false, reason: 'empty-tool-array' };
     }
-    
+
     for (const tool of tools) {
       const validation = this.validateTool(tool);
       if (!validation.valid) {
         return validation;
       }
     }
-    
+
     return { valid: true };
   }
 
@@ -284,28 +296,46 @@ class ToolSchemaValidation {
     const errors = [];
     const validTypes = ['object', 'array', 'string', 'number', 'integer', 'boolean', 'null'];
     const validKeywords = [
-      'type', 'properties', 'required', 'additionalProperties',
-      'items', 'minItems', 'maxItems',
-      'minimum', 'maximum', 'exclusiveMinimum', 'exclusiveMaximum',
-      'minLength', 'maxLength', 'pattern',
-      'enum', 'const',
-      '$ref', '$schema', 'id',
-      'allOf', 'anyOf', 'oneOf', 'not',
-      'description', 'title', 'default',
+      'type',
+      'properties',
+      'required',
+      'additionalProperties',
+      'items',
+      'minItems',
+      'maxItems',
+      'minimum',
+      'maximum',
+      'exclusiveMinimum',
+      'exclusiveMaximum',
+      'minLength',
+      'maxLength',
+      'pattern',
+      'enum',
+      'const',
+      '$ref',
+      '$schema',
+      'id',
+      'allOf',
+      'anyOf',
+      'oneOf',
+      'not',
+      'description',
+      'title',
+      'default',
     ];
-    
+
     // Validate type
     if (schema.type && !validTypes.includes(schema.type)) {
       errors.push('invalid-json-schema: invalid type');
     }
-    
+
     // Check for unknown keywords
     for (const key of Object.keys(schema)) {
       if (!validKeywords.includes(key)) {
         errors.push(`unknown-schema-keyword: ${key}`);
       }
     }
-    
+
     // Validate properties if object
     if (schema.type === 'object' && schema.properties) {
       for (const [propName, propSchema] of Object.entries(schema.properties)) {
@@ -315,7 +345,7 @@ class ToolSchemaValidation {
         }
       }
     }
-    
+
     // Validate items if array
     if (schema.type === 'array' && schema.items) {
       const itemsValidation = this.validateJSONSchema(schema.items);
@@ -323,11 +353,11 @@ class ToolSchemaValidation {
         errors.push(...itemsValidation.errors);
       }
     }
-    
+
     if (errors.length > 0) {
       return { valid: false, errors };
     }
-    
+
     return { valid: true };
   }
 
@@ -335,13 +365,13 @@ class ToolSchemaValidation {
     if (typeof schema !== 'object' || schema === null) {
       return false;
     }
-    
+
     if (visited.has(path)) {
       return true;
     }
-    
+
     visited.add(path);
-    
+
     for (const [key, value] of Object.entries(schema)) {
       if (key === '$ref') {
         const refPath = value;
@@ -354,7 +384,7 @@ class ToolSchemaValidation {
         }
       }
     }
-    
+
     return false;
   }
 }

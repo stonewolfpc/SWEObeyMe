@@ -5,6 +5,7 @@ The ARES (Advanced Rig for Enterprise Simulation) Test Rig is a complete, editor
 ## Purpose
 
 This rig provides deterministic confidence (99.9%) that SWEObeyMe will work on every machine by simulating:
+
 - Every failure mode
 - Every OS
 - Every config
@@ -47,7 +48,7 @@ node ares-rig.js --report
 
 ## Structure
 
-```
+```text
 ares-rig/
 ├── ares-rig.js              # Main test runner
 ├── config/                  # Test configurations
@@ -72,6 +73,7 @@ ares-rig/
 ## Results
 
 Building this rig provides:
+
 - Deterministic confidence
 - Cross-platform reliability
 - Editor-agnostic behavior

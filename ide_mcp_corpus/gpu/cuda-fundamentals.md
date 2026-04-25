@@ -70,8 +70,8 @@ kernel<<<grid, block>>>(args);
 
 - **Pascal+**: More flexible thread scheduling
 - **Not lockstep**: Threads can execute independently
-- **Better divergence handling
-- **Still 32-thread warps for efficiency
+- \*\*Better divergence handling
+- \*\*Still 32-thread warps for efficiency
 
 ## Shared Memory
 
@@ -125,7 +125,7 @@ __shared__ float data[33];  // Pad to avoid conflicts
 
 ### Tensor Core Operations
 
-- **Matrix Multiply-Accumulate**: D = A * B + C
+- **Matrix Multiply-Accumulate**: D = A \* B + C
 - **Dimensions**: Typically 16x16 or smaller
 - **Mixed Precision**: Input A/B in FP16/BF16/INT8, accumulator in FP32
 - **Warp-Level**: All 32 threads in warp cooperate
@@ -277,6 +277,7 @@ Occupancy = min(64, 24) / 64 = 37.5%
 ### Tiling
 
 Break large computation into tiles that fit in shared memory:
+
 - Load tile from global to shared
 - Compute on tile
 - Store result back to global
@@ -284,6 +285,7 @@ Break large computation into tiles that fit in shared memory:
 ### Reduction
 
 Parallel reduction using shared memory:
+
 - Load data to shared memory
 - Parallel reduce in shared memory
 - Write result to global memory
@@ -291,6 +293,7 @@ Parallel reduction using shared memory:
 ### Prefix Sum
 
 Parallel scan using shared memory:
+
 - Blelloch scan or Hillis-Steele scan
 - Use shared memory for intermediate results
 - Multiple passes for large arrays

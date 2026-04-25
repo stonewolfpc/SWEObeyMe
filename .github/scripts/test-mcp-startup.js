@@ -43,7 +43,7 @@ const pkgPath = path.join(extensionDir, 'dist/mcp/package.json');
 if (!fs.existsSync(pkgPath)) {
   console.error('❌ CRITICAL: package.json missing from dist/mcp/');
   console.error('   This causes "transport error" in WindSurf!');
-  console.error('   The server.js tries to read its own package.json but can\'t find it.');
+  console.error("   The server.js tries to read its own package.json but can't find it.");
   console.error('   Fix: Add "cp package.json dist/mcp/" to build script');
   process.exit(1);
 }
@@ -71,13 +71,13 @@ const cleanEnv = {
   ...process.env,
   PATH: '', // Simulate missing PATH - server must handle this
   NODE_ENV: 'test',
-  SWEOBEYME_TEST: 'true'
+  SWEOBEYME_TEST: 'true',
 };
 
 const server = spawn(nodePath, [serverPath], {
   stdio: ['pipe', 'pipe', 'pipe'],
   env: cleanEnv,
-  cwd: extensionDir
+  cwd: extensionDir,
 });
 
 let stdout = '';
@@ -86,12 +86,14 @@ let started = false;
 
 server.stdout.on('data', (data) => {
   stdout += data.toString();
-  
+
   // Check for successful start indicators
-  if (stdout.includes('MCP Server') || 
-      stdout.includes('Server') || 
-      stdout.includes('started') ||
-      stdout.includes('listening')) {
+  if (
+    stdout.includes('MCP Server') ||
+    stdout.includes('Server') ||
+    stdout.includes('started') ||
+    stdout.includes('listening')
+  ) {
     started = true;
   }
 });
@@ -111,7 +113,7 @@ setTimeout(() => {
     cleanup();
     process.exit(1);
   }
-  
+
   if (stderr.includes('Cannot find module') || stderr.includes('MODULE_NOT_FOUND')) {
     console.error('❌ Server failed: Missing dependency');
     console.error(`   STDERR: ${stderr.slice(0, 500)}`);
@@ -119,7 +121,7 @@ setTimeout(() => {
     cleanup();
     process.exit(1);
   }
-  
+
   if (stderr.includes('EACCES') || stderr.includes('permission')) {
     console.error('❌ Server failed: Permission denied');
     console.error(`   STDERR: ${stderr.slice(0, 500)}`);
@@ -127,15 +129,15 @@ setTimeout(() => {
     cleanup();
     process.exit(1);
   }
-  
+
   // Check if process is still running
   try {
     process.kill(server.pid, 0);
-    
+
     if (started || stderr === '') {
       console.log('✅ Server started successfully and is running\n');
       server.kill();
-      
+
       console.log('='.repeat(50));
       console.log('✅ ALL STARTUP TESTS PASSED');
       console.log('   Server starts correctly');

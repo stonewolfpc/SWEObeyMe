@@ -53,7 +53,7 @@ class ConcurrencyTest {
       }
 
       const results = await Promise.allSettled(promises);
-      const failures = results.filter(r => r.status === 'rejected');
+      const failures = results.filter((r) => r.status === 'rejected');
 
       if (failures.length > 0) {
         this.results.parallelToolCalls.errors.push(`${failures.length} tool calls failed`);
@@ -74,7 +74,7 @@ class ConcurrencyTest {
    */
   async simulateToolCall(id) {
     // Simulate async operation
-    await new Promise(resolve => setTimeout(resolve, Math.random() * 100));
+    await new Promise((resolve) => setTimeout(resolve, Math.random() * 100));
     return { success: true, id };
   }
 
@@ -91,7 +91,7 @@ class ConcurrencyTest {
       }
 
       const results = await Promise.allSettled(promises);
-      const failures = results.filter(r => r.status === 'rejected');
+      const failures = results.filter((r) => r.status === 'rejected');
 
       if (failures.length > 0) {
         this.results.parallelAgentLogs.errors.push(`${failures.length} agent logs failed`);
@@ -112,7 +112,7 @@ class ConcurrencyTest {
    */
   async simulateAgentLog(id) {
     // Simulate async operation
-    await new Promise(resolve => setTimeout(resolve, Math.random() * 50));
+    await new Promise((resolve) => setTimeout(resolve, Math.random() * 50));
     return { success: true, id };
   }
 
@@ -129,7 +129,7 @@ class ConcurrencyTest {
       }
 
       const results = await Promise.allSettled(promises);
-      const failures = results.filter(r => r.status === 'rejected');
+      const failures = results.filter((r) => r.status === 'rejected');
 
       if (failures.length > 0) {
         this.results.parallelSpecChecks.errors.push(`${failures.length} spec checks failed`);
@@ -150,7 +150,7 @@ class ConcurrencyTest {
    */
   async simulateSpecCheck(id) {
     // Simulate async operation
-    await new Promise(resolve => setTimeout(resolve, Math.random() * 30));
+    await new Promise((resolve) => setTimeout(resolve, Math.random() * 30));
     return { success: true, id };
   }
 
@@ -170,7 +170,7 @@ class ConcurrencyTest {
         promises.push(
           (async () => {
             const old = counter;
-            await new Promise(resolve => setTimeout(resolve, Math.random() * 10));
+            await new Promise((resolve) => setTimeout(resolve, Math.random() * 10));
             counter = old + 1;
           })()
         );
@@ -181,7 +181,9 @@ class ConcurrencyTest {
       // Without proper locking, counter will be less than 100
       // This test is illustrative - actual implementation would use proper locking
       this.results.raceConditions.passed = true;
-      console.log('  ✅ Race conditions test passed (note: proper locking required in implementation)');
+      console.log(
+        '  ✅ Race conditions test passed (note: proper locking required in implementation)'
+      );
     } catch (error) {
       this.results.raceConditions.errors.push(error.message);
       console.log(`  ❌ Race conditions test failed: ${error.message}`);
@@ -196,7 +198,7 @@ class ConcurrencyTest {
 
     try {
       // Simulate potential deadlock scenario
-      const timeout = new Promise((_, reject) => 
+      const timeout = new Promise((_, reject) =>
         setTimeout(() => reject(new Error('Deadlock detected')), 5000)
       );
 
@@ -221,7 +223,7 @@ class ConcurrencyTest {
    */
   async simulateDeadlockProneOperation() {
     // Simulate normal operation
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await new Promise((resolve) => setTimeout(resolve, 100));
     return { success: true };
   }
 
@@ -233,15 +235,15 @@ class ConcurrencyTest {
 
     try {
       const testFile = path.join(__dirname, '.test-partial-write.txt');
-      
+
       try {
         // Write data
         const data = 'x'.repeat(10000);
         await fs.writeFile(testFile, data);
-        
+
         // Read back
         const readData = await fs.readFile(testFile, 'utf-8');
-        
+
         if (readData !== data) {
           this.results.partialWrites.errors.push('Partial write detected');
           console.log('  ❌ Partial write detected');
@@ -261,7 +263,7 @@ class ConcurrencyTest {
   }
 
   allPassed() {
-    return Object.values(this.results).every(result => result.passed);
+    return Object.values(this.results).every((result) => result.passed);
   }
 
   printResults() {
@@ -274,9 +276,9 @@ class ConcurrencyTest {
     for (const [name, result] of Object.entries(this.results)) {
       const status = result.passed ? '✅ PASS' : '❌ FAIL';
       console.log(`${status} ${name}`);
-      
+
       if (result.errors.length > 0) {
-        result.errors.forEach(error => {
+        result.errors.forEach((error) => {
           console.log(`    - ${error}`);
         });
       }
@@ -284,21 +286,24 @@ class ConcurrencyTest {
 
     console.log();
     console.log('='.repeat(60));
-    
+
     if (this.allPassed()) {
       console.log('ALL TESTS PASSED ✅');
     } else {
       console.log('SOME TESTS FAILED ❌');
     }
-    
+
     console.log('='.repeat(60));
   }
 }
 
 const test = new ConcurrencyTest();
-test.runAll().then(passed => {
-  process.exit(passed ? 0 : 1);
-}).catch(error => {
-  console.error('Test execution failed:', error);
-  process.exit(1);
-});
+test
+  .runAll()
+  .then((passed) => {
+    process.exit(passed ? 0 : 1);
+  })
+  .catch((error) => {
+    console.error('Test execution failed:', error);
+    process.exit(1);
+  });

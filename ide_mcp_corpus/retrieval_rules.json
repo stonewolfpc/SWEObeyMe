@@ -3,7 +3,16 @@
     "mcpServers": {
       "priority": "HIGH",
       "categories": ["mcp_spec", "windsurf"],
-      "keywords": ["MCP", "Model Context Protocol", "server", "transport", "stdio", "HTTP", "tools", "resources"]
+      "keywords": [
+        "MCP",
+        "Model Context Protocol",
+        "server",
+        "transport",
+        "stdio",
+        "HTTP",
+        "tools",
+        "resources"
+      ]
     },
     "windsurfNext": {
       "priority": "HIGH",
@@ -28,122 +37,363 @@
     "codebase": {
       "priority": "HIGH",
       "categories": ["codebase"],
-      "keywords": ["codebase", "architecture", "module", "dependency", "entry point", "structure", "orientation"]
+      "keywords": [
+        "codebase",
+        "architecture",
+        "module",
+        "dependency",
+        "entry point",
+        "structure",
+        "orientation"
+      ]
     },
     "quantization": {
       "priority": "HIGH",
       "categories": ["quantization"],
-      "keywords": ["GGUF", "GGML", "quantization", "Q4", "Q5", "Q6", "IQ", "tensor", "block layout", "metadata", "quantize tool"]
+      "keywords": [
+        "GGUF",
+        "GGML",
+        "quantization",
+        "Q4",
+        "Q5",
+        "Q6",
+        "IQ",
+        "tensor",
+        "block layout",
+        "metadata",
+        "quantize tool"
+      ]
     },
     "optimization": {
       "priority": "HIGH",
       "categories": ["optimization"],
-      "keywords": ["Flash Attention", "xFormers", "attention", "KV cache", "memory management", "SIMD", "AVX", "AVX512", "profiling", "VTune", "perf", "Nsight"]
+      "keywords": [
+        "Flash Attention",
+        "xFormers",
+        "attention",
+        "KV cache",
+        "memory management",
+        "SIMD",
+        "AVX",
+        "AVX512",
+        "profiling",
+        "VTune",
+        "perf",
+        "Nsight"
+      ]
     },
     "llm": {
       "priority": "HIGH",
       "categories": ["llm"],
-      "keywords": ["tool calling", "function calling", "Mistral", "Qwen", "Phi", "architecture", "error taxonomy", "quantization errors", "loader errors", "CUDA errors"]
+      "keywords": [
+        "tool calling",
+        "function calling",
+        "Mistral",
+        "Qwen",
+        "Phi",
+        "architecture",
+        "error taxonomy",
+        "quantization errors",
+        "loader errors",
+        "CUDA errors"
+      ]
     },
     "hardware": {
       "priority": "HIGH",
       "categories": ["hardware"],
-      "keywords": ["Intel", "AMD", "NVIDIA", "NVMe", "memory latency", "memory bandwidth", "cache", "MLC", "VTune", "uProf", "Nsight"]
+      "keywords": [
+        "Intel",
+        "AMD",
+        "NVIDIA",
+        "NVMe",
+        "memory latency",
+        "memory bandwidth",
+        "cache",
+        "MLC",
+        "VTune",
+        "uProf",
+        "Nsight"
+      ]
     },
     "agentic": {
       "priority": "HIGH",
       "categories": ["agentic"],
-      "keywords": ["ReAct", "Reflexion", "Tree of Thought", "Graph of Thought", "AutoGen", "SWE-bench", "Toolformer", "agent", "planning", "self-correction", "tool orchestration"]
+      "keywords": [
+        "ReAct",
+        "Reflexion",
+        "Tree of Thought",
+        "Graph of Thought",
+        "AutoGen",
+        "SWE-bench",
+        "Toolformer",
+        "agent",
+        "planning",
+        "self-correction",
+        "tool orchestration"
+      ]
     },
     "compiler": {
       "priority": "HIGH",
       "categories": ["compiler"],
-      "keywords": ["LLVM", "CPU pipeline", "branch prediction", "instruction scheduling", "register allocation", "cache-aware", "tiling", "vectorization", "SIMD", "optimization"]
+      "keywords": [
+        "LLVM",
+        "CPU pipeline",
+        "branch prediction",
+        "instruction scheduling",
+        "register allocation",
+        "cache-aware",
+        "tiling",
+        "vectorization",
+        "SIMD",
+        "optimization"
+      ]
     },
     "parallel": {
       "priority": "MEDIUM",
       "categories": ["parallel"],
-      "keywords": ["thread pool", "work-stealing", "lock-free queue", "NUMA", "async runtime", "fiber scheduler", "batching", "concurrency", "parallelism"]
+      "keywords": [
+        "thread pool",
+        "work-stealing",
+        "lock-free queue",
+        "NUMA",
+        "async runtime",
+        "fiber scheduler",
+        "batching",
+        "concurrency",
+        "parallelism"
+      ]
     },
     "gpu": {
       "priority": "HIGH",
       "categories": ["gpu"],
-      "keywords": ["CUDA", "warp scheduling", "shared memory", "tensor cores", "memory coalescing", "occupancy", "GPU kernel", "CUDA programming"]
+      "keywords": [
+        "CUDA",
+        "warp scheduling",
+        "shared memory",
+        "tensor cores",
+        "memory coalescing",
+        "occupancy",
+        "GPU kernel",
+        "CUDA programming"
+      ]
     },
     "security": {
       "priority": "MEDIUM",
       "categories": ["security"],
-      "keywords": ["capability-based security", "sandboxing", "syscall filtering", "seccomp", "Landlock", "resource limits", "safe execution"]
+      "keywords": [
+        "capability-based security",
+        "sandboxing",
+        "syscall filtering",
+        "seccomp",
+        "Landlock",
+        "resource limits",
+        "safe execution"
+      ]
     },
     "hci": {
       "priority": "MEDIUM",
       "categories": ["hci"],
-      "keywords": ["cognitive load", "UI affordances", "error recovery", "progressive disclosure", "IDE UX", "debugging workflow"]
+      "keywords": [
+        "cognitive load",
+        "UI affordances",
+        "error recovery",
+        "progressive disclosure",
+        "IDE UX",
+        "debugging workflow"
+      ]
     },
     "architecture": {
       "priority": "MEDIUM",
       "categories": ["architecture"],
-      "keywords": ["hexagonal architecture", "event-driven", "domain-driven design", "DDD", "state machine", "plugin", "dependency inversion", "software architecture"]
+      "keywords": [
+        "hexagonal architecture",
+        "event-driven",
+        "domain-driven design",
+        "DDD",
+        "state machine",
+        "plugin",
+        "dependency inversion",
+        "software architecture"
+      ]
     },
     "testing": {
       "priority": "MEDIUM",
       "categories": ["testing"],
-      "keywords": ["property-based testing", "invariant testing", "metamorphic testing", "concurrency testing", "symbolic execution", "formal verification", "fuzzing"]
+      "keywords": [
+        "property-based testing",
+        "invariant testing",
+        "metamorphic testing",
+        "concurrency testing",
+        "symbolic execution",
+        "formal verification",
+        "fuzzing"
+      ]
     },
     "compression": {
       "priority": "MEDIUM",
       "categories": ["compression"],
-      "keywords": ["entropy coding", "Huffman", "arithmetic coding", "vector quantization", "product quantization", "sparse", "memory-mapped", "compression theory"]
+      "keywords": [
+        "entropy coding",
+        "Huffman",
+        "arithmetic coding",
+        "vector quantization",
+        "product quantization",
+        "sparse",
+        "memory-mapped",
+        "compression theory"
+      ]
     },
     "refactoring": {
       "priority": "HIGH",
       "categories": ["refactoring"],
-      "keywords": ["refactoring", "code smells", "anti-patterns", "SOLID", "Martin Fowler", "testability", "code quality"]
+      "keywords": [
+        "refactoring",
+        "code smells",
+        "anti-patterns",
+        "SOLID",
+        "Martin Fowler",
+        "testability",
+        "code quality"
+      ]
     },
     "devops": {
       "priority": "HIGH",
       "categories": ["devops"],
-      "keywords": ["CI/CD", "GitHub Actions", "deployment", "canary", "blue-green", "infrastructure as code", "Terraform", "Docker", "Kubernetes"]
+      "keywords": [
+        "CI/CD",
+        "GitHub Actions",
+        "deployment",
+        "canary",
+        "blue-green",
+        "infrastructure as code",
+        "Terraform",
+        "Docker",
+        "Kubernetes"
+      ]
     },
     "api": {
       "priority": "HIGH",
       "categories": ["api"],
-      "keywords": ["REST", "GraphQL", "gRPC", "WebSocket", "API versioning", "API design", "OpenAPI", "error taxonomy"]
+      "keywords": [
+        "REST",
+        "GraphQL",
+        "gRPC",
+        "WebSocket",
+        "API versioning",
+        "API design",
+        "OpenAPI",
+        "error taxonomy"
+      ]
     },
     "database": {
       "priority": "HIGH",
       "categories": ["database"],
-      "keywords": ["indexing", "query optimization", "transaction isolation", "event sourcing", "caching", "NoSQL", "SQL", "sharding", "partitioning"]
+      "keywords": [
+        "indexing",
+        "query optimization",
+        "transaction isolation",
+        "event sourcing",
+        "caching",
+        "NoSQL",
+        "SQL",
+        "sharding",
+        "partitioning"
+      ]
     },
     "process": {
       "priority": "MEDIUM",
       "categories": ["process"],
-      "keywords": ["Agile", "Scrum", "Kanban", "technical debt", "ADR", "Architecture Decision Record", "RFC", "code review"]
+      "keywords": [
+        "Agile",
+        "Scrum",
+        "Kanban",
+        "technical debt",
+        "ADR",
+        "Architecture Decision Record",
+        "RFC",
+        "code review"
+      ]
     },
     "documentation": {
       "priority": "MEDIUM",
       "categories": ["documentation"],
-      "keywords": ["documentation", "information architecture", "API docs", "C4 model", "sequence diagrams", "OpenAPI", "GraphQL docs"]
+      "keywords": [
+        "documentation",
+        "information architecture",
+        "API docs",
+        "C4 model",
+        "sequence diagrams",
+        "OpenAPI",
+        "GraphQL docs"
+      ]
     },
     "build": {
       "priority": "MEDIUM",
       "categories": ["build"],
-      "keywords": ["CMake", "Gradle", "Cargo", "npm", "yarn", "pnpm", "build caching", "incremental builds", "monorepo"]
+      "keywords": [
+        "CMake",
+        "Gradle",
+        "Cargo",
+        "npm",
+        "yarn",
+        "pnpm",
+        "build caching",
+        "incremental builds",
+        "monorepo"
+      ]
     },
     "platform": {
       "priority": "MEDIUM",
       "categories": ["platform"],
-      "keywords": ["cross-platform", "Windows", "Linux", "filesystem", "path handling", "process management", "environment variables"]
+      "keywords": [
+        "cross-platform",
+        "Windows",
+        "Linux",
+        "filesystem",
+        "path handling",
+        "process management",
+        "environment variables"
+      ]
     },
     "debugging": {
       "priority": "HIGH",
       "categories": ["debugging"],
-      "keywords": ["logging", "tracing", "profiling", "breakpoints", "post-mortem", "memory leaks", "race conditions", "debugging"]
+      "keywords": [
+        "logging",
+        "tracing",
+        "profiling",
+        "breakpoints",
+        "post-mortem",
+        "memory leaks",
+        "race conditions",
+        "debugging"
+      ]
     },
     "frontend": {
       "priority": "HIGH",
       "categories": ["frontend"],
-      "keywords": ["design systems", "layout", "CSS Grid", "Flexbox", "React", "Vue", "Svelte", "Angular", "accessibility", "WCAG", "ARIA", "performance", "animation", "design tokens", "cross-platform", "tooling", "information architecture", "anti-patterns", "debugging UI", "case studies"]
+      "keywords": [
+        "design systems",
+        "layout",
+        "CSS Grid",
+        "Flexbox",
+        "React",
+        "Vue",
+        "Svelte",
+        "Angular",
+        "accessibility",
+        "WCAG",
+        "ARIA",
+        "performance",
+        "animation",
+        "design tokens",
+        "cross-platform",
+        "tooling",
+        "information architecture",
+        "anti-patterns",
+        "debugging UI",
+        "case studies"
+      ]
     }
   }
 }

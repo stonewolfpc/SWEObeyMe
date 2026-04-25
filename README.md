@@ -1,6 +1,6 @@
 # SWEObeyMe MCP Server
 
-[![Version](https://img.shields.io/badge/version-4.2.10-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-4.3.0-blue.svg)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/license-Dual--License-yellow.svg)](LICENSE)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-green.svg)](https://nodejs.org)
 [![VS Code](https://img.shields.io/badge/VS%20Code-Extension-purple.svg)](https://marketplace.visualstudio.com)
@@ -48,6 +48,7 @@ When working with this extension, you should instruct the AI assistant to:
 **Important disclaimer:** While SWEObeyMe provides strong enforcement mechanisms, the AI model ultimately retains autonomy in tool selection. We cannot bypass Windsurf's internal mechanisms or override the model's decision-making process to achieve true full automation. However, with proper prompting and the runtime enforcement features we've implemented, SWEObeyMe can come very close to ensuring consistent tool usage in most cases.
 
 The extension includes:
+
 - Runtime enforcement that rejects operations if required tools weren't called first
 - Tool priority settings (governance constitution at highest priority 999)
 - Strong tool descriptions with explicit consequences for non-compliance
@@ -61,6 +62,7 @@ These features significantly increase the likelihood the AI will use the correct
 - [What It Does For You](#what-it-does-for-you)
 - [The Pro Advantage](#the-pro-advantage)
 - [Installation](#installation)
+- [Developer Mode (Opt-In)](#developer-mode-opt-in)
 - [How It Works](#how-it-works)
 - [Feature Overview](#feature-overview)
 - [Available Tools](#available-tools)
@@ -93,6 +95,7 @@ SWEObeyMe sits between you and your AI coding assistant and makes sure the AI ac
 SWEObeyMe is a **surgical governance MCP server** with **72+ enforcement tools** that integrate directly into Windsurf, VS Code, and any MCP-compatible IDE. It intercepts AI file operations and validates them against architectural rules before they touch disk.
 
 **Core Enforcement:**
+
 - **700-line file ceiling** — forces extraction when files grow
 - **Forbidden pattern blocking** — // [REMOVED BY SWEObeyMe]: Forbidden Pattern, // [REMOVED BY SWEObeyMe]: Forbidden Pattern, // [REMOVED BY SWEObeyMe]: Forbidden Pattern, eval auto-removed
 - **Automatic atomic backups** — every write is backed up before it lands
@@ -102,30 +105,35 @@ SWEObeyMe is a **surgical governance MCP server** with **72+ enforcement tools**
 - **Path verification** — blocks hallucinated paths before they error
 
 **Quality Assurance:**
+
 - **C# Bridge** — real-time .NET error detection (10 detector categories, severity scoring, deduplication)
 - **C++ Bridge** — custom static analysis for memory leaks, buffer overflows, missing virtual destructors
 - **Math verification** — symbolic checks for formulas and algorithms
 - **Syntax validation** — pre-write bracket matching and depth tracking
 
 **Project Intelligence:**
+
 - **Auto-indexing** — project structure, conventions, and decisions persist across sessions
 - **Context switching** — separate rules per project, automatically detected
 - **Decision recording** — architectural choices are logged and enforced
 - **Operation audit** — every tool call tracked with deduplicated timestamps
 
 **Workflow Automation:**
+
 - **Checkpoints** — save and restore file states at any point
 - **Diff review** — approve or reject changes before they apply
 - **Git integration** — branch info, commit messages, pre-commit validation
 - **Hot reload** — extension file changes apply without restart
 
 **Documentation & Knowledge:**
+
 - **Multi-corpus docs lookup** — search across C#, Git, TypeScript, Godot, MCP spec, math reference, and 10+ other corpora
 - **Godot detection** — auto-detect Godot projects for game dev workflows
 - **FDQ lookup** — LLM quantization and training dynamics reference
 - **Patreon content management** — fetch, analyze, and rewrite Patreon tiers and posts
 
 **Enterprise Features:**
+
 - **RBAC / SSO / SCIM** — role-based access, single sign-on, user provisioning
 - **Audit logging** — immutable operation logs with tamper detection
 - **Rate limiting & quotas** — per-user and per-tool call controls
@@ -133,6 +141,7 @@ SWEObeyMe is a **surgical governance MCP server** with **72+ enforcement tools**
 - **Encryption at rest** — AES-256-GCM for sensitive configuration
 
 **Governance & Trust:**
+
 - **Surgical Integrity Score** — visible 0-100 compliance score per session
 - **Error Feedback Loops** — consecutive error tracking, auto-recovery suggestions
 - **Auto-enforcement** — validates files against architectural rules continuously
@@ -164,6 +173,88 @@ SWEObeyMe is a **surgical governance MCP server** with **72+ enforcement tools**
 
 ---
 
+## Developer Mode (Opt-In)
+
+SWEObeyMe includes a **comprehensive error detection system** for industrial-grade correctness guarantees. This is **opt-in** for developers who want the same strict environment used by SWEObeyMe maintainers.
+
+### Mode A - Minimal Install (Default)
+
+For users who just want SWEObeyMe to run:
+
+- No TypeScript
+- No madge
+- No husky
+- No lint-staged
+- No CI
+- No audit enforcement
+
+This is the default mode - no additional dependencies required.
+
+### Mode B - Full Correctness Suite (Opt-In)
+
+For developers who want the exact industrial-grade environment:
+
+- ESLint strict
+- TypeScript strict
+- Prettier strict
+- madge (circular dependency detection)
+- npm audit
+- husky (git hooks)
+- lint-staged (pre-commit linting)
+- Comprehensive error detection MCP tools
+
+**⚠️ Important Dependency Constraints:**
+
+- **TypeScript 6.x is NOT supported by madge 8.x** - Use TypeScript 5.9.x for full compatibility
+- **ESLint 9.x required** - ESLint 10.x has breaking changes
+- **Peer dependencies are optional** - SWEObeyMe will gracefully skip unavailable tools
+
+### Installation
+
+Run the following command to install the full developer suite:
+
+```bash
+npm run dev:install
+```
+
+This installs version-locked dependencies:
+
+```bash
+npm install --save-dev \
+  eslint@9.39.4 \
+  prettier@3.2.5 \
+  typescript@5.9.3 \
+  madge@8.0.0 \
+  husky@9.0.11 \
+  lint-staged@15.2.2
+```
+
+### What You Get
+
+With the full suite enabled, SWEObMe provides:
+
+- **Comprehensive error detection** - Frontend UI to tiny lint issues
+- **Circular dependency detection** - madge integration
+- **Type safety** - TypeScript strict mode
+- **Code formatting** - Prettier enforcement
+- **Pre-commit hooks** - Automatic linting before commits
+- **Security auditing** - npm audit integration
+
+### Graceful Degradation
+
+If you choose not to install the full suite, SWEObeyMe will:
+
+- Skip TypeScript checks
+- Skip circular dependency checks
+- Skip ESLint/Prettier checks
+- Still provide all core enforcement tools
+- Still provide C#/C++ Bridge diagnostics
+- Still provide surgical governance
+
+The comprehensive error detection system is designed to work with or without these optional dependencies.
+
+---
+
 ## How It Works
 
 SWEObeyMe runs as an **MCP (Model Context Protocol) server**. The AI talks to it before every file operation. The server says yes, no, or "fix this first." The AI cannot bypass it.
@@ -176,18 +267,18 @@ SWEObeyMe runs as an **MCP (Model Context Protocol) server**. The AI talks to it
 
 ## Feature Overview
 
-| Category | What It Does |
-|----------|-------------|
-| **File Safety** | Atomic backups, loop detection, path verification, duplicate prevention, reference validation |
-| **Code Quality** | Line-count limits, forbidden-pattern removal, syntax validation, import verification |
-| **C# Diagnostics** | Missing using, empty catch, deep nesting, async/await, resource leaks, math safety, null refs |
-| **C++ Diagnostics** | Memory leaks, buffer overflows, missing virtual destructors, optional clang-tidy / cppcheck |
-| **Project Memory** | Auto-indexing, convention detection, decision recording, file-purpose tracking |
-| **Checkpoints** | Save/restore file states, concurrent checkpoints, automatic pruning |
-| **Diff Review** | Line-by-line approval workflow, impact analysis, change summaries |
-| **Docs & Reference** | 14 searchable corpora covering C#, Git, TypeScript, Godot, MCP, math, LLM training, web dev |
-| **Governance** | Surgical integrity score, error feedback loops, auto-enforcement, workflow orchestration |
-| **Enterprise** | RBAC, SSO, SCIM, audit logging, rate limiting, quotas, encryption, webhooks |
+| Category             | What It Does                                                                                  |
+| -------------------- | --------------------------------------------------------------------------------------------- |
+| **File Safety**      | Atomic backups, loop detection, path verification, duplicate prevention, reference validation |
+| **Code Quality**     | Line-count limits, forbidden-pattern removal, syntax validation, import verification          |
+| **C# Diagnostics**   | Missing using, empty catch, deep nesting, async/await, resource leaks, math safety, null refs |
+| **C++ Diagnostics**  | Memory leaks, buffer overflows, missing virtual destructors, optional clang-tidy / cppcheck   |
+| **Project Memory**   | Auto-indexing, convention detection, decision recording, file-purpose tracking                |
+| **Checkpoints**      | Save/restore file states, concurrent checkpoints, automatic pruning                           |
+| **Diff Review**      | Line-by-line approval workflow, impact analysis, change summaries                             |
+| **Docs & Reference** | 14 searchable corpora covering C#, Git, TypeScript, Godot, MCP, math, LLM training, web dev   |
+| **Governance**       | Surgical integrity score, error feedback loops, auto-enforcement, workflow orchestration      |
+| **Enterprise**       | RBAC, SSO, SCIM, audit logging, rate limiting, quotas, encryption, webhooks                   |
 
 ---
 
@@ -254,15 +345,15 @@ Configure via VS Code Settings (`Ctrl+,`) or `settings.json`:
 
 ## Troubleshooting
 
-| Symptom | Fix |
-|-----------|-----|
-| MCP server not loading | Check extension activation; reload window |
-| File write rejected | Check line count (max 700) and forbidden patterns |
-| Duplicate server detected | Extension auto-cleans stale instances on reload |
-| Backup failed | Check backup directory permissions |
-| C# Bridge silent | Ensure .NET project is loaded and bridge is enabled in settings |
-| C++ Bridge silent | Install clang-tidy or cppcheck for deeper analysis; pattern matching works out of box |
-| Slow performance | Disable C# Bridge if not using .NET; reduce maxBackupsPerFile |
+| Symptom                   | Fix                                                                                   |
+| ------------------------- | ------------------------------------------------------------------------------------- |
+| MCP server not loading    | Check extension activation; reload window                                             |
+| File write rejected       | Check line count (max 700) and forbidden patterns                                     |
+| Duplicate server detected | Extension auto-cleans stale instances on reload                                       |
+| Backup failed             | Check backup directory permissions                                                    |
+| C# Bridge silent          | Ensure .NET project is loaded and bridge is enabled in settings                       |
+| C++ Bridge silent         | Install clang-tidy or cppcheck for deeper analysis; pattern matching works out of box |
+| Slow performance          | Disable C# Bridge if not using .NET; reduce maxBackupsPerFile                         |
 
 **Debug mode:** set `SWEOBEYME_DEBUG=1` before launching your IDE.
 

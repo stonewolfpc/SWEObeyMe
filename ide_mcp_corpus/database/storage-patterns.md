@@ -409,9 +409,9 @@ def update_user(user):
 
 ```javascript
 db.users.insertOne({
-  name: "John",
-  email: "john@example.com",
-  posts: []
+  name: 'John',
+  email: 'john@example.com',
+  posts: [],
 });
 ```
 

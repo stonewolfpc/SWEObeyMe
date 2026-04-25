@@ -1,12 +1,12 @@
 /**
  * CROSS-PLATFORM TEST RUNNER
- * 
+ *
  * Executes the full enterprise certification matrix:
  * - Hosts: Windsurf, VS Code, Cursor, GitHub Codespaces
  * - OS: Windows, macOS, Linux
  * - GitHub: Public, Private, Org repos
  * - Enterprise: Read-only, Standard, Audited
- * 
+ *
  * Only certifies if ALL combinations pass.
  */
 
@@ -23,9 +23,9 @@ class CrossPlatformCertificationRunner {
       failFast: options.failFast !== false, // Default true
       logLevel: options.logLevel || 'DEBUG',
       adaptiveModels: options.adaptiveModels || ['adaptive', 'fixed-claude'],
-      ...options
+      ...options,
     };
-    
+
     this.results = [];
     this.failures = [];
     this.startTime = null;
@@ -62,7 +62,7 @@ class CrossPlatformCertificationRunner {
 
       try {
         const result = await this.runTestCombination(combo);
-        
+
         if (result.passed) {
           console.log('   ✅ PASSED');
           passed++;
@@ -70,7 +70,7 @@ class CrossPlatformCertificationRunner {
           console.log('   ❌ FAILED');
           console.log(`   Reason: ${result.failureReason}`);
           failed++;
-          
+
           if (this.options.failFast) {
             console.log('\n🛑 FAIL FAST triggered - stopping certification');
             break;
@@ -81,12 +81,12 @@ class CrossPlatformCertificationRunner {
       } catch (error) {
         console.log(`   💥 ERROR: ${error.message}`);
         failed++;
-        
+
         this.failures.push({
           combination: combo,
-          error: error.message
+          error: error.message,
         });
-        
+
         if (this.options.failFast) {
           break;
         }
@@ -94,7 +94,7 @@ class CrossPlatformCertificationRunner {
     }
 
     this.endTime = Date.now();
-    
+
     return this.generateCertificationReport(passed, failed, combinations.length);
   }
 
@@ -103,7 +103,7 @@ class CrossPlatformCertificationRunner {
    */
   generateMatrixCombinations() {
     const combinations = [];
-    
+
     for (const host of Object.keys(this.matrix.axes.host)) {
       for (const os of Object.keys(this.matrix.axes.os)) {
         for (const github of Object.keys(this.matrix.axes.githubMode)) {
@@ -115,7 +115,7 @@ class CrossPlatformCertificationRunner {
                 githubMode: github,
                 enterpriseMode: enterprise,
                 model,
-                id: `${host}-${os}-${github}-${enterprise}-${model}`
+                id: `${host}-${os}-${github}-${enterprise}-${model}`,
               });
             }
           }
@@ -131,7 +131,7 @@ class CrossPlatformCertificationRunner {
    */
   async runTestCombination(combo) {
     const startTime = Date.now();
-    
+
     // 1. Environment Setup
     await this.setupTestEnvironment(combo);
 
@@ -140,18 +140,18 @@ class CrossPlatformCertificationRunner {
       host: combo.host,
       os: combo.os,
       enterpriseMode: combo.enterpriseMode,
-      githubMode: combo.githubMode
+      githubMode: combo.githubMode,
     });
 
     const boundaryResults = await boundaryTester.runAll();
-    
+
     if (boundaryResults.hardFails > 0) {
       return {
         passed: false,
         combination: combo,
         failureReason: `Hard boundary failures: ${boundaryResults.hardFails}`,
         boundaryResults,
-        duration: Date.now() - startTime
+        duration: Date.now() - startTime,
       };
     }
 
@@ -161,7 +161,7 @@ class CrossPlatformCertificationRunner {
         repo: this.getGoldenRepoForCombo(combo),
         task: 'Refactor sample module with full governance',
         rules: ['no_digital_debt', 'separation_of_concerns', 'max_lines_700'],
-        enterpriseMode: combo.enterpriseMode
+        enterpriseMode: combo.enterpriseMode,
       });
 
       const lunchBreakResult = await lunchBreakValidator.run();
@@ -173,7 +173,7 @@ class CrossPlatformCertificationRunner {
           failureReason: 'Lunch break test failed - unattended operation not safe',
           boundaryResults,
           lunchBreakResult,
-          duration: Date.now() - startTime
+          duration: Date.now() - startTime,
         };
       }
 
@@ -191,7 +191,7 @@ class CrossPlatformCertificationRunner {
           boundaryResults,
           lunchBreakResult,
           correlation,
-          duration: Date.now() - startTime
+          duration: Date.now() - startTime,
         };
       }
 
@@ -201,7 +201,7 @@ class CrossPlatformCertificationRunner {
         boundaryResults,
         lunchBreakResult,
         correlation,
-        duration: Date.now() - startTime
+        duration: Date.now() - startTime,
       };
     }
 
@@ -210,7 +210,7 @@ class CrossPlatformCertificationRunner {
       passed: boundaryResults.passed > boundaryResults.failed,
       combination: combo,
       boundaryResults,
-      duration: Date.now() - startTime
+      duration: Date.now() - startTime,
     };
   }
 
@@ -243,12 +243,12 @@ class CrossPlatformCertificationRunner {
    */
   getGoldenRepoForCombo(combo) {
     const goldenRepos = testMatrix.goldenRepos;
-    
+
     // Return repo based on expected test patterns
     if (combo.githubMode === 'org_repo') {
       return goldenRepos[0]?.url || 'https://github.com/stonewolfpc/sweobeyme-golden-js';
     }
-    
+
     return goldenRepos[0]?.url || 'sweobeyme-test-public';
   }
 
@@ -256,10 +256,12 @@ class CrossPlatformCertificationRunner {
    * Get golden repo specification for verification
    */
   getGoldenRepoSpec(combo) {
-    return testMatrix.goldenRepos[0] || {
-      expectedFilesChanged: ['src/module.js', 'src/utils.js'],
-      expectedDiffHash: 'sha256:placeholder'
-    };
+    return (
+      testMatrix.goldenRepos[0] || {
+        expectedFilesChanged: ['src/module.js', 'src/utils.js'],
+        expectedDiffHash: 'sha256:placeholder',
+      }
+    );
   }
 
   /**
@@ -274,25 +276,25 @@ class CrossPlatformCertificationRunner {
    */
   generateCertificationReport(passed, failed, total) {
     const duration = this.endTime - this.startTime;
-    const passRate = (passed / total * 100).toFixed(1);
+    const passRate = ((passed / total) * 100).toFixed(1);
 
     const report = {
       timestamp: new Date().toISOString(),
       duration: {
         totalMs: duration,
-        minutes: (duration / 1000 / 60).toFixed(1)
+        minutes: (duration / 1000 / 60).toFixed(1),
       },
       summary: {
         totalCombinations: total,
         passed,
         failed,
-        passRate: `${passRate}%`
+        passRate: `${passRate}%`,
       },
       matrix: this.matrix,
       results: this.results,
       failures: this.failures,
       certificationStatus: this.determineCertificationStatus(passed, failed, total),
-      logs: enterpriseLogger.exportLog()
+      logs: enterpriseLogger.exportLog(),
     };
 
     this.printReport(report);
@@ -309,7 +311,7 @@ class CrossPlatformCertificationRunner {
         level: 'v1.0_ENTERPRISE_CERTIFIED',
         message: 'All matrix combinations passed. Ready for production deployment.',
         recommendation: 'Deploy with confidence across all supported environments.',
-        validUntil: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString() // 90 days
+        validUntil: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString(), // 90 days
       };
     }
 
@@ -317,8 +319,9 @@ class CrossPlatformCertificationRunner {
       return {
         level: 'v1.0_CONDITIONAL_CERTIFIED',
         message: 'Most combinations passed. Some edge cases need attention.',
-        recommendation: 'Review failed combinations. Consider restricting to supported matrix subset.',
-        validUntil: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString() // 30 days
+        recommendation:
+          'Review failed combinations. Consider restricting to supported matrix subset.',
+        validUntil: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), // 30 days
       };
     }
 
@@ -326,7 +329,7 @@ class CrossPlatformCertificationRunner {
       level: 'NOT_CERTIFIED',
       message: 'Too many failures for certification.',
       recommendation: 'Fix critical issues and re-run certification.',
-      validUntil: null
+      validUntil: null,
     };
   }
 
@@ -339,9 +342,11 @@ class CrossPlatformCertificationRunner {
     console.log('═══════════════════════════════════════════════════════════');
     console.log(`Status: ${report.certificationStatus.level}`);
     console.log(`Message: ${report.certificationStatus.message}`);
-    console.log(`\nResults: ${report.summary.passed}/${report.summary.totalCombinations} passed (${report.summary.passRate})`);
+    console.log(
+      `\nResults: ${report.summary.passed}/${report.summary.totalCombinations} passed (${report.summary.passRate})`
+    );
     console.log(`Duration: ${report.duration.minutes} minutes`);
-    
+
     if (report.summary.failed > 0) {
       console.log('\nFailed Combinations:');
       this.failures.forEach((f, i) => {
@@ -352,11 +357,11 @@ class CrossPlatformCertificationRunner {
 
     console.log('\nRecommendation:');
     console.log(`  ${report.certificationStatus.recommendation}`);
-    
+
     if (report.certificationStatus.validUntil) {
       console.log(`\nCertification valid until: ${report.certificationStatus.validUntil}`);
     }
-    
+
     console.log('═══════════════════════════════════════════════════════════\n');
   }
 }
@@ -366,15 +371,18 @@ if (process.argv.includes('--run')) {
   const runner = new CrossPlatformCertificationRunner({
     parallel: false,
     failFast: true,
-    adaptiveModels: ['adaptive']
+    adaptiveModels: ['adaptive'],
   });
 
-  runner.runFullCertification().then(report => {
-    process.exit(report.certificationStatus.level === 'v1.0_ENTERPRISE_CERTIFIED' ? 0 : 1);
-  }).catch(error => {
-    console.error('Certification runner failed:', error);
-    process.exit(1);
-  });
+  runner
+    .runFullCertification()
+    .then((report) => {
+      process.exit(report.certificationStatus.level === 'v1.0_ENTERPRISE_CERTIFIED' ? 0 : 1);
+    })
+    .catch((error) => {
+      console.error('Certification runner failed:', error);
+      process.exit(1);
+    });
 }
 
 export { CrossPlatformCertificationRunner };

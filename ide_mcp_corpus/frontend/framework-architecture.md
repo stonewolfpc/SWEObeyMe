@@ -55,7 +55,7 @@ function TabPanel({ children }) {
   </TabList>
   <TabPanel>Panel 1</TabPanel>
   <TabPanel>Panel 2</TabPanel>
-</Tabs>
+</Tabs>;
 ```
 
 #### Render Props
@@ -65,14 +65,18 @@ function Mouse({ render }) {
   const [position, setPosition] = React.useState({ x: 0, y: 0 });
 
   return (
-    <div onMouseMove={e => setPosition({ x: e.clientX, y: e.clientY })}>
-      {render(position)}
-    </div>
+    <div onMouseMove={(e) => setPosition({ x: e.clientX, y: e.clientY })}>{render(position)}</div>
   );
 }
 
 // Usage
-<Mouse render={({ x, y }) => <p>Position: {x}, {y}</p>} />
+<Mouse
+  render={({ x, y }) => (
+    <p>
+      Position: {x}, {y}
+    </p>
+  )}
+/>;
 ```
 
 #### Higher-Order Components
@@ -97,8 +101,8 @@ const ButtonWithLoading = withLoading(Button);
 function useCounter(initialValue = 0) {
   const [count, setCount] = React.useState(initialValue);
 
-  const increment = () => setCount(c => c + 1);
-  const decrement = () => setCount(c => c - 1);
+  const increment = () => setCount((c) => c + 1);
+  const decrement = () => setCount((c) => c - 1);
   const reset = () => setCount(initialValue);
 
   return { count, increment, decrement, reset };
@@ -126,7 +130,7 @@ function Counter() {
 ```jsx
 function Counter() {
   const [count, setCount] = React.useState(0);
-  return <button onClick={() => setCount(c => c + 1)}>{count}</button>;
+  return <button onClick={() => setCount((c) => c + 1)}>{count}</button>;
 }
 ```
 
@@ -138,11 +142,7 @@ const ThemeContext = React.createContext();
 function ThemeProvider({ children }) {
   const [theme, setTheme] = React.useState('light');
 
-  return (
-    <ThemeContext.Provider value={{ theme, setTheme }}>
-      {children}
-    </ThemeContext.Provider>
-  );
+  return <ThemeContext.Provider value={{ theme, setTheme }}>{children}</ThemeContext.Provider>;
 }
 
 // Usage
@@ -179,7 +179,7 @@ const store = createStore(counterReducer);
 
 // Component
 function Counter() {
-  const count = useSelector(state => state);
+  const count = useSelector((state) => state);
   const dispatch = useDispatch();
 
   return <button onClick={() => dispatch(increment())}>{count}</button>;
@@ -191,10 +191,10 @@ function Counter() {
 ```jsx
 import create from 'zustand';
 
-const useStore = create(set => ({
+const useStore = create((set) => ({
   count: 0,
-  increment: () => set(state => ({ count: state.count + 1 })),
-  decrement: () => set(state => ({ count: state.count - 1 })),
+  increment: () => set((state) => ({ count: state.count + 1 })),
+  decrement: () => set((state) => ({ count: state.count - 1 })),
 }));
 
 // Usage
@@ -230,7 +230,13 @@ function Component({ items }) {
     return items.sort((a, b) => a.id - b.id);
   }, [items]);
 
-  return <ul>{sortedItems.map(item => <li key={item.id}>{item.name}</li>)}</ul>;
+  return (
+    <ul>
+      {sortedItems.map((item) => (
+        <li key={item.id}>{item.name}</li>
+      ))}
+    </ul>
+  );
 }
 ```
 
@@ -300,7 +306,7 @@ export function useCounter(initialValue = 0) {
 
   const increment = () => count.value++;
   const decrement = () => count.value--;
-  const reset = () => count.value = initialValue;
+  const reset = () => (count.value = initialValue);
 
   return { count, increment, decrement, reset };
 }
@@ -383,11 +389,11 @@ import { writable } from 'svelte/store';
 export const count = writable(0);
 
 export function increment() {
-  count.update(n => n + 1);
+  count.update((n) => n + 1);
 }
 
 export function decrement() {
-  count.update(n => n - 1);
+  count.update((n) => n - 1);
 }
 ```
 
@@ -396,12 +402,12 @@ export function decrement() {
 ```javascript
 import { readable, derived } from 'svelte/store';
 
-const time = readable(new Date(), set => {
+const time = readable(new Date(), (set) => {
   const interval = setInterval(() => set(new Date()), 1000);
   return () => clearInterval(interval);
 });
 
-const doubledTime = derived(time, $time => $time * 2);
+const doubledTime = derived(time, ($time) => $time * 2);
 ```
 
 ### Component Patterns
@@ -451,7 +457,7 @@ import { createSignal } from 'solid-js';
 const [count, setCount] = createSignal(0);
 
 function increment() {
-  setCount(c => c + 1);
+  setCount((c) => c + 1);
 }
 ```
 
@@ -489,7 +495,7 @@ function Counter() {
   return (
     <div>
       <p>Count: {count()}</p>
-      <button onClick={() => setCount(c => c + 1)}>Increment</button>
+      <button onClick={() => setCount((c) => c + 1)}>Increment</button>
     </div>
   );
 }
@@ -503,11 +509,7 @@ import { createContext, useContext } from 'solid-js';
 const ThemeContext = createContext('light');
 
 function Provider(props) {
-  return (
-    <ThemeContext.Provider value={props.theme}>
-      {props.children}
-    </ThemeContext.Provider>
-  );
+  return <ThemeContext.Provider value={props.theme}>{props.children}</ThemeContext.Provider>;
 }
 
 function Child() {
@@ -638,13 +640,11 @@ export const increment = createAction('[Counter] Increment');
 // Reducer
 const counterReducer = createReducer(
   { count: 0 },
-  on(increment, state => ({ count: state.count + 1 }))
+  on(increment, (state) => ({ count: state.count + 1 }))
 );
 
 // Selector
-export const selectCount = createSelector(
-  (state: State) => state.counter.count
-);
+export const selectCount = createSelector((state: State) => state.counter.count);
 
 // Component
 @Component({

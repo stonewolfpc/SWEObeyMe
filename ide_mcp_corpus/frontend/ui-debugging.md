@@ -31,11 +31,11 @@ function getSpecificity(selector) {
   const idRegex = /#/g;
   const classRegex = /\./g;
   const elementRegex = /[a-z]/gi;
-  
+
   specificity[0] = (selector.match(idRegex) || []).length;
   specificity[1] = (selector.match(classRegex) || []).length;
   specificity[2] = (selector.match(elementRegex) || []).length;
-  
+
   return specificity;
 }
 ```
@@ -154,11 +154,11 @@ function Component() {
     const result = await fetch('/api');
     setData(result);
   }, []);
-  
+
   useEffect(() => {
     fetchData();
   }, [fetchData]);
-  
+
   return <div>{JSON.stringify(data)}</div>;
 }
 ```
@@ -295,9 +295,13 @@ element.addEventListener('click', (e) => {
 #### Event Propagation
 
 ```javascript
-element.addEventListener('click', (e) => {
-  console.log('Capture phase');
-}, true);
+element.addEventListener(
+  'click',
+  (e) => {
+    console.log('Capture phase');
+  },
+  true
+);
 
 element.addEventListener('click', (e) => {
   console.log('Bubble phase');
@@ -312,7 +316,7 @@ function Component() {
     console.log('React event:', e);
     console.log('Native event:', e.nativeEvent);
   };
-  
+
   return <button onClick={handleClick}>Click me</button>;
 }
 ```
@@ -329,24 +333,24 @@ function Component() {
 
 ### Debugging
 
-- **Systematic': Systematic debugging
-- **Tools': Use debugging tools
-- **Logging': Use logging
-- **Testing': Test fixes
-- **Document': Document findings
+- \*\*Systematic': Systematic debugging
+- \*\*Tools': Use debugging tools
+- \*\*Logging': Use logging
+- \*\*Testing': Test fixes
+- \*\*Document': Document findings
 
 ### Performance
 
-- **Profile': Profile performance
-- **Optimize': Optimize bottlenecks
-- **Monitor': Monitor performance
-- **Test': Test performance
-- **Iterate': Iterate improvements
+- \*\*Profile': Profile performance
+- \*\*Optimize': Optimize bottlenecks
+- \*\*Monitor': Monitor performance
+- \*\*Test': Test performance
+- \*\*Iterate': Iterate improvements
 
 ### Accessibility
 
-- **Test': Test accessibility
-- **Tools': Use accessibility tools
-- **Guidelines': Follow guidelines
-- **Fix': Fix issues
-- **Monitor': Monitor accessibility
+- \*\*Test': Test accessibility
+- \*\*Tools': Use accessibility tools
+- \*\*Guidelines': Follow guidelines
+- \*\*Fix': Fix issues
+- \*\*Monitor': Monitor accessibility

@@ -13,24 +13,30 @@
 **Location**: `extension.js` lines 179-181 vs 490-491
 
 **Issue**:
+
 - **activate()** uses: `%LOCALAPPDATA%\Windsurf\mcp.json` (Windows-specific)
 - **deactivate()** uses: `~/.codeium/windsurf-next/mcp_config.json` (Unix-style)
 - **Windsurf Documentation** states: `~/.codeium/mcp_config.json` is the correct path
 
 **Impact**:
+
 - The activate and deactivate functions use different paths, causing cleanup to fail
 - Neither path matches the documented Windsurf config location
 - This will cause the extension to write to the wrong file on install and fail to clean up on uninstall
 - Users will need to manually clean up MCP config
 
 **Evidence from Documentation**:
+
 ```markdown
 ## mcp_config.json
+
 The `~/.codeium/mcp_config.json` file is a JSON file that contains a list of servers that Cascade can connect to.
 ```
+
 Source: `ide_mcp_corpus/windsurf/mcp_config.md` line 20
 
 **Recommendation**:
+
 ```javascript
 // Use the correct Windsurf MCP config path
 const configDir = path.join(os.homedir(), '.codeium');
@@ -44,18 +50,22 @@ const mcpConfigPath = path.join(configDir, 'mcp_config.json');
 **Location**: `extension.js` lines 232-241
 
 **Issue**:
+
 - The extension writes hardcoded absolute paths to mcp_config.json
 - Windsurf documentation shows support for `${env:VAR}` interpolation in config fields
 - This causes cross-platform compatibility issues
 
 **Impact**:
+
 - Hardcoded Windows paths won't work on Linux/Mac
 - Users on different platforms will have broken configurations
 - Makes distribution unreliable
 
 **Evidence from Documentation**:
-```markdown
+
+````markdown
 ### Config Interpolation
+
 The `~/.codeium/mcp_config.json` file handles interpolation of
 environment variables in these fields: `command`, `args`, `env`, `serverUrl`, `url`, and
 `headers`.
@@ -75,7 +85,9 @@ in `headers`.
   }
 }
 ```
-```
+````
+
+````
 Source: `ide_mcp_corpus/windsurf/mcp_remote_http.md` lines 22-38
 
 **Recommendation**:
@@ -91,7 +103,7 @@ config.mcpServers['swe-obey-me'] = {
   },
   disabled: false,
 };
-```
+````
 
 ---
 
@@ -100,16 +112,19 @@ config.mcpServers['swe-obey-me'] = {
 **Location**: `extension.js` line 229
 
 **Issue**:
+
 - Only the index path is normalized to forward slashes
 - The backup directory path is not normalized
 - Config paths should be consistently normalized
 
 **Impact**:
+
 - Inconsistent path formatting in config file
 - Could cause issues on Windows where backslashes are common
 - Makes config harder to read and debug
 
 **Recommendation**:
+
 ```javascript
 const normalizedIndexPath = indexPath.replace(/\\/g, '/');
 const normalizedBackupDir = backupDir.replace(/\\/g, '/');
@@ -126,17 +141,20 @@ const normalizedBackupDir = backupDir.replace(/\\/g, '/');
 **Status**: ✅ COMPLIANT
 
 **Evidence**:
+
 - All logging goes to `stderr` (lines 27, 33-36, 134, 136, 148)
 - No stdout pollution
 - Uses `StdioServerTransport` from official SDK
 - Protocol version: `2024-11-05` (line 67)
 
 **Evidence from Documentation**:
+
 ```markdown
-* The server **MAY** write UTF-8 strings to its standard error (`stderr`) for any
+- The server **MAY** write UTF-8 strings to its standard error (`stderr`) for any
   logging purposes including informational, debug, and error messages.
-* The server **MUST NOT** write anything to its `stdout` that is not a valid MCP message.
+- The server **MUST NOT** write anything to its `stdout` that is not a valid MCP message.
 ```
+
 Source: `ide_mcp_corpus/mcp_spec/transports.md` lines 12-14
 
 **Recommendation**: None - implementation is correct
@@ -150,18 +168,21 @@ Source: `ide_mcp_corpus/mcp_spec/transports.md` lines 12-14
 **Status**: ✅ COMPLIANT
 
 **Evidence**:
+
 - All tools have proper `inputSchema` with `type: 'object'`
 - `properties` field defines parameters
 - `required` field specifies mandatory parameters
 - Schema follows JSON Schema format
 
 **Evidence from Documentation**:
+
 ```markdown
 The Model Context Protocol (MCP) allows servers to expose tools that can be invoked by
 language models. Tools enable models to interact with external systems, such as querying
 databases, calling APIs, or performing computations. Each tool is uniquely identified by
 a name and includes metadata describing its schema.
 ```
+
 Source: `ide_mcp_corpus/mcp_spec/tools.md` lines 1-4
 
 **Recommendation**: None - implementation is correct
@@ -173,15 +194,18 @@ Source: `ide_mcp_corpus/mcp_spec/tools.md` lines 1-4
 **Location**: `index.js` line 67
 
 **Issue**:
+
 - Protocol version is set to `2024-11-05`
 - MCP specification has evolved (current docs reference `2025-11-25`)
 
 **Impact**:
+
 - May not support newer MCP features
 - Could cause compatibility issues with future Windsurf updates
 
 **Recommendation**:
 Update to latest protocol version:
+
 ```javascript
 return {
   protocolVersion: '2025-11-25',
@@ -199,25 +223,31 @@ return {
 **Location**: Not implemented
 
 **Issue**:
+
 - Extension does not implement admin controls or whitelisting features
 - Windsurf documentation describes team admin capabilities for MCP server whitelisting
 - Enterprise deployments may require whitelisting compliance
 
 **Impact**:
+
 - Enterprise users may not be able to use the extension if their team has whitelisting enabled
 - Could block adoption in corporate environments
 
 **Evidence from Documentation**:
+
 ```markdown
 ## Admin Controls (Teams & Enterprises)
+
 Team admins can toggle MCP access for their team, as well as whitelist approved MCP servers for their team to use.
 
 By default, users within a team will be able to configure their own MCP servers. However, once you whitelist even a single MCP server, **all non-whitelisted servers will be blocked** for your team.
 ```
+
 Source: `ide_mcp_corpus/windsurf/mcp_admin_controls.md` lines 1-9
 
 **Recommendation**:
 Document the server configuration pattern for whitelisting:
+
 ```json
 {
   "command": "node",
@@ -238,11 +268,13 @@ Provide instructions for team admins to whitelist this pattern.
 **Location**: Not implemented
 
 **Issue**:
+
 - Extension only supports stdio transport
 - Windsurf supports stdio, Streamable HTTP, and SSE transports
 - Remote HTTP could be useful for certain deployment scenarios
 
 **Impact**:
+
 - Limited deployment flexibility
 - Cannot use remote server capabilities
 
@@ -260,6 +292,7 @@ Consider adding remote HTTP transport support for enterprise deployments where r
 **Status**: ✅ COMPLIANT
 
 **Evidence**:
+
 - Uses `onStartupFinished` activation event (appropriate for MCP servers)
 - Proper command registration
 - Status bar item creation
@@ -276,6 +309,7 @@ Consider adding remote HTTP transport support for enterprise deployments where r
 **Status**: ✅ COMPLIANT
 
 **Evidence**:
+
 - Comprehensive configuration schema
 - Proper type definitions
 - Default values provided
@@ -292,21 +326,26 @@ Consider adding remote HTTP transport support for enterprise deployments where r
 **Location**: `extension.js` lines 175-176
 
 **Issue**:
+
 ```javascript
-const isInstalled = extensionPath.includes('.windsurf-next\\extensions') ||
-                    extensionPath.includes('.vscode\\extensions');
+const isInstalled =
+  extensionPath.includes('.windsurf-next\\extensions') ||
+  extensionPath.includes('.vscode\\extensions');
 ```
 
 **Impact**:
+
 - Windows-specific path check (backslashes)
 - Won't detect Windsurf-Next on Linux/Mac
 - Could cause auto-configuration to fail on non-Windows platforms
 
 **Recommendation**:
 Use platform-agnostic path detection:
+
 ```javascript
-const isInstalled = extensionPath.includes(path.join('.windsurf-next', 'extensions')) ||
-                    extensionPath.includes(path.join('.vscode', 'extensions'));
+const isInstalled =
+  extensionPath.includes(path.join('.windsurf-next', 'extensions')) ||
+  extensionPath.includes(path.join('.vscode', 'extensions'));
 ```
 
 ---
@@ -316,16 +355,19 @@ const isInstalled = extensionPath.includes(path.join('.windsurf-next', 'extensio
 **Location**: `extension.js` lines 185-274
 
 **Issue**:
+
 - No file locking mechanism when writing mcp_config.json
 - Multiple extensions could write simultaneously
 - Could cause config corruption
 
 **Impact**:
+
 - Config file could be corrupted if multiple extensions write simultaneously
 - Users may lose other MCP server configurations
 
 **Recommendation**:
 Implement file locking or atomic write operations:
+
 ```javascript
 // Use atomic write with temp file
 const tempPath = mcpConfigPath + '.tmp';
@@ -342,17 +384,19 @@ fs.renameSync(tempPath, mcpConfigPath);
 **Location**: `extension.js` lines 259-273
 
 **Issue**:
+
 - Error messages are informative but could be more actionable
 - No link to troubleshooting documentation
 
 **Recommendation**:
 Add direct links to troubleshooting docs:
+
 ```javascript
 vscode.window.showWarningMessage(
   `Failed to auto-configure SWEObeyMe MCP server.\n\nSuggestions:\n${suggestions.join('\n')}\n\nDocumentation: https://github.com/stonewolfpc/SWEObeyMe#troubleshooting`,
   'Open Documentation',
-  'Dismiss',
-)
+  'Dismiss'
+);
 ```
 
 ---
@@ -362,11 +406,13 @@ vscode.window.showWarningMessage(
 **Location**: `extension.js` lines 246-253
 
 **Issue**:
+
 - Reload prompt is shown on every configuration update
 - Could be annoying for users who frequently update
 
 **Recommendation**:
 Add a flag to track if user has already been prompted:
+
 ```javascript
 const configKey = 'sweObeyMe.lastConfigHash';
 const lastHash = context.globalState.get(configKey);
@@ -383,25 +429,30 @@ if (needsUpdate && lastHash !== currentHash) {
 ## SUMMARY
 
 ### Critical Issues (Must Fix)
+
 1. **MCP Config Path Mismatch** - activate() and deactivate() use different paths, neither matches Windsurf docs
 2. **Missing Environment Variable Interpolation** - Hardcoded paths break cross-platform compatibility
 
 ### High Priority Issues
+
 3. **Incomplete Path Normalization** - Only index path normalized, not backup dir
 4. **Extension Detection Logic** - Windows-specific backslashes break Linux/Mac detection
 5. **Fallback Config Writer Race Condition** - No file locking could corrupt config
 
 ### Medium Priority Issues
+
 6. **Protocol Version** - Using outdated 2024-11-05 instead of 2025-11-25
 7. **Missing Admin Controls Support** - Enterprise whitelisting not documented
 8. **Extension Detection** - Platform-specific path detection
 
 ### Low Priority Issues
+
 9. **Missing Remote HTTP Transport** - Only stdio supported
 10. **Error Messaging** - Could be more actionable
 11. **Reload Prompt** - Could be annoying for frequent updates
 
 ### Compliant Areas
+
 - ✅ Stdio transport implementation (logs to stderr, no stdout pollution)
 - ✅ Tool schema compliance (proper inputSchema)
 - ✅ VS Code extension activation

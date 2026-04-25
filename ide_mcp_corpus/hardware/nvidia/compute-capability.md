@@ -7,12 +7,15 @@ Compute capability (CC) defines the hardware features and supported instructions
 ## Compute Capability Categories
 
 ### Data Center GPUs
+
 Enterprise-grade GPUs for data center workloads and AI training/inference.
 
 ### Workstation/Consumer GPUs
+
 Professional workstation and consumer graphics cards.
 
 ### Jetson
+
 Embedded AI computing platforms for edge devices and robotics.
 
 ## Legacy Support

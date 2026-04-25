@@ -76,9 +76,9 @@ const sampleConfig = {
   mcpServers: {
     sweobeyme: {
       command: nodePath,
-      args: [serverPath]
-    }
-  }
+      args: [serverPath],
+    },
+  },
 };
 
 console.log('\nSample config:');
@@ -95,8 +95,10 @@ if (!path.isAbsolute(sampleConfig.mcpServers.sweobeyme.command)) {
 }
 
 // Check args exist and point to server.js
-if (!Array.isArray(sampleConfig.mcpServers.sweobeyme.args) || 
-    sampleConfig.mcpServers.sweobeyme.args.length === 0) {
+if (
+  !Array.isArray(sampleConfig.mcpServers.sweobeyme.args) ||
+  sampleConfig.mcpServers.sweobeyme.args.length === 0
+) {
   issues.push('Args missing or empty');
 } else if (!sampleConfig.mcpServers.sweobeyme.args[0].includes('server.js')) {
   issues.push('Args[0] does not point to server.js');
@@ -109,9 +111,11 @@ if (!fs.existsSync(configuredServerPath)) {
 }
 
 // Check for shell features (not supported in MCP config)
-if (sampleConfig.mcpServers.sweobeyme.command.includes('&') ||
-    sampleConfig.mcpServers.sweobeyme.command.includes('&&') ||
-    sampleConfig.mcpServers.sweobeyme.command.includes('|')) {
+if (
+  sampleConfig.mcpServers.sweobeyme.command.includes('&') ||
+  sampleConfig.mcpServers.sweobeyme.command.includes('&&') ||
+  sampleConfig.mcpServers.sweobeyme.command.includes('|')
+) {
   issues.push('Command contains shell operators - not supported by MCP');
 }
 
@@ -130,7 +134,7 @@ if (issues.length > 0) {
 // Test 4: Windows-specific checks
 if (platform === 'win32') {
   console.log('\n🪟 Windows-specific checks:');
-  
+
   // Check if node.exe exists at the specified path
   if (!fs.existsSync(nodePath)) {
     console.warn('   ⚠️  Node executable not found at expected path');
@@ -138,12 +142,12 @@ if (platform === 'win32') {
   } else {
     console.log('   ✅ Node executable exists');
   }
-  
+
   // Check for spaces in paths (can cause issues)
   if (nodePath.includes(' ') || serverPath.includes(' ')) {
     console.warn('   ⚠️  Path contains spaces - may need quoting in some shells');
   }
-  
+
   // Validate the config would work with spaces
   const needsQuoting = nodePath.includes(' ') || configuredServerPath.includes(' ');
   if (needsQuoting) {

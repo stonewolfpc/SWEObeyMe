@@ -14,12 +14,12 @@ The SWEObeyMe codebase contains **critical Separation of Concerns violations** t
 
 ### SoC Health Score: **72/100** (Below 95 threshold)
 
-| Category | Score | Target | Gap |
-|----------|-------|--------|-----|
-| File Size Compliance | 18/30 | 30 | -12 |
-| Single Concern | 15/30 | 30 | -15 |
-| No Circular Dependencies | 16/20 | 20 | -4 |
-| Layer Separation | 23/20 | 20 | +3 |
+| Category                 | Score | Target | Gap |
+| ------------------------ | ----- | ------ | --- |
+| File Size Compliance     | 18/30 | 30     | -12 |
+| Single Concern           | 15/30 | 30     | -15 |
+| No Circular Dependencies | 16/20 | 20     | -4  |
+| Layer Separation         | 23/20 | 20     | +3  |
 
 ---
 
@@ -32,6 +32,7 @@ The SWEObeyMe codebase contains **critical Separation of Concerns violations** t
 **Status:** Must Fix Before v3.0.1
 
 #### Details
+
 - **File:** `extension.js`
 - **Lines:** 1,130 / 700 limit (**61% OVER**)
 - **Concerns Mixed:** 10 (see below)
@@ -39,25 +40,25 @@ The SWEObeyMe codebase contains **critical Separation of Concerns violations** t
 
 #### Concerns Violating SoC
 
-| # | Concern | Lines | Violation Type |
-|---|---------|-------|----------------|
-| 1 | Extension Activation/Lifecycle | 50 | Core responsibility |
-| 2 | Webview Provider Management | 120 | UI + Business mixed |
-| 3 | Sidebar Panel Implementation | 200 | UI concern |
-| 4 | HTML Generation for Settings | 150 | UI concern |
-| 5 | Tool Orchestration | 180 | Business logic |
-| 6 | Provider Coordination | 100 | Business logic |
-| 7 | Diff Review Management | 80 | Business logic |
-| 8 | Message Handling | 100 | Infrastructure |
-| 9 | Configuration Management | 80 | Cross-cutting |
-| 10 | UI State Management | 70 | UI concern |
+| #   | Concern                        | Lines | Violation Type      |
+| --- | ------------------------------ | ----- | ------------------- |
+| 1   | Extension Activation/Lifecycle | 50    | Core responsibility |
+| 2   | Webview Provider Management    | 120   | UI + Business mixed |
+| 3   | Sidebar Panel Implementation   | 200   | UI concern          |
+| 4   | HTML Generation for Settings   | 150   | UI concern          |
+| 5   | Tool Orchestration             | 180   | Business logic      |
+| 6   | Provider Coordination          | 100   | Business logic      |
+| 7   | Diff Review Management         | 80    | Business logic      |
+| 8   | Message Handling               | 100   | Infrastructure      |
+| 9   | Configuration Management       | 80    | Cross-cutting       |
+| 10  | UI State Management            | 70    | UI concern          |
 
 #### Required Extraction Plan
 
 ```
 extension.js (1130 lines)
     ↓ REFACTOR TO ↓
-    
+
 lib/extension/
 ├── activation.js          (50 lines)   - Entry point
 ├── commands.js            (80 lines)   - Command registration
@@ -86,6 +87,7 @@ lib/infrastructure/
 **SoC Compliance:** ✅ 100%
 
 #### Acceptance Criteria
+
 - [ ] All 10 concerns in separate files
 - [ ] No file exceeds 200 lines
 - [ ] Unit tests for each extracted module
@@ -101,26 +103,27 @@ lib/infrastructure/
 **Status:** Must Fix Before v3.0.1
 
 #### Details
+
 - **File:** `lib/tools/csharp-handlers.js`
 - **Lines:** 765 / 700 limit (**9% OVER**)
 - **Responsibilities:** C# handlers + Backup management + File operations
 
 #### Concerns Detected
 
-| Concern | Lines | Proper Location |
-|---------|-------|-----------------|
-| C# Error Detection Handlers | 200 | lib/tools/csharp/ |
-| C# Error Reporting | 150 | lib/tools/csharp/ |
-| Backup Management | 200 | lib/services/backup/ |
-| File System Operations | 100 | lib/data/file-ops/ |
-| Validation Logic | 115 | lib/business/validation/ |
+| Concern                     | Lines | Proper Location          |
+| --------------------------- | ----- | ------------------------ |
+| C# Error Detection Handlers | 200   | lib/tools/csharp/        |
+| C# Error Reporting          | 150   | lib/tools/csharp/        |
+| Backup Management           | 200   | lib/services/backup/     |
+| File System Operations      | 100   | lib/data/file-ops/       |
+| Validation Logic            | 115   | lib/business/validation/ |
 
 #### Required Extraction
 
 ```
 lib/tools/csharp-handlers.js (765 lines)
     ↓ REFACTOR TO ↓
-    
+
 lib/tools/csharp/
 ├── error-detection.js     (200 lines)
 └── error-reporting.js     (150 lines)
@@ -150,17 +153,19 @@ lib/business/validation/
 **Status:** Monitor and refactor proactively
 
 #### Details
+
 - **File:** `lib/tools/godot-handlers.js`
 - **Lines:** 618 / 700 limit (88% of limit)
 - **Responsibilities:** Godot detection, practices checking, documentation lookup
 
 #### Recommended Action
+
 Extract before it exceeds limit:
 
 ```
 lib/tools/godot-handlers.js (618 lines)
     ↓ REFACTOR TO ↓
-    
+
 lib/tools/godot/
 ├── project-detection.js   (200 lines)
 ├── practices-validator.js (250 lines)
@@ -176,6 +181,7 @@ lib/tools/godot/
 **Status:** Monitor and refactor proactively
 
 #### Details
+
 - **File:** `lib/tools/code-search-handlers.js`
 - **Lines:** 598 / 700 limit (85% of limit)
 - **Risk:** Will exceed limit with next feature addition
@@ -189,6 +195,7 @@ lib/tools/godot/
 **Status:** Monitor and refactor proactively
 
 #### Details
+
 - **File:** `lib/tools/handlers-file-ops.js`
 - **Lines:** 571 / 700 limit (82% of limit)
 
@@ -203,6 +210,7 @@ lib/tools/godot/
 **Lines:** 543
 
 **Issue:** Contains both integrity checking AND fix application logic. Should be separated into:
+
 - `lib/tools/integrity/checker.js`
 - `lib/services/integrity/fix-applier.js`
 
@@ -215,6 +223,7 @@ lib/tools/godot/
 **Lines:** 491
 
 **Issue:** Mixes Patreon API calls with business logic. Should separate:
+
 - API client layer
 - Business logic layer
 
@@ -224,36 +233,36 @@ lib/tools/godot/
 
 ### lib/tools/ (Handlers)
 
-| File | Lines | Limit | Status | Action |
-|------|-------|-------|--------|--------|
-| csharp-handlers.js | 765 | 700 | ❌ OVER | 🔴 Extract |
-| godot-handlers.js | 618 | 700 | ⚠️ HIGH | 🟡 Monitor |
-| code-search-handlers.js | 598 | 700 | ⚠️ HIGH | 🟡 Monitor |
-| handlers-file-ops.js | 571 | 700 | ⚠️ HIGH | 🟡 Monitor |
-| project-integrity-handlers.js | 543 | 700 | ⚠️ HIGH | 🟡 Plan refactor |
-| patreon-handlers.js | 491 | 700 | ✅ OK | 🟡 Plan refactor |
-| version-tracker-handlers.js | 357 | 700 | ✅ OK | - |
-| math-handlers.js | 328 | 700 | ✅ OK | - |
-| project-map-handlers.js | 295 | 700 | ✅ OK | - |
-| publish-validation-handlers.js | 286 | 700 | ✅ OK | - |
-| project-awareness-handlers.js | 278 | 700 | ✅ OK | - |
-| registry-config.js | 272 | 700 | ✅ OK | - |
-| docs-handlers.js | 267 | 700 | ✅ OK | - |
-| handlers-status.js | 226 | 700 | ✅ OK | - |
-| training-handlers.js | 224 | 700 | ✅ OK | - |
-| fdq-handlers.js | 224 | 700 | ✅ OK | - |
-| project-memory-handlers.js | 195 | 700 | ✅ OK | - |
-| registry-project-awareness.js | 190 | 700 | ✅ OK | - |
-| registry-project.js | 189 | 700 | ✅ OK | - |
-| project-initialization-handlers.js | 179 | 700 | ✅ OK | - |
+| File                               | Lines | Limit | Status  | Action           |
+| ---------------------------------- | ----- | ----- | ------- | ---------------- |
+| csharp-handlers.js                 | 765   | 700   | ❌ OVER | 🔴 Extract       |
+| godot-handlers.js                  | 618   | 700   | ⚠️ HIGH | 🟡 Monitor       |
+| code-search-handlers.js            | 598   | 700   | ⚠️ HIGH | 🟡 Monitor       |
+| handlers-file-ops.js               | 571   | 700   | ⚠️ HIGH | 🟡 Monitor       |
+| project-integrity-handlers.js      | 543   | 700   | ⚠️ HIGH | 🟡 Plan refactor |
+| patreon-handlers.js                | 491   | 700   | ✅ OK   | 🟡 Plan refactor |
+| version-tracker-handlers.js        | 357   | 700   | ✅ OK   | -                |
+| math-handlers.js                   | 328   | 700   | ✅ OK   | -                |
+| project-map-handlers.js            | 295   | 700   | ✅ OK   | -                |
+| publish-validation-handlers.js     | 286   | 700   | ✅ OK   | -                |
+| project-awareness-handlers.js      | 278   | 700   | ✅ OK   | -                |
+| registry-config.js                 | 272   | 700   | ✅ OK   | -                |
+| docs-handlers.js                   | 267   | 700   | ✅ OK   | -                |
+| handlers-status.js                 | 226   | 700   | ✅ OK   | -                |
+| training-handlers.js               | 224   | 700   | ✅ OK   | -                |
+| fdq-handlers.js                    | 224   | 700   | ✅ OK   | -                |
+| project-memory-handlers.js         | 195   | 700   | ✅ OK   | -                |
+| registry-project-awareness.js      | 190   | 700   | ✅ OK   | -                |
+| registry-project.js                | 189   | 700   | ✅ OK   | -                |
+| project-initialization-handlers.js | 179   | 700   | ✅ OK   | -                |
 
 **Handler SoC Score:** 68/100 (Failing)
 
 ### Root Directory
 
-| File | Lines | Limit | Status | Action |
-|------|-------|-------|--------|--------|
-| extension.js | 1130 | 700 | ❌ CRITICAL | 🔴 MUST extract |
+| File         | Lines | Limit | Status      | Action          |
+| ------------ | ----- | ----- | ----------- | --------------- |
+| extension.js | 1130  | 700   | ❌ CRITICAL | 🔴 MUST extract |
 
 **Root SoC Score:** 0/100 (Failing)
 
@@ -331,12 +340,12 @@ IF file.lines > 700:
     STOP_OPERATION()
     REPORT_VIOLATION(file, "File exceeds 700 line limit")
     PROPOSE_EXTRACTION_PLAN()
-    
+
 IF file.hasMixedConcerns():
     STOP_OPERATION()
     REPORT_VIOLATION(file, "Mixed concerns detected")
     LIST_CONCERNS_FOUND()
-    
+
 IF addingToGodFile(file):
     REJECT_OPERATION()
     SUGGEST_ALTERNATIVE_MODULE()
@@ -370,9 +379,9 @@ IF addingToGodFile(file):
 
 ### Required Approvals
 
-- [ ] Lead Architect: _____________  
-- [ ] Technical Lead: _____________  
-- [ ] Product Manager: _____________  
+- [ ] Lead Architect: ******\_******
+- [ ] Technical Lead: ******\_******
+- [ ] Product Manager: ******\_******
 
 **Audit Completed By:** Senior Architect  
 **Date:** 2026-04-10  

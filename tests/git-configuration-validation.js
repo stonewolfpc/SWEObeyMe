@@ -27,21 +27,18 @@ console.log('Check 1: .git/config file');
 try {
   const configContent = fs.readFileSync(gitConfigPath, 'utf-8');
   console.log('  ✅ .git/config exists and readable');
-  
+
   // Check for problematic settings
-  const problematicSettings = [
-    'core.sshCommand',
-    'http.https://github.com/.extraheader',
-  ];
-  
-  problematicSettings.forEach(setting => {
+  const problematicSettings = ['core.sshCommand', 'http.https://github.com/.extraheader'];
+
+  problematicSettings.forEach((setting) => {
     if (configContent.includes(setting)) {
       console.log(`  ❌ ERROR: Problematic setting found: ${setting}`);
       console.log(`     This can cause CI failures. Remove from .git/config.`);
       hasErrors = true;
     }
   });
-  
+
   if (!hasErrors) {
     console.log('  ✅ No problematic git config settings');
   }
@@ -72,7 +69,7 @@ if (fs.existsSync(gitModulesPath)) {
     const modulesContent = fs.readFileSync(gitModulesPath, 'utf-8');
     const submodules = (modulesContent.match(/\[submodule/g) || []).length;
     console.log(`  ℹ️  Found ${submodules} submodule(s)`);
-    
+
     // Check for problematic submodule settings
     if (modulesContent.includes('core.sshCommand') || modulesContent.includes('extraheader')) {
       console.log('  ❌ ERROR: Problematic settings in .gitmodules');
@@ -101,7 +98,9 @@ try {
 // Check 5: Verify no global config interference
 console.log('\nCheck 5: Global config interference');
 try {
-  const globalSshCommand = execSync('git config --global core.sshCommand', { encoding: 'utf-8' }).trim();
+  const globalSshCommand = execSync('git config --global core.sshCommand', {
+    encoding: 'utf-8',
+  }).trim();
   if (globalSshCommand) {
     console.log('  ⚠️  WARNING: Global core.sshCommand is set');
     console.log(`     Value: ${globalSshCommand}`);
@@ -113,7 +112,9 @@ try {
 }
 
 try {
-  const globalExtraheader = execSync('git config --global http.https://github.com/.extraheader', { encoding: 'utf-8' }).trim();
+  const globalExtraheader = execSync('git config --global http.https://github.com/.extraheader', {
+    encoding: 'utf-8',
+  }).trim();
   if (globalExtraheader) {
     console.log('  ⚠️  WARNING: Global http.https://github.com/.extraheader is set');
     console.log(`     Value: ${globalExtraheader}`);
@@ -128,7 +129,10 @@ try {
 console.log('\nCheck 6: Repository state');
 try {
   const status = execSync('git status --porcelain', { encoding: 'utf-8', cwd: repoPath });
-  const changes = status.trim().split('\n').filter(line => line.trim());
+  const changes = status
+    .trim()
+    .split('\n')
+    .filter((line) => line.trim());
   if (changes.length > 0) {
     console.log(`  ⚠️  WARNING: ${changes.length} uncommitted changes`);
   } else {
@@ -147,27 +151,31 @@ let platformCheckPassed = true;
 
 try {
   const windsurfTest = fs.readFileSync(windsurfTestPath, 'utf-8');
-  
+
   // On Unix (Linux/macOS), should use 'which', not 'where'
   if (platform !== 'win32') {
     if (windsurfTest.includes("execSync('where")) {
-      console.log('  ❌ ERROR: windsurf-runtime-behavior.js uses Windows-only "where" command on Unix');
+      console.log(
+        '  ❌ ERROR: windsurf-runtime-behavior.js uses Windows-only "where" command on Unix'
+      );
       console.log('     This will cause CI failures on Linux/macOS runners');
       hasErrors = true;
       platformCheckPassed = false;
     }
   }
-  
+
   // On Windows, should use 'where', not 'which'
   if (platform === 'win32') {
     if (windsurfTest.includes("execSync('which")) {
-      console.log('  ❌ ERROR: windsurf-runtime-behavior.js uses Unix-only "which" command on Windows');
+      console.log(
+        '  ❌ ERROR: windsurf-runtime-behavior.js uses Unix-only "which" command on Windows'
+      );
       console.log('     This will cause CI failures on Windows runners');
       hasErrors = true;
       platformCheckPassed = false;
     }
   }
-  
+
   if (platformCheckPassed) {
     console.log(`  ✅ Platform-specific commands correct for ${platform}`);
   }

@@ -14,22 +14,26 @@ Resilience is the ability of a system to continue operating correctly despite fa
 Automatically retry failed operations a configurable number of times before marking as failure.
 
 **When to Use:**
+
 - Temporary network problems (packet loss)
 - Internal errors of target service (database outage)
 - No or slow responses due to high load
 
 **Implementation Considerations:**
+
 - Configure maximum retry attempts
 - Use exponential backoff to avoid overwhelming service
 - Retry only on idempotent operations
 - Differentiate between retryable and non-retryable errors
 
 **Risks:**
+
 - Can make overload worse if service is struggling
 - May cause duplicate operations
 - Increases latency on failures
 
 **Best Practices:**
+
 - Combine with circuit breaker to prevent cascading failures
 - Use jitter in backoff to avoid thundering herd
 - Log retry attempts for monitoring
@@ -40,21 +44,25 @@ Automatically retry failed operations a configurable number of times before mark
 Enable service to continue execution when request to another service fails by providing fallback value or alternative behavior.
 
 **When to Use:**
+
 - When degraded functionality is acceptable
 - When alternative data sources exist
 - When business logic can handle missing data
 
 **Example Scenarios:**
+
 - Payment service: Fallback to simple business rule for fraud detection
 - Recommendation service: Return cached or default recommendations
 - Configuration service: Use local cached configuration
 
 **Risks:**
+
 - May hide real failures
 - Fallback values may not be appropriate
 - Can introduce security vulnerabilities
 
 **Best Practices:**
+
 - Document fallback behavior clearly
 - Monitor fallback usage
 - Ensure fallback is safe and appropriate
@@ -65,28 +73,33 @@ Enable service to continue execution when request to another service fails by pr
 Set maximum time to wait for response, treat request as failed if no response within timeout.
 
 **When to Use:**
+
 - All external service calls
 - Database queries
 - Network operations
 - Any operation that might hang
 
 **Implementation Considerations:**
+
 - Set timeouts appropriately - high enough for slow responses, low enough to detect failures
 - Different timeouts for different operations
 - Consider timeout hierarchy (connect timeout, read timeout)
 
 **Risks:**
+
 - Can't distinguish between timeout and failure
 - May cause duplicate operations if combined with retry
 - Hard to choose optimal timeout value
 
 **Handling Timeouts:**
+
 - Log timeout events
 - Consider idempotency for timeout scenarios
 - Provide clear error messages
 - Monitor timeout rates
 
 **Example:** Order placement timeout
+
 - Can't determine if order succeeded or failed
 - Risk of duplicate orders if retried
 - Risk of customer dissatisfaction if marked failed
@@ -96,16 +109,19 @@ Set maximum time to wait for response, treat request as failed if no response wi
 Protect services from being overwhelmed when already partially unavailable due to high load. Switches between three states: closed (requests flow), open (requests rejected), half-open (one probe request to test recovery).
 
 **States:**
+
 - **Closed:** Normal operation, requests pass through
 - **Open:** Circuit is tripped, requests rejected immediately
 - **Half-open:** Probe request allowed to test if service recovered
 
 **When to Use:**
+
 - Protecting downstream services from overload
 - Preventing cascading failures
 - Providing fast failure when service is down
 
 **Implementation:**
+
 - Track failure rate over time window
 - Trip circuit when failure threshold exceeded
 - After cooldown period, enter half-open state
@@ -113,12 +129,14 @@ Protect services from being overwhelmed when already partially unavailable due t
 - On failure in half-open, return to open
 
 **Configuration Parameters:**
+
 - Failure threshold (e.g., 5 failures in 10 seconds)
 - Success threshold for recovery (e.g., 2 successes)
 - Timeout duration for open state
 - Timeout duration for half-open state
 
 **Best Practices:**
+
 - Combine with retry pattern (but don't retry when circuit is open)
 - Use fallback when circuit is open
 - Monitor circuit state transitions
@@ -159,19 +177,23 @@ Protect services from being overwhelmed when already partially unavailable due t
 ### Libraries and Frameworks
 
 **Java:**
+
 - Resilience4j: Retry, Circuit Breaker, Rate Limiter, Bulkhead, Timeout
 - Hystrix (deprecated, but still referenced)
 - Spring Retry
 
 **.NET:**
+
 - Polly: Retry, Circuit Breaker, Fallback, Timeout, Bulkhead
 - Microsoft Resilience Framework
 
 **Go:**
+
 - Hystrix-go
 - Circuit breaker libraries
 
 **JavaScript/TypeScript:**
+
 - Cockatiel: Retry, Circuit Breaker, Timeout
 - resilience: Retry, Circuit Breaker, Timeout
 
@@ -187,6 +209,7 @@ Protect services from being overwhelmed when already partially unavailable due t
 ### Error Classification
 
 Distinguish between:
+
 - **Transient errors:** Network issues, temporary overload (retry)
 - **Permanent errors:** Invalid data, authentication failures (don't retry)
 - **Timeout errors:** No response within timeout (may retry with caution)

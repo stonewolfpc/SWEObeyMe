@@ -36,32 +36,41 @@ To minimize complexity and maximize compatibility, it is recommended that models
 ## Block Layout Maps
 
 ### Q4_0
+
 Standard 4-bit quantization with uniform scaling per block.
 
 ### Q4_K_S
+
 Small K-quantization variant with minimal metadata overhead.
 
 ### Q4_K_M
+
 Medium K-quantization variant balancing accuracy and size.
 
 ### Q5_K_M
+
 5-bit K-quantization with medium block size.
 
 ### Q6_K
+
 6-bit quantization for higher precision requirements.
 
-### IQ* Formats
+### IQ\* Formats
+
 Importance-weighted quantization formats with adaptive precision.
 
 ### LFM Custom Blocks
+
 Liquid AI specific block layouts for their model architecture.
 
 ### Qwen Rotary + Fused Attention Blocks
+
 Qwen-specific attention implementation with rotary embeddings and fused operations.
 
 ## Memory Mapping
 
 GGUF is designed for memory-mapped access, enabling:
+
 - Zero-copy loading
 - Direct tensor access from file
 - Efficient memory usage

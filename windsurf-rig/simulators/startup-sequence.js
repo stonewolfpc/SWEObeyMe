@@ -20,13 +20,13 @@ class StartupSequenceSimulation {
       skipped: 0,
       total: 0,
     };
-    
+
     this.indexPath = join(dirname(__dirname), '..', 'index.js');
   }
 
   async run() {
     console.log('[StartupSequence] Starting full Windsurf-Next startup sequence simulation...');
-    
+
     const tests = [
       'editor-startup',
       'extension-activation',
@@ -42,21 +42,21 @@ class StartupSequenceSimulation {
       'first-checkpoint',
       'first-permission-request',
     ];
-    
+
     for (const test of tests) {
       await this.runTest(test);
     }
-    
+
     this.results.total = this.results.tests.length;
     return this.results;
   }
 
   async runTest(testName) {
     console.log(`[StartupSequence] Running: ${testName}...`);
-    
+
     let passed = false;
     let error = null;
-    
+
     try {
       switch (testName) {
         case 'editor-startup':
@@ -102,14 +102,14 @@ class StartupSequenceSimulation {
     } catch (e) {
       error = e.message;
     }
-    
+
     this.results.tests.push({
       id: testName,
       name: `Startup Sequence - ${testName}`,
       passed,
       error,
     });
-    
+
     if (passed) {
       this.results.passed++;
       console.log(`[StartupSequence] ✅ ${testName}`);
@@ -132,16 +132,16 @@ class StartupSequenceSimulation {
   async testMCPConfigLoad() {
     // Simulate MCP config load
     const configPath = join(dirname(__dirname), '..', '.sweobeyme-config.json');
-    
+
     try {
       const { existsSync, readFileSync } = await import('fs');
       if (!existsSync(configPath)) {
         return true; // Skip if no config
       }
-      
+
       const content = readFileSync(configPath, 'utf-8');
       const config = JSON.parse(content);
-      
+
       return config.mcpServers !== undefined;
     } catch (e) {
       return true; // Skip if config doesn't exist
@@ -154,12 +154,12 @@ class StartupSequenceSimulation {
       const server = spawn('node', [this.indexPath], {
         stdio: ['pipe', 'pipe', 'pipe'],
       });
-      
+
       // Check if server spawned successfully
       const spawned = server.pid !== undefined;
-      
+
       server.kill();
-      
+
       return spawned;
     } catch (e) {
       return false;
@@ -172,12 +172,12 @@ class StartupSequenceSimulation {
       const server = spawn('node', [this.indexPath], {
         stdio: ['pipe', 'pipe', 'pipe'],
       });
-      
+
       let stdout = '';
       server.stdout.on('data', (data) => {
         stdout += data.toString();
       });
-      
+
       // Send initialize request
       const initializeRequest = JSON.stringify({
         jsonrpc: '2.0',
@@ -192,14 +192,14 @@ class StartupSequenceSimulation {
           },
         },
       });
-      
+
       server.stdin.write(initializeRequest + '\n');
-      
+
       // Wait for response
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
       server.kill();
-      
+
       // Check for valid handshake
       const hasResponse = stdout.length > 0;
       return hasResponse;
@@ -231,7 +231,7 @@ class StartupSequenceSimulation {
         },
       },
     };
-    
+
     const validation = this.validateToolCall(toolCall);
     return validation.valid === true;
   }
@@ -247,9 +247,11 @@ class StartupSequenceSimulation {
         arguments: {}, // Missing file_path
       },
     };
-    
+
     const validation = this.validateToolCall(errorCall);
-    return validation.valid === false && Array.isArray(validation.errors) && validation.errors.length > 0;
+    return (
+      validation.valid === false && Array.isArray(validation.errors) && validation.errors.length > 0
+    );
   }
 
   async testFirstRecovery() {
@@ -275,7 +277,7 @@ class StartupSequenceSimulation {
   // Helper methods
   validateToolCall(toolCall) {
     const errors = [];
-    
+
     if (!toolCall.jsonrpc || toolCall.jsonrpc !== '2.0') {
       errors.push('invalid-jsonrpc');
     }
@@ -286,30 +288,30 @@ class StartupSequenceSimulation {
       errors.push('missing-params');
       return { valid: false, errors };
     }
-    
+
     if (!toolCall.params.name) {
       errors.push('missing-tool-name');
     }
-    
+
     if (!toolCall.params.arguments) {
       errors.push('missing-arguments');
       return { valid: false, errors };
     }
-    
+
     // Tool-specific parameter validation
     const toolName = toolCall.params.name;
     const args = toolCall.params.arguments;
-    
+
     if (toolName === 'read_file') {
       if (!args.file_path) {
         errors.push('missing-file_path');
       }
     }
-    
+
     if (errors.length > 0) {
       return { valid: false, errors };
     }
-    
+
     return { valid: true, errors: [] };
   }
 }

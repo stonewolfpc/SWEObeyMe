@@ -35,7 +35,7 @@ console.log('\n2️⃣  Checking required build artifacts...');
 const requiredFiles = [
   'extension.js',
   'mcp/server.js',
-  'mcp/package.json'  // CRITICAL for WindSurf
+  'mcp/package.json', // CRITICAL for WindSurf
 ];
 
 const foundFiles = [];
@@ -62,7 +62,7 @@ if (missingFiles.length > 0) {
 console.log('\n3️⃣  Checking lib/ directory...');
 const libPath = path.join(projectRoot, 'lib');
 if (fs.existsSync(libPath)) {
-  const libFiles = fs.readdirSync(libPath).filter(f => f.endsWith('.js'));
+  const libFiles = fs.readdirSync(libPath).filter((f) => f.endsWith('.js'));
   console.log(`   ✅ lib/ directory has ${libFiles.length} JS files`);
 } else {
   warnings.push('lib/ directory not found');
@@ -75,18 +75,18 @@ const mcpPackageJsonPath = path.join(distPath, 'mcp', 'package.json');
 if (fs.existsSync(mcpPackageJsonPath)) {
   try {
     const mcpPkg = JSON.parse(fs.readFileSync(mcpPackageJsonPath, 'utf8'));
-    
+
     const hasName = !!mcpPkg.name;
     const hasVersion = !!mcpPkg.version;
     const hasMain = !!mcpPkg.main || !!mcpPkg.module;
-    
+
     if (hasName && hasVersion) {
       console.log(`   ✅ package.json valid (${mcpPkg.name} v${mcpPkg.version})`);
     } else {
       errors.push('dist/mcp/package.json missing required fields');
       console.error('   ❌ package.json missing name or version');
     }
-    
+
     // Compare with root package.json
     const rootPkg = JSON.parse(fs.readFileSync(path.join(projectRoot, 'package.json'), 'utf8'));
     if (mcpPkg.name === rootPkg.name && mcpPkg.version === rootPkg.version) {
@@ -107,7 +107,7 @@ if (fs.existsSync(mcpPackageJsonPath)) {
 
 // Test 5: Check .vsix file exists
 console.log('\n5️⃣  Checking .vsix package...');
-const vsixFiles = fs.readdirSync(projectRoot).filter(f => f.endsWith('.vsix'));
+const vsixFiles = fs.readdirSync(projectRoot).filter((f) => f.endsWith('.vsix'));
 
 if (vsixFiles.length > 0) {
   // Use the most recent vsix file (semantic version sorting)
@@ -116,7 +116,7 @@ if (vsixFiles.length > 0) {
     if (!match) return [0, 0, 0];
     return [parseInt(match[1]), parseInt(match[2]), parseInt(match[3])];
   }
-  
+
   function compareVersions(a, b) {
     const va = parseVersion(a);
     const vb = parseVersion(b);
@@ -125,33 +125,35 @@ if (vsixFiles.length > 0) {
     }
     return 0;
   }
-  
+
   const vsixFile = vsixFiles.sort(compareVersions)[0];
   const vsixPath = path.join(projectRoot, vsixFile);
   const vsixStats = fs.statSync(vsixPath);
-  
+
   console.log(`   ✅ ${vsixFile} found (${(vsixStats.size / 1024 / 1024).toFixed(2)} MB)`);
-  
+
   // Validate .vsix contents
   console.log('\n6️⃣  Validating .vsix contents...');
   const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'vsix-check-'));
-  
+
   const zipPath = path.join(tempDir, 'extension.zip');
-  
+
   try {
     // Extract and check contents
     if (os.platform() === 'win32') {
       // Copy and rename to .zip for PowerShell compatibility
       fs.copyFileSync(vsixPath, zipPath);
-      execSync(`powershell -Command "Expand-Archive -Path '${zipPath}' -DestinationPath '${tempDir}' -Force"`, 
-        { stdio: 'pipe' });
+      execSync(
+        `powershell -Command "Expand-Archive -Path '${zipPath}' -DestinationPath '${tempDir}' -Force"`,
+        { stdio: 'pipe' }
+      );
       fs.unlinkSync(zipPath);
     } else {
       execSync(`unzip -q "${vsixPath}" -d "${tempDir}"`, { stdio: 'pipe' });
     }
-    
+
     const extensionDir = path.join(tempDir, 'extension');
-    
+
     // Check critical files in .vsix
     const vsixChecks = [
       { file: 'package.json', critical: true },
@@ -160,7 +162,7 @@ if (vsixFiles.length > 0) {
       { file: 'dist/mcp/package.json', critical: true },
       { file: 'icon.png', critical: false },
     ];
-    
+
     let vsixValid = true;
     for (const check of vsixChecks) {
       const checkPath = path.join(extensionDir, check.file);
@@ -175,14 +177,13 @@ if (vsixFiles.length > 0) {
         console.warn(`   ⚠️  ${check.file} missing`);
       }
     }
-    
+
     if (vsixValid) {
       console.log('   ✅ All critical files present in .vsix');
     }
-    
+
     // Cleanup
     fs.rmSync(tempDir, { recursive: true, force: true });
-    
   } catch (e) {
     warnings.push('Could not validate .vsix contents: ' + e.message);
     console.warn('   ⚠️  Could not validate .vsix:', e.message);
@@ -207,22 +208,19 @@ for (const check of sizeChecks) {
       warnings.push(`${check.file} suspiciously small (${size} bytes)`);
       console.warn(`   ⚠️  ${check.file} very small (${size} bytes)`);
     } else if (size > check.maxSize) {
-      warnings.push(`${check.file} very large (${(size/1024/1024).toFixed(1)} MB)`);
-      console.warn(`   ⚠️  ${check.file} very large (${(size/1024/1024).toFixed(1)} MB)`);
+      warnings.push(`${check.file} very large (${(size / 1024 / 1024).toFixed(1)} MB)`);
+      console.warn(`   ⚠️  ${check.file} very large (${(size / 1024 / 1024).toFixed(1)} MB)`);
     } else {
-      console.log(`   ✅ ${check.file} size OK (${(size/1024).toFixed(1)} KB)`);
+      console.log(`   ✅ ${check.file} size OK (${(size / 1024).toFixed(1)} KB)`);
     }
   }
 }
 
 // Test 8: Check for source maps (optional)
 console.log('\n8️⃣  Checking source maps...');
-const sourceMaps = [
-  'dist/extension.js.map',
-  'dist/mcp/server.js.map',
-];
+const sourceMaps = ['dist/extension.js.map', 'dist/mcp/server.js.map'];
 
-const hasSourceMaps = sourceMaps.every(f => fs.existsSync(path.join(projectRoot, f)));
+const hasSourceMaps = sourceMaps.every((f) => fs.existsSync(path.join(projectRoot, f)));
 if (hasSourceMaps) {
   console.log('   ✅ Source maps present (good for debugging)');
 } else {
@@ -240,7 +238,7 @@ console.log(`   Warnings: ${warnings.length}`);
 if (errors.length > 0) {
   console.error('\n❌ BUILD ARTIFACT VALIDATION FAILED');
   console.error('   Critical issues:');
-  errors.forEach(e => console.error(`      - ${e}`));
+  errors.forEach((e) => console.error(`      - ${e}`));
   console.error('\n   FIX: Run "npm run build" and "vsce package"');
   process.exit(1);
 } else if (warnings.length > 0) {

@@ -190,15 +190,19 @@ Backlog → To Do → In Progress → Review → Done
 # ADR-001: Use PostgreSQL for User Data
 
 ## Status
+
 Accepted
 
 ## Context
+
 We need to store user data with strong consistency guarantees.
 
 ## Decision
+
 Use PostgreSQL as the primary database for user data.
 
 ## Consequences
+
 - Positive: Strong ACID guarantees
 - Positive: Mature ecosystem
 - Negative: Scaling challenges at very high scale
@@ -244,19 +248,24 @@ Use PostgreSQL as the primary database for user data.
 # RFC-001: Add OAuth 2.0 Authentication
 
 ## Summary
+
 Add OAuth 2.0 authentication to allow third-party integrations.
 
 ## Motivation
+
 Users want to integrate with third-party services.
 
 ## Proposed Implementation
+
 Use OAuth 2.0 with PKCE for security.
 
 ## Alternatives Considered
+
 - API Keys: Less secure
 - Custom Auth: Reinventing the wheel
 
 ## Unresolved Questions
+
 - Which OAuth providers to support?
 ```
 

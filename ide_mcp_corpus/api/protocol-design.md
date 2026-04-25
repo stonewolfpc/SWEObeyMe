@@ -349,11 +349,11 @@ ws.send(JSON.stringify({ type: 'hello' }));
 ```javascript
 function connect() {
   const ws = new WebSocket('ws://example.com');
-  
+
   ws.onclose = () => {
     setTimeout(connect, 1000); // Reconnect after 1 second
   };
-  
+
   return ws;
 }
 ```

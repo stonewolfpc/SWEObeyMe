@@ -372,6 +372,7 @@ Complete configuration examples for different use cases.
 # Project Architectural Contract
 
 ## File Structure
+
 - All source files in `src/`
 - Tests in `tests/`
 - Utilities in `lib/utils/`
@@ -379,12 +380,14 @@ Complete configuration examples for different use cases.
 - Services in `src/services/`
 
 ## Naming Conventions
+
 - Components: PascalCase (e.g., UserProfile.tsx)
 - Functions: camelCase (e.g., getUserData)
 - Constants: UPPER_SNAKE_CASE (e.g., API_ENDPOINT)
 - Files: kebab-case (e.g., user-profile.tsx)
 
 ## Forbidden Patterns
+
 - No direct DOM manipulation
 - No console.log in production code
 - No TODO comments in production code
@@ -392,21 +395,25 @@ Complete configuration examples for different use cases.
 - No debugger statements
 
 ## File Size Limits
+
 - Maximum 700 lines per file
 - Maximum 50 functions per file
 - Maximum 5 classes per file
 
 ## Import Rules
+
 - No circular dependencies
 - Import order: external, internal, relative
 - Use absolute imports for internal modules
 
 ## Documentation Requirements
+
 - All public functions must have JSDoc
 - All classes must have description
 - Complex logic must have inline comments
 
 ## Testing Requirements
+
 - All functions must have unit tests
 - Minimum 80% code coverage
 - Integration tests for services
@@ -427,13 +434,7 @@ Complete configuration examples for different use cases.
   "mcpEnableWorkflowOrchestration": true,
   "mcpEnableSessionMemory": true,
   "mcpEnableOracle": true,
-  "mcpForbiddenPatterns": [
-    "console.log",
-    "debugger",
-    "eval",
-    "TODO",
-    "FIXME"
-  ]
+  "mcpForbiddenPatterns": ["console.log", "debugger", "eval", "TODO", "FIXME"]
 }
 ```
 
@@ -450,10 +451,7 @@ Complete configuration examples for different use cases.
   "mcpEnableWorkflowOrchestration": false,
   "mcpEnableSessionMemory": true,
   "mcpEnableOracle": true,
-  "mcpForbiddenPatterns": [
-    "debugger",
-    "eval"
-  ]
+  "mcpForbiddenPatterns": ["debugger", "eval"]
 }
 ```
 
@@ -470,15 +468,7 @@ Complete configuration examples for different use cases.
   "mcpEnableWorkflowOrchestration": true,
   "mcpEnableSessionMemory": true,
   "mcpEnableOracle": true,
-  "mcpForbiddenPatterns": [
-    "console.log",
-    "debugger",
-    "eval",
-    "TODO",
-    "FIXME",
-    "HACK",
-    "XXX"
-  ]
+  "mcpForbiddenPatterns": ["console.log", "debugger", "eval", "TODO", "FIXME", "HACK", "XXX"]
 }
 ```
 

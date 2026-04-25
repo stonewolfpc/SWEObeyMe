@@ -53,7 +53,13 @@
         "18.330 Introduction to Numerical Analysis"
       ],
       "download_format": "PDF, lecture notes, problem sets",
-      "recommended_for": ["calculus", "linear_algebra", "differential_equations", "complex_analysis", "numerical_methods"]
+      "recommended_for": [
+        "calculus",
+        "linear_algebra",
+        "differential_equations",
+        "complex_analysis",
+        "numerical_methods"
+      ]
     },
     {
       "name": "Cornell University Historical Math Monographs",

@@ -23,6 +23,7 @@ The C# Bridge (v1.0.13) provides advanced error detection for C# files, includin
 ### Is SWEObeyMe free?
 
 SWEObeyMe is dual-licensed:
+
 - **Community License (Free):** Free for individuals, indie devs, companies under $10M revenue, research, and education
 - **Enterprise License (Commercial):** Required for companies over $10M, enterprise deployments, commercial integration, and SaaS platforms
 
@@ -76,6 +77,7 @@ SWEObeyMe enforces a maximum of 700 lines per file to prevent technical debt. Fi
 ### Can I change the 700-line limit?
 
 Yes, you can change it using the surgical rules configuration:
+
 ```json
 {
   "mcpMaxLines": 1000
@@ -87,6 +89,7 @@ However, the default 700-line limit is recommended for maintainability.
 ### What are forbidden patterns?
 
 Forbidden patterns are code patterns that SWEObeyMe prevents:
+
 - `console.log` statements
 - `TODO` comments
 - `debugger` statements
@@ -97,6 +100,7 @@ These are automatically removed or rejected before writing.
 ### Can I add custom forbidden patterns?
 
 Yes, you can add custom patterns:
+
 ```json
 {
   "mcpForbiddenPatterns": [
@@ -117,6 +121,7 @@ Yes, you can add custom patterns:
 ### How do I use SWEObeyMe tools?
 
 SWEObeyMe provides 68 MCP tools that AI models can use. Ask the AI to use a specific tool:
+
 ```json
 {
   "tool": "obey_surgical_plan",
@@ -133,6 +138,7 @@ See [README.md](README.md) for the complete tool list.
 ### What is the difference between read_file and standard file reading?
 
 The SWEObeyMe `read_file` tool provides enhanced context including:
+
 - Project structure information
 - File dependency hints
 - Suggested next tools
@@ -141,6 +147,7 @@ The SWEObeyMe `read_file` tool provides enhanced context including:
 ### How do I split a large file?
 
 Use the `refactor_move_block` tool:
+
 ```json
 {
   "tool": "refactor_move_block",
@@ -155,6 +162,7 @@ Use the `refactor_move_block` tool:
 ### How do I validate changes before writing?
 
 Use the `obey_surgical_plan` tool:
+
 ```json
 {
   "tool": "obey_surgical_plan",
@@ -169,6 +177,7 @@ Use the `obey_surgical_plan` tool:
 ### How do I check for anti-patterns?
 
 Use the `check_for_anti_patterns` tool:
+
 ```json
 {
   "tool": "check_for_anti_patterns",
@@ -181,6 +190,7 @@ Use the `check_for_anti_patterns` tool:
 ### How do I verify imports after changes?
 
 Use the `verify_imports` tool:
+
 ```json
 {
   "tool": "verify_imports",
@@ -219,6 +229,7 @@ The C# Bridge provides advanced error detection for C# files, including bracket 
 ### How do I adjust C# error sensitivity?
 
 Adjust the `severityThreshold`:
+
 - `0`: Show all errors (info, warnings, errors)
 - `1`: Show warnings and errors only
 - `2`: Show errors only
@@ -226,6 +237,7 @@ Adjust the `severityThreshold`:
 ### How do I reduce false positives?
 
 Adjust the `confidenceThreshold` (default: 70%):
+
 - Higher values (80-90%) reduce false positives but may miss some errors
 - Lower values (50-60%) catch more errors but may have more false positives
 
@@ -236,6 +248,7 @@ Adjust the `confidenceThreshold` (default: 70%):
 SWEObeyMe performs extensive validation, maintains persistent project memory, and enforces strict discipline through multiple tool calls. This results in higher token consumption than basic coding assistants.
 
 To reduce usage:
+
 - Set `scanOnlyWhenAsked: true`
 - Reduce `reportDetailLevel` to "minimal"
 - Disable C# Bridge if not needed
@@ -244,6 +257,7 @@ To reduce usage:
 ### How do I optimize for large projects?
 
 For projects with 10,000+ files:
+
 - Set `scanOnNewProject: false`
 - Set `scanOnlyOnProjectMapChange: true`
 - Increase C# alert cooldown to 60-120 seconds
@@ -263,6 +277,7 @@ For projects with 10,000+ files:
 ### MCP server not loading?
 
 See [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for detailed solutions. Common causes:
+
 - Extension not activated
 - Node.js version too old
 - Duplicate server detected
@@ -270,6 +285,7 @@ See [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for detailed solutions. Common caus
 ### File write rejected?
 
 Common causes:
+
 - Line count exceeds 700 lines
 - Forbidden pattern detected
 - Duplicate file detected
@@ -280,6 +296,7 @@ See [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for solutions.
 ### C# errors not showing?
 
 Common causes:
+
 - C# Bridge not enabled
 - Keep AI Informed not enabled
 - File not recognized as C#
@@ -292,6 +309,7 @@ See [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for solutions.
 ### What is project memory?
 
 Project memory is a persistent system that maintains:
+
 - Automatic indexing of project structure
 - Convention detection (naming patterns, folder organization)
 - Decision recording
@@ -300,6 +318,7 @@ Project memory is a persistent system that maintains:
 ### How do I use project memory?
 
 Index project structure:
+
 ```json
 {
   "tool": "index_project_structure"
@@ -307,6 +326,7 @@ Index project structure:
 ```
 
 Analyze conventions:
+
 ```json
 {
   "tool": "analyze_project_conventions"
@@ -314,6 +334,7 @@ Analyze conventions:
 ```
 
 View project state:
+
 ```json
 {
   "tool": "get_project_memory_summary"
@@ -323,6 +344,7 @@ View project state:
 ### What is the fallback system?
 
 The fallback system provides intelligent fallback strategies for 7 failure types:
+
 - File not found
 - Tool failure
 - Permission denied
@@ -334,6 +356,7 @@ The fallback system provides intelligent fallback strategies for 7 failure types
 ### What is anti-hallucination protection?
 
 Anti-hallucination protection prevents AI from inventing files or tools by:
+
 - Path verification before operations
 - File existence checks
 - Tool validation before use
@@ -342,6 +365,7 @@ Anti-hallucination protection prevents AI from inventing files or tools by:
 ### What is the tool priority system?
 
 The tool priority system ensures SWEObeyMe tools are ranked above Windsurf built-ins:
+
 - Priority 100: Critical tools
 - Priority 95: High-priority workflows
 - Priority 80: Context tools
@@ -353,6 +377,7 @@ The tool priority system ensures SWEObeyMe tools are ranked above Windsurf built
 ### When should I use SWEObeyMe?
 
 SWEObeyMe is beneficial for:
+
 - Production code requiring strict compliance
 - Large codebases needing governance
 - Teams wanting consistent code quality
@@ -362,6 +387,7 @@ SWEObeyMe is beneficial for:
 ### When should I not use SWEObeyMe?
 
 SWEObeyMe may not be suitable for:
+
 - Rapid prototyping (use relaxed config)
 - Very small projects (overhead may not be justified)
 - Projects with non-standard architectures
@@ -370,11 +396,13 @@ SWEObeyMe may not be suitable for:
 ### Should I use auto-fix?
 
 Auto-fix is useful for:
+
 - Learning environments
 - Legacy code migration
 - Rapid prototyping
 
 Auto-fix should be disabled for:
+
 - Production code
 - Strict compliance environments
 - Open source contributions
@@ -392,12 +420,14 @@ Auto-fix should be disabled for:
 ### Is SWEObeyMe open source?
 
 Yes, SWEObeyMe is open source with a dual-license model:
+
 - Community License (free for most uses)
 - Enterprise License (commercial use)
 
 ### Do I need to pay for SWEObeyMe?
 
 You need to pay only if:
+
 - Your company has annual revenue over $10M USD
 - You're doing enterprise deployments
 - You're integrating commercially into products
@@ -406,6 +436,7 @@ You need to pay only if:
 ### How do I get an Enterprise License?
 
 Contact:
+
 - Email: stonewolfpc@github.com
 - GitHub: https://github.com/stonewolfpc/SWEObeyMe
 
@@ -422,6 +453,7 @@ Contact:
 ### How do I report a bug?
 
 Report bugs on GitHub with:
+
 - Error log (if applicable)
 - Configuration
 - Windsurf version
@@ -430,6 +462,7 @@ Report bugs on GitHub with:
 ### How do I request a feature?
 
 Request features on GitHub Issues with:
+
 - Feature description
 - Use case
 - Proposed implementation
@@ -457,6 +490,7 @@ Loop detection prevents repetitive operations on the same file by tracking recen
 ### How does backup work?
 
 Backups are automatically created before file writes:
+
 - Atomic operations using temp files
 - SHA-256 hash verification for integrity
 - Maximum 10 backups per file (configurable)
@@ -465,6 +499,7 @@ Backups are automatically created before file writes:
 ### Can I customize the backup directory?
 
 Yes, set a custom backup directory:
+
 ```json
 {
   "sweObeyMe.backupPath": "D:/Custom/Backup/Path"
@@ -472,6 +507,7 @@ Yes, set a custom backup directory:
 ```
 
 Or via MCP server environment variable:
+
 ```json
 {
   "env": {
@@ -485,6 +521,7 @@ Or via MCP server environment variable:
 ### How do I upgrade from v1.2.1 to v1.3.0?
 
 New features in v1.3.0:
+
 - Rule Engine (7 strict behavior rules)
 - Persistent Project Memory
 - Fallback Behavior System
@@ -492,6 +529,7 @@ New features in v1.3.0:
 - Tool Priority System
 
 Required changes:
+
 1. Enable rule compliance (automatic)
 2. Configure scan behavior for project memory
 3. Set tool priority (default: "mcp")
@@ -501,6 +539,7 @@ See [BEST_PRACTICES.md](BEST_PRACTICES.md) for migration guide.
 ### How do I upgrade from v1.0.x to v1.3.0?
 
 Major changes:
+
 - Governor Pattern added (v1.0.17)
 - C# Bridge added (v1.0.13)
 - Workflow Automation added (v1.3.0)
@@ -524,6 +563,7 @@ Yes, SWEObeyMe works with multiple projects. Project memory is maintained per pr
 ### Does SWEObeyMe store my code?
 
 SWEObeyMe stores:
+
 - Project structure metadata
 - Convention patterns
 - Decision records
@@ -542,6 +582,7 @@ Yes, you can disable the extension in Windsurf or set `sweObeyMe.enabled: false`
 ### What happens if I disable SWEObeyMe?
 
 Disabling SWEObeyMe:
+
 - Stops MCP server
 - Removes surgical enforcement
 - Disables all SWEObeyMe tools

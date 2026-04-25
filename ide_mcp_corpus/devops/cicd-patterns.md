@@ -57,7 +57,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps: [...]
-  
+
   test:
     needs: build
     runs-on: ubuntu-latest
@@ -71,11 +71,11 @@ jobs:
   test-linux:
     runs-on: ubuntu-latest
     steps: [...]
-  
+
   test-windows:
     runs-on: windows-latest
     steps: [...]
-  
+
   test-macos:
     runs-on: macos-latest
     steps: [...]
@@ -165,7 +165,7 @@ environments:
   production:
     url: https://example.com
     protection_rules:
-      required_reviewers: ["team-lead"]
+      required_reviewers: ['team-lead']
 ```
 
 ## Deployment Pipelines
@@ -452,10 +452,10 @@ spec:
         app: myapp
     spec:
       containers:
-      - name: myapp
-        image: myapp:${{ github.sha }}
-        ports:
-        - containerPort: 3000
+        - name: myapp
+          image: myapp:${{ github.sha }}
+          ports:
+            - containerPort: 3000
 ```
 
 #### Service
@@ -469,8 +469,8 @@ spec:
   selector:
     app: myapp
   ports:
-  - port: 80
-    targetPort: 3000
+    - port: 80
+      targetPort: 3000
   type: LoadBalancer
 ```
 
@@ -482,8 +482,8 @@ kind: ConfigMap
 metadata:
   name: myapp-config
 data:
-  API_URL: "https://api.example.com"
-  LOG_LEVEL: "info"
+  API_URL: 'https://api.example.com'
+  LOG_LEVEL: 'info'
 ```
 
 #### Secret

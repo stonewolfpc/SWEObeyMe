@@ -17,6 +17,7 @@ llama.cpp uses an abstract memory interface (llama_memory_i) that allows differe
 ### Cache Component Hierarchy
 
 The KV cache is organized by layers and streams. Each layer contains tensors for:
+
 - Keys (K)
 - Values (V)
 - Per-head attention state
@@ -24,6 +25,7 @@ The KV cache is organized by layers and streams. Each layer contains tensors for
 ### Slot Allocation
 
 The system uses slot allocation to manage memory for multiple sequences:
+
 - Unified KV cache: Shared memory pool across all sequences
 - Slot finding algorithm: Efficient slot allocation for new tokens
 - Sequence tracking: Per-sequence state management
@@ -31,6 +33,7 @@ The system uses slot allocation to manage memory for multiple sequences:
 ### Independent Sliding Window Attention (ISWA)
 
 Support for sliding window attention with:
+
 - Configurable window sizes
 - Efficient memory reuse
 - Automatic cache invalidation
@@ -40,6 +43,7 @@ Support for sliding window attention with:
 ### Recurrent State Tensors
 
 For models like Mamba and RWKV that don't use standard KV cache:
+
 - llama_memory_recurrent class manages state
 - Two primary state tensors per layer
 - Hidden state persistence across inference steps
@@ -49,6 +53,7 @@ For models like Mamba and RWKV that don't use standard KV cache:
 ### Layer Filtering
 
 Selective layer memory management:
+
 - Only cache layers that benefit from it
 - Dynamic layer selection based on model architecture
 - Memory-aware layer offloading

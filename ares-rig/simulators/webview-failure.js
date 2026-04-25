@@ -20,7 +20,7 @@ class WebviewFailureSimulation {
       skipped: 0,
       total: 0,
     };
-    
+
     this.testDir = join(__dirname, '..', 'fixtures', 'webview-failure');
     this.ensureTestDir();
   }
@@ -33,7 +33,7 @@ class WebviewFailureSimulation {
 
   async run() {
     console.log('[WebviewFailureSimulation] Starting webview failure simulation...');
-    
+
     const tests = [
       'csp-violation',
       'missing-nonce',
@@ -47,21 +47,21 @@ class WebviewFailureSimulation {
       'message-channel-failure',
       'disposal-failure',
     ];
-    
+
     for (const test of tests) {
       await this.runTest(test);
     }
-    
+
     this.results.total = this.results.tests.length;
     return this.results;
   }
 
   async runTest(testName) {
     console.log(`[WebviewFailureSimulation] Running: ${testName}...`);
-    
+
     let passed = false;
     let error = null;
-    
+
     try {
       switch (testName) {
         case 'csp-violation':
@@ -101,14 +101,14 @@ class WebviewFailureSimulation {
     } catch (e) {
       error = e.message;
     }
-    
+
     this.results.tests.push({
       id: testName,
       name: `Webview Failure - ${testName}`,
       passed,
       error,
     });
-    
+
     if (passed) {
       this.results.passed++;
       console.log(`[WebviewFailureSimulation] ✅ ${testName}`);
@@ -120,10 +120,10 @@ class WebviewFailureSimulation {
 
   async testCSPViolation() {
     const htmlPath = join(this.testDir, 'csp-violation.html');
-    
+
     try {
       mkdirSync(this.testDir, { recursive: true });
-      
+
       // Write HTML with CSP violation
       const html = `
         <!DOCTYPE html>
@@ -136,16 +136,16 @@ class WebviewFailureSimulation {
         </body>
         </html>
       `;
-      
+
       writeFileSync(htmlPath, html);
-      
+
       // Simulate webview load
       const result = this.simulateWebviewLoad(htmlPath, { cspViolation: true });
-      
+
       // Cleanup
       unlinkSync(htmlPath);
       rmdirSync(this.testDir);
-      
+
       return result.detected === true && result.fallbackShown === true;
     } catch (e) {
       this.cleanup(htmlPath);
@@ -155,10 +155,10 @@ class WebviewFailureSimulation {
 
   async testMissingNonce() {
     const htmlPath = join(this.testDir, 'missing-nonce.html');
-    
+
     try {
       mkdirSync(this.testDir, { recursive: true });
-      
+
       // Write HTML without nonce
       const html = `
         <!DOCTYPE html>
@@ -171,16 +171,16 @@ class WebviewFailureSimulation {
         </body>
         </html>
       `;
-      
+
       writeFileSync(htmlPath, html);
-      
+
       // Simulate webview load
       const result = this.simulateWebviewLoad(htmlPath, { missingNonce: true });
-      
+
       // Cleanup
       unlinkSync(htmlPath);
       rmdirSync(this.testDir);
-      
+
       return result.detected === true && result.handledGracefully === true;
     } catch (e) {
       this.cleanup(htmlPath);
@@ -190,10 +190,10 @@ class WebviewFailureSimulation {
 
   async testWebviewCrash() {
     const htmlPath = join(this.testDir, 'crash.html');
-    
+
     try {
       mkdirSync(this.testDir, { recursive: true });
-      
+
       // Write HTML that crashes
       const html = `
         <!DOCTYPE html>
@@ -207,16 +207,16 @@ class WebviewFailureSimulation {
         </body>
         </html>
       `;
-      
+
       writeFileSync(htmlPath, html);
-      
+
       // Simulate webview load with crash
       const result = await this.simulateWebviewLoadWithCrash(htmlPath);
-      
+
       // Cleanup
       unlinkSync(htmlPath);
       rmdirSync(this.testDir);
-      
+
       return result.detected === true && result.recovered === true;
     } catch (e) {
       this.cleanup(htmlPath);
@@ -226,19 +226,19 @@ class WebviewFailureSimulation {
 
   async testWebviewReload() {
     const htmlPath = join(this.testDir, 'reload.html');
-    
+
     try {
       mkdirSync(this.testDir, { recursive: true });
-      
+
       writeFileSync(htmlPath, '<html><body>Test</body></html>');
-      
+
       // Simulate webview reload
       const result = this.simulateWebviewReload(htmlPath);
-      
+
       // Cleanup
       unlinkSync(htmlPath);
       rmdirSync(this.testDir);
-      
+
       return result.statePreserved === true || result.recovered === true;
     } catch (e) {
       this.cleanup(htmlPath);
@@ -248,19 +248,19 @@ class WebviewFailureSimulation {
 
   async testExtensionReload() {
     const htmlPath = join(this.testDir, 'ext-reload.html');
-    
+
     try {
       mkdirSync(this.testDir, { recursive: true });
-      
+
       writeFileSync(htmlPath, '<html><body>Test</body></html>');
-      
+
       // Simulate extension reload
       const result = this.simulateExtensionReload(htmlPath);
-      
+
       // Cleanup
       unlinkSync(htmlPath);
       rmdirSync(this.testDir);
-      
+
       return result.cleanedUp === true && result.reinitialized === true;
     } catch (e) {
       this.cleanup(htmlPath);
@@ -270,19 +270,19 @@ class WebviewFailureSimulation {
 
   async testDevModeHotReload() {
     const htmlPath = join(this.testDir, 'hot-reload.html');
-    
+
     try {
       mkdirSync(this.testDir, { recursive: true });
-      
+
       writeFileSync(htmlPath, '<html><body>v1</body></html>');
-      
+
       // Simulate dev mode hot reload
       const result = this.simulateHotReload(htmlPath, { devMode: true });
-      
+
       // Cleanup
       unlinkSync(htmlPath);
       rmdirSync(this.testDir);
-      
+
       return result.reloaded === true && result.contentUpdated === true;
     } catch (e) {
       this.cleanup(htmlPath);
@@ -292,10 +292,10 @@ class WebviewFailureSimulation {
 
   async testScriptError() {
     const htmlPath = join(this.testDir, 'script-error.html');
-    
+
     try {
       mkdirSync(this.testDir, { recursive: true });
-      
+
       // Write HTML with script error
       const html = `
         <!DOCTYPE html>
@@ -309,16 +309,16 @@ class WebviewFailureSimulation {
         </body>
         </html>
       `;
-      
+
       writeFileSync(htmlPath, html);
-      
+
       // Simulate webview load with script error
       const result = this.simulateWebviewLoad(htmlPath, { scriptError: true });
-      
+
       // Cleanup
       unlinkSync(htmlPath);
       rmdirSync(this.testDir);
-      
+
       return result.detected === true && result.errorShown === true;
     } catch (e) {
       this.cleanup(htmlPath);
@@ -328,10 +328,10 @@ class WebviewFailureSimulation {
 
   async testStyleError() {
     const htmlPath = join(this.testDir, 'style-error.html');
-    
+
     try {
       mkdirSync(this.testDir, { recursive: true });
-      
+
       // Write HTML with style error
       const html = `
         <!DOCTYPE html>
@@ -346,16 +346,16 @@ class WebviewFailureSimulation {
         </body>
         </html>
       `;
-      
+
       writeFileSync(htmlPath, html);
-      
+
       // Simulate webview load with style error
       const result = this.simulateWebviewLoad(htmlPath, { styleError: true });
-      
+
       // Cleanup
       unlinkSync(htmlPath);
       rmdirSync(this.testDir);
-      
+
       return result.detected === true && result.fallbackShown === true;
     } catch (e) {
       this.cleanup(htmlPath);
@@ -365,10 +365,10 @@ class WebviewFailureSimulation {
 
   async testResourceLoadFailure() {
     const htmlPath = join(this.testDir, 'resource-error.html');
-    
+
     try {
       mkdirSync(this.testDir, { recursive: true });
-      
+
       // Write HTML with missing resource
       const html = `
         <!DOCTYPE html>
@@ -380,16 +380,16 @@ class WebviewFailureSimulation {
         </body>
         </html>
       `;
-      
+
       writeFileSync(htmlPath, html);
-      
+
       // Simulate webview load with resource failure
       const result = this.simulateWebviewLoad(htmlPath, { resourceFailure: true });
-      
+
       // Cleanup
       unlinkSync(htmlPath);
       rmdirSync(this.testDir);
-      
+
       return result.detected === true && result.handledGracefully === true;
     } catch (e) {
       this.cleanup(htmlPath);
@@ -399,19 +399,19 @@ class WebviewFailureSimulation {
 
   async testMessageChannelFailure() {
     const htmlPath = join(this.testDir, 'message-error.html');
-    
+
     try {
       mkdirSync(this.testDir, { recursive: true });
-      
+
       writeFileSync(htmlPath, '<html><body>Test</body></html>');
-      
+
       // Simulate message channel failure
       const result = this.simulateMessageChannel(htmlPath, { channelFailure: true });
-      
+
       // Cleanup
       unlinkSync(htmlPath);
       rmdirSync(this.testDir);
-      
+
       return result.detected === true && result.recovered === true;
     } catch (e) {
       this.cleanup(htmlPath);
@@ -421,19 +421,19 @@ class WebviewFailureSimulation {
 
   async testDisposalFailure() {
     const htmlPath = join(this.testDir, 'disposal-error.html');
-    
+
     try {
       mkdirSync(this.testDir, { recursive: true });
-      
+
       writeFileSync(htmlPath, '<html><body>Test</body></html>');
-      
+
       // Simulate disposal failure
       const result = this.simulateDisposal(htmlPath, { disposalFailure: true });
-      
+
       // Cleanup
       unlinkSync(htmlPath);
       rmdirSync(this.testDir);
-      
+
       return result.detected === true && result.cleanedUp === true;
     } catch (e) {
       this.cleanup(htmlPath);
@@ -449,49 +449,52 @@ class WebviewFailureSimulation {
       handledGracefully: false,
       errorShown: false,
     };
-    
+
     const html = readFileSync(htmlPath, 'utf-8');
-    
+
     // Detect CSP violation
     if (context.cspViolation || html.includes('evil.com')) {
       result.detected = true;
       result.fallbackShown = true;
       return result;
     }
-    
+
     // Detect missing nonce
-    if (context.missingNonce || html.includes("nonce-abc123'") && !html.includes("nonce-abc123'")) {
+    if (
+      context.missingNonce ||
+      (html.includes("nonce-abc123'") && !html.includes("nonce-abc123'"))
+    ) {
       result.detected = true;
       result.handledGracefully = true;
       return result;
     }
-    
+
     // Detect script error
     if (context.scriptError || html.includes('throw new Error')) {
       result.detected = true;
       result.errorShown = true;
       return result;
     }
-    
+
     // Detect style error
     if (context.styleError || html.includes('@invalid-syntax')) {
       result.detected = true;
       result.fallbackShown = true;
       return result;
     }
-    
+
     // Detect resource failure
     if (context.resourceFailure || html.includes('nonexistent.png')) {
       result.detected = true;
       result.handledGracefully = true;
       return result;
     }
-    
+
     return result;
   }
 
   async simulateWebviewLoadWithCrash(htmlPath) {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       setTimeout(() => {
         resolve({
           detected: true,
@@ -527,12 +530,12 @@ class WebviewFailureSimulation {
       detected: false,
       recovered: false,
     };
-    
+
     if (context.channelFailure) {
       result.detected = true;
       result.recovered = true;
     }
-    
+
     return result;
   }
 
@@ -541,12 +544,12 @@ class WebviewFailureSimulation {
       detected: false,
       cleanedUp: false,
     };
-    
+
     if (context.disposalFailure) {
       result.detected = true;
       result.cleanedUp = true; // Should still clean up despite failure
     }
-    
+
     return result;
   }
 

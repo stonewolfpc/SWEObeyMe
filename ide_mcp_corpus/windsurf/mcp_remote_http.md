@@ -1,6 +1,7 @@
 Source: https://docs.windsurf.com/plugins/cascade/mcp
 
 ### Remote HTTP MCPs
+
 It's important to note that for remote HTTP MCPs, the configuration is slightly
 different and requires a `serverUrl` or `url` field.
 
@@ -20,6 +21,7 @@ Here's an example configuration for an HTTP server:
 ```
 
 ### Config Interpolation
+
 The `~/.codeium/mcp_config.json` file handles interpolation of
 environment variables in these fields: `command`, `args`, `env`, `serverUrl`, `url`, and
 `headers`.

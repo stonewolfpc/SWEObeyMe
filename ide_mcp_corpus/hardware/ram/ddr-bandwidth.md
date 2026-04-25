@@ -11,6 +11,7 @@ When folks in the industry say that DDR5-4800 found in AMD EPYC 9004 Genoa and 4
 ## Performance Comparison
 
 The chart shows the progression of memory bandwidth across DDR generations:
+
 - DDR3: Lower bandwidth, older technology
 - DDR4: Standard for many current systems
 - DDR5: ~50% bandwidth increase over DDR4, with higher frequencies and more banks allowing lower latency random access

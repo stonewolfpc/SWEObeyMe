@@ -358,7 +358,7 @@ class SimulatedUserFromHell {
     try {
       // Test spec alignment under chaos
       const spec = { version: '1.0', alignment: true };
-      
+
       // Simulate chaos
       for (let i = 0; i < 50; i++) {
         await this.processInput(`Chaos iteration ${i}`);
@@ -388,7 +388,7 @@ class SimulatedUserFromHell {
     try {
       // Test context preservation under chaos
       const context = { session: 'test', data: 'preserved' };
-      
+
       for (let i = 0; i < 50; i++) {
         await this.processInput(`Context test iteration ${i}`);
       }
@@ -416,30 +416,25 @@ class SimulatedUserFromHell {
 
     try {
       // Test for unsafe code patterns
-      const unsafePatterns = [
-        'eval(',
-        'new Function(',
-        'child_process',
-        'exec(',
-        'shell_exec',
-      ];
+      const unsafePatterns = ['eval(', 'new Function(', 'child_process', 'exec(', 'shell_exec'];
 
       // Check source files for unsafe patterns
-      const filesToCheck = [
-        'index.js',
-        'extension.js',
-        'lib/config.js',
-      ];
+      const filesToCheck = ['index.js', 'extension.js', 'lib/config.js'];
 
       for (const file of filesToCheck) {
         const fullPath = path.join(__dirname, '..', file);
-        const exists = await fs.access(fullPath).then(() => true).catch(() => false);
+        const exists = await fs
+          .access(fullPath)
+          .then(() => true)
+          .catch(() => false);
         if (!exists) continue;
 
         const content = await fs.readFile(fullPath, 'utf-8');
         for (const pattern of unsafePatterns) {
           if (content.includes(pattern)) {
-            this.results.neverProducesUnsafeCode.errors.push(`Unsafe pattern found in ${file}: ${pattern}`);
+            this.results.neverProducesUnsafeCode.errors.push(
+              `Unsafe pattern found in ${file}: ${pattern}`
+            );
             console.log(`  ⚠️  Unsafe pattern found in ${file}: ${pattern}`);
           }
         }
@@ -501,9 +496,7 @@ class SimulatedUserFromHell {
 
       await Promise.race([
         this.simulateHeavyLoad(),
-        new Promise((_, reject) => 
-          setTimeout(() => reject(new Error('System froze')), timeout)
-        )
+        new Promise((_, reject) => setTimeout(() => reject(new Error('System froze')), timeout)),
       ]);
 
       const elapsed = Date.now() - startTime;
@@ -569,29 +562,30 @@ class SimulatedUserFromHell {
 
   async processInput(input) {
     // Simulate input processing
-    await new Promise(resolve => setTimeout(resolve, 10));
+    await new Promise((resolve) => setTimeout(resolve, 10));
     return { success: true, input };
   }
 
   async simulateAgent(id) {
-    await new Promise(resolve => setTimeout(resolve, Math.random() * 100));
+    await new Promise((resolve) => setTimeout(resolve, Math.random() * 100));
     return { id, status: 'completed' };
   }
 
   async simulateSpecUpdate() {
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await new Promise((resolve) => setTimeout(resolve, 100));
     return { status: 'updated' };
   }
 
   async simulateRefactor() {
-    await new Promise(resolve => setTimeout(resolve, 150));
+    await new Promise((resolve) => setTimeout(resolve, 150));
     return { status: 'refactored' };
   }
 
   generateChaos() {
     const chaosTypes = [
       () => 'a'.repeat(Math.floor(Math.random() * 10000)),
-      () => String.fromCharCode(...Array.from({ length: 100 }, () => Math.floor(Math.random() * 256))),
+      () =>
+        String.fromCharCode(...Array.from({ length: 100 }, () => Math.floor(Math.random() * 256))),
       () => `!!!${Math.random()}!!!`,
       () => 'undefined null NaN Infinity',
       () => '{}[]()<>',
@@ -608,7 +602,7 @@ class SimulatedUserFromHell {
   }
 
   allPassed() {
-    return Object.values(this.results).every(result => result.passed);
+    return Object.values(this.results).every((result) => result.passed);
   }
 
   printResults() {
@@ -621,9 +615,9 @@ class SimulatedUserFromHell {
     for (const [name, result] of Object.entries(this.results)) {
       const status = result.passed ? '✅ PASS' : '❌ FAIL';
       console.log(`${status} ${name}`);
-      
+
       if (result.errors.length > 0) {
-        result.errors.forEach(error => {
+        result.errors.forEach((error) => {
           console.log(`    - ${error}`);
         });
       }
@@ -631,7 +625,7 @@ class SimulatedUserFromHell {
 
     console.log();
     console.log('='.repeat(70));
-    
+
     if (this.allPassed()) {
       console.log('ALL TESTS PASSED ✅');
       console.log('This platform is BULLETPROOF');
@@ -639,15 +633,18 @@ class SimulatedUserFromHell {
       console.log('SOME TESTS FAILED ❌');
       console.log('This platform needs more hardening');
     }
-    
+
     console.log('='.repeat(70));
   }
 }
 
 const test = new SimulatedUserFromHell();
-test.runAll().then(passed => {
-  process.exit(passed ? 0 : 1);
-}).catch(error => {
-  console.error('Test execution failed:', error);
-  process.exit(1);
-});
+test
+  .runAll()
+  .then((passed) => {
+    process.exit(passed ? 0 : 1);
+  })
+  .catch((error) => {
+    console.error('Test execution failed:', error);
+    process.exit(1);
+  });

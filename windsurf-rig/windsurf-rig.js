@@ -19,7 +19,7 @@ class WindsurfRig {
       verbose: options.verbose || false,
       ...options,
     };
-    
+
     this.results = {
       totalTests: 0,
       passed: 0,
@@ -29,30 +29,30 @@ class WindsurfRig {
       startTime: Date.now(),
       endTime: null,
     };
-    
+
     this.initialize();
   }
 
   async initialize() {
     console.log('[WindsurfRig] Initializing Windsurf-Next Compatibility Test Rig...');
     console.log('[WindsurfRig] Layer:', this.options.layer);
-    
+
     // Create directories
     const dirs = ['simulators', 'reports', 'fixtures'];
-    
+
     for (const dir of dirs) {
       const dirPath = join(__dirname, dir);
       if (!existsSync(dirPath)) {
         mkdirSync(dirPath, { recursive: true });
       }
     }
-    
+
     console.log('[WindsurfRig] Directories created');
   }
 
   async run() {
     console.log('[WindsurfRig] Starting test execution...');
-    
+
     try {
       // Run based on layer selection
       if (this.options.layer === 'all') {
@@ -60,13 +60,12 @@ class WindsurfRig {
       } else {
         await this.runLayer(this.options.layer);
       }
-      
+
       this.results.endTime = Date.now();
       await this.generateReport();
-      
+
       console.log('[WindsurfRig] Test execution completed');
       this.printSummary();
-      
     } catch (error) {
       console.error('[WindsurfRig] Fatal error:', error);
       process.exit(1);
@@ -83,7 +82,7 @@ class WindsurfRig {
       'tool-invocation',
       'startup-sequence',
     ];
-    
+
     for (const layer of layers) {
       await this.runLayer(layer);
     }
@@ -91,7 +90,7 @@ class WindsurfRig {
 
   async runLayer(layerName) {
     console.log(`[WindsurfRig] Running layer: ${layerName}`);
-    
+
     this.results.layers[layerName] = {
       tests: [],
       passed: 0,
@@ -100,7 +99,7 @@ class WindsurfRig {
       startTime: Date.now(),
       endTime: null,
     };
-    
+
     try {
       const { pathToFileURL } = await import('url');
       const modulePath = join(__dirname, 'simulators', `${layerName}.js`);
@@ -108,20 +107,21 @@ class WindsurfRig {
       const module = await import(moduleUrl);
       const simulator = new module.default(this.options);
       const results = await simulator.run();
-      
+
       this.results.layers[layerName].tests = results.tests;
       this.results.layers[layerName].passed = results.passed;
       this.results.layers[layerName].failed = results.failed;
       this.results.layers[layerName].skipped = results.skipped;
       this.results.layers[layerName].endTime = Date.now();
-      
+
       this.results.totalTests += results.total;
       this.results.passed += results.passed;
       this.results.failed += results.failed;
       this.results.skipped += results.skipped;
-      
-      console.log(`[WindsurfRig] Layer ${layerName} completed: ${results.passed}/${results.total} passed`);
-      
+
+      console.log(
+        `[WindsurfRig] Layer ${layerName} completed: ${results.passed}/${results.total} passed`
+      );
     } catch (error) {
       console.error(`[WindsurfRig] Layer ${layerName} failed:`, error);
       this.results.layers[layerName].error = error.message;
@@ -142,31 +142,33 @@ class WindsurfRig {
         passed: this.results.passed,
         failed: this.results.failed,
         skipped: this.results.skipped,
-        passRate: this.results.totalTests > 0 
-          ? ((this.results.passed / this.results.totalTests) * 100).toFixed(2) 
-          : 0,
+        passRate:
+          this.results.totalTests > 0
+            ? ((this.results.passed / this.results.totalTests) * 100).toFixed(2)
+            : 0,
       },
       layers: this.results.layers,
     };
-    
+
     const reportPath = join(__dirname, 'reports', `windsurf-report-${Date.now()}.json`);
     writeFileSync(reportPath, JSON.stringify(report, null, 2));
-    
+
     console.log(`[WindsurfRig] Report generated: ${reportPath}`);
-    
+
     if (this.options.verbose) {
       this.printDetailedReport(report);
     }
-    
+
     return report;
   }
 
   printSummary() {
     const duration = ((this.results.endTime - this.results.startTime) / 1000).toFixed(2);
-    const passRate = this.results.totalTests > 0 
-      ? ((this.results.passed / this.results.totalTests) * 100).toFixed(2) 
-      : 0;
-    
+    const passRate =
+      this.results.totalTests > 0
+        ? ((this.results.passed / this.results.totalTests) * 100).toFixed(2)
+        : 0;
+
     console.log('\n' + '='.repeat(60));
     console.log('WINDSURF-NEXT COMPATIBILITY TEST RIG - SUMMARY');
     console.log('='.repeat(60));
@@ -177,12 +179,16 @@ class WindsurfRig {
     console.log(`Pass Rate: ${passRate}%`);
     console.log(`Duration: ${duration}s`);
     console.log('='.repeat(60));
-    
+
     if (this.results.failed > 0) {
-      console.log('\n[WindsurfRig] ⚠️  Some tests failed. Windsurf-Next may not load SWEObeyMe correctly.');
+      console.log(
+        '\n[WindsurfRig] ⚠️  Some tests failed. Windsurf-Next may not load SWEObeyMe correctly.'
+      );
       process.exit(1);
     } else {
-      console.log('\n[WindsurfRig] ✅ All tests passed. Windsurf-Next will load SWEObeyMe 100% of the time.');
+      console.log(
+        '\n[WindsurfRig] ✅ All tests passed. Windsurf-Next will load SWEObeyMe 100% of the time.'
+      );
     }
   }
 
@@ -190,14 +196,14 @@ class WindsurfRig {
     console.log('\n' + '='.repeat(60));
     console.log('DETAILED REPORT');
     console.log('='.repeat(60));
-    
+
     for (const [layerName, layerData] of Object.entries(report.layers)) {
       console.log(`\n${layerName}:`);
       console.log(`  Tests: ${layerData.tests.length}`);
       console.log(`  Passed: ${layerData.passed}`);
       console.log(`  Failed: ${layerData.failed}`);
       console.log(`  Skipped: ${layerData.skipped}`);
-      
+
       if (layerData.tests && layerData.tests.length > 0) {
         for (const test of layerData.tests) {
           const status = test.passed ? '✅' : '❌';

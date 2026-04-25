@@ -108,7 +108,10 @@ class UIIDEIntegrationTest {
     try {
       // Check that all tools are properly registered
       const registryPath = path.join(__dirname, '..', 'lib/tools/registry-config.js');
-      const exists = await fs.access(registryPath).then(() => true).catch(() => false);
+      const exists = await fs
+        .access(registryPath)
+        .then(() => true)
+        .catch(() => false);
 
       if (!exists) {
         this.results.toolPaletteRendering.errors.push('Registry config not found');
@@ -117,7 +120,7 @@ class UIIDEIntegrationTest {
       }
 
       const content = await fs.readFile(registryPath, 'utf-8');
-      
+
       // Check that tools have descriptions and schemas
       if (!content.includes('description')) {
         this.results.toolPaletteRendering.errors.push('Tools missing descriptions');
@@ -229,11 +232,12 @@ class UIIDEIntegrationTest {
       let stable = true;
 
       for (let i = 0; i < iterations; i++) {
-        await new Promise(resolve => setTimeout(resolve, 10));
+        await new Promise((resolve) => setTimeout(resolve, 10));
         if (i % 10 === 0) {
           // Simulate periodic health check
           const memory = process.memoryUsage().heapUsed;
-          if (memory > 1024 * 1024 * 1024) { // 1GB
+          if (memory > 1024 * 1024 * 1024) {
+            // 1GB
             stable = false;
             break;
           }
@@ -284,7 +288,7 @@ class UIIDEIntegrationTest {
 
     try {
       const testFile = path.join(__dirname, '.test-many-edits.txt');
-      
+
       try {
         for (let i = 0; i < 100; i++) {
           await fs.writeFile(testFile, `Edit ${i}\n`);
@@ -316,11 +320,11 @@ class UIIDEIntegrationTest {
 
     try {
       const initialMemory = process.memoryUsage().heapUsed;
-      
+
       // Simulate operations
       for (let i = 0; i < 100; i++) {
         const temp = new Array(1000).fill('x');
-        await new Promise(resolve => setTimeout(resolve, 1));
+        await new Promise((resolve) => setTimeout(resolve, 1));
       }
 
       // Force garbage collection if available
@@ -333,7 +337,9 @@ class UIIDEIntegrationTest {
       const maxGrowth = 50 * 1024 * 1024; // 50MB
 
       if (growth > maxGrowth) {
-        this.results.noMemoryLeaks.errors.push(`Memory leak detected: ${(growth / 1024 / 1024).toFixed(2)}MB growth`);
+        this.results.noMemoryLeaks.errors.push(
+          `Memory leak detected: ${(growth / 1024 / 1024).toFixed(2)}MB growth`
+        );
         console.log(`  ⚠️  Memory leak detected: ${(growth / 1024 / 1024).toFixed(2)}MB growth`);
       }
 
@@ -356,7 +362,7 @@ class UIIDEIntegrationTest {
       const startTime = Date.now();
 
       // Simulate operations
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const elapsed = Date.now() - startTime;
       if (elapsed > timeout) {
@@ -385,7 +391,7 @@ class UIIDEIntegrationTest {
       const registered = ['tool-1', 'tool-2', 'tool-3'];
 
       // Check sync
-      const synced = tools.every(tool => registered.includes(tool));
+      const synced = tools.every((tool) => registered.includes(tool));
 
       if (!synced) {
         this.results.noToolPaletteDesync.errors.push('Tool palette desync detected');
@@ -573,7 +579,7 @@ class UIIDEIntegrationTest {
           flickerCount++;
         }
         lastState = currentState;
-        await new Promise(resolve => setTimeout(resolve, 10));
+        await new Promise((resolve) => setTimeout(resolve, 10));
       }
 
       if (flickerCount > 25) {
@@ -666,23 +672,39 @@ class UIIDEIntegrationTest {
 
     try {
       const panels = [
-        { name: 'Settings', file: 'lib/ui/generators/settings-html.js', buttonId: 'openFullSettings' },
-        { name: 'C# Bridge', file: 'lib/ui/generators/csharp-bridge-html.js', buttonId: 'openCSharpSettings' },
-        { name: 'Admin Dashboard', file: 'lib/ui/generators/admin-dashboard-html.js', buttonId: 'openAdminSettings' },
+        {
+          name: 'Settings',
+          file: 'lib/ui/generators/settings-html.js',
+          buttonId: 'openFullSettings',
+        },
+        {
+          name: 'C# Bridge',
+          file: 'lib/ui/generators/csharp-bridge-html.js',
+          buttonId: 'openCSharpSettings',
+        },
+        {
+          name: 'Admin Dashboard',
+          file: 'lib/ui/generators/admin-dashboard-html.js',
+          buttonId: 'openAdminSettings',
+        },
       ];
 
       for (const panel of panels) {
         const filePath = path.join(__dirname, '..', panel.file);
         const content = await fs.readFile(filePath, 'utf-8');
-        
+
         if (!content.includes(`id="${panel.buttonId}"`)) {
-          this.results.webviewSettingsButtons.errors.push(`${panel.name} panel missing button: ${panel.buttonId}`);
+          this.results.webviewSettingsButtons.errors.push(
+            `${panel.name} panel missing button: ${panel.buttonId}`
+          );
           console.log(`  ❌ ${panel.name} panel missing settings button`);
           return;
         }
-        
+
         if (!content.includes(`getElementById('${panel.buttonId}')`)) {
-          this.results.webviewSettingsButtons.errors.push(`${panel.name} panel missing event listener for: ${panel.buttonId}`);
+          this.results.webviewSettingsButtons.errors.push(
+            `${panel.name} panel missing event listener for: ${panel.buttonId}`
+          );
           console.log(`  ❌ ${panel.name} panel missing event listener for settings button`);
           return;
         }
@@ -712,17 +734,25 @@ class UIIDEIntegrationTest {
       for (const panelFile of panels) {
         const filePath = path.join(__dirname, '..', panelFile);
         const content = await fs.readFile(filePath, 'utf-8');
-        
+
         // Must use DOMContentLoaded
         if (!content.includes("addEventListener('DOMContentLoaded'")) {
-          this.results.webviewNoInlineHandlers.errors.push(`${panelFile} missing DOMContentLoaded listener`);
+          this.results.webviewNoInlineHandlers.errors.push(
+            `${panelFile} missing DOMContentLoaded listener`
+          );
           console.log(`  ❌ ${panelFile} missing DOMContentLoaded listener`);
           return;
         }
-        
+
         // Must NOT have inline onclick handlers
-        if (content.includes('onclick=') || content.includes('onchange=') || content.includes('onsubmit=')) {
-          this.results.webviewNoInlineHandlers.errors.push(`${panelFile} has inline event handlers`);
+        if (
+          content.includes('onclick=') ||
+          content.includes('onchange=') ||
+          content.includes('onsubmit=')
+        ) {
+          this.results.webviewNoInlineHandlers.errors.push(
+            `${panelFile} has inline event handlers`
+          );
           console.log(`  ❌ ${panelFile} has inline event handlers (TrustedScript violation)`);
           return;
         }
@@ -743,17 +773,25 @@ class UIIDEIntegrationTest {
     console.log('Testing: Webview provider handles openSettings...');
 
     try {
-      const providerPath = path.join(__dirname, '..', 'lib/ui/providers/webview-provider-factory.js');
+      const providerPath = path.join(
+        __dirname,
+        '..',
+        'lib/ui/providers/webview-provider-factory.js'
+      );
       const content = await fs.readFile(providerPath, 'utf-8');
-      
+
       if (!content.includes("message.command === 'openSettings'")) {
-        this.results.webviewProviderHandlesOpenSettings.errors.push('Provider does not handle openSettings command');
+        this.results.webviewProviderHandlesOpenSettings.errors.push(
+          'Provider does not handle openSettings command'
+        );
         console.log('  ❌ Provider missing openSettings handler');
         return;
       }
-      
+
       if (!content.includes('workbench.action.openSettings')) {
-        this.results.webviewProviderHandlesOpenSettings.errors.push('Provider does not execute openSettings command');
+        this.results.webviewProviderHandlesOpenSettings.errors.push(
+          'Provider does not execute openSettings command'
+        );
         console.log('  ❌ Provider missing workbench.action.openSettings execution');
         return;
       }
@@ -768,22 +806,22 @@ class UIIDEIntegrationTest {
 
   // Helper methods
   async simulateToolCall(id) {
-    await new Promise(resolve => setTimeout(resolve, Math.random() * 10));
+    await new Promise((resolve) => setTimeout(resolve, Math.random() * 10));
     return { id, success: true };
   }
 
   async simulateAgent(id) {
-    await new Promise(resolve => setTimeout(resolve, Math.random() * 100));
+    await new Promise((resolve) => setTimeout(resolve, Math.random() * 100));
     return { id, status: 'completed' };
   }
 
   async refreshDashboard() {
-    await new Promise(resolve => setTimeout(resolve, 50));
+    await new Promise((resolve) => setTimeout(resolve, 50));
     return { status: 'refreshed' };
   }
 
   allPassed() {
-    return Object.values(this.results).every(result => result.passed);
+    return Object.values(this.results).every((result) => result.passed);
   }
 
   printResults() {
@@ -796,9 +834,9 @@ class UIIDEIntegrationTest {
     for (const [name, result] of Object.entries(this.results)) {
       const status = result.passed ? '✅ PASS' : '❌ FAIL';
       console.log(`${status} ${name}`);
-      
+
       if (result.errors.length > 0) {
-        result.errors.forEach(error => {
+        result.errors.forEach((error) => {
           console.log(`    - ${error}`);
         });
       }
@@ -806,21 +844,24 @@ class UIIDEIntegrationTest {
 
     console.log();
     console.log('='.repeat(60));
-    
+
     if (this.allPassed()) {
       console.log('ALL TESTS PASSED ✅');
     } else {
       console.log('SOME TESTS FAILED ❌');
     }
-    
+
     console.log('='.repeat(60));
   }
 }
 
 const test = new UIIDEIntegrationTest();
-test.runAll().then(passed => {
-  process.exit(passed ? 0 : 1);
-}).catch(error => {
-  console.error('Test execution failed:', error);
-  process.exit(1);
-});
+test
+  .runAll()
+  .then((passed) => {
+    process.exit(passed ? 0 : 1);
+  })
+  .catch((error) => {
+    console.error('Test execution failed:', error);
+    process.exit(1);
+  });

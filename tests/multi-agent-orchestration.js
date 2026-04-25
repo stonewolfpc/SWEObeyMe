@@ -85,7 +85,11 @@ class MultiAgentOrchestrationTest {
       const agent2 = { id: 'agent-2', file: 'test.js', operation: 'write' };
 
       // Detect conflict
-      if (agent1.file === agent2.file && agent1.operation === 'write' && agent2.operation === 'write') {
+      if (
+        agent1.file === agent2.file &&
+        agent1.operation === 'write' &&
+        agent2.operation === 'write'
+      ) {
         // Conflict detected - verify resolution
         this.results.twoAgentsSameFile.passed = true;
         console.log('  ✅ Conflict detected and resolved');
@@ -111,7 +115,11 @@ class MultiAgentOrchestrationTest {
       const agent2 = { id: 'agent-2', function: 'calculateTotal', operation: 'edit' };
 
       // Detect conflict
-      if (agent1.function === agent2.function && agent1.operation === 'edit' && agent2.operation === 'edit') {
+      if (
+        agent1.function === agent2.function &&
+        agent1.operation === 'edit' &&
+        agent2.operation === 'edit'
+      ) {
         // Conflict detected - verify resolution
         this.results.twoAgentsSameFunction.passed = true;
         console.log('  ✅ Function conflict detected and resolved');
@@ -240,7 +248,7 @@ class MultiAgentOrchestrationTest {
       const startTime = Date.now();
 
       // Simulate slow operation
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       const elapsed = Date.now() - startTime;
       if (elapsed > timeout) {
@@ -295,11 +303,11 @@ class MultiAgentOrchestrationTest {
 
     try {
       // Simulate potential deadlock scenario
-      const timeout = new Promise((_, reject) => 
+      const timeout = new Promise((_, reject) =>
         setTimeout(() => reject(new Error('Deadlock detected')), 3000)
       );
 
-      const operation = new Promise(resolve => setTimeout(resolve, 100));
+      const operation = new Promise((resolve) => setTimeout(resolve, 100));
 
       await Promise.race([operation, timeout]);
       this.results.agentDeadlock.passed = true;
@@ -327,13 +335,17 @@ class MultiAgentOrchestrationTest {
       const usedMemory = process.memoryUsage().heapUsed;
 
       if (usedMemory > maxMemory) {
-        this.results.agentMemorySpike.errors.push(`Memory spike detected: ${(usedMemory / 1024 / 1024).toFixed(2)}MB`);
+        this.results.agentMemorySpike.errors.push(
+          `Memory spike detected: ${(usedMemory / 1024 / 1024).toFixed(2)}MB`
+        );
         console.log(`  ❌ Memory spike detected: ${(usedMemory / 1024 / 1024).toFixed(2)}MB`);
         return;
       }
 
       this.results.agentMemorySpike.passed = true;
-      console.log(`  ✅ Agent memory spike test passed (${(usedMemory / 1024 / 1024).toFixed(2)}MB used)`);
+      console.log(
+        `  ✅ Agent memory spike test passed (${(usedMemory / 1024 / 1024).toFixed(2)}MB used)`
+      );
     } catch (error) {
       this.results.agentMemorySpike.errors.push(error.message);
       console.log(`  ❌ Agent memory spike test failed: ${error.message}`);
@@ -357,7 +369,9 @@ class MultiAgentOrchestrationTest {
 
       const totalSize = logEntries.join('\n').length;
       if (totalSize > maxLogSize) {
-        this.results.agentLogOverflow.errors.push(`Log overflow detected: ${(totalSize / 1024 / 1024).toFixed(2)}MB`);
+        this.results.agentLogOverflow.errors.push(
+          `Log overflow detected: ${(totalSize / 1024 / 1024).toFixed(2)}MB`
+        );
         console.log(`  ❌ Log overflow detected: ${(totalSize / 1024 / 1024).toFixed(2)}MB`);
         return;
       }
@@ -382,7 +396,7 @@ class MultiAgentOrchestrationTest {
 
       // Simulate restart
       agent.status = 'restarting';
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
       agent.status = 'active';
 
       if (agent.status !== 'active') {
@@ -488,7 +502,7 @@ class MultiAgentOrchestrationTest {
   }
 
   allPassed() {
-    return Object.values(this.results).every(result => result.passed);
+    return Object.values(this.results).every((result) => result.passed);
   }
 
   printResults() {
@@ -501,9 +515,9 @@ class MultiAgentOrchestrationTest {
     for (const [name, result] of Object.entries(this.results)) {
       const status = result.passed ? '✅ PASS' : '❌ FAIL';
       console.log(`${status} ${name}`);
-      
+
       if (result.errors.length > 0) {
-        result.errors.forEach(error => {
+        result.errors.forEach((error) => {
           console.log(`    - ${error}`);
         });
       }
@@ -511,21 +525,24 @@ class MultiAgentOrchestrationTest {
 
     console.log();
     console.log('='.repeat(60));
-    
+
     if (this.allPassed()) {
       console.log('ALL TESTS PASSED ✅');
     } else {
       console.log('SOME TESTS FAILED ❌');
     }
-    
+
     console.log('='.repeat(60));
   }
 }
 
 const test = new MultiAgentOrchestrationTest();
-test.runAll().then(passed => {
-  process.exit(passed ? 0 : 1);
-}).catch(error => {
-  console.error('Test execution failed:', error);
-  process.exit(1);
-});
+test
+  .runAll()
+  .then((passed) => {
+    process.exit(passed ? 0 : 1);
+  })
+  .catch((error) => {
+    console.error('Test execution failed:', error);
+    process.exit(1);
+  });

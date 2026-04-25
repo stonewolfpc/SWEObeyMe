@@ -4693,73 +4693,43 @@
       "auth": {
         "folder": "auth/",
         "purpose": "Authentication and authorization logic",
-        "allowedFileTypes": [
-          "service",
-          "controller",
-          "model",
-          "middleware"
-        ],
+        "allowedFileTypes": ["service", "controller", "model", "middleware"],
         "testLocation": "tests/auth/"
       },
       "database": {
         "folder": "database/",
         "purpose": "Database connections, migrations, and queries",
-        "allowedFileTypes": [
-          "migration",
-          "seed",
-          "connection",
-          "repository"
-        ],
+        "allowedFileTypes": ["migration", "seed", "connection", "repository"],
         "testLocation": "tests/database/"
       },
       "models": {
         "folder": "models/",
         "purpose": "Data models and schemas",
-        "allowedFileTypes": [
-          "model",
-          "schema",
-          "interface"
-        ],
+        "allowedFileTypes": ["model", "schema", "interface"],
         "testLocation": "tests/models/"
       },
       "services": {
         "folder": "services/",
         "purpose": "Business logic and service layer",
-        "allowedFileTypes": [
-          "service",
-          "manager",
-          "handler"
-        ],
+        "allowedFileTypes": ["service", "manager", "handler"],
         "testLocation": "tests/services/"
       },
       "controllers": {
         "folder": "controllers/",
         "purpose": "HTTP request handlers and routing",
-        "allowedFileTypes": [
-          "controller",
-          "router",
-          "endpoint"
-        ],
+        "allowedFileTypes": ["controller", "router", "endpoint"],
         "testLocation": "tests/controllers/"
       },
       "utils": {
         "folder": "utils/",
         "purpose": "Utility functions and helpers",
-        "allowedFileTypes": [
-          "util",
-          "helper",
-          "constant"
-        ],
+        "allowedFileTypes": ["util", "helper", "constant"],
         "testLocation": "tests/utils/"
       },
       "interfaces": {
         "folder": "interfaces/",
         "purpose": "API contracts and type definitions",
-        "allowedFileTypes": [
-          "interface",
-          "type",
-          "contract"
-        ],
+        "allowedFileTypes": ["interface", "type", "contract"],
         "testLocation": "tests/interfaces/"
       }
     },
@@ -4776,14 +4746,7 @@
         "description": "Root directory may only contain configuration and documentation"
       },
       "src": {
-        "allowedItems": [
-          "lib/",
-          "src/",
-          "dist/",
-          "build/",
-          "tests/",
-          "docs/"
-        ],
+        "allowedItems": ["lib/", "src/", "dist/", "build/", "tests/", "docs/"],
         "description": "Source code organization"
       }
     }

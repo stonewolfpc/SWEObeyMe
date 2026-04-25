@@ -44,6 +44,7 @@ SWEObeyMe automatically enforces the 700-line file limit. When a file exceeds th
 3. Backups are automatically created before any changes
 
 **Example:**
+
 ```json
 {
   "tool": "refactor_move_block",
@@ -58,6 +59,7 @@ SWEObeyMe automatically enforces the 700-line file limit. When a file exceeds th
 ### Use Case 2: Prevent Forbidden Patterns
 
 SWEObeyMe automatically prevents:
+
 - `console.log` statements
 - `TODO` comments
 - `debugger` statements
@@ -74,6 +76,7 @@ For C# projects, SWEObeyMe provides advanced error detection:
 3. Configure which detectors to enable (missing using, empty catch, deep nesting, etc.)
 
 **Settings:**
+
 - Enable C# Bridge: `true`
 - Keep AI Informed: `true`
 - Severity Threshold: `0` (show all errors)
@@ -88,6 +91,7 @@ SWEObeyMe maintains persistent project memory:
 - File purpose tracking
 
 **Tools:**
+
 - `index_project_structure` - Index entire project
 - `analyze_project_conventions` - Detect patterns
 - `get_project_memory_summary` - View project state
@@ -142,16 +146,19 @@ Create `.sweobeyme-contract.md` in your project root:
 # Project Architectural Contract
 
 ## File Structure
+
 - All source files in `src/`
 - Tests in `tests/`
 - Utilities in `lib/utils/`
 
 ## Naming Conventions
+
 - Components: PascalCase
 - Functions: camelCase
 - Constants: UPPER_SNAKE_CASE
 
 ## Forbidden Patterns
+
 - No direct DOM manipulation
 - No console.log in production code
 ```
@@ -159,6 +166,7 @@ Create `.sweobeyme-contract.md` in your project root:
 ### 2. Configure Scan Behavior
 
 Choose when to scan:
+
 - **Always**: `scanOnNewProject: true`
 - **On Load**: `scanOnLoad: true`
 - **Manual**: `scanOnlyWhenAsked: true`
@@ -176,6 +184,7 @@ Choose when to scan:
 ### Check Server Status
 
 Ask the AI to run:
+
 ```json
 {
   "tool": "obey_me_status"
@@ -185,6 +194,7 @@ Ask the AI to run:
 ### Test File Operations
 
 Try reading a file:
+
 ```json
 {
   "tool": "read_file",
@@ -199,6 +209,7 @@ You should see enhanced context including project structure and suggested next t
 ### Test Surgical Plan
 
 Try validating a change:
+
 ```json
 {
   "tool": "obey_surgical_plan",
@@ -229,6 +240,7 @@ This should reject the change (exceeds 700-line limit) and suggest refactoring.
 ### High Credit Usage
 
 SWEObeyMe performs extensive validation. To reduce usage:
+
 - Set `scanOnlyWhenAsked: true`
 - Reduce `reportDetailLevel` to "minimal"
 - Disable C# Bridge if not needed

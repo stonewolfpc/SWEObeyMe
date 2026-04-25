@@ -2,7 +2,7 @@
 
 /**
  * Fuzz Failure to Permanent Test Generator
- * 
+ *
  * Converts fuzz failures into deterministic regression tests
  * Ensures that once a bug is found, it never comes back
  */
@@ -40,11 +40,11 @@ export class FuzzTestGenerator {
     const testPath = path.join(this.outputDir, `${testName}.js`);
 
     await fs.writeFile(testPath, testContent);
-    
+
     return {
       testName,
       testPath,
-      testContent
+      testContent,
     };
   }
 
@@ -56,7 +56,7 @@ export class FuzzTestGenerator {
     const type = failure.type || 'generic';
     const invariant = failure.invariant || 'unknown';
     const sanitized = invariant.replace(/[^a-zA-Z0-9]/g, '_').toLowerCase();
-    
+
     return `fuzz_${type}_${sanitized}_${timestamp}`;
   }
 
@@ -65,9 +65,9 @@ export class FuzzTestGenerator {
    */
   generateTestContent(failure, testName) {
     const { type, invariant, message, error, platform } = failure;
-    
+
     let testLogic = '';
-    
+
     switch (type) {
       case 'crash':
         testLogic = this.generateCrashTest(failure);
@@ -148,7 +148,7 @@ if (import.meta.url === \`file://\${process.argv[1]}\`) {
   generateCrashTest(failure) {
     const { message } = failure;
     const messageStr = JSON.stringify(message, null, 2);
-    
+
     return `      // Send the message that caused the crash
       const crashMessage = ${messageStr};
       
@@ -172,7 +172,7 @@ if (import.meta.url === \`file://\${process.argv[1]}\`) {
   generateHangTest(failure) {
     const { message } = failure;
     const messageStr = JSON.stringify(message, null, 2);
-    
+
     return `      // Send the message that caused the hang
       const hangMessage = ${messageStr};
       
@@ -199,7 +199,7 @@ if (import.meta.url === \`file://\${process.argv[1]}\`) {
   generateProtocolTest(failure) {
     const { invariant, message } = failure;
     const messageStr = JSON.stringify(message, null, 2);
-    
+
     return `      // Send message to test protocol invariant: ${invariant}
       const testMessage = ${messageStr};
       
@@ -234,7 +234,7 @@ if (import.meta.url === \`file://\${process.argv[1]}\`) {
   generateSafetyTest(failure) {
     const { invariant, message } = failure;
     const messageStr = JSON.stringify(message, null, 2);
-    
+
     return `      // Send message to test safety invariant: ${invariant}
       const testMessage = ${messageStr};
       
@@ -264,7 +264,7 @@ if (import.meta.url === \`file://\${process.argv[1]}\`) {
   generateTransportTest(failure) {
     const { transport, fuzzed } = failure;
     const fuzzedStr = JSON.stringify(fuzzed, null, 2);
-    
+
     return `      // Test transport: ${transport}
       const fuzzedData = ${fuzzedStr};
       
@@ -287,7 +287,7 @@ if (import.meta.url === \`file://\${process.argv[1]}\`) {
    */
   generateTimingTest(failure) {
     const { scenarioType } = failure;
-    
+
     return `      // Test timing scenario: ${scenarioType}
       
       const testOperation = async (i) => {
@@ -310,7 +310,7 @@ if (import.meta.url === \`file://\${process.argv[1]}\`) {
   generateGenericTest(failure) {
     const { message, error } = failure;
     const messageStr = JSON.stringify(message, null, 2);
-    
+
     return `      // Generic test for failure
       const testMessage = ${messageStr};
       
@@ -331,55 +331,58 @@ if (import.meta.url === \`file://\${process.argv[1]}\`) {
    */
   async generateTestsFromReport(report) {
     const tests = [];
-    
+
     // Generate tests from crashes
     for (const crash of report.crashes) {
       const test = await this.generateTest({
         type: 'crash',
         ...crash,
-        platform: report.platform
+        platform: report.platform,
       });
       tests.push(test);
     }
-    
+
     // Generate tests from hangs
     for (const hang of report.hangs) {
       const test = await this.generateTest({
         type: 'hang',
         ...hang,
-        platform: report.platform
+        platform: report.platform,
       });
       tests.push(test);
     }
-    
+
     // Generate tests from invariant violations
-    const allInvariants = {
-      ...report.serverInvariants.violations,
-      ...report.protocolInvariants.violations,
-      ...report.safetyInvariants.violations
-    };
-    
+    const allInvariants = [
+      ...Object.values(report.serverInvariants.violations || {}),
+      ...Object.values(report.protocolInvariants.violations || {}),
+      ...Object.values(report.safetyInvariants.violations || {}),
+    ];
+
     for (const violation of allInvariants) {
       const test = await this.generateTest({
-        type: violation.invariant.includes('NO_PATH_TRAVERSAL') || 
-                violation.invariant.includes('NO_DESTRUCTIVE') ? 'safety_violation' : 'protocol_violation',
+        type:
+          violation.invariant.includes('NO_PATH_TRAVERSAL') ||
+          violation.invariant.includes('NO_DESTRUCTIVE')
+            ? 'safety_violation'
+            : 'protocol_violation',
         invariant: violation.invariant,
         description: violation.description,
-        platform: report.platform
+        platform: report.platform,
       });
       tests.push(test);
     }
-    
+
     // Generate tests from errors
     for (const error of report.errors) {
       const test = await this.generateTest({
         type: 'generic',
         ...error,
-        platform: report.platform
+        platform: report.platform,
       });
       tests.push(test);
     }
-    
+
     return tests;
   }
 
@@ -396,7 +399,7 @@ if (import.meta.url === \`file://\${process.argv[1]}\`) {
  */
 
 const tests = [
-${tests.map(t => `  '${t.testName}',`).join('\n')}
+${tests.map((t) => `  '${t.testName}',`).join('\n')}
 ];
 
 export { tests };
@@ -404,7 +407,7 @@ export { tests };
 
     const indexPath = path.join(this.outputDir, 'index.js');
     await fs.writeFile(indexPath, indexContent);
-    
+
     return indexPath;
   }
 
@@ -414,11 +417,11 @@ export { tests };
   async runGeneratedTests() {
     const testFiles = await fs.readdir(this.outputDir);
     const results = [];
-    
+
     for (const file of testFiles) {
       if (file.endsWith('.js') && file !== 'index.js') {
         const testPath = path.join(this.outputDir, file);
-        
+
         try {
           const { default: TestClass } = await import(testPath);
           const test = new TestClass();
@@ -429,7 +432,7 @@ export { tests };
         }
       }
     }
-    
+
     return results;
   }
 }

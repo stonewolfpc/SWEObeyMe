@@ -2,7 +2,7 @@
 
 /**
  * Generic MCP Runtime Fuzzer
- * 
+ *
  * Fuzzes the MCP server through stdio for any IDE platform
  * Supports: Windsurf, Cursor, LM Studio, VS Code
  */
@@ -25,11 +25,11 @@ export class GenericMCPFuzzer {
     this.configPath = options.configPath;
     this.timeout = options.timeout || 30000;
     this.maxIterations = options.maxIterations || 100;
-    
+
     this.messageFuzzer = new MCPMessageFuzzer();
     this.transportFuzzer = new TransportFuzzer();
     this.timingFuzzer = new TimingFuzzer();
-    
+
     this.results = {
       platform: this.platform,
       serverInvariants: {},
@@ -37,9 +37,9 @@ export class GenericMCPFuzzer {
       safetyInvariants: {},
       crashes: [],
       hangs: [],
-      errors: []
+      errors: [],
     };
-    
+
     // Convenience aliases used throughout the class
     this.crashes = this.results.crashes;
     this.hangs = this.results.hangs;
@@ -53,7 +53,7 @@ export class GenericMCPFuzzer {
     return new Promise((resolve, reject) => {
       const server = spawn('node', [this.serverPath], {
         stdio: ['pipe', 'pipe', 'pipe'],
-        env: process.env
+        env: process.env,
       });
 
       // Prevent MaxListenersExceededWarning from rapid .once('data') in sendMessage
@@ -186,10 +186,10 @@ export class GenericMCPFuzzer {
    */
   async testNoCrash() {
     const iterations = 10;
-    
+
     for (let i = 0; i < iterations; i++) {
       const message = this.messageFuzzer.generateRequest();
-      
+
       try {
         await this.sendMessage(message);
       } catch (e) {
@@ -209,7 +209,7 @@ export class GenericMCPFuzzer {
    */
   async testNoHang() {
     const message = this.messageFuzzer.generateRequest();
-    
+
     try {
       await this.sendMessage(message);
       return true;
@@ -227,7 +227,7 @@ export class GenericMCPFuzzer {
    */
   async testNoInvalidJson() {
     const message = this.messageFuzzer.generateRequest();
-    
+
     try {
       const response = await this.sendMessage(message);
       JSON.parse(response); // Will throw if invalid
@@ -254,9 +254,9 @@ export class GenericMCPFuzzer {
         name: 'write_file',
         arguments: {
           path: './fuzz-test-file.txt',
-          content: 'test content'
-        }
-      }
+          content: 'test content',
+        },
+      },
     };
 
     try {
@@ -310,7 +310,7 @@ export class GenericMCPFuzzer {
    */
   async testEveryRequestGetsResponse() {
     const message = this.messageFuzzer.generateRequest();
-    
+
     try {
       const response = await this.sendMessage(message);
       return response !== null && response !== undefined;
@@ -325,7 +325,7 @@ export class GenericMCPFuzzer {
    */
   async testValidRequestId() {
     const message = this.messageFuzzer.generateRequest();
-    
+
     try {
       const response = await this.sendMessage(message);
       const parsed = JSON.parse(response);
@@ -341,7 +341,7 @@ export class GenericMCPFuzzer {
    */
   async testValidJsonRpc() {
     const message = this.messageFuzzer.generateRequest();
-    
+
     try {
       const response = await this.sendMessage(message);
       const parsed = JSON.parse(response);
@@ -398,9 +398,9 @@ export class GenericMCPFuzzer {
       params: {
         name: 'read_file',
         arguments: {
-          path: '../../../etc/passwd'
-        }
-      }
+          path: '../../../etc/passwd',
+        },
+      },
     };
 
     try {
@@ -425,9 +425,9 @@ export class GenericMCPFuzzer {
       params: {
         name: 'delete_file',
         arguments: {
-          path: './important-file.txt'
-        }
-      }
+          path: './important-file.txt',
+        },
+      },
     };
 
     try {
@@ -446,7 +446,7 @@ export class GenericMCPFuzzer {
    */
   async runFullFuzzer() {
     console.log(`=== ${this.platform.toUpperCase()} Runtime Fuzzer ===\n`);
-    
+
     try {
       // Start server
       console.log('Starting MCP server...');
@@ -503,7 +503,6 @@ export class GenericMCPFuzzer {
         return await this.sendMessage(message);
       }, 20);
       console.log('Timing fuzzer complete\n');
-
     } catch (e) {
       console.error('Fuzzer error:', e);
       this.errors.push({ error: e.message });
@@ -521,9 +520,18 @@ export class GenericMCPFuzzer {
    * Generate fuzzer report
    */
   generateReport() {
-    const serverResults = validateInvariants(this.results.serverInvariants, getAllInvariants().server);
-    const protocolResults = validateInvariants(this.results.protocolInvariants, getAllInvariants().protocol);
-    const safetyResults = validateInvariants(this.results.safetyInvariants, getAllInvariants().safety);
+    const serverResults = validateInvariants(
+      this.results.serverInvariants,
+      getAllInvariants().server
+    );
+    const protocolResults = validateInvariants(
+      this.results.protocolInvariants,
+      getAllInvariants().protocol
+    );
+    const safetyResults = validateInvariants(
+      this.results.safetyInvariants,
+      getAllInvariants().safety
+    );
 
     const report = {
       platform: this.platform,
@@ -534,7 +542,12 @@ export class GenericMCPFuzzer {
       hangs: this.hangs,
       errors: this.errors,
       passed: serverResults.passed && protocolResults.passed && safetyResults.passed,
-      totalViolations: serverResults.failed + protocolResults.failed + safetyResults.failed + this.crashes.length + this.hangs.length
+      totalViolations:
+        serverResults.failed +
+        protocolResults.failed +
+        safetyResults.failed +
+        this.crashes.length +
+        this.hangs.length,
     };
 
     return report;

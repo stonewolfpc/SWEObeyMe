@@ -29,7 +29,8 @@ class FileSystemSafetyTest {
     console.log();
 
     // Skip on CI due to environment limitations
-    const isCI = process.env.CI === 'true' || process.env.GITHUB_ACTIONS === 'true' || process.env.CI === '1';
+    const isCI =
+      process.env.CI === 'true' || process.env.GITHUB_ACTIONS === 'true' || process.env.CI === '1';
     if (isCI) {
       console.log('⚠️  Skipping test on CI (environment limitations)');
       console.log('This test requires file system operations not available in CI');
@@ -62,15 +63,15 @@ class FileSystemSafetyTest {
 
     try {
       const testFile = path.join(__dirname, '.test-locked.txt');
-      
+
       try {
         // Create test file
         await fs.writeFile(testFile, 'test data');
-        
+
         // On Windows, we can't easily simulate a locked file
         // On Unix, we can use file locks
         // For this test, we validate the error handling path exists
-        
+
         this.results.lockedFiles.passed = true;
         console.log('  ✅ Locked file handling test passed (error handling validated)');
       } finally {
@@ -90,20 +91,22 @@ class FileSystemSafetyTest {
 
     try {
       const testFile = path.join(__dirname, '.test-readonly.txt');
-      
+
       try {
         // Create test file
         await fs.writeFile(testFile, 'test data');
-        
+
         // On Unix, make it read-only
         if (process.platform !== 'win32') {
           try {
             await fs.chmod(testFile, 0o444);
-            
+
             // Try to write to read-only file
             try {
               await fs.writeFile(testFile, 'new data');
-              this.results.readOnlyFiles.errors.push('Write to read-only file succeeded (unexpected)');
+              this.results.readOnlyFiles.errors.push(
+                'Write to read-only file succeeded (unexpected)'
+              );
               console.log('  ❌ Write to read-only file succeeded (unexpected)');
             } catch (writeError) {
               // Expected - should fail
@@ -155,7 +158,9 @@ class FileSystemSafetyTest {
       // Try to write to file in non-existent directory
       try {
         await fs.writeFile(testFile, 'test');
-        this.results.missingDirectories.errors.push('Write to non-existent directory succeeded (unexpected)');
+        this.results.missingDirectories.errors.push(
+          'Write to non-existent directory succeeded (unexpected)'
+        );
         console.log('  ❌ Write to non-existent directory succeeded (unexpected)');
       } catch (error) {
         // Expected - should fail
@@ -180,11 +185,11 @@ class FileSystemSafetyTest {
 
     try {
       const testFile = path.join(__dirname, '.test-corrupted.json');
-      
+
       try {
         // Write corrupted JSON
         await fs.writeFile(testFile, '{"invalid": json}');
-        
+
         // Try to parse it
         try {
           const content = await fs.readFile(testFile, 'utf-8');
@@ -217,14 +222,17 @@ class FileSystemSafetyTest {
 
     try {
       // Try to access a system directory (should fail on most systems)
-      const systemDir = process.platform === 'win32' ? 'C:\\Windows\\System32\\config' : '/etc/shadow';
-      
+      const systemDir =
+        process.platform === 'win32' ? 'C:\\Windows\\System32\\config' : '/etc/shadow';
+
       try {
         await fs.readdir(systemDir);
         // On Windows, some system directories may be accessible
         // This is acceptable as long as error handling exists
         this.results.permissionErrors.passed = true;
-        console.log('  ✅ Permission error handling test passed (system directory accessible, error handling validated)');
+        console.log(
+          '  ✅ Permission error handling test passed (system directory accessible, error handling validated)'
+        );
       } catch (error) {
         // Expected - should fail
         if (error.code === 'EACCES' || error.code === 'EPERM' || error.code === 'ENOENT') {
@@ -258,11 +266,11 @@ class FileSystemSafetyTest {
       for (const attempt of traversalAttempts) {
         // Normalize the path
         const normalized = path.normalize(attempt);
-        
+
         // Check if it resolves outside the current directory
         const resolved = path.resolve(__dirname, attempt);
         const currentDir = path.resolve(__dirname);
-        
+
         if (!resolved.startsWith(currentDir)) {
           // Path traversal detected - this is what we want to prevent
           this.results.pathTraversal.passed = true;
@@ -280,7 +288,7 @@ class FileSystemSafetyTest {
   }
 
   allPassed() {
-    return Object.values(this.results).every(result => result.passed);
+    return Object.values(this.results).every((result) => result.passed);
   }
 
   printResults() {
@@ -293,9 +301,9 @@ class FileSystemSafetyTest {
     for (const [name, result] of Object.entries(this.results)) {
       const status = result.passed ? '✅ PASS' : '❌ FAIL';
       console.log(`${status} ${name}`);
-      
+
       if (result.errors.length > 0) {
-        result.errors.forEach(error => {
+        result.errors.forEach((error) => {
           console.log(`    - ${error}`);
         });
       }
@@ -303,26 +311,30 @@ class FileSystemSafetyTest {
 
     console.log();
     console.log('='.repeat(60));
-    
+
     if (this.allPassed()) {
       console.log('ALL TESTS PASSED ✅');
     } else {
       console.log('SOME TESTS FAILED ❌');
     }
-    
+
     console.log('='.repeat(60));
   }
 }
 
 const test = new FileSystemSafetyTest();
-test.runAll().then(passed => {
-  process.exit(passed ? 0 : 1);
-}).catch(error => {
-  console.error('Test execution failed:', error);
-  console.error('Stack trace:', error.stack);
-  process.exit(1);
-}).catch(error => {
-  // Catch any unhandled errors
-  console.error('Unhandled error:', error);
-  process.exit(1);
-});
+test
+  .runAll()
+  .then((passed) => {
+    process.exit(passed ? 0 : 1);
+  })
+  .catch((error) => {
+    console.error('Test execution failed:', error);
+    console.error('Stack trace:', error.stack);
+    process.exit(1);
+  })
+  .catch((error) => {
+    // Catch any unhandled errors
+    console.error('Unhandled error:', error);
+    process.exit(1);
+  });

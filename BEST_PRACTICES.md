@@ -7,6 +7,7 @@ Configuration guidelines for different scenarios and use cases.
 **Use Case:** Enterprise or production code with strict compliance requirements
 
 **Configuration:**
+
 ```json
 {
   "sweObeyMe.initialization.neverAutoFix": true,
@@ -19,6 +20,7 @@ Configuration guidelines for different scenarios and use cases.
 ```
 
 **Rationale:**
+
 - `neverAutoFix: true` - Prevents automatic changes in production
 - `scanOnNewProject: true` - Ensures full project analysis
 - `reportDetailLevel: "full"` - Maximum transparency for audits
@@ -27,6 +29,7 @@ Configuration guidelines for different scenarios and use cases.
 - `transparencyMode: "everything"` - Full decision logging
 
 **Additional Recommendations:**
+
 - Enable all C# detectors for C# projects
 - Set `severityThreshold: 0` to catch all errors
 - Keep backup retention high (10 backups)
@@ -37,6 +40,7 @@ Configuration guidelines for different scenarios and use cases.
 **Use Case:** Fast development, experimentation, MVP building
 
 **Configuration:**
+
 ```json
 {
   "sweObeyMe.initialization.neverAutoFix": false,
@@ -49,6 +53,7 @@ Configuration guidelines for different scenarios and use cases.
 ```
 
 **Rationale:**
+
 - `neverAutoFix: false` - Allows automatic fixes for speed
 - `scanOnlyWhenAsked: true` - Reduces overhead
 - `reportDetailLevel: "minimal"` - Less noise
@@ -57,6 +62,7 @@ Configuration guidelines for different scenarios and use cases.
 - `transparencyMode: "silent"` - Minimal logging
 
 **Additional Recommendations:**
+
 - Disable C# Bridge if not using C#
 - Disable loop detection
 - Reduce backup retention (3 backups)
@@ -67,6 +73,7 @@ Configuration guidelines for different scenarios and use cases.
 **Use Case:** Projects with 10,000+ files, monorepos, enterprise applications
 
 **Configuration:**
+
 ```json
 {
   "sweObeyMe.initialization.neverAutoFix": true,
@@ -79,6 +86,7 @@ Configuration guidelines for different scenarios and use cases.
 ```
 
 **Rationale:**
+
 - `scanOnNewProject: false` - Avoids full scans on large projects
 - `scanOnlyOnProjectMapChange: true` - Only scans when structure changes
 - `reportDetailLevel: "standard"` - Balanced detail
@@ -86,6 +94,7 @@ Configuration guidelines for different scenarios and use cases.
 - `toolPriority: "mcp"` - Still enforces surgical tools
 
 **Additional Recommendations:**
+
 - Increase C# alert cooldown to 60-120 seconds
 - Enable deduplication
 - Increase confidence threshold to 80%
@@ -97,6 +106,7 @@ Configuration guidelines for different scenarios and use cases.
 **Use Case:** Personal projects, small teams, learning
 
 **Configuration:**
+
 ```json
 {
   "sweObeyMe.initialization.neverAutoFix": false,
@@ -108,6 +118,7 @@ Configuration guidelines for different scenarios and use cases.
 ```
 
 **Rationale:**
+
 - `neverAutoFix: false` - Helpful for learning
 - `scanOnNewProject: true` - Full analysis on small projects
 - `reportDetailLevel: "standard"` - Good balance
@@ -115,6 +126,7 @@ Configuration guidelines for different scenarios and use cases.
 - `toolPriority: "mcp"` - Enforces good habits
 
 **Additional Recommendations:**
+
 - Enable all helpful auto-fixes
 - Keep default backup retention
 - Enable loop detection
@@ -125,6 +137,7 @@ Configuration guidelines for different scenarios and use cases.
 **Use Case:** C# projects, .NET applications, enterprise C# codebases
 
 **Configuration:**
+
 ```json
 {
   "sweObeyMe.csharpBridge.enabled": true,
@@ -148,12 +161,14 @@ Configuration guidelines for different scenarios and use cases.
 ```
 
 **Rationale:**
+
 - All detectors enabled for comprehensive C# analysis
 - `severityThreshold: 0` - Catch all errors
 - `confidenceThreshold: 70` - Balanced false positive rate
 - `keepAiInformed: true` - AI sees errors in context
 
 **Additional Recommendations:**
+
 - Increase cooldown for large C# projects
 - Disable stringConcatenation if not needed
 - Enable mathSafety for financial/scientific code
@@ -164,6 +179,7 @@ Configuration guidelines for different scenarios and use cases.
 **Use Case:** JS/TS projects, web applications, Node.js services
 
 **Configuration:**
+
 ```json
 {
   "sweObeyMe.initialization.neverAutoFix": false,
@@ -175,11 +191,13 @@ Configuration guidelines for different scenarios and use cases.
 ```
 
 **Rationale:**
+
 - Disable C# Bridge (not needed for JS/TS)
 - Standard surgical enforcement
 - Auto-fix helpful for JS/TS development
 
 **Additional Recommendations:**
+
 - Focus on file size limits (common issue in JS)
 - Enable loop detection (JS prone to infinite loops)
 - Use project memory for package.json analysis
@@ -190,6 +208,7 @@ Configuration guidelines for different scenarios and use cases.
 **Use Case:** Projects with multiple languages (monorepos, polyglot systems)
 
 **Configuration:**
+
 ```json
 {
   "sweObeyMe.initialization.scanOnNewProject": false,
@@ -211,11 +230,13 @@ Configuration guidelines for different scenarios and use cases.
 ```
 
 **Rationale:**
+
 - Selective C# detectors (disable language-specific ones)
 - Project map change scanning for efficiency
 - Standard report detail
 
 **Additional Recommendations:**
+
 - Use project memory to track language-specific conventions
 - Create language-specific contracts in subdirectories
 - Configure naming conventions per language
@@ -226,6 +247,7 @@ Configuration guidelines for different scenarios and use cases.
 **Use Case:** Contributing to open source projects, PR reviews
 
 **Configuration:**
+
 ```json
 {
   "sweObeyMe.initialization.neverAutoFix": true,
@@ -237,12 +259,14 @@ Configuration guidelines for different scenarios and use cases.
 ```
 
 **Rationale:**
+
 - `neverAutoFix: true` - Respect existing code style
 - `scanOnlyWhenAsked: true` - Don't modify without permission
 - `reportDetailLevel: "full"` - Detailed analysis for PRs
 - `transparencyMode: "major"` - Log important decisions
 
 **Additional Recommendations:**
+
 - Use project memory to understand project conventions
 - Check CONTRIBUTING.md before making changes
 - Respect existing file structure
@@ -253,6 +277,7 @@ Configuration guidelines for different scenarios and use cases.
 **Use Case:** Coding bootcamps, tutorials, learning environments
 
 **Configuration:**
+
 ```json
 {
   "sweObeyMe.initialization.neverAutoFix": false,
@@ -264,12 +289,14 @@ Configuration guidelines for different scenarios and use cases.
 ```
 
 **Rationale:**
+
 - `neverAutoFix: false` - Show automatic fixes for learning
 - `reportDetailLevel: "full"` - Maximum educational value
 - `transparencyMode: "everything"` - Explain all decisions
 - `toolPriority: "windsurf"` - Allow built-in tools for learning
 
 **Additional Recommendations:**
+
 - Enable all educational features
 - Use project memory to track learning progress
 - Enable verbose logging
@@ -280,6 +307,7 @@ Configuration guidelines for different scenarios and use cases.
 **Use Case:** Migrating legacy codebases to modern standards
 
 **Configuration:**
+
 ```json
 {
   "sweObeyMe.initialization.neverAutoFix": false,
@@ -292,11 +320,13 @@ Configuration guidelines for different scenarios and use cases.
 ```
 
 **Rationale:**
+
 - `neverAutoFix: false` - Allow automatic modernization
 - `digitalDebtThreshold: "always"` - Ignore debt during migration
 - Enable auto-fix for naming and documentation
 
 **Additional Recommendations:**
+
 - Use project memory to track migration progress
 - Incrementally apply fixes
 - Keep extensive backups
@@ -308,6 +338,7 @@ Configuration guidelines for different scenarios and use cases.
 ### 1. Always Enable Surgical Plan Validation
 
 Before any file write, validate the plan:
+
 ```json
 {
   "tool": "obey_surgical_plan",
@@ -322,6 +353,7 @@ Before any file write, validate the plan:
 ### 2. Use Project Memory
 
 Index project structure early:
+
 ```json
 {
   "tool": "index_project_structure"
@@ -329,6 +361,7 @@ Index project structure early:
 ```
 
 Analyze conventions:
+
 ```json
 {
   "tool": "analyze_project_conventions"
@@ -338,6 +371,7 @@ Analyze conventions:
 ### 3. Check File Context Before Changes
 
 Get comprehensive context:
+
 ```json
 {
   "tool": "get_file_context",
@@ -350,6 +384,7 @@ Get comprehensive context:
 ### 4. Analyze Impact Before Refactoring
 
 Understand dependencies:
+
 ```json
 {
   "tool": "analyze_change_impact",
@@ -363,6 +398,7 @@ Understand dependencies:
 ### 5. Verify Imports After Changes
 
 Ensure no broken references:
+
 ```json
 {
   "tool": "verify_imports",
@@ -376,6 +412,7 @@ Ensure no broken references:
 ### 6. Run Related Tests After Changes
 
 Prevent regressions:
+
 ```json
 {
   "tool": "run_related_tests",
@@ -388,6 +425,7 @@ Prevent regressions:
 ### 7. Check for Anti-Patterns
 
 Maintain code quality:
+
 ```json
 {
   "tool": "check_for_anti_patterns",
@@ -400,6 +438,7 @@ Maintain code quality:
 ### 8. Validate Naming Conventions
 
 Consistent naming:
+
 ```json
 {
   "tool": "validate_naming_conventions",
@@ -414,6 +453,7 @@ Consistent naming:
 ### From v1.2.1 to v1.3.0
 
 **New Features:**
+
 - Rule Engine (7 strict behavior rules)
 - Persistent Project Memory
 - Fallback Behavior System
@@ -421,11 +461,13 @@ Consistent naming:
 - Tool Priority System
 
 **Required Changes:**
+
 1. Enable rule compliance in settings (automatic)
 2. Configure scan behavior for project memory
 3. Set tool priority (default: "mcp")
 
 **Recommended Settings:**
+
 ```json
 {
   "sweObeyMe.initialization.scanOnNewProject": true,
@@ -436,16 +478,19 @@ Consistent naming:
 ### From v1.0.x to v1.3.0
 
 **Major Changes:**
+
 - Governor Pattern added (v1.0.17)
 - C# Bridge added (v1.0.13)
 - Workflow Automation added (v1.3.0)
 
 **Required Changes:**
+
 1. Review and update surgical rules
 2. Configure C# Bridge if using C#
 3. Configure workflow automation
 
 **Recommended Settings:**
+
 ```json
 {
   "sweObeyMe.csharpBridge.enabled": true,
@@ -456,14 +501,14 @@ Consistent naming:
 
 ## Performance vs. Strictness Trade-offs
 
-| Setting | Strict | Balanced | Performance |
-|---------|--------|----------|-------------|
-| Line count limit | 700 | 700 | 1000 |
-| Auto-fix | Never | Selective | Always |
-| Scan frequency | Always | On change | Manual |
-| Report detail | Full | Standard | Minimal |
-| Tool priority | MCP | MCP | None |
-| Backup retention | 10 | 5 | 3 |
+| Setting          | Strict | Balanced  | Performance |
+| ---------------- | ------ | --------- | ----------- |
+| Line count limit | 700    | 700       | 1000        |
+| Auto-fix         | Never  | Selective | Always      |
+| Scan frequency   | Always | On change | Manual      |
+| Report detail    | Full   | Standard  | Minimal     |
+| Tool priority    | MCP    | MCP       | None        |
+| Backup retention | 10     | 5         | 3           |
 
 ## Next Steps
 

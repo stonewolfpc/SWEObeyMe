@@ -11,6 +11,7 @@ This document outlines successful patterns and workflows that AI models should f
 **Description:** Always search for relevant code before making edits to understand the context and avoid duplicate work.
 
 **Workflow:**
+
 ```
 1. Use search_code_files to find relevant code
 2. Use get_file_context to understand dependencies
@@ -20,6 +21,7 @@ This document outlines successful patterns and workflows that AI models should f
 ```
 
 **Example:**
+
 ```json
 {
   "tool": "search_code_files",
@@ -31,6 +33,7 @@ This document outlines successful patterns and workflows that AI models should f
 ```
 
 **Why This Works:**
+
 - Prevents duplicate implementations
 - Identifies existing solutions
 - Reveals dependencies before breaking them
@@ -41,6 +44,7 @@ This document outlines successful patterns and workflows that AI models should f
 **Description:** Always validate code before writing to prevent broken code and surgical violations.
 
 **Workflow:**
+
 ```
 1. Use obey_surgical_plan to check line count
 2. Use verify_syntax to check syntax
@@ -50,6 +54,7 @@ This document outlines successful patterns and workflows that AI models should f
 ```
 
 **Example:**
+
 ```json
 {
   "tool": "preflight_change",
@@ -62,6 +67,7 @@ This document outlines successful patterns and workflows that AI models should f
 ```
 
 **Why This Works:**
+
 - Prevents broken code from being written
 - Catches surgical violations early
 - Reduces rollback frequency
@@ -72,6 +78,7 @@ This document outlines successful patterns and workflows that AI models should f
 **Description:** Always understand file context before refactoring to prevent breaking changes.
 
 **Workflow:**
+
 ```
 1. Use get_file_context to understand dependencies
 2. Use analyze_change_impact to check ripple effects
@@ -81,6 +88,7 @@ This document outlines successful patterns and workflows that AI models should f
 ```
 
 **Example:**
+
 ```json
 {
   "tool": "get_file_context",
@@ -91,6 +99,7 @@ This document outlines successful patterns and workflows that AI models should f
 ```
 
 **Why This Works:**
+
 - Prevents breaking changes
 - Identifies all affected code
 - Ensures complete refactoring
@@ -101,6 +110,7 @@ This document outlines successful patterns and workflows that AI models should f
 **Description:** Split large files incrementally rather than attempting massive refactors.
 
 **Workflow:**
+
 ```
 1. Use get_file_context to identify large functions
 2. Use obey_surgical_plan to check current state
@@ -111,6 +121,7 @@ This document outlines successful patterns and workflows that AI models should f
 ```
 
 **Example:**
+
 ```json
 {
   "tool": "refactor_move_block",
@@ -123,6 +134,7 @@ This document outlines successful patterns and workflows that AI models should f
 ```
 
 **Why This Works:**
+
 - Reduces risk of large refactors
 - Allows testing each step
 - Easier to debug issues
@@ -133,6 +145,7 @@ This document outlines successful patterns and workflows that AI models should f
 **Description:** Run tests after every change to catch regressions immediately.
 
 **Workflow:**
+
 ```
 1. Make changes with obey_surgical_plan → write_file
 2. Use run_related_tests to verify
@@ -141,6 +154,7 @@ This document outlines successful patterns and workflows that AI models should f
 ```
 
 **Example:**
+
 ```json
 {
   "tool": "run_related_tests",
@@ -151,6 +165,7 @@ This document outlines successful patterns and workflows that AI models should f
 ```
 
 **Why This Works:**
+
 - Catches regressions immediately
 - Reduces debugging time
 - Maintains test coverage
@@ -161,6 +176,7 @@ This document outlines successful patterns and workflows that AI models should f
 **Description:** Add documentation before or with code changes to maintain documentation ratio.
 
 **Workflow:**
+
 ```
 1. Use require_documentation to check current state
 2. Add JSDoc comments to functions/classes
@@ -170,6 +186,7 @@ This document outlines successful patterns and workflows that AI models should f
 ```
 
 **Example:**
+
 ```json
 {
   "tool": "require_documentation",
@@ -181,6 +198,7 @@ This document outlines successful patterns and workflows that AI models should f
 ```
 
 **Why This Works:**
+
 - Maintains documentation ratio
 - Improves code readability
 - Reduces technical debt
@@ -191,6 +209,7 @@ This document outlines successful patterns and workflows that AI models should f
 **Description:** Follow project conventions detected by analyze_project_conventions.
 
 **Workflow:**
+
 ```
 1. Use analyze_project_conventions to detect patterns
 2. Apply naming conventions (camelCase, PascalCase, etc.)
@@ -200,6 +219,7 @@ This document outlines successful patterns and workflows that AI models should f
 ```
 
 **Example:**
+
 ```json
 {
   "tool": "validate_naming_conventions",
@@ -210,6 +230,7 @@ This document outlines successful patterns and workflows that AI models should f
 ```
 
 **Why This Works:**
+
 - Maintains consistency
 - Reduces cognitive load
 - Improves code readability
@@ -220,6 +241,7 @@ This document outlines successful patterns and workflows that AI models should f
 **Description:** Follow structured error recovery when operations fail.
 
 **Workflow:**
+
 ```
 1. If operation fails, use explain_rejection
 2. Use suggest_alternatives to find alternatives
@@ -229,6 +251,7 @@ This document outlines successful patterns and workflows that AI models should f
 ```
 
 **Example:**
+
 ```json
 {
   "tool": "explain_rejection",
@@ -239,6 +262,7 @@ This document outlines successful patterns and workflows that AI models should f
 ```
 
 **Why This Works:**
+
 - Prevents infinite loops
 - Provides structured recovery
 - Reduces frustration
@@ -249,6 +273,7 @@ This document outlines successful patterns and workflows that AI models should f
 **Description:** Use project memory to understand project structure and conventions.
 
 **Workflow:**
+
 ```
 1. Use index_project_structure to build memory
 2. Use analyze_project_conventions to detect patterns
@@ -258,6 +283,7 @@ This document outlines successful patterns and workflows that AI models should f
 ```
 
 **Example:**
+
 ```json
 {
   "tool": "index_project_structure",
@@ -268,6 +294,7 @@ This document outlines successful patterns and workflows that AI models should f
 ```
 
 **Why This Works:**
+
 - Provides project context
 - Detects conventions automatically
 - Reduces manual configuration
@@ -278,6 +305,7 @@ This document outlines successful patterns and workflows that AI models should f
 **Description:** Always ensure backups exist before risky operations.
 
 **Workflow:**
+
 ```
 1. Use create_backup before risky changes
 2. Make changes with write_file (auto-backups)
@@ -286,6 +314,7 @@ This document outlines successful patterns and workflows that AI models should f
 ```
 
 **Example:**
+
 ```json
 {
   "tool": "create_backup",
@@ -296,6 +325,7 @@ This document outlines successful patterns and workflows that AI models should f
 ```
 
 **Why This Works:**
+
 - Prevents data loss
 - Enables quick recovery
 - Reduces risk anxiety
@@ -306,6 +336,7 @@ This document outlines successful patterns and workflows that AI models should f
 **Description:** Check for anti-patterns before and after changes.
 
 **Workflow:**
+
 ```
 1. Use check_for_anti_patterns before changes
 2. Address identified issues
@@ -315,6 +346,7 @@ This document outlines successful patterns and workflows that AI models should f
 ```
 
 **Example:**
+
 ```json
 {
   "tool": "check_for_anti_patterns",
@@ -325,6 +357,7 @@ This document outlines successful patterns and workflows that AI models should f
 ```
 
 **Why This Works:**
+
 - Prevents code smells
 - Maintains code quality
 - Reduces technical debt
@@ -335,6 +368,7 @@ This document outlines successful patterns and workflows that AI models should f
 **Description:** Check C# errors before and after changes for C# projects.
 
 **Workflow:**
+
 ```
 1. Use get_csharp_errors_for_file before changes
 2. Fix existing errors
@@ -344,6 +378,7 @@ This document outlines successful patterns and workflows that AI models should f
 ```
 
 **Example:**
+
 ```json
 {
   "tool": "get_csharp_errors_for_file",
@@ -355,6 +390,7 @@ This document outlines successful patterns and workflows that AI models should f
 ```
 
 **Why This Works:**
+
 - Catches C# errors early
 - Maintains code quality
 - Reduces compilation issues
@@ -365,6 +401,7 @@ This document outlines successful patterns and workflows that AI models should f
 **Description:** Use initiate_surgical_workflow for complex multi-step operations.
 
 **Workflow:**
+
 ```
 1. Use initiate_surgical_workflow with all steps
 2. Use get_workflow_status to track progress
@@ -373,22 +410,24 @@ This document outlines successful patterns and workflows that AI models should f
 ```
 
 **Example:**
+
 ```json
 {
   "tool": "initiate_surgical_workflow",
   "arguments": {
     "goal": "Split large file into modules",
     "steps": [
-      {"name": "Analyze file", "tool": "get_file_context"},
-      {"name": "Move function 1", "tool": "refactor_move_block"},
-      {"name": "Move function 2", "tool": "refactor_move_block"},
-      {"name": "Verify imports", "tool": "verify_imports"}
+      { "name": "Analyze file", "tool": "get_file_context" },
+      { "name": "Move function 1", "tool": "refactor_move_block" },
+      { "name": "Move function 2", "tool": "refactor_move_block" },
+      { "name": "Verify imports", "tool": "verify_imports" }
     ]
   }
 }
 ```
 
 **Why This Works:**
+
 - Provides structure to complex tasks
 - Tracks progress automatically
 - Reduces missed steps
@@ -399,6 +438,7 @@ This document outlines successful patterns and workflows that AI models should f
 **Description:** Query the Oracle for guidance on complex or unclear tasks.
 
 **Workflow:**
+
 ```
 1. Use query_the_oracle for motivation/guidance
 2. Use get_architectural_directive for standards
@@ -407,6 +447,7 @@ This document outlines successful patterns and workflows that AI models should f
 ```
 
 **Example:**
+
 ```json
 {
   "tool": "query_the_oracle",
@@ -415,6 +456,7 @@ This document outlines successful patterns and workflows that AI models should f
 ```
 
 **Why This Works:**
+
 - Provides motivation for difficult tasks
 - Clarifies architectural standards
 - Improves decision quality
@@ -425,6 +467,7 @@ This document outlines successful patterns and workflows that AI models should f
 **Description:** Use session memory to track decisions and progress.
 
 **Workflow:**
+
 ```
 1. Use get_session_context to check history
 2. Use record_decision to document choices
@@ -433,6 +476,7 @@ This document outlines successful patterns and workflows that AI models should f
 ```
 
 **Example:**
+
 ```json
 {
   "tool": "record_decision",
@@ -443,6 +487,7 @@ This document outlines successful patterns and workflows that AI models should f
 ```
 
 **Why This Works:**
+
 - Provides audit trail
 - Improves accountability
 - Helps with debugging
@@ -453,6 +498,7 @@ This document outlines successful patterns and workflows that AI models should f
 **Description:** Use dry_run_write_file to test risky changes before applying.
 
 **Workflow:**
+
 ```
 1. Use dry_run_write_file to simulate change
 2. Review results
@@ -461,6 +507,7 @@ This document outlines successful patterns and workflows that AI models should f
 ```
 
 **Example:**
+
 ```json
 {
   "tool": "dry_run_write_file",
@@ -472,6 +519,7 @@ This document outlines successful patterns and workflows that AI models should f
 ```
 
 **Why This Works:**
+
 - Tests changes without risk
 - Catches issues early
 - Reduces rollback frequency
@@ -482,6 +530,7 @@ This document outlines successful patterns and workflows that AI models should f
 **Description:** Use diff_changes to review exact changes before applying.
 
 **Workflow:**
+
 ```
 1. Use diff_changes to see exact changes
 2. Review additions, deletions, modifications
@@ -490,6 +539,7 @@ This document outlines successful patterns and workflows that AI models should f
 ```
 
 **Example:**
+
 ```json
 {
   "tool": "diff_changes",
@@ -501,6 +551,7 @@ This document outlines successful patterns and workflows that AI models should f
 ```
 
 **Why This Works:**
+
 - Shows exact impact
 - Catches unintended changes
 - Improves code review
@@ -511,6 +562,7 @@ This document outlines successful patterns and workflows that AI models should f
 **Description:** Use confirm_dangerous_operation before destructive actions.
 
 **Workflow:**
+
 ```
 1. Use confirm_dangerous_operation for destructive actions
 2. Wait for approval
@@ -519,6 +571,7 @@ This document outlines successful patterns and workflows that AI models should f
 ```
 
 **Example:**
+
 ```json
 {
   "tool": "confirm_dangerous_operation",
@@ -529,6 +582,7 @@ This document outlines successful patterns and workflows that AI models should f
 ```
 
 **Why This Works:**
+
 - Prevents accidental destruction
 - Provides safety checks
 - Reduces risk anxiety
@@ -539,6 +593,7 @@ This document outlines successful patterns and workflows that AI models should f
 **Description:** Use language-specific tools when available.
 
 **Workflow:**
+
 ```
 1. Use detect_file_language to identify language
 2. Use language-specific tools (C# Bridge for C#, etc.)
@@ -547,6 +602,7 @@ This document outlines successful patterns and workflows that AI models should f
 ```
 
 **Example:**
+
 ```json
 {
   "tool": "detect_file_language",
@@ -557,6 +613,7 @@ This document outlines successful patterns and workflows that AI models should f
 ```
 
 **Why This Works:**
+
 - Provides better analysis
 - Catches language-specific issues
 - Improves code quality
@@ -567,6 +624,7 @@ This document outlines successful patterns and workflows that AI models should f
 **Description:** Check and respect project configuration before making changes.
 
 **Workflow:**
+
 ```
 1. Use get_config to check current settings
 2. Respect line count limits
@@ -575,6 +633,7 @@ This document outlines successful patterns and workflows that AI models should f
 ```
 
 **Example:**
+
 ```json
 {
   "tool": "get_config",
@@ -583,6 +642,7 @@ This document outlines successful patterns and workflows that AI models should f
 ```
 
 **Why This Works:**
+
 - Respects project standards
 - Prevents configuration conflicts
 - Maintains consistency
@@ -593,6 +653,7 @@ This document outlines successful patterns and workflows that AI models should f
 **Description:** Implement functionality directly and inform user, rather than stubbing, faking, or asking.
 
 **Workflow:**
+
 ```
 1. Assess if implementation is possible with available information
 2. If yes, implement the functionality directly
@@ -603,6 +664,7 @@ This document outlines successful patterns and workflows that AI models should f
 ```
 
 **Example:**
+
 ```
 AI: I'll implement the authentication system
 (Implements login endpoint with JWT)
@@ -612,6 +674,7 @@ AI: I'll implement the authentication system
 ```
 
 **Why This Works:**
+
 - Delivers working code, not stubs
 - Reduces technical debt
 - Provides tangible progress
@@ -619,6 +682,7 @@ AI: I'll implement the authentication system
 - Only blocks when genuinely necessary
 
 **When to Ask User:**
+
 - Missing credentials or API keys
 - Permission/access issues
 - Ambiguous requirements
@@ -626,6 +690,7 @@ AI: I'll implement the authentication system
 - Making destructive/irreversible changes
 
 **When to Implement Directly:**
+
 - Requirements are clear and unambiguous
 - Standard patterns exist
 - Task is complex but can be broken down
@@ -636,42 +701,47 @@ AI: I'll implement the authentication system
 ### Most Common Workflows
 
 **Simple File Edit:**
+
 ```
 read_file → obey_surgical_plan → write_file → run_related_tests
 ```
 
 **Refactoring:**
+
 ```
 get_file_context → analyze_change_impact → obey_surgical_plan → write_file → run_related_tests
 ```
 
 **New File:**
+
 ```
 obey_surgical_plan → verify_syntax → verify_imports → write_file → run_related_tests
 ```
 
 **Large File Split:**
+
 ```
 get_file_context → refactor_move_block → verify_imports → write_file (repeat)
 ```
 
 **Error Fixing:**
+
 ```
 get_csharp_errors_for_file → fix errors → verify_syntax → write_file
 ```
 
 ## Pattern Selection Guide
 
-| Task | Primary Pattern | Secondary Pattern |
-|------|----------------|------------------|
-| Simple edit | Validate-Before-Write | Test-Driven Changes |
-| Refactoring | Context-Aware Refactoring | Search-Before-Edit |
-| New file | Validate-Before-Write | Convention-Following |
-| Large file split | Incremental File Splitting | Backup-Safe Operations |
-| Error fixing | Error-Recovery Loop | Test-Driven Changes |
-| Complex task | Workflow-Orchestration | Oracle Consultation |
-| Risky change | Dry-Run for Risky Changes | Diff-Review Before Applying |
-| Destructive action | Dangerous-Operation Confirmation | Backup-Safe Operations |
+| Task               | Primary Pattern                  | Secondary Pattern           |
+| ------------------ | -------------------------------- | --------------------------- |
+| Simple edit        | Validate-Before-Write            | Test-Driven Changes         |
+| Refactoring        | Context-Aware Refactoring        | Search-Before-Edit          |
+| New file           | Validate-Before-Write            | Convention-Following        |
+| Large file split   | Incremental File Splitting       | Backup-Safe Operations      |
+| Error fixing       | Error-Recovery Loop              | Test-Driven Changes         |
+| Complex task       | Workflow-Orchestration           | Oracle Consultation         |
+| Risky change       | Dry-Run for Risky Changes        | Diff-Review Before Applying |
+| Destructive action | Dangerous-Operation Confirmation | Backup-Safe Operations      |
 
 ## Next Steps
 

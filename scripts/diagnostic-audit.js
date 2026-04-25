@@ -1,6 +1,6 @@
 /**
  * SWEObeyMe Diagnostic Audit
- * 
+ *
  * Tests all subsystems for silent failures:
  * - Docs/corpus search (format mismatch)
  * - Webview provider IDs (grey box bug)
@@ -45,8 +45,8 @@ section('1. PACKAGE.JSON INTEGRITY');
 
 const pkg = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'));
 
-const declaredViews = pkg.contributes?.views?.sweObeyMe?.map(v => v.id) || [];
-const declaredCommands = pkg.contributes?.commands?.map(c => c.command) || [];
+const declaredViews = pkg.contributes?.views?.sweObeyMe?.map((v) => v.id) || [];
+const declaredCommands = pkg.contributes?.commands?.map((c) => c.command) || [];
 
 console.log(`  Declared views: ${declaredViews.join(', ')}`);
 console.log(`  Declared commands: ${declaredCommands.length}`);
@@ -83,11 +83,17 @@ for (const cmd of declaredCommands) {
 if (extensionSrc.includes('setupLanguageBridges')) {
   pass('Language bridges wired in activate()');
 } else {
-  fail('setupLanguageBridges NOT called in activate()', 'C# and C++ Monaco diagnostics will never fire');
+  fail(
+    'setupLanguageBridges NOT called in activate()',
+    'C# and C++ Monaco diagnostics will never fire'
+  );
 }
 
 // Check CheckpointManager receives context
-if (extensionSrc.includes('loadCheckpointManager(context)') || extensionSrc.includes('new CheckpointManager(context)')) {
+if (
+  extensionSrc.includes('loadCheckpointManager(context)') ||
+  extensionSrc.includes('new CheckpointManager(context)')
+) {
   pass('CheckpointManager receives context');
 } else {
   fail('CheckpointManager instantiated without context', 'Will crash on globalStorageUri');
@@ -97,9 +103,10 @@ if (extensionSrc.includes('loadCheckpointManager(context)') || extensionSrc.incl
 section('3. DOCS / CORPUS SEARCH');
 // ─────────────────────────────────────────────────────────────
 
-const { docs_lookup_handler, docs_list_corpora_handler, docs_list_categories_handler } = await import(
-  `file:///${path.join(root, 'lib', 'tools', 'docs-handlers.js').replace(/\\/g, '/')}`
-);
+const { docs_lookup_handler, docs_list_corpora_handler, docs_list_categories_handler } =
+  await import(
+    `file:///${path.join(root, 'lib', 'tools', 'docs-handlers.js').replace(/\\/g, '/')}`
+  );
 
 // Test unified corpus returns MCP format (the fixed bug)
 try {
@@ -165,11 +172,20 @@ const { toolHandlers } = await import(
 );
 
 const criticalTools = [
-  'docs_lookup', 'docs_list_corpora', 'docs_list_categories', 'docs_verify',
-  'write_file', 'read_file', 'get_file_context', 'analyze_change_impact',
-  'get_csharp_errors', 'get_csharp_errors_for_file',
-  'detect_godot_project', 'godot_lookup',
-  'index_project_structure', 'find_code_files',
+  'docs_lookup',
+  'docs_list_corpora',
+  'docs_list_categories',
+  'docs_verify',
+  'write_file',
+  'read_file',
+  'get_file_context',
+  'analyze_change_impact',
+  'get_csharp_errors',
+  'get_csharp_errors_for_file',
+  'detect_godot_project',
+  'godot_lookup',
+  'index_project_structure',
+  'find_code_files',
 ];
 
 for (const tool of criticalTools) {
@@ -193,9 +209,15 @@ section('5. CORPUS FILE INTEGRITY');
 // ─────────────────────────────────────────────────────────────
 
 const corpora = [
-  'csharp_dotnet_corpus', 'cpp_corpus', 'git_corpus', 'typescript_javascript_corpus',
-  'vscode_extension_corpus', 'mcp_implementation_corpus', 'nodejs_runtime_corpus',
-  'testing_qa_corpus', 'build_deployment_corpus',
+  'csharp_dotnet_corpus',
+  'cpp_corpus',
+  'git_corpus',
+  'typescript_javascript_corpus',
+  'vscode_extension_corpus',
+  'mcp_implementation_corpus',
+  'nodejs_runtime_corpus',
+  'testing_qa_corpus',
+  'build_deployment_corpus',
 ];
 
 for (const corpus of corpora) {
@@ -225,7 +247,7 @@ try {
   const { analyzeCppFile } = await import(
     `file:///${path.join(root, 'lib', 'cpp-bridge.js').replace(/\\/g, '/')}`
   );
-  
+
   const testCpp = `
 #include <iostream>
 int* ptr = new int(5);
@@ -237,14 +259,14 @@ void badFunc() {
 }
 int main() { return 0; }
 `;
-  
+
   const tmpFile = path.join(root, 'temp', '__test__.cpp');
   fs.writeFileSync(tmpFile, testCpp);
-  
+
   const result = await analyzeCppFile(tmpFile, { severityThreshold: 0, confidenceThreshold: 0 });
-  
+
   fs.unlinkSync(tmpFile);
-  
+
   if (result?.errors?.length > 0) {
     pass(`C++ bridge detects issues: ${result.errors.length} findings`);
     for (const e of result.errors.slice(0, 3)) {

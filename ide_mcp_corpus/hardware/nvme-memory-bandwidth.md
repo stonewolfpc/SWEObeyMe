@@ -73,6 +73,7 @@ NVMe uses RDMA over PCIe to map I/O commands and responses directly to host memo
 ## Workload Impact
 
 Performance metrics vary significantly based on:
+
 - Read vs. write operations
 - Random vs. sequential access
 - Queue depth

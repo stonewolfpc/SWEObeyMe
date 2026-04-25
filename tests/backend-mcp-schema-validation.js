@@ -52,7 +52,7 @@ class SchemaValidationTest {
       // Load registry config to get tool schemas
       const registryPath = path.join(__dirname, '../lib/tools/registry-config.js');
       const registryContent = await fs.readFile(registryPath, 'utf-8');
-      
+
       // Check that tools have inputSchema defined
       if (!registryContent.includes('inputSchema')) {
         this.results.invalidParams.errors.push('Some tools missing inputSchema');
@@ -80,8 +80,8 @@ class SchemaValidationTest {
         method: 'tools/call',
         params: {
           name: 'read_file',
-          arguments: {} // Missing required 'path' parameter
-        }
+          arguments: {}, // Missing required 'path' parameter
+        },
       };
 
       // This would be tested against the actual MCP server
@@ -117,9 +117,9 @@ class SchemaValidationTest {
           name: 'read_file',
           arguments: {
             path: '/path/to/file',
-            extraParam: 'should be ignored or rejected'
-          }
-        }
+            extraParam: 'should be ignored or rejected',
+          },
+        },
       };
 
       this.results.extraParams.passed = true;
@@ -186,7 +186,7 @@ class SchemaValidationTest {
     try {
       // Test with 1MB string
       const largeString = 'x'.repeat(1024 * 1024);
-      
+
       // Test with 10MB string
       const veryLargeString = 'x'.repeat(10 * 1024 * 1024);
 
@@ -231,7 +231,7 @@ class SchemaValidationTest {
   }
 
   allPassed() {
-    return Object.values(this.results).every(result => result.passed);
+    return Object.values(this.results).every((result) => result.passed);
   }
 
   printResults() {
@@ -244,9 +244,9 @@ class SchemaValidationTest {
     for (const [name, result] of Object.entries(this.results)) {
       const status = result.passed ? '✅ PASS' : '❌ FAIL';
       console.log(`${status} ${name}`);
-      
+
       if (result.errors.length > 0) {
-        result.errors.forEach(error => {
+        result.errors.forEach((error) => {
           console.log(`    - ${error}`);
         });
       }
@@ -254,21 +254,24 @@ class SchemaValidationTest {
 
     console.log();
     console.log('='.repeat(60));
-    
+
     if (this.allPassed()) {
       console.log('ALL TESTS PASSED ✅');
     } else {
       console.log('SOME TESTS FAILED ❌');
     }
-    
+
     console.log('='.repeat(60));
   }
 }
 
 const test = new SchemaValidationTest();
-test.runAll().then(passed => {
-  process.exit(passed ? 0 : 1);
-}).catch(error => {
-  console.error('Test execution failed:', error);
-  process.exit(1);
-});
+test
+  .runAll()
+  .then((passed) => {
+    process.exit(passed ? 0 : 1);
+  })
+  .catch((error) => {
+    console.error('Test execution failed:', error);
+    process.exit(1);
+  });

@@ -47,16 +47,16 @@ This document covers WCAG 2.2, ARIA roles, Keyboard navigation, Color contrast, 
 - **Contrast**: Color contrast ratio of at least 4.5:1
 - **Resize**: Text resizable up to 200%
 - **Images**: Images not used for text
-- **Headings': Logical heading structure
-- **Labels': Form fields have labels
+- \*\*Headings': Logical heading structure
+- \*\*Labels': Form fields have labels
 
 #### Level AAA
 
 - **Contrast**: Color contrast ratio of at least 7:1
 - **Text**: Text spacing adjustable
-- **Images': High contrast images
-- **Audio': No background audio
-- **Target': Target size at least 44x44
+- \*\*Images': High contrast images
+- \*\*Audio': No background audio
+- \*\*Target': Target size at least 44x44
 
 ## ARIA Roles
 
@@ -65,10 +65,10 @@ This document covers WCAG 2.2, ARIA roles, Keyboard navigation, Color contrast, 
 - **banner**: Site header
 - **navigation**: Navigation region
 - **main**: Main content
-- **complementary': Complementary content
-- **contentinfo': Footer information
-- **search': Search region
-- **form': Form region
+- \*\*complementary': Complementary content
+- \*\*contentinfo': Footer information
+- \*\*search': Search region
+- \*\*form': Form region
 
 ### Widget Roles
 
@@ -77,34 +77,34 @@ This document covers WCAG 2.2, ARIA roles, Keyboard navigation, Color contrast, 
 - **checkbox**: Checkbox
 - **radio**: Radio button
 - **textbox**: Text input
-- **combobox': Combo box
-- **listbox': List box
-- **menu': Menu
-- **menuitem': Menu item
-- **slider': Slider
-- **spinbutton': Spin button
-- **dialog': Dialog
-- **alertdialog': Alert dialog
-- **tooltip': Tooltip
+- \*\*combobox': Combo box
+- \*\*listbox': List box
+- \*\*menu': Menu
+- \*\*menuitem': Menu item
+- \*\*slider': Slider
+- \*\*spinbutton': Spin button
+- \*\*dialog': Dialog
+- \*\*alertdialog': Alert dialog
+- \*\*tooltip': Tooltip
 
 ### Document Structure Roles
 
 - **article**: Article
-- **section': Section
+- \*\*section': Section
 - **heading**: Heading
-- **list': List
-- **listitem': List item
-- **definition': Definition
-- **term': Term
+- \*\*list': List
+- \*\*listitem': List item
+- \*\*definition': Definition
+- \*\*term': Term
 
 ### Live Regions
 
 - **status**: Status message
-- **alert': Alert message
-- **log': Log
-- **marquee': Marquee
-- **timer': Timer
-- **progressbar': Progress bar
+- \*\*alert': Alert message
+- \*\*log': Log
+- \*\*marquee': Marquee
+- \*\*timer': Timer
+- \*\*progressbar': Progress bar
 
 ### ARIA Attributes
 
@@ -112,24 +112,24 @@ This document covers WCAG 2.2, ARIA roles, Keyboard navigation, Color contrast, 
 
 - **aria-label**: Accessible name
 - **aria-describedby**: Description
-- **aria-labelledby': Label reference
-- **aria-description': Description
+- \*\*aria-labelledby': Label reference
+- \*\*aria-description': Description
 
 #### State Attributes
 
 - **aria-expanded**: Expanded state
-- **aria-checked': Checked state
-- **aria-selected': Selected state
-- **aria-disabled': Disabled state
-- **aria-hidden': Hidden state
+- \*\*aria-checked': Checked state
+- \*\*aria-selected': Selected state
+- \*\*aria-disabled': Disabled state
+- \*\*aria-hidden': Hidden state
 
 #### Property Attributes
 
-- **aria-required': Required field
-- **aria-invalid': Invalid field
-- **aria-readonly': Read-only field
-- **aria-multiline': Multi-line input
-- **aria-orientation': Orientation
+- \*\*aria-required': Required field
+- \*\*aria-invalid': Invalid field
+- \*\*aria-readonly': Read-only field
+- \*\*aria-multiline': Multi-line input
+- \*\*aria-orientation': Orientation
 
 ## Keyboard Navigation
 
@@ -138,9 +138,9 @@ This document covers WCAG 2.2, ARIA roles, Keyboard navigation, Color contrast, 
 #### Tab Order
 
 - **Logical**: Logical tab order
-- **Visible': Visible focus indicator
-- **Skip': Skip links for navigation
-- **Trap': Focus trap for modals
+- \*\*Visible': Visible focus indicator
+- \*\*Skip': Skip links for navigation
+- \*\*Trap': Focus trap for modals
 
 #### Focus Styles
 
@@ -243,8 +243,8 @@ function trapFocus(element) {
 
 - **Test**: Test with contrast checker
 - **Avoid**: Avoid low contrast combinations
-- **Default': Use high contrast defaults
-- **Dark Mode': Support dark mode
+- \*\*Default': Use high contrast defaults
+- \*\*Dark Mode': Support dark mode
 
 ## Screen Reader Patterns
 
@@ -270,9 +270,7 @@ function trapFocus(element) {
 ### Live Regions
 
 ```html
-<div aria-live="polite" aria-atomic="true">
-  Status message
-</div>
+<div aria-live="polite" aria-atomic="true">Status message</div>
 ```
 
 ### Screen Reader Testing
@@ -295,10 +293,10 @@ function trapFocus(element) {
 
 ### Focus Indicators
 
-- **Visible': Visible focus indicator
-- **Contrast': High contrast focus
-- **Consistent': Consistent focus style
-- **Custom': Custom focus indicators
+- \*\*Visible': Visible focus indicator
+- \*\*Contrast': High contrast focus
+- \*\*Consistent': Consistent focus style
+- \*\*Custom': Custom focus indicators
 
 ### Focus Management Patterns
 
@@ -328,34 +326,34 @@ function openDialog() {
 ### Semantic HTML
 
 - **Use**: Use semantic HTML elements
-- **Headings': Use proper heading hierarchy
-- **Lists': Use lists for lists
-- **Labels': Use labels for form fields
+- \*\*Headings': Use proper heading hierarchy
+- \*\*Lists': Use lists for lists
+- \*\*Labels': Use labels for form fields
 
 ### ARIA
 
 - **Use**: Use ARIA when needed
 - **Don't Overuse**: Don't overuse ARIA
-- **Test': Test with screen readers
-- **Update': Keep ARIA updated
+- \*\*Test': Test with screen readers
+- \*\*Update': Keep ARIA updated
 
 ### Keyboard
 
-- **Test': Test with keyboard
-- **Shortcuts': Provide keyboard shortcuts
-- **Focus': Manage focus properly
-- **Skip': Provide skip links
+- \*\*Test': Test with keyboard
+- \*\*Shortcuts': Provide keyboard shortcuts
+- \*\*Focus': Manage focus properly
+- \*\*Skip': Provide skip links
 
 ### Color
 
-- **Contrast': Ensure sufficient contrast
-- **Not Only': Don't rely on color alone
-- **Patterns': Use patterns for information
-- **Dark Mode': Support dark mode
+- \*\*Contrast': Ensure sufficient contrast
+- \*\*Not Only': Don't rely on color alone
+- \*\*Patterns': Use patterns for information
+- \*\*Dark Mode': Support dark mode
 
 ### Testing
 
-- **Screen Readers': Test with screen readers
-- **Keyboard': Test with keyboard
-- **Tools': Use accessibility tools
-- **Users': Test with actual users
+- \*\*Screen Readers': Test with screen readers
+- \*\*Keyboard': Test with keyboard
+- \*\*Tools': Use accessibility tools
+- \*\*Users': Test with actual users

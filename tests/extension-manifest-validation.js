@@ -71,7 +71,9 @@ class ExtensionManifestValidationTest {
 
       const server = mcpServers[0];
       if (!server.id || !server.command || !server.args) {
-        this.results.contributesMcpServers.errors.push('MCP server missing required fields (id, command, args)');
+        this.results.contributesMcpServers.errors.push(
+          'MCP server missing required fields (id, command, args)'
+        );
         console.log('  ❌ MCP server missing required fields');
         return;
       }
@@ -102,8 +104,8 @@ class ExtensionManifestValidationTest {
       }
 
       const validEvents = ['onStartupFinished', 'onCommand', 'onLanguage', 'onView'];
-      const hasValidEvent = packageJson.activationEvents.some(event => 
-        validEvents.some(valid => event.startsWith(valid))
+      const hasValidEvent = packageJson.activationEvents.some((event) =>
+        validEvents.some((valid) => event.startsWith(valid))
       );
 
       if (!hasValidEvent) {
@@ -145,7 +147,9 @@ class ExtensionManifestValidationTest {
 
       const vscodeVersion = packageJson.engines.vscode;
       if (!vscodeVersion.startsWith('^')) {
-        this.results.enginesVscode.errors.push('engines.vscode should use caret (^) for version range');
+        this.results.enginesVscode.errors.push(
+          'engines.vscode should use caret (^) for version range'
+        );
         console.log('  ⚠️  engines.vscode should use caret (^) for version range');
       }
 
@@ -208,7 +212,10 @@ class ExtensionManifestValidationTest {
 
       // Check if main file exists
       const mainPath = path.join(__dirname, '..', packageJson.main);
-      const mainExists = await fs.access(mainPath).then(() => true).catch(() => false);
+      const mainExists = await fs
+        .access(mainPath)
+        .then(() => true)
+        .catch(() => false);
 
       if (!mainExists) {
         this.results.filePaths.errors.push(`Main file does not exist: ${packageJson.main}`);
@@ -237,8 +244,8 @@ class ExtensionManifestValidationTest {
 
       // Check for dangerous permissions
       const dangerousPermissions = ['unsafe-perm', 'allow-scripts'];
-      const hasDangerous = Object.keys(packageJson).some(key => 
-        dangerousPermissions.some(dangerous => key.includes(dangerous))
+      const hasDangerous = Object.keys(packageJson).some((key) =>
+        dangerousPermissions.some((dangerous) => key.includes(dangerous))
       );
 
       if (hasDangerous) {
@@ -255,7 +262,7 @@ class ExtensionManifestValidationTest {
   }
 
   allPassed() {
-    return Object.values(this.results).every(result => result.passed);
+    return Object.values(this.results).every((result) => result.passed);
   }
 
   printResults() {
@@ -268,9 +275,9 @@ class ExtensionManifestValidationTest {
     for (const [name, result] of Object.entries(this.results)) {
       const status = result.passed ? '✅ PASS' : '❌ FAIL';
       console.log(`${status} ${name}`);
-      
+
       if (result.errors.length > 0) {
-        result.errors.forEach(error => {
+        result.errors.forEach((error) => {
           console.log(`    - ${error}`);
         });
       }
@@ -278,21 +285,24 @@ class ExtensionManifestValidationTest {
 
     console.log();
     console.log('='.repeat(60));
-    
+
     if (this.allPassed()) {
       console.log('ALL TESTS PASSED ✅');
     } else {
       console.log('SOME TESTS FAILED ❌');
     }
-    
+
     console.log('='.repeat(60));
   }
 }
 
 const test = new ExtensionManifestValidationTest();
-test.runAll().then(passed => {
-  process.exit(passed ? 0 : 1);
-}).catch(error => {
-  console.error('Test execution failed:', error);
-  process.exit(1);
-});
+test
+  .runAll()
+  .then((passed) => {
+    process.exit(passed ? 0 : 1);
+  })
+  .catch((error) => {
+    console.error('Test execution failed:', error);
+    process.exit(1);
+  });

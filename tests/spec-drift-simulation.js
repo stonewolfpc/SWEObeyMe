@@ -48,7 +48,10 @@ class SpecDriftSimulationTest {
     try {
       // Check if spec files exist and are up to date
       const specDir = path.join(__dirname, '..', 'specs');
-      const specExists = await fs.access(specDir).then(() => true).catch(() => false);
+      const specExists = await fs
+        .access(specDir)
+        .then(() => true)
+        .catch(() => false);
 
       if (!specExists) {
         this.results.codeChangesWithoutSpec.errors.push('No specs directory found');
@@ -99,7 +102,10 @@ class SpecDriftSimulationTest {
       let hasConflict = false;
       for (let i = 0; i < testSpecs.length; i++) {
         for (let j = i + 1; j < testSpecs.length; j++) {
-          if (testSpecs[i].requirement.includes('tabs') && testSpecs[j].requirement.includes('spaces')) {
+          if (
+            testSpecs[i].requirement.includes('tabs') &&
+            testSpecs[j].requirement.includes('spaces')
+          ) {
             hasConflict = true;
             break;
           }
@@ -137,7 +143,10 @@ class SpecDriftSimulationTest {
       ];
 
       const specDir = path.join(__dirname, '..', 'specs');
-      const specExists = await fs.access(specDir).then(() => true).catch(() => false);
+      const specExists = await fs
+        .access(specDir)
+        .then(() => true)
+        .catch(() => false);
 
       if (!specExists) {
         this.results.missingSections.errors.push('No specs directory found');
@@ -145,7 +154,7 @@ class SpecDriftSimulationTest {
       } else {
         const files = await fs.readdir(specDir);
         for (const section of requiredSections) {
-          const hasSection = files.some(file => file.toLowerCase().includes(section));
+          const hasSection = files.some((file) => file.toLowerCase().includes(section));
           if (!hasSection) {
             this.results.missingSections.errors.push(`Missing spec section: ${section}`);
             console.log(`  ⚠️  Missing spec section: ${section}`);
@@ -174,11 +183,13 @@ class SpecDriftSimulationTest {
         { id: 'REQ-002', version: '2.0', status: 'deprecated' },
       ];
 
-      const outdated = requirements.filter(req => req.status === 'deprecated');
-      
+      const outdated = requirements.filter((req) => req.status === 'deprecated');
+
       if (outdated.length > 0) {
-        this.results.outdatedRequirements.errors.push(`Outdated requirements found: ${outdated.map(r => r.id).join(', ')}`);
-        console.log(`  ⚠️  Outdated requirements found: ${outdated.map(r => r.id).join(', ')}`);
+        this.results.outdatedRequirements.errors.push(
+          `Outdated requirements found: ${outdated.map((r) => r.id).join(', ')}`
+        );
+        console.log(`  ⚠️  Outdated requirements found: ${outdated.map((r) => r.id).join(', ')}`);
       }
 
       this.results.outdatedRequirements.passed = true;
@@ -232,7 +243,9 @@ class SpecDriftSimulationTest {
       }
 
       if (hasCircular) {
-        this.results.circularReferences.errors.push('Circular references detected in spec dependencies');
+        this.results.circularReferences.errors.push(
+          'Circular references detected in spec dependencies'
+        );
         console.log('  ⚠️  Circular references detected in spec dependencies (simulated)');
       }
 
@@ -245,7 +258,7 @@ class SpecDriftSimulationTest {
   }
 
   allPassed() {
-    return Object.values(this.results).every(result => result.passed);
+    return Object.values(this.results).every((result) => result.passed);
   }
 
   printResults() {
@@ -258,9 +271,9 @@ class SpecDriftSimulationTest {
     for (const [name, result] of Object.entries(this.results)) {
       const status = result.passed ? '✅ PASS' : '❌ FAIL';
       console.log(`${status} ${name}`);
-      
+
       if (result.errors.length > 0) {
-        result.errors.forEach(error => {
+        result.errors.forEach((error) => {
           console.log(`    - ${error}`);
         });
       }
@@ -268,21 +281,24 @@ class SpecDriftSimulationTest {
 
     console.log();
     console.log('='.repeat(60));
-    
+
     if (this.allPassed()) {
       console.log('ALL TESTS PASSED ✅');
     } else {
       console.log('SOME TESTS FAILED ❌');
     }
-    
+
     console.log('='.repeat(60));
   }
 }
 
 const test = new SpecDriftSimulationTest();
-test.runAll().then(passed => {
-  process.exit(passed ? 0 : 1);
-}).catch(error => {
-  console.error('Test execution failed:', error);
-  process.exit(1);
-});
+test
+  .runAll()
+  .then((passed) => {
+    process.exit(passed ? 0 : 1);
+  })
+  .catch((error) => {
+    console.error('Test execution failed:', error);
+    process.exit(1);
+  });

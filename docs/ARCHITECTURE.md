@@ -12,30 +12,30 @@ graph TB
         A[VS Code IDE] --> B[SWEObeyMe Extension]
         B --> C[Windsurf/Cascade AI]
     end
-    
+
     subgraph "MCP Server"
         D[index.js - Entry Point] --> E[lib/ - Core Modules]
         E --> F[lib/tools/ - Tool Handlers]
         F --> G[lib/tools/registry.js - Tool Definitions]
     end
-    
+
     subgraph "Governance Layer"
         H[enforcement.js - Validation Rules]
         I[rule-engine.js - Rule Engine]
         J[workflow.js - Workflow Orchestration]
     end
-    
+
     subgraph "Memory & State"
         K[session.js - Session Memory]
         L[project-memory.js - Project Memory]
         M[backup.js - Backup System]
     end
-    
+
     subgraph "External Integrations"
         N[C# Bridge - Error Detection]
         O[Project Map - Architecture Rules]
     end
-    
+
     C -->|MCP Protocol| D
     E --> H
     E --> I
@@ -54,7 +54,7 @@ graph LR
     subgraph "Entry Points"
         A[index.js] --> B[extension.js]
     end
-    
+
     subgraph "Core Library (lib/)"
         B --> C[utils.js]
         B --> D[backup.js]
@@ -66,12 +66,12 @@ graph LR
         B --> J[project-memory.js]
         B --> K[fallback-system.js]
     end
-    
+
     subgraph "Tools (lib/tools/)"
         B --> L[tools.js]
         L --> M[handlers.js]
         L --> N[registry.js]
-        
+
         subgraph "Split Handler Modules"
             M --> M1[handlers-status.js]
             M --> M2[handlers-workflow.js]
@@ -79,7 +79,7 @@ graph LR
             M --> M4[handlers-preflight.js]
             M --> M5[handlers-oracle.js]
         end
-        
+
         subgraph "Split Registry Modules"
             N --> N1[registry-core.js]
             N --> N2[registry-config.js]
@@ -91,7 +91,7 @@ graph LR
             N --> N8[registry-project.js]
         end
     end
-    
+
     subgraph "Project Memory (lib/)"
         J --> P[project-memory-core.js]
         J --> Q[project-memory-utils.js]
@@ -113,7 +113,7 @@ sequenceDiagram
     participant Handler as Tool Handler
     participant Validator as Enforcement
     participant Backup as Backup System
-    
+
     AI->>MCP: Tool Call Request
     MCP->>Registry: Validate Tool Exists
     Registry-->>MCP: Tool Definition
@@ -139,31 +139,31 @@ graph TD
     A[File Operation Request] --> B{Check Surgical Plan}
     B -->|Not Validated| C[Call obey_surgical_plan]
     B -->|Validated| D[Check Line Count}
-    
+
     C --> E{Within Limits?}
     E -->|Yes| D
     E -->|No| F[Suggest Refactoring]
-    
+
     D -->|Within Limits| G[Check Forbidden Patterns]
     D -->|Exceeds Limits| F
-    
+
     G -->|Clean| H{Requires Backup?}
     G -->|Has Patterns| I[Auto-Correction]
-    
+
     I --> J[Remove Patterns]
     J --> H
-    
+
     H -->|Yes| K[Create Backup]
     H -->|No| L[Execute Write]
-    
+
     K --> M[Verify Backup]
     M -->|Success| L
     M -->|Failure| N[Error: Backup Failed]
-    
+
     L --> O{Loop Detection}
     O -->|Loop Detected| P[Block Operation]
     O -->|No Loop| Q[Success]
-    
+
     F --> R[Call refactor_move_block or extract_to_new_file]
     N --> S[Error Response]
     P --> S
@@ -184,22 +184,22 @@ graph TB
         A --> G[project-memory-validation.js - Validation Rules]
         A --> H[project-memory-location.js - File Location]
     end
-    
+
     subgraph "Data Storage"
         I[.sweobeyme-memory.json]
         J[project_map.json]
     end
-    
+
     B --> I
     B --> J
-    
+
     subgraph "Memory Contents"
         K[Structure - Directories & Files]
         L[Conventions - Naming & Patterns]
         M[Decisions - Architectural Decisions]
         N[File Purposes - Purpose Tracking]
     end
-    
+
     I --> K
     I --> L
     I --> M
@@ -217,7 +217,7 @@ graph LR
         B --> D[Severity Scoring]
         B --> E[Deduplication]
         B --> F[Cooldown Manager]
-        
+
         C --> G[Missing Using]
         C --> H[Empty Catch]
         C --> I[Deep Nesting]
@@ -228,13 +228,13 @@ graph LR
         C --> N[Static Mutation]
         C --> O[String Concatenation]
     end
-    
+
     subgraph "Integration"
         D --> P[Confidence Threshold]
         E --> Q[SHA256 Grouping]
         F --> R[Time-based Throttling]
     end
-    
+
     subgraph "VS Code"
         S[Settings Panel]
         S --> P
@@ -250,7 +250,7 @@ graph LR
     subgraph "Input"
         A[AI Model Request]
     end
-    
+
     subgraph "Processing"
         B[MCP Server]
         B --> C[Tool Registry]
@@ -259,19 +259,19 @@ graph LR
         E --> F[Rule Engine]
         F --> G[Workflow Orchestrator]
     end
-    
+
     subgraph "State Management"
         H[Session Memory]
         I[Project Memory]
         J[Backup System]
     end
-    
+
     subgraph "Output"
         K[Tool Response]
         L[Error Response]
         M[Suggestions]
     end
-    
+
     A --> B
     G --> H
     G --> I
@@ -291,23 +291,23 @@ graph TD
     D --> E[.sweobeyme-contract.md]
     D --> F[.sweignore]
     D --> G[project_map.json]
-    
+
     subgraph "Runtime Configuration"
         H[Environment Variables]
         I[NODE_ENV]
         J[SWEOBEYME_BACKUP_DIR]
         K[SWEOBEYME_DEBUG]
     end
-    
+
     C --> H
-    
+
     subgraph "Tool Configuration"
         L[lib/tools/registry.js]
         M[Tool Definitions]
         N[Input Schemas]
         O[Priorities]
     end
-    
+
     C --> L
 ```
 
@@ -316,7 +316,7 @@ graph TD
 ```mermaid
 graph TD
     A[Error Detected] --> B{Error Type}
-    
+
     B -->|Validation Error| C[Return Error with Guidance]
     B -->|File Not Found| D[Fallback: Check Similar Files]
     B -->|Permission Denied| E[Fallback: Suggest Alternative Path]
@@ -324,7 +324,7 @@ graph TD
     B -->|Import Error| G[Fallback: Verify Imports]
     B -->|Loop Detected| H[Fallback: Suggest Recovery]
     B -->|Unknown Error| I[Fallback: Generic Guidance]
-    
+
     C --> J[Provide Next Tool Suggestion]
     D --> J
     E --> J
@@ -332,13 +332,13 @@ graph TD
     G --> J
     H --> J
     I --> J
-    
+
     J --> K[Update Session Memory]
     K --> L{Consecutive Failures?}
-    
+
     L -->|Yes, >= 3| M[Trigger Constitution Reading]
     L -->|No| N[Continue]
-    
+
     M --> O[Call get_architectural_directive]
     O --> P[Reset Failure Counter]
     P --> N
@@ -353,14 +353,14 @@ erDiagram
     TOOL_DEFINITION ||--|| TOOL_HANDLER : implements
     TOOL_HANDLER ||--o{ VALIDATION_RULE : uses
     TOOL_HANDLER ||--o{ BACKUP_SYSTEM : uses
-    
+
     PROJECT_MEMORY ||--o{ MEMORY_ENTRY : contains
     MEMORY_ENTRY ||--|| CONVENTION : tracks
     MEMORY_ENTRY ||--|| DECISION : records
-    
+
     SESSION_MEMORY ||--o{ ACTION_LOG : contains
     ACTION_LOG ||--|| INTEGRITY_SCORE : affects
-    
+
     C_BRIDGE ||--o{ ERROR_DETECTOR : contains
     ERROR_DETECTOR ||--|| PATTERN_MATCHER : uses
 ```
@@ -374,7 +374,7 @@ graph TB
         A --> B[Local MCP Server]
         B --> C[Local File System]
     end
-    
+
     subgraph "Production Environment"
         D[VS Code Marketplace]
         D --> E[Published Extension]
@@ -382,7 +382,7 @@ graph TB
         F --> G[User's MCP Server]
         G --> H[User's Workspace]
     end
-    
+
     subgraph "CI/CD"
         I[GitHub Actions]
         I --> J[Automated Tests]
@@ -402,7 +402,7 @@ graph TD
     E --> F[Backup Verification]
     F --> G[Hash Verification]
     G --> H[Audit Logging]
-    
+
     B -->|Fail| I[Reject Operation]
     C -->|Fail| I
     D -->|Fail| I

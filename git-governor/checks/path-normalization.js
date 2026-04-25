@@ -20,18 +20,14 @@ class PathNormalizationChecker {
       skipped: 0,
       total: 0,
     };
-    
+
     this.repoRoot = dirname(dirname(__dirname));
-    this.configFiles = [
-      'extension.js',
-      'index.js',
-      '.sweobeyme-config.json',
-    ];
+    this.configFiles = ['extension.js', 'index.js', '.sweobeyme-config.json'];
   }
 
   async run() {
     console.log('[PathNormalization] Starting path normalization check...');
-    
+
     const tests = [
       'scan-backslashes',
       'scan-uppercase-drives',
@@ -41,21 +37,21 @@ class PathNormalizationChecker {
       'check-config-files',
       'check-lib-files',
     ];
-    
+
     for (const test of tests) {
       await this.runTest(test);
     }
-    
+
     this.results.total = this.results.tests.length;
     return this.results;
   }
 
   async runTest(testName) {
     console.log(`[PathNormalization] Running: ${testName}...`);
-    
+
     let passed = false;
     let error = null;
-    
+
     try {
       switch (testName) {
         case 'scan-backslashes':
@@ -80,7 +76,7 @@ class PathNormalizationChecker {
           passed = await this.testCheckLibFiles();
           break;
       }
-      
+
       // If test returned false but no error was thrown, set a descriptive error
       if (!passed && !error) {
         error = 'Test failed: issues found';
@@ -88,14 +84,14 @@ class PathNormalizationChecker {
     } catch (e) {
       error = e.message;
     }
-    
+
     this.results.tests.push({
       id: testName,
       name: `Path Normalization - ${testName}`,
       passed,
       error,
     });
-    
+
     if (passed) {
       this.results.passed++;
       console.log(`[PathNormalization] ✅ ${testName}`);
@@ -179,25 +175,30 @@ class PathNormalizationChecker {
     try {
       const issues = [];
       const files = this.scanDirectory(this.repoRoot);
-      
+
       if (!Array.isArray(files)) {
         console.log('[PathNormalization] scanDirectory did not return an array');
         return [];
       }
-      
+
       for (const file of files) {
         // Skip test rigs and test files - they naturally use Windows paths
-        if (file.includes('windsurf-rig') || file.includes('ares-rig') || file.includes('git-governor') || file.includes('test-tools')) {
+        if (
+          file.includes('windsurf-rig') ||
+          file.includes('ares-rig') ||
+          file.includes('git-governor') ||
+          file.includes('test-tools')
+        ) {
           continue;
         }
-        
+
         if (file.endsWith('.js') || file.endsWith('.json') || file.endsWith('.ts')) {
           try {
             const content = readFileSync(file, 'utf-8');
-            
+
             // Skip lines that are regex patterns or string normalization functions
             const lines = content.split('\n');
-            const filteredLines = lines.filter(line => {
+            const filteredLines = lines.filter((line) => {
               // Skip lines with regex patterns containing backslashes
               if (line.includes('/\\\\/g') || line.includes('replace(/\\\\')) {
                 return false;
@@ -212,10 +213,10 @@ class PathNormalizationChecker {
               }
               return true;
             });
-            
+
             const filteredContent = filteredLines.join('\n');
             const matches = filteredContent.match(pattern);
-            
+
             if (matches && matches.length > 0) {
               issues.push({ file, count: matches.length });
             }
@@ -224,7 +225,7 @@ class PathNormalizationChecker {
           }
         }
       }
-      
+
       return issues;
     } catch (e) {
       console.log('[PathNormalization] Pattern scan failed:', e.message);
@@ -234,19 +235,25 @@ class PathNormalizationChecker {
 
   scanDirectory(dirPath) {
     const files = [];
-    
+
     try {
       const items = readdirSync(dirPath);
-      
+
       for (const item of items) {
         const itemPath = join(dirPath, item);
-        
+
         try {
           const stats = statSync(itemPath);
-          
+
           if (stats.isDirectory()) {
             // Skip node_modules and .git
-            if (!item.includes('node_modules') && !item.includes('.git') && !item.includes('git-governor') && !item.includes('windsurf-rig') && !item.includes('ares-rig')) {
+            if (
+              !item.includes('node_modules') &&
+              !item.includes('.git') &&
+              !item.includes('git-governor') &&
+              !item.includes('windsurf-rig') &&
+              !item.includes('ares-rig')
+            ) {
               files.push(...this.scanDirectory(itemPath));
             }
           } else {
@@ -259,7 +266,7 @@ class PathNormalizationChecker {
     } catch (e) {
       // Ignore permission errors
     }
-    
+
     return files;
   }
 }

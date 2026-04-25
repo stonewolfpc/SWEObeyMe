@@ -9,6 +9,7 @@ Use this checklist before every release to ensure SWEObeyMe works flawlessly for
 ## Pre-Release Validation
 
 ### 1. Code Quality ✅
+
 - [ ] All files compile without errors
 - [ ] No TypeScript/JavaScript linting errors
 - [ ] No console.log or debugger statements in production code
@@ -17,6 +18,7 @@ Use this checklist before every release to ensure SWEObeyMe works flawlessly for
 - [ ] Bracket validation passes
 
 ### 2. Build Process ✅
+
 - [ ] `npm run build` succeeds
 - [ ] `dist/extension.js` exists (VS Code extension)
 - [ ] `dist/mcp/server.js` exists (MCP server)
@@ -25,6 +27,7 @@ Use this checklist before every release to ensure SWEObeyMe works flawlessly for
 - [ ] No build warnings
 
 ### 3. Dependencies ✅
+
 - [ ] `npm install` succeeds without errors
 - [ ] All dependencies are up to date
 - [ ] No security vulnerabilities in dependencies
@@ -36,6 +39,7 @@ Use this checklist before every release to ensure SWEObeyMe works flawlessly for
 ## Platform-Specific Validation
 
 ### Windsurf ✅
+
 - [ ] `mcp-configs/windsurf-mcp.json` exists
 - [ ] Config format matches Windsurf requirements
 - [ ] Command is "node"
@@ -46,6 +50,7 @@ Use this checklist before every release to ensure SWEObeyMe works flawlessly for
 - [ ] Path placeholders documented
 
 ### Cursor ✅
+
 - [ ] `mcp-configs/cursor-mcp.json` exists
 - [ ] Config format matches Cursor requirements
 - [ ] Command is "node"
@@ -56,6 +61,7 @@ Use this checklist before every release to ensure SWEObeyMe works flawlessly for
 - [ ] Global and project-specific configs documented
 
 ### VS Code ✅
+
 - [ ] `package.json` has `contributes.mcpServers`
 - [ ] MCP server registered with correct ID
 - [ ] Command is "node"
@@ -66,6 +72,7 @@ Use this checklist before every release to ensure SWEObeyMe works flawlessly for
 - [ ] Extension icon present
 
 ### LM Studio ✅
+
 - [ ] `mcp-configs/lmstudio-mcp.json` exists
 - [ ] Config format matches Cursor notation (LM Studio follows Cursor)
 - [ ] Command is "node"
@@ -80,6 +87,7 @@ Use this checklist before every release to ensure SWEObeyMe works flawlessly for
 ## MCP Server Validation
 
 ### Server Startup ✅
+
 - [ ] Server starts without errors
 - [ ] Server logs "connected and ready" message
 - [ ] Server responds to MCP protocol handshake
@@ -89,6 +97,7 @@ Use this checklist before every release to ensure SWEObeyMe works flawlessly for
 - [ ] Server handles graceful shutdown
 
 ### Tool Registration ✅
+
 - [ ] All 95+ tools are registered
 - [ ] Tool names are unique
 - [ ] Tool descriptions are clear
@@ -98,6 +107,7 @@ Use this checklist before every release to ensure SWEObeyMe works flawlessly for
 - [ ] No duplicate tool definitions
 
 ### Tool Functionality ✅
+
 - [ ] Read file tools work
 - [ ] Write file tools work
 - [ ] File operations respect surgical rules
@@ -112,6 +122,7 @@ Use this checklist before every release to ensure SWEObeyMe works flawlessly for
 ## Integration Tests
 
 ### Cross-Platform Integration Test ✅
+
 - [ ] `node tests/cross-platform-integration-test.js` passes
 - [ ] Build artifacts test passes
 - [ ] Config files test passes
@@ -122,6 +133,7 @@ Use this checklist before every release to ensure SWEObeyMe works flawlessly for
 - [ ] LM Studio config test passes
 
 ### Additional Tests ✅
+
 - [ ] `npm run test:tools` passes
 - [ ] `npm run test:server` passes
 - [ ] `npm run test:mcp` passes
@@ -129,6 +141,7 @@ Use this checklist before every release to ensure SWEObeyMe works flawlessly for
 - [ ] All test suites pass
 
 ### Comprehensive Test Suite ✅
+
 - [ ] `npm run test:comprehensive` passes
 - [ ] `npm run test:cross-platform` passes
 - [ ] `npm run test:schema-validation` passes
@@ -144,11 +157,13 @@ Use this checklist before every release to ensure SWEObeyMe works flawlessly for
 - [ ] `npm run test:user-from-hell` passes
 
 ### Backend/MCP Tests ✅
+
 - [ ] Schema validation tests pass (invalid params, missing params, extra params, wrong types, null vs undefined, large payloads, circular JSON)
 - [ ] Concurrency tests pass (20 parallel tool calls, 50 parallel agent logs, 100 parallel spec checks, no race conditions, no deadlocks, no partial writes)
 - [ ] File system safety tests pass (locked files, read-only files, missing directories, corrupted JSON, permission errors, path traversal)
 
 ### UI/IDE Integration Tests ✅
+
 - [ ] Tool palette rendering test passes
 - [ ] Tool parameter schemas test passes
 - [ ] No hidden/internal fields test passes
@@ -165,6 +180,7 @@ Use this checklist before every release to ensure SWEObeyMe works flawlessly for
 - [ ] Errors don't produce empty tool lists test passes
 
 ### Multi-Agent Orchestration Tests ✅
+
 - [ ] Two agents editing same file test passes
 - [ ] Two agents editing same function test passes
 - [ ] Two agents editing same import test passes
@@ -182,6 +198,7 @@ Use this checklist before every release to ensure SWEObeyMe works flawlessly for
 - [ ] Auto-reassign test passes
 
 ### User-Experience Tests ✅
+
 - [ ] No jargon in output test passes
 - [ ] No partial implementations test passes
 - [ ] No TODOs in code test passes
@@ -203,6 +220,7 @@ Use this checklist before every release to ensure SWEObeyMe works flawlessly for
 - [ ] Missing dependencies handling test passes
 
 ### Chaos Engineering Tests ✅
+
 - [ ] Random tool failures test passes
 - [ ] Random network drops test passes
 - [ ] Random partial responses test passes
@@ -218,6 +236,7 @@ Use this checklist before every release to ensure SWEObeyMe works flawlessly for
 - [ ] No silent failures test passes
 
 ### Simulated User From Hell Test ✅
+
 - [ ] Garbage input handling test passes
 - [ ] Half-sentences handling test passes
 - [ ] Contradictory instructions handling test passes
@@ -238,6 +257,7 @@ Use this checklist before every release to ensure SWEObeyMe works flawlessly for
 ---
 
 ### Windsurf Runtime Behavior Test ✅
+
 - [ ] `npm run test:windsurf` passes
 - [ ] Path normalization test passes
 - [ ] Executable resolution test passes
@@ -343,6 +363,7 @@ Use this checklist before every release to ensure SWEObeyMe works flawlessly for
 ## Documentation Validation
 
 ### Installation Guide ✅
+
 - [ ] `INSTALLATION.md` exists
 - [ ] Prerequisites documented clearly
 - [ ] Windsurf installation steps complete
@@ -355,6 +376,7 @@ Use this checklist before every release to ensure SWEObeyMe works flawlessly for
 - [ ] Uninstallation instructions included
 
 ### README.md ✅
+
 - [ ] Overview section clear
 - [ ] Features documented
 - [ ] Installation link present
@@ -365,6 +387,7 @@ Use this checklist before every release to ensure SWEObeyMe works flawlessly for
 - [ ] Contact information present
 
 ### Platform-Specific Docs ✅
+
 - [ ] Windsurf-specific notes documented
 - [ ] Cursor-specific notes documented
 - [ ] VS Code-specific notes documented
@@ -375,6 +398,7 @@ Use this checklist before every release to ensure SWEObeyMe works flawlessly for
 ## Package.json Validation
 
 ### Metadata ✅
+
 - [ ] Name is correct
 - [ ] Version is incremented
 - [ ] Description is accurate
@@ -383,6 +407,7 @@ Use this checklist before every release to ensure SWEObeyMe works flawlessly for
 - [ ] License is specified
 
 ### Dependencies ✅
+
 - [ ] MCP SDK version is correct
 - [ ] All dependencies are necessary
 - [ ] No unused dependencies
@@ -390,6 +415,7 @@ Use this checklist before every release to ensure SWEObeyMe works flawlessly for
 - [ ] Dev dependencies are appropriate
 
 ### Scripts ✅
+
 - [ ] Build script works
 - [ ] Test script works
 - [ ] Package script works
@@ -397,6 +423,7 @@ Use this checklist before every release to ensure SWEObeyMe works flawlessly for
 - [ ] Compile script works
 
 ### Configuration ✅
+
 - [ ] VS Code engine version specified
 - [ ] Categories are appropriate
 - [ ] Keywords include "mcp", "ai"
@@ -410,6 +437,7 @@ Use this checklist before every release to ensure SWEObeyMe works flawlessly for
 ## File Structure Validation
 
 ### Required Files ✅
+
 - [ ] `package.json` exists
 - [ ] `index.js` exists
 - [ ] `extension.js` exists
@@ -421,6 +449,7 @@ Use this checklist before every release to ensure SWEObeyMe works flawlessly for
 - [ ] `LICENSE` exists
 
 ### Build Artifacts ✅
+
 - [ ] `dist/extension.js` exists after build
 - [ ] `dist/mcp/server.js` exists after build
 - [ ] `dist/lib/` copied after build
@@ -432,6 +461,7 @@ Use this checklist before every release to ensure SWEObeyMe works flawlessly for
 ## Platform-Specific Testing
 
 ### Windsurf Testing ✅
+
 - [ ] Tested on latest Windsurf version
 - [ ] Config file loads correctly
 - [ ] Server starts in Windsurf
@@ -441,6 +471,7 @@ Use this checklist before every release to ensure SWEObeyMe works flawlessly for
 - [ ] Dashboard displays correctly
 
 ### Cursor Testing ✅
+
 - [ ] Tested on latest Cursor version
 - [ ] Config file loads correctly
 - [ ] Server starts in Cursor
@@ -450,6 +481,7 @@ Use this checklist before every release to ensure SWEObeyMe works flawlessly for
 - [ ] Agent mode works with MCP tools
 
 ### VS Code Testing ✅
+
 - [ ] Tested on latest VS Code version
 - [ ] Extension installs correctly
 - [ ] Extension activates correctly
@@ -460,6 +492,7 @@ Use this checklist before every release to ensure SWEObeyMe works flawlessly for
 - [ ] Commands work correctly
 
 ### LM Studio Testing ✅
+
 - [ ] Tested on latest LM Studio version (0.3.17+)
 - [ ] Config file loads correctly
 - [ ] Server starts in LM Studio
@@ -472,6 +505,7 @@ Use this checklist before every release to ensure SWEObeyMe works flawlessly for
 ## Error Handling Validation
 
 ### Graceful Degradation ✅
+
 - [ ] Server handles missing config files
 - [ ] Server handles invalid config files
 - [ ] Server handles missing dependencies
@@ -480,6 +514,7 @@ Use this checklist before every release to ensure SWEObeyMe works flawlessly for
 - [ ] Server provides clear error messages
 
 ### User Feedback ✅
+
 - [ ] Error messages are actionable
 - [ ] Error messages include next steps
 - [ ] Error messages are user-friendly
@@ -491,6 +526,7 @@ Use this checklist before every release to ensure SWEObeyMe works flawlessly for
 ## Security Validation
 
 ### Code Security ✅
+
 - [ ] No hardcoded secrets
 - [ ] No eval() or dangerous functions
 - [ ] Input validation on all user inputs
@@ -499,6 +535,7 @@ Use this checklist before every release to ensure SWEObeyMe works flawlessly for
 - [ ] Command injection prevention
 
 ### Configuration Security ✅
+
 - [ ] No sensitive data in configs
 - [ ] Environment variables documented
 - [ ] Permission controls work
@@ -509,12 +546,14 @@ Use this checklist before every release to ensure SWEObeyMe works flawlessly for
 ## Performance Validation
 
 ### Startup Time ✅
+
 - [ ] Server starts in < 5 seconds
 - [ ] Extension activates in < 3 seconds
 - [ ] Tool registration completes quickly
 - [ ] No blocking operations on startup
 
 ### Runtime Performance ✅
+
 - [ ] Tool execution is responsive
 - [ ] No memory leaks
 - [ ] CPU usage is reasonable
@@ -526,18 +565,21 @@ Use this checklist before every release to ensure SWEObeyMe works flawlessly for
 ## Release Preparation
 
 ### Version Bump ✅
+
 - [ ] Version number incremented in package.json
 - [ ] Changelog updated
 - [ ] Release notes written
 - [ ] Breaking changes documented
 
 ### Package Creation ✅
+
 - [ ] `npm run package` succeeds
 - [ ] VSIX file created
 - [ ] Package size is reasonable
 - [ ] Package contains all files
 
 ### Git Preparation ✅
+
 - [ ] All changes committed
 - [ ] Git tag created
 - [ ] Branch is clean
@@ -548,12 +590,14 @@ Use this checklist before every release to ensure SWEObeyMe works flawlessly for
 ## Post-Release Validation
 
 ### Marketplace ✅
+
 - [ ] Extension published to VS Code Marketplace
 - [ ] Extension appears in search
 - [ ] Extension downloads successfully
 - [ ] Extension installs successfully
 
 ### User Testing ✅
+
 - [ ] Fresh install tested on clean machine
 - [ ] Upgrade tested from previous version
 - [ ] Installation guide followed successfully
@@ -564,21 +608,21 @@ Use this checklist before every release to ensure SWEObeyMe works flawlessly for
 
 ## Final Sign-Off
 
-**Release Manager:** ______________________
+**Release Manager:** **********\_\_**********
 
-**Date:** ______________________
+**Date:** **********\_\_**********
 
-**Version:** ______________________
+**Version:** **********\_\_**********
 
 **All Checks Passed:** ☐ YES ☐ NO
 
-**Notes:** ______________________
+**Notes:** **********\_\_**********
 
-_______________________________
+---
 
 **Approved for Release:** ☐ YES ☐ NO
 
-**Approval Signature:** ______________________
+**Approval Signature:** **********\_\_**********
 
 ---
 
@@ -597,6 +641,7 @@ npm run prepackage
 ```
 
 This runs:
+
 1. Cross-Platform Integration Test
 2. Backend MCP Schema Validation Test
 3. Backend MCP Concurrency Test

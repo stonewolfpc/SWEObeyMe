@@ -30,7 +30,9 @@ This document covers CSS transitions, CSS animations, FLIP technique, Framer Mot
 
 ```css
 .button {
-  transition: background-color 0.3s ease, transform 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    transform 0.3s ease;
 }
 ```
 
@@ -114,21 +116,21 @@ This document covers CSS transitions, CSS animations, FLIP technique, Framer Mot
 ```javascript
 function flip(element) {
   const first = element.getBoundingClientRect();
-  
+
   // Make changes
   element.classList.add('active');
-  
+
   const last = element.getBoundingClientRect();
-  
+
   const delta = {
     x: first.left - last.left,
     y: first.top - last.top,
   };
-  
+
   element.style.transform = `translate(${delta.x}px, ${delta.y}px)`;
-  
+
   element.style.transition = 'transform 0.3s ease';
-  
+
   requestAnimationFrame(() => {
     element.style.transform = '';
   });
@@ -169,11 +171,7 @@ const variants = {
 
 function AnimatedList() {
   return (
-    <motion.ul
-      initial="hidden"
-      animate="visible"
-      variants={variants}
-    >
+    <motion.ul initial="hidden" animate="visible" variants={variants}>
       <motion.li variants={variants}>Item 1</motion.li>
       <motion.li variants={variants}>Item 2</motion.li>
     </motion.ul>
@@ -255,7 +253,9 @@ function Modal({ isOpen, onClose }) {
 
 ```css
 .button {
-  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  transition:
+    transform 0.1s ease,
+    box-shadow 0.1s ease;
 }
 
 .button:hover {
@@ -273,7 +273,9 @@ function Modal({ isOpen, onClose }) {
 
 ```css
 .input {
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .input:focus {
@@ -286,7 +288,9 @@ function Modal({ isOpen, onClose }) {
 
 ```css
 .card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .card:hover {
@@ -338,21 +342,21 @@ function Modal({ isOpen, onClose }) {
 
 ### Animation
 
-- **Purposeful': Make animations purposeful
-- **Performant': Keep animations performant
-- **Accessible': Respect accessibility preferences
-- **Consistent': Keep animations consistent
+- \*\*Purposeful': Make animations purposeful
+- \*\*Performant': Keep animations performant
+- \*\*Accessible': Respect accessibility preferences
+- \*\*Consistent': Keep animations consistent
 
 ### Performance
 
-- **GPU': Use GPU-accelerated properties
-- **Transform': Use transform instead of layout properties
-- **Opacity': Use opacity instead of display
-- **Will-change': Use will-change sparingly
+- \*\*GPU': Use GPU-accelerated properties
+- \*\*Transform': Use transform instead of layout properties
+- \*\*Opacity': Use opacity instead of display
+- \*\*Will-change': Use will-change sparingly
 
 ### Accessibility
 
-- **Respect': Respect prefers-reduced-motion
-- **Focus': Don't move focus during animation
-- **Skip': Allow users to skip animations
-- **Alternative': Provide non-animated alternative
+- \*\*Respect': Respect prefers-reduced-motion
+- \*\*Focus': Don't move focus during animation
+- \*\*Skip': Allow users to skip animations
+- \*\*Alternative': Provide non-animated alternative

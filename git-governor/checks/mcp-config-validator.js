@@ -20,10 +20,10 @@ class MCPConfigValidator {
       skipped: 0,
       total: 0,
     };
-    
+
     this.repoRoot = dirname(dirname(__dirname));
     this.expectedPath = '~/.codeium/mcp_config.json';
-    
+
     // Windsurf-Next schema
     this.schema = {
       required: ['mcpServers'],
@@ -36,7 +36,7 @@ class MCPConfigValidator {
 
   async run() {
     console.log('[MCPConfigValidator] Starting MCP config validation...');
-    
+
     const tests = [
       'check-config-path',
       'validate-json',
@@ -51,21 +51,21 @@ class MCPConfigValidator {
       'validate-args',
       'validate-transport',
     ];
-    
+
     for (const test of tests) {
       await this.runTest(test);
     }
-    
+
     this.results.total = this.results.tests.length;
     return this.results;
   }
 
   async runTest(testName) {
     console.log(`[MCPConfigValidator] Running: ${testName}...`);
-    
+
     let passed = false;
     let error = null;
-    
+
     try {
       switch (testName) {
         case 'check-config-path':
@@ -108,14 +108,14 @@ class MCPConfigValidator {
     } catch (e) {
       error = e.message;
     }
-    
+
     this.results.tests.push({
       id: testName,
       name: `MCP Config Validator - ${testName}`,
       passed,
       error,
     });
-    
+
     if (passed) {
       this.results.passed++;
       console.log(`[MCPConfigValidator] ✅ ${testName}`);
@@ -136,7 +136,7 @@ class MCPConfigValidator {
   async testValidateJSON() {
     const config = this.getConfig();
     if (!config) return true; // Skip if no config (runtime generated)
-    
+
     try {
       JSON.parse(JSON.stringify(config));
       return true;
@@ -148,28 +148,28 @@ class MCPConfigValidator {
   async testValidateSchema() {
     const config = this.getConfig();
     if (!config) return true; // Skip if no config (runtime generated)
-    
+
     // Check required top-level keys
     for (const required of this.schema.required) {
       if (!(required in config)) {
         return false;
       }
     }
-    
+
     // Check for unknown keys
     for (const key of Object.keys(config)) {
       if (!this.schema.allowedKeys.includes(key)) {
         return false;
       }
     }
-    
+
     return true;
   }
 
   async testCheckForwardSlashes() {
     const config = this.getConfig();
     if (!config) return true;
-    
+
     // Check all paths use forward slashes
     const hasBackslashes = this.scanForBackslashes(config);
     return !hasBackslashes;
@@ -178,7 +178,7 @@ class MCPConfigValidator {
   async testCheckLowercaseDrives() {
     const config = this.getConfig();
     if (!config) return true;
-    
+
     // Check all drive letters are lowercase
     const hasUppercase = this.scanForUppercaseDrives(config);
     return !hasUppercase;
@@ -187,7 +187,7 @@ class MCPConfigValidator {
   async testCheckNoBackslashes() {
     const config = this.getConfig();
     if (!config) return true;
-    
+
     // Check no backslashes in any path
     const hasBackslashes = this.scanForBackslashes(config);
     return !hasBackslashes;
@@ -196,7 +196,7 @@ class MCPConfigValidator {
   async testCheckNoTrailingSlashes() {
     const config = this.getConfig();
     if (!config) return true;
-    
+
     // Check no trailing slashes in paths
     const hasTrailing = this.scanForTrailingSlashes(config);
     return !hasTrailing;
@@ -205,14 +205,14 @@ class MCPConfigValidator {
   async testCheckNoUnknownKeys() {
     const config = this.getConfig();
     if (!config) return true;
-    
+
     // Check for unknown keys
     for (const key of Object.keys(config)) {
       if (!this.schema.allowedKeys.includes(key)) {
         return false;
       }
     }
-    
+
     for (const [serverName, serverConfig] of Object.entries(config.mcpServers)) {
       for (const key of Object.keys(serverConfig)) {
         if (!this.schema.serverAllowedKeys.includes(key)) {
@@ -220,7 +220,7 @@ class MCPConfigValidator {
         }
       }
     }
-    
+
     return true;
   }
 
@@ -233,49 +233,52 @@ class MCPConfigValidator {
   async testValidateCommandPaths() {
     const config = this.getConfig();
     if (!config) return true;
-    
+
     // Validate command paths
     for (const [serverName, serverConfig] of Object.entries(config.mcpServers)) {
       if (serverConfig.command && typeof serverConfig.command !== 'string') {
         return false;
       }
     }
-    
+
     return true;
   }
 
   async testValidateArgs() {
     const config = this.getConfig();
     if (!config) return true;
-    
+
     // Validate args
     for (const [serverName, serverConfig] of Object.entries(config.mcpServers)) {
       if (serverConfig.args && !Array.isArray(serverConfig.args)) {
         return false;
       }
     }
-    
+
     return true;
   }
 
   async testValidateTransport() {
     const config = this.getConfig();
     if (!config) return true;
-    
+
     // Validate transport
     for (const [serverName, serverConfig] of Object.entries(config.mcpServers)) {
-      if (serverConfig.transport && !this.schema.transportAllowed.includes(serverConfig.transport)) {
+      if (
+        serverConfig.transport &&
+        !this.schema.transportAllowed.includes(serverConfig.transport)
+      ) {
         return false;
       }
     }
-    
+
     return true;
   }
 
   // Helper methods
   getConfig() {
     const configPath = join(this.repoRoot, '.sweobeyme-config.json');
-    
+
     try {
       const content = readFileSync(configPath, 'utf-8');
       return JSON.parse(content);
@@ -290,14 +293,14 @@ class MCPConfigValidator {
         return obj.includes('\\');
       }
       if (Array.isArray(obj)) {
-        return obj.some(item => hasBackslashes(item));
+        return obj.some((item) => hasBackslashes(item));
       }
       if (obj && typeof obj === 'object') {
-        return Object.values(obj).some(value => hasBackslashes(value));
+        return Object.values(obj).some((value) => hasBackslashes(value));
       }
       return false;
     };
-    
+
     return hasBackslashes(config);
   }
 
@@ -307,14 +310,14 @@ class MCPConfigValidator {
         return /^[A-Z]:/.test(obj);
       }
       if (Array.isArray(obj)) {
-        return obj.some(item => hasUppercase(item));
+        return obj.some((item) => hasUppercase(item));
       }
       if (obj && typeof obj === 'object') {
-        return Object.values(obj).some(value => hasUppercase(value));
+        return Object.values(obj).some((value) => hasUppercase(value));
       }
       return false;
     };
-    
+
     return hasUppercase(config);
   }
 
@@ -324,14 +327,14 @@ class MCPConfigValidator {
         return obj.endsWith('/');
       }
       if (Array.isArray(obj)) {
-        return obj.some(item => hasTrailing(item));
+        return obj.some((item) => hasTrailing(item));
       }
       if (obj && typeof obj === 'object') {
-        return Object.values(obj).some(value => hasTrailing(value));
+        return Object.values(obj).some((value) => hasTrailing(value));
       }
       return false;
     };
-    
+
     return hasTrailing(config);
   }
 }

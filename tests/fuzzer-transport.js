@@ -2,7 +2,7 @@
 
 /**
  * Transport Fuzzer
- * 
+ *
  * Fuzzes MCP transport layer: chunking, delays, reordering, interleaved logs, BOMs, truncated packets
  */
 
@@ -23,7 +23,7 @@ export class TransportFuzzer {
       () => this.addBOM(message),
       () => this.truncateMessage(message),
       () => this.interleaveWithLogs(message),
-      () => this.corruptBytes(message)
+      () => this.corruptBytes(message),
     ];
 
     const numFuzzers = Math.floor(Math.random() * 3) + 1;
@@ -71,7 +71,7 @@ export class TransportFuzzer {
     const delay = Math.floor(Math.random() * this.maxDelay);
     return {
       data: message,
-      delay
+      delay,
     };
   }
 
@@ -122,7 +122,7 @@ export class TransportFuzzer {
       '[ERROR] Failed to parse',
       '[TRACE] Step 1 complete',
       'stdout: Partial output',
-      'stderr: Warning message'
+      'stderr: Warning message',
     ];
 
     const log = logs[Math.floor(Math.random() * logs.length)];
@@ -158,7 +158,7 @@ export class TransportFuzzer {
       () => this.addDelay(message),
       () => this.corruptBytes(message),
       () => this.truncateMessage(message),
-      () => this.reorderChunks(message)
+      () => this.reorderChunks(message),
     ];
 
     const numFuzzers = Math.floor(Math.random() * 3) + 1;
@@ -180,13 +180,13 @@ export class TransportFuzzer {
       'Content-Type': 'application/json',
       'Content-Length': JSON.stringify(message).length,
       'Transfer-Encoding': Math.random() < 0.5 ? 'chunked' : undefined,
-      'Connection': Math.random() < 0.5 ? 'keep-alive' : 'close',
-      'X-Custom-Header': Math.random().toString(36).substring(7)
+      Connection: Math.random() < 0.5 ? 'keep-alive' : 'close',
+      'X-Custom-Header': Math.random().toString(36).substring(7),
     };
 
     return {
       headers,
-      body: message
+      body: message,
     };
   }
 
@@ -199,7 +199,7 @@ export class TransportFuzzer {
     }
 
     const chunks = this.chunkMessage(message);
-    
+
     // Shuffle chunks
     for (let i = chunks.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -218,7 +218,7 @@ export class TransportFuzzer {
       () => this.addDelay(message),
       () => this.truncateMessage(message),
       () => this.interleaveWithLogs(message),
-      () => this.corruptBytes(message)
+      () => this.corruptBytes(message),
     ];
 
     const numFuzzers = Math.floor(Math.random() * 3) + 1;
@@ -259,7 +259,7 @@ export class TransportFuzzer {
         jsonrpc: '2.0',
         id: i,
         method: 'tools/call',
-        params: { name: 'test_tool', arguments: {} }
+        params: { name: 'test_tool', arguments: {} },
       };
 
       let fuzzed;
@@ -287,13 +287,7 @@ export class TransportFuzzer {
    * Simulate network conditions
    */
   simulateNetworkConditions(message) {
-    const conditions = [
-      'normal',
-      'slow',
-      'lossy',
-      'jitter',
-      'congestion'
-    ];
+    const conditions = ['normal', 'slow', 'lossy', 'jitter', 'congestion'];
 
     const condition = conditions[Math.floor(Math.random() * conditions.length)];
 

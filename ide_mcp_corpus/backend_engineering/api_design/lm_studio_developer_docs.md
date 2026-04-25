@@ -10,6 +10,7 @@ LM Studio provides a comprehensive developer stack for building applications wit
 ## Available SDKs and APIs
 
 ### TypeScript SDK (lmstudio-js)
+
 - Full TypeScript support
 - Async/await API design
 - Type-safe tool calling
@@ -17,6 +18,7 @@ LM Studio provides a comprehensive developer stack for building applications wit
 - Node.js and browser compatible
 
 ### Python SDK (lmstudio-python)
+
 - Pythonic API design
 - Async support with asyncio
 - Type hints throughout
@@ -24,6 +26,7 @@ LM Studio provides a comprehensive developer stack for building applications wit
 - Compatible with Python 3.8+
 
 ### REST API
+
 - HTTP/JSON based
 - Standard HTTP methods
 - Comprehensive endpoints
@@ -31,6 +34,7 @@ LM Studio provides a comprehensive developer stack for building applications wit
 - Rate limiting
 
 ### OpenAI-Compatible Endpoints
+
 - Drop-in replacement for OpenAI API
 - Compatible with existing OpenAI clients
 - Supports chat completions
@@ -38,6 +42,7 @@ LM Studio provides a comprehensive developer stack for building applications wit
 - Streaming support
 
 ### Anthropic-Compatible Endpoints
+
 - Compatible with Anthropic's Claude API
 - Message-based interface
 - Streaming support
@@ -46,6 +51,7 @@ LM Studio provides a comprehensive developer stack for building applications wit
 ## Key Capabilities
 
 ### Chat and Text Generation
+
 - Streaming responses
 - Temperature and top-p control
 - Stop sequences
@@ -54,6 +60,7 @@ LM Studio provides a comprehensive developer stack for building applications wit
 - Token counting
 
 ### Tool Calling and Local Agents with MCP
+
 - Function calling support
 - Local agent execution
 - MCP (Model Context Protocol) integration
@@ -62,6 +69,7 @@ LM Studio provides a comprehensive developer stack for building applications wit
 - Tool result handling
 
 ### Structured Output Using JSON Schema
+
 - JSON schema validation
 - Structured data extraction
 - Type-safe outputs
@@ -70,6 +78,7 @@ LM Studio provides a comprehensive developer stack for building applications wit
 - Pattern matching
 
 ### Embeddings and Tokenization
+
 - Text embeddings
 - Token counting
 - Tokenization utilities
@@ -77,6 +86,7 @@ LM Studio provides a comprehensive developer stack for building applications wit
 - Multiple embedding models
 
 ### Model Management
+
 - Load models dynamically
 - Download models from registry
 - List available models
@@ -87,20 +97,20 @@ LM Studio provides a comprehensive developer stack for building applications wit
 ## Quick Start Guides
 
 ### TypeScript/JavaScript
+
 ```javascript
 import { LMStudioClient } from 'lmstudio-js';
 
 const client = new LMStudioClient();
-const model = await client.llm.load("meta-llama/Llama-2-7b-chat-hf");
+const model = await client.llm.load('meta-llama/Llama-2-7b-chat-hf');
 
 const response = await model.respond({
-  messages: [
-    { role: "user", content: "Hello, world!" }
-  ]
+  messages: [{ role: 'user', content: 'Hello, world!' }],
 });
 ```
 
 ### Python
+
 ```python
 import lmstudio
 
@@ -113,6 +123,7 @@ response = await model.respond(
 ```
 
 ### REST API
+
 ```bash
 curl -X POST http://localhost:1234/v1/chat/completions \
   -H "Content-Type: application/json" \
@@ -127,24 +138,28 @@ curl -X POST http://localhost:1234/v1/chat/completions \
 LM Studio enables building various types of local AI applications:
 
 ### Chat Applications
+
 - Multi-turn conversations
 - Context management
 - Streaming responses
 - Custom system prompts
 
 ### Code Generation
+
 - Code completion
 - Code explanation
 - Code refactoring
 - Multi-language support
 
 ### Document Analysis
+
 - Document summarization
 - Information extraction
 - Question answering
 - Semantic search
 
 ### Tool Integration
+
 - Function calling
 - API integration
 - Local agent orchestration
@@ -153,7 +168,9 @@ LM Studio enables building various types of local AI applications:
 ## Integration with Existing Tools
 
 ### OpenAI Client Compatibility
+
 Use existing OpenAI SDKs by changing the base URL:
+
 ```python
 from openai import OpenAI
 
@@ -164,13 +181,16 @@ client = OpenAI(
 ```
 
 ### LangChain Integration
+
 LM Studio provides LangChain integrations for:
+
 - Chat models
 - Embeddings
 - LLM chains
 - Agents
 
 ### MCP Server Support
+
 - Build MCP servers with local LLMs
 - Expose tools to MCP clients
 - Resource access
@@ -179,6 +199,7 @@ LM Studio provides LangChain integrations for:
 ## Headless Deployments with llmster
 
 `llmster` enables headless deployment of LM Studio:
+
 - Server mode operation
 - No GUI required
 - Production-ready
@@ -188,6 +209,7 @@ LM Studio provides LangChain integrations for:
 ## Model Registry
 
 LM Studio includes a model registry with:
+
 - Popular open-source models
 - Multiple quantization levels
 - Model metadata
@@ -197,18 +219,21 @@ LM Studio includes a model registry with:
 ## Performance Considerations
 
 ### GPU Acceleration
+
 - Automatic GPU detection
 - CUDA support
 - Metal support (macOS)
 - Memory optimization
 
 ### Quantization
+
 - Multiple quantization levels (Q4, Q5, Q8)
 - Balance between quality and speed
 - Smaller memory footprint
 - Faster inference
 
 ### Caching
+
 - Model caching
 - Response caching
 - Embedding caching
@@ -217,6 +242,7 @@ LM Studio includes a model registry with:
 ## Configuration
 
 ### Server Configuration
+
 - Port configuration
 - CORS settings
 - Authentication
@@ -224,6 +250,7 @@ LM Studio includes a model registry with:
 - Logging
 
 ### Model Configuration
+
 - Default model
 - GPU memory limits
 - Context window size
@@ -233,6 +260,7 @@ LM Studio includes a model registry with:
 ## Monitoring and Observability
 
 ### Metrics
+
 - Request latency
 - Token throughput
 - GPU utilization
@@ -240,6 +268,7 @@ LM Studio includes a model registry with:
 - Error rates
 
 ### Logging
+
 - Request logging
 - Error logging
 - Performance logging

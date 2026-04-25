@@ -5,6 +5,7 @@ A pre-commit + pre-push test that guarantees correctness, safety, exclusion of p
 ## Purpose
 
 The Git Publish Governor ensures every upload is clean by validating:
+
 - No enterprise code leaks
 - Windsurf-Next compatibility
 - MCP schema validity
@@ -72,6 +73,7 @@ node git-governor.js --all --override feature-exclusion
 ## Result
 
 Every upload will be:
+
 - Clean
 - Safe
 - Deterministic

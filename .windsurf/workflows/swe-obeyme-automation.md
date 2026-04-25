@@ -9,45 +9,57 @@ This workflow enforces strict discipline for AI agents using SWEObeyMe MCP tools
 ## Core Rules
 
 ### 1. Always Use Tools First
+
 - If a tool exists, use it
 - If a tool fails, explain why and retry with context
 - NEVER bypass tools with manual edits
 - NEVER call tools that are not in the registry
 
 ### 2. Search Before Edit
+
 Before editing any file:
+
 - Search for the file using `search_code_files` or `find_code_files`
 - Confirm the file exists using `check_file_exists`
 - Read current content with `read_file`
 - If file doesn't exist, call `suggest_file_location` before creating
 
 ### 3. Explain Before Act
+
 Before any operation:
+
 - State the plan clearly
 - State which tools you will use
 - State expected outcomes
 - Call `confirm_dangerous_operation` if the operation is destructive
 
 ### 4. Never Hallucinate
+
 - NEVER invent file paths. Verify with `read_file` or `check_file_exists`.
 - NEVER call tools that aren't in the registry
 - NEVER create new files when existing files should be edited
 - If unsure: search → ask → verify → don't invent
 
 ### 5. Follow User Conventions
+
 Detect and follow with `analyze_project_conventions`:
+
 - Naming conventions (snake_case, PascalCase, camelCase, kebab-case)
 - Folder structure (src/, lib/, docs/, etc.)
 - Import/export patterns
 
 ### 6. Enforce Separation of Concerns
+
 Before any file operation:
+
 - Use `analyze_file_health` to detect god files and mixed concerns
 - If file exceeds 700 lines: use `refactor_move_block` or `extract_to_new_file`
 - Use `obey_surgical_plan` to validate line count before every write
 
 ### 7. Self-Correction Required
+
 When errors occur:
+
 - After 2 errors: call `get_session_context` to review history
 - After 3 errors: call `request_surgical_recovery` before retrying
 - Record every error with `add_project_error`
@@ -56,6 +68,7 @@ When errors occur:
 ## Tool Priority (SWEObeyMe > Windsurf Built-ins)
 
 ### Critical (Priority 100)
+
 - `read_file` — ONLY way to read files
 - `write_file` — ONLY way to write files
 - `obey_surgical_plan` — MUST call before every `write_file`
@@ -63,6 +76,7 @@ When errors occur:
 - `detect_project_switch` — MUST call before file operations in unfamiliar context
 
 ### High Priority (Priority 90–95)
+
 - `get_file_context` — understand dependencies before modifying
 - `analyze_change_impact` — understand ripple effects before refactoring
 - `validate_action` — validate action against project rules
@@ -70,6 +84,7 @@ When errors occur:
 - `get_current_project` — verify context before significant actions
 
 ### Safety Priority (Priority 50–60)
+
 - `confirm_dangerous_operation` — MUST call before any destructive operation
 - `create_backup` — MUST call before risky writes
 - `restore_backup` — use when a change breaks something
@@ -77,6 +92,7 @@ When errors occur:
 - `request_surgical_recovery` — MUST call after 3+ consecutive errors
 
 ### Context Priority (Priority 40–50)
+
 - `get_session_context` — review after 2+ consecutive errors
 - `get_architectural_directive` — call when uncertain about standards
 - `initiate_surgical_workflow` — MUST call for tasks with 3+ steps
@@ -85,6 +101,7 @@ When errors occur:
 - `extract_to_new_file` — PRIMARY tool for splitting large files
 
 ### Documentation Priority (Priority 35–50)
+
 - `record_decision` — record decisions to session memory
 - `record_project_decision` — persist architectural decisions across sessions
 - `generate_change_summary` — call after completing a set of changes
@@ -96,19 +113,23 @@ When errors occur:
 ## Separation of Concerns Rules
 
 ### Rule 1: File Scope Validation
+
 - Does this file exceed 700 lines?
 - If yes → use `refactor_move_block` or `extract_to_new_file`
 - Use `obey_surgical_plan` to check before every write
 
 ### Rule 2: Code Responsibility Check
+
 - Does this code belong in this file?
 - Use `analyze_file_health` to detect mixed concerns
 - If mixed → split with `refactor_move_block`
 
 ### Rule 3: Naming Convention Enforcement
+
 - Use `validate_naming_conventions` to check before finalizing new code
 
 ### Rule 4: Import Validation
+
 - Use `verify_imports` before writing any file that imports other modules
 
 ## Execution Flow
@@ -146,6 +167,7 @@ When errors occur:
 ## Example Workflows
 
 ### Editing a File
+
 1. `check_file_exists` — confirm file exists
 2. `read_file` — read current content
 3. `get_file_context` — understand dependencies
@@ -157,6 +179,7 @@ When errors occur:
 9. `generate_change_summary` — document what changed
 
 ### Creating a New File
+
 1. `suggest_file_location` — verify correct placement
 2. `check_file_exists` — confirm it doesn't already exist
 3. `verify_syntax` — validate code before writing
@@ -166,6 +189,7 @@ When errors occur:
 7. `record_project_decision` — if this is an architectural addition
 
 ### Refactoring a Large File
+
 1. `initiate_surgical_workflow` — declare steps upfront
 2. `read_file` — read current content
 3. `get_file_context` — understand all dependencies
@@ -177,6 +201,7 @@ When errors occur:
 9. `generate_change_summary` — document the refactor
 
 ### Error Recovery
+
 1. `get_session_context` — review what was attempted
 2. `get_architectural_directive` — check coding standards
 3. `restore_backup` — revert if a write broke something

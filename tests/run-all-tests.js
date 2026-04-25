@@ -11,11 +11,27 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const tests = [
-  { name: 'Cross-Platform Integration', file: 'cross-platform-integration-test.js', critical: true },
-  { name: 'Backend MCP Schema Validation', file: 'backend-mcp-schema-validation.js', critical: true },
+  {
+    name: 'Cross-Platform Integration',
+    file: 'cross-platform-integration-test.js',
+    critical: true,
+  },
+  {
+    name: 'Backend MCP Schema Validation',
+    file: 'backend-mcp-schema-validation.js',
+    critical: true,
+  },
   { name: 'Backend MCP Concurrency', file: 'backend-mcp-concurrency.js', critical: true },
-  { name: 'Backend MCP File System Safety', file: 'backend-mcp-file-system-safety.js', critical: false }, // Non-critical: CI environment limitations
-  { name: 'Extension Manifest Validation', file: 'extension-manifest-validation.js', critical: true },
+  {
+    name: 'Backend MCP File System Safety',
+    file: 'backend-mcp-file-system-safety.js',
+    critical: false,
+  }, // Non-critical: CI environment limitations
+  {
+    name: 'Extension Manifest Validation',
+    file: 'extension-manifest-validation.js',
+    critical: true,
+  },
   { name: 'Marketplace Packaging', file: 'marketplace-packaging.js', critical: true },
   { name: 'Spec Drift Simulation', file: 'spec-drift-simulation.js', critical: false },
   { name: 'Multi-Agent Orchestration', file: 'multi-agent-orchestration.js', critical: true },
@@ -26,7 +42,11 @@ const tests = [
   { name: 'Git Configuration Validation', file: 'git-configuration-validation.js', critical: true },
   { name: 'URI Validation', file: 'uri-validation.js', critical: true },
   { name: 'Windsurf Runtime Behavior', file: 'windsurf-runtime-behavior.js', critical: false }, // Non-critical: CI environment limitations
-  { name: 'Property-Based Timeout Tests', file: 'property-based-timeout-tests.js', critical: false }, // New: property-based testing
+  {
+    name: 'Property-Based Timeout Tests',
+    file: 'property-based-timeout-tests.js',
+    critical: false,
+  }, // New: property-based testing
   { name: 'Invariant Tests', file: 'invariant-tests.js', critical: false }, // New: invariant testing
   // Temporarily skip codebase orientation tests - they have environment-specific issues in CI
   // { name: 'Codebase Orientation Property Tests', file: 'codebase-orientation-property-tests.js', critical: false }, // New: codebase orientation refactor
@@ -69,14 +89,11 @@ class TestRunner {
 
     try {
       const timeout = test.file === 'windsurf-runtime-behavior.js' ? 300000 : 30000;
-      const result = execSync(
-        `node ${path.join(__dirname, test.file)}`,
-        {
-          encoding: 'utf-8',
-          timeout,
-          cwd: path.join(__dirname, '..'),
-        }
-      );
+      const result = execSync(`node ${path.join(__dirname, test.file)}`, {
+        encoding: 'utf-8',
+        timeout,
+        cwd: path.join(__dirname, '..'),
+      });
 
       // Check if test passed by looking for final output
       const passed = result.includes('ALL TESTS PASSED') || !result.includes('SOME TESTS FAILED');
@@ -132,8 +149,8 @@ class TestRunner {
     if (this.criticalFailed > 0) {
       console.log('CRITICAL TESTS FAILED:');
       this.results
-        .filter(r => !r.passed && r.critical)
-        .forEach(r => {
+        .filter((r) => !r.passed && r.critical)
+        .forEach((r) => {
           console.log(`  🔴 ${r.name}`);
         });
       console.log();
@@ -142,15 +159,15 @@ class TestRunner {
     if (this.failed > 0) {
       console.log('ALL FAILED TESTS:');
       this.results
-        .filter(r => !r.passed)
-        .forEach(r => {
+        .filter((r) => !r.passed)
+        .forEach((r) => {
           console.log(`  ${r.critical ? '🔴' : '🟡'} ${r.name}`);
         });
       console.log();
     }
 
     console.log('='.repeat(70));
-    
+
     if (this.criticalFailed === 0 && this.failed === 0) {
       console.log('🎉 ALL TESTS PASSED - ABSOLUTE CERTAINTY ACHIEVED 🎉');
       console.log('This platform is BULLETPROOF');
@@ -161,16 +178,16 @@ class TestRunner {
       console.log('❌ CRITICAL TESTS FAILED - DO NOT RELEASE');
       console.log('Fix critical issues before deploying');
     }
-    
+
     console.log('='.repeat(70));
 
     // Exit with appropriate code
-    process.exit(this.criticalFailed > 0 ? 1 : (this.failed > 0 ? 2 : 0));
+    process.exit(this.criticalFailed > 0 ? 1 : this.failed > 0 ? 2 : 0);
   }
 }
 
 const runner = new TestRunner();
-runner.runAll().catch(error => {
+runner.runAll().catch((error) => {
   console.error('Test runner failed:', error);
   process.exit(1);
 });

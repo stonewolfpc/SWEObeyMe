@@ -24,7 +24,7 @@ class EditorSimulator {
         mcpStartupBehavior: 'immediate',
         errorHandling: 'strict',
       },
-      'vscode': {
+      vscode: {
         activationTiming: 'slow',
         configLoading: 'sync',
         pathNormalization: 'platform-native',
@@ -53,7 +53,7 @@ class EditorSimulator {
         errorHandling: 'graceful',
       },
     };
-    
+
     this.results = {
       tests: [],
       passed: 0,
@@ -65,21 +65,20 @@ class EditorSimulator {
 
   async run() {
     console.log('[EditorSimulator] Starting multi-editor simulation...');
-    
-    const editorsToTest = this.options.editor === 'all' 
-      ? Object.keys(this.editors)
-      : [this.options.editor];
-    
+
+    const editorsToTest =
+      this.options.editor === 'all' ? Object.keys(this.editors) : [this.options.editor];
+
     for (const editor of editorsToTest) {
       await this.simulateEditor(editor);
     }
-    
+
     return this.results;
   }
 
   async simulateEditor(editorName) {
     console.log(`[EditorSimulator] Simulating ${editorName}...`);
-    
+
     const editorConfig = this.editors[editorName];
     const tests = [
       'activation-timing',
@@ -88,11 +87,11 @@ class EditorSimulator {
       'mcp-startup',
       'error-handling',
     ];
-    
+
     for (const test of tests) {
       await this.runTest(editorName, test, editorConfig);
     }
-    
+
     this.results.total = this.results.tests.length;
   }
 
@@ -100,7 +99,7 @@ class EditorSimulator {
     const testId = `${editorName}-${testName}`;
     let passed = false;
     let error = null;
-    
+
     try {
       switch (testName) {
         case 'activation-timing':
@@ -122,14 +121,14 @@ class EditorSimulator {
     } catch (e) {
       error = e.message;
     }
-    
+
     this.results.tests.push({
       id: testId,
       name: `${editorName} - ${testName}`,
       passed,
       error,
     });
-    
+
     if (passed) {
       this.results.passed++;
       console.log(`[EditorSimulator] ✅ ${testId}`);
@@ -142,29 +141,29 @@ class EditorSimulator {
   async testActivationTiming(editorName, config) {
     // Simulate activation timing behavior
     const timing = config.activationTiming;
-    
+
     if (timing === 'fast') {
       // Fast activation - should complete within 100ms
       const start = Date.now();
       await this.simulateActivation(50);
-      return (Date.now() - start) < 200;
+      return Date.now() - start < 200;
     } else if (timing === 'medium') {
       // Medium activation - should complete within 500ms
       const start = Date.now();
       await this.simulateActivation(300);
-      return (Date.now() - start) < 1000;
+      return Date.now() - start < 1000;
     } else {
       // Slow activation - should complete within 2s
       const start = Date.now();
       await this.simulateActivation(1000);
-      return (Date.now() - start) < 5000;
+      return Date.now() - start < 5000;
     }
   }
 
   async testConfigLoading(editorName, config) {
     // Simulate config loading behavior
     const loading = config.configLoading;
-    
+
     if (loading === 'sync') {
       // Synchronous loading - should block until complete
       const configData = this.loadConfigSync();
@@ -180,7 +179,7 @@ class EditorSimulator {
     // Simulate path normalization behavior
     const normalization = config.pathNormalization;
     const testPath = 'C:\\Users\\Test\\file.txt';
-    
+
     if (normalization === 'forward-slash') {
       // Should convert to forward slashes
       const normalized = this.normalizePath(testPath, 'forward');
@@ -195,7 +194,7 @@ class EditorSimulator {
   async testMCPStartup(editorName, config) {
     // Simulate MCP startup behavior
     const startup = config.mcpStartupBehavior;
-    
+
     if (startup === 'immediate') {
       // Should start immediately
       const started = await this.startMCPImmediate();
@@ -210,7 +209,7 @@ class EditorSimulator {
   async testErrorHandling(editorName, config) {
     // Simulate error handling behavior
     const handling = config.errorHandling;
-    
+
     if (handling === 'strict') {
       // Should fail fast on errors
       try {
@@ -232,7 +231,7 @@ class EditorSimulator {
 
   // Simulation helpers
   async simulateActivation(duration) {
-    return new Promise(resolve => setTimeout(resolve, duration));
+    return new Promise((resolve) => setTimeout(resolve, duration));
   }
 
   loadConfigSync() {
@@ -248,7 +247,7 @@ class EditorSimulator {
   }
 
   async loadConfigAsync() {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       setTimeout(() => {
         resolve(this.loadConfigSync());
       }, 100);
@@ -270,7 +269,7 @@ class EditorSimulator {
 
   async startMCPDelayed() {
     // Simulate delayed MCP startup
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 500));
     return true;
   }
 

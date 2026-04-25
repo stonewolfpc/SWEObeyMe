@@ -8,7 +8,7 @@ This document provides decision trees to help AI models (and users) select the r
 
 ## File Operation Decision Tree
 
-```
+```text
 START: What do you want to do with files?
 │
 ├─ Read a file?
@@ -67,7 +67,7 @@ START: What do you want to do with files?
 
 ## Refactoring Decision Tree
 
-```
+```text
 START: What type of refactoring?
 │
 ├─ Rename function/class?
@@ -102,7 +102,7 @@ START: What type of refactoring?
 
 ## Validation Decision Tree
 
-```
+```text
 START: What needs validation?
 │
 ├─ Code syntax?
@@ -163,7 +163,7 @@ START: What needs validation?
 
 ## C# Development Decision Tree
 
-```
+```text
 START: Working with C# code?
 │
 ├─ Need to check errors?
@@ -198,7 +198,7 @@ START: Working with C# code?
 
 ## Project Analysis Decision Tree
 
-```
+```text
 START: What project analysis needed?
 │
 ├─ Explore project structure?
@@ -245,7 +245,7 @@ START: What project analysis needed?
 
 ## Error Recovery Decision Tree
 
-```
+```text
 START: Encountered an error?
 │
 ├─ Write operation rejected?
@@ -300,7 +300,7 @@ START: Encountered an error?
 
 ## Configuration Decision Tree
 
-```
+```text
 START: What configuration change?
 │
 ├─ View current config?
@@ -348,7 +348,7 @@ START: What configuration change?
 
 ## Documentation Decision Tree
 
-```
+```text
 START: What documentation task?
 │
 ├─ Check documentation coverage?
@@ -384,7 +384,7 @@ START: What documentation task?
 
 ## Testing Decision Tree
 
-```
+```text
 START: Testing task?
 │
 ├─ Run tests?
@@ -415,7 +415,7 @@ START: Testing task?
 
 ## Specialized Tools Decision Tree
 
-```
+```text
 START: Specialized task?
 │
 ├─ Need backup?
@@ -535,6 +535,7 @@ START: Should I implement functionality or ask the user?
 ```
 
 **Key Principles:**
+
 - Implement working code, not stubs or placeholders
 - Break complex tasks into smaller, testable increments
 - Inform user after each significant milestone
@@ -546,27 +547,32 @@ START: Should I implement functionality or ask the user?
 
 ### Most Common Workflows
 
-**1. Simple File Edit**
-```
+#### 1. Simple File Edit
+
+```text
 read_file → obey_surgical_plan → write_file → run_related_tests
 ```
 
-**2. Refactoring**
-```
+#### 2. Refactoring
+
+```text
 get_file_context → analyze_change_impact → obey_surgical_plan → write_file → run_related_tests
 ```
 
-**3. New File Creation**
-```
+#### 3. New File Creation
+
+```text
 obey_surgical_plan → write_file → verify_imports → run_related_tests
 ```
 
-**4. Large File Split**
-```
+#### 4. Large File Split
+
+```text
 get_file_context → refactor_move_block → verify_imports → write_file (repeat)
 ```
 
-**5. Error Fixing**
+#### 5. Error Fixing**
+
 ```
 get_csharp_errors_for_file → fix errors → verify_syntax → write_file
 ```

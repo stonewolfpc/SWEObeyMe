@@ -38,7 +38,7 @@ if (errors.length === 0) {
   console.log('   ✅ Extension structure valid\n');
 } else {
   console.error('   ❌ Extension structure issues:');
-  errors.forEach(e => console.error(`      - ${e}`));
+  errors.forEach((e) => console.error(`      - ${e}`));
 }
 
 // Test 2: Check package.json commands are registered
@@ -47,7 +47,7 @@ const packageJsonPath = path.join(projectRoot, 'package.json');
 const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
 
 const declaredCommands = packageJson.contributes?.commands || [];
-const commandIds = declaredCommands.map(c => c.command);
+const commandIds = declaredCommands.map((c) => c.command);
 
 console.log(`   Found ${declaredCommands.length} commands in package.json`);
 
@@ -64,15 +64,16 @@ for (const cmd of declaredCommands) {
 if (commandIssues.length > 0) {
   warnings.push(...commandIssues);
   console.warn('   ⚠️  Command issues:');
-  commandIssues.forEach(i => console.warn(`      - ${i}`));
+  commandIssues.forEach((i) => console.warn(`      - ${i}`));
 } else {
   console.log('   ✅ All commands properly declared\n');
 }
 
 // Test 3: Check webview provider registration
 console.log('3️⃣  Checking webview providers...');
-const hasWebviewProvider = extensionJs.includes('WebviewViewProvider') || 
-                           extensionJs.includes('registerWebviewViewProvider');
+const hasWebviewProvider =
+  extensionJs.includes('WebviewViewProvider') ||
+  extensionJs.includes('registerWebviewViewProvider');
 const hasWebviewPanel = extensionJs.includes('createWebviewPanel');
 
 if (hasWebviewProvider || hasWebviewPanel) {
@@ -88,8 +89,9 @@ const csharpSettingsPath = path.join(projectRoot, 'lib/csharp-settings-provider.
 if (fs.existsSync(csharpSettingsPath)) {
   const csharpSettings = fs.readFileSync(csharpSettingsPath, 'utf8');
   const hasWebview = csharpSettings.includes('webview');
-  const hasGetHtml = csharpSettings.includes('getHtml') || csharpSettings.includes('_getHtmlForWebview');
-  
+  const hasGetHtml =
+    csharpSettings.includes('getHtml') || csharpSettings.includes('_getHtmlForWebview');
+
   if (hasWebview && hasGetHtml) {
     console.log('   ✅ C# Bridge settings provider has webview');
   } else {
@@ -105,7 +107,7 @@ if (fs.existsSync(csharpSettingsPath)) {
 console.log('\n5️⃣  Checking activation events...');
 const activationEvents = packageJson.activationEvents || [];
 const hasOnStartup = activationEvents.includes('onStartupFinished');
-const hasOnCommand = activationEvents.some(e => e.startsWith('onCommand:'));
+const hasOnCommand = activationEvents.some((e) => e.startsWith('onCommand:'));
 
 if (hasOnStartup) {
   console.log('   ✅ Extension activates on startup');
@@ -155,9 +157,9 @@ if (configuration) {
   const properties = configuration.properties || {};
   const propCount = Object.keys(properties).length;
   console.log(`   ✅ ${propCount} configuration properties defined`);
-  
+
   // Check for critical config
-  const hasCsharpBridge = Object.keys(properties).some(p => p.includes('csharpBridge'));
+  const hasCsharpBridge = Object.keys(properties).some((p) => p.includes('csharpBridge'));
   if (hasCsharpBridge) {
     console.log('   ✅ C# Bridge configuration found');
   }
@@ -177,7 +179,7 @@ console.log(`   Commands: ${declaredCommands.length}`);
 if (errors.length > 0) {
   console.error('\n❌ UI TESTS FAILED');
   console.error('   Critical errors found:');
-  errors.forEach(e => console.error(`      - ${e}`));
+  errors.forEach((e) => console.error(`      - ${e}`));
   process.exit(1);
 } else if (warnings.length > 0) {
   console.warn('\n⚠️  UI TESTS PASSED WITH WARNINGS');

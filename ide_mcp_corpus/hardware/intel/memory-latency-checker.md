@@ -19,6 +19,7 @@ Intel Memory Latency Checker (Intel MLC) is a tool used to measure memory latenc
 ## How It Works
 
 The tool uses controlled memory access patterns to:
+
 - Measure actual read/write latencies
 - Determine sustained bandwidth
 - Detect cache behavior under load

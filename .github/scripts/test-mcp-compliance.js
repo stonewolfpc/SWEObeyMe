@@ -30,7 +30,7 @@ const nodePath = process.execPath;
 const server = spawn(nodePath, [serverPath], {
   stdio: ['pipe', 'pipe', 'pipe'],
   env: { ...process.env, NODE_ENV: 'test' },
-  cwd: extensionRoot
+  cwd: extensionRoot,
 });
 
 let buffer = '';
@@ -38,7 +38,7 @@ let testResults = {
   initialized: false,
   toolsListed: false,
   noDuplicates: false,
-  schemasValid: false
+  schemasValid: false,
 };
 
 server.stdout.on('data', (data) => {
@@ -57,10 +57,10 @@ function processBuffer() {
   // MCP uses newline-delimited JSON-RPC
   const lines = buffer.split('\n');
   buffer = lines.pop(); // Keep incomplete line in buffer
-  
+
   for (const line of lines) {
     if (!line.trim()) continue;
-    
+
     try {
       const msg = JSON.parse(line);
       handleMessage(msg);
@@ -77,27 +77,27 @@ function handleMessage(msg) {
   if (msg.id === 1 && msg.result) {
     console.log('   ✅ Server responded to initialize');
     testResults.initialized = true;
-    
+
     // Request tools list
     setTimeout(() => {
       requestTools();
     }, 100);
   }
-  
+
   // Handle tools/list response
   if (msg.id === 2 && msg.result && msg.result.tools) {
     console.log(`   ✅ Listed ${msg.result.tools.length} tools`);
     toolsList = msg.result.tools;
     testResults.toolsListed = true;
-    
+
     // Validate tools
     validateTools(toolsList);
   }
-  
+
   // Handle errors
   if (msg.error) {
     console.error('   ❌ Server error:', msg.error.message || msg.error);
-    
+
     if (msg.error.message && msg.error.message.includes('duplicate')) {
       console.error('   📝 DUPLICATE TOOL DETECTED - This is the WindSurf rejection cause!');
     }
@@ -109,7 +109,7 @@ function sendRequest(id, method, params = {}) {
     jsonrpc: '2.0',
     id,
     method,
-    params
+    params,
   };
   server.stdin.write(JSON.stringify(request) + '\n');
 }
@@ -121,12 +121,10 @@ function requestTools() {
 
 function validateTools(tools) {
   console.log('\n3️⃣  Checking for duplicate tool names...');
-  
-  const toolNames = tools.map(t => t.name);
-  const duplicates = toolNames.filter((item, index) => 
-    toolNames.indexOf(item) !== index
-  );
-  
+
+  const toolNames = tools.map((t) => t.name);
+  const duplicates = toolNames.filter((item, index) => toolNames.indexOf(item) !== index);
+
   if (duplicates.length > 0) {
     console.error(`   ❌ DUPLICATE TOOLS: ${duplicates.join(', ')}`);
     console.error('   📝 This is exactly what causes WindSurf to reject the server!');
@@ -134,14 +132,14 @@ function validateTools(tools) {
     finishTest();
     return;
   }
-  
+
   console.log('   ✅ No duplicate tool names');
   testResults.noDuplicates = true;
-  
+
   // Validate schemas
   console.log('\n4️⃣  Validating tool schemas...');
   const schemaErrors = [];
-  
+
   for (const tool of tools) {
     if (!tool.name) schemaErrors.push(`Tool missing name`);
     if (!tool.description) schemaErrors.push(`${tool.name}: missing description`);
@@ -153,7 +151,7 @@ function validateTools(tools) {
       schemaErrors.push(`${tool.name}: inputSchema missing properties`);
     }
   }
-  
+
   if (schemaErrors.length > 0) {
     console.error('   ❌ Schema validation errors:');
     for (const err of schemaErrors.slice(0, 5)) {
@@ -167,18 +165,18 @@ function validateTools(tools) {
     console.log('   ✅ All tool schemas valid');
     testResults.schemasValid = true;
   }
-  
+
   finishTest();
 }
 
 function finishTest() {
   setTimeout(() => {
     server.kill();
-    
+
     console.log('\n' + '='.repeat(50));
-    
-    const allPassed = Object.values(testResults).every(r => r === true);
-    
+
+    const allPassed = Object.values(testResults).every((r) => r === true);
+
     if (allPassed) {
       console.log('✅ ALL MCP COMPLIANCE TESTS PASSED');
       console.log(`   Server is compatible with WindSurf`);
@@ -201,7 +199,7 @@ setTimeout(() => {
   sendRequest(1, 'initialize', {
     protocolVersion: '2024-11-05',
     capabilities: {},
-    clientInfo: { name: 'test-client', version: '1.0.0' }
+    clientInfo: { name: 'test-client', version: '1.0.0' },
   });
 }, 1000);
 

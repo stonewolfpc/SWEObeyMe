@@ -15,10 +15,12 @@ export function createTask(overrides = {}) {
 }
 
 export function createTaskList(count, overrides = {}) {
-  return Array.from({ length: count }, (_, i) => createTask({
-    description: `Task ${i + 1}`,
-    ...overrides,
-  }));
+  return Array.from({ length: count }, (_, i) =>
+    createTask({
+      description: `Task ${i + 1}`,
+      ...overrides,
+    })
+  );
 }
 
 export function createCompletedTask(overrides = {}) {

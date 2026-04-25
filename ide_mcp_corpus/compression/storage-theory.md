@@ -109,7 +109,7 @@ Codes: A:0, B:110, C:100, D:111
 - **Vector Size**: D dimensions
 - **Codebook Size**: K codewords
 - **Index Size**: log2(K) bits
-- **Ratio**: (D * precision) / log2(K)
+- **Ratio**: (D \* precision) / log2(K)
 
 ### Training
 

@@ -46,7 +46,7 @@ tools.forEach((tool, index) => {
       tool: toolName,
       issue: `inputSchema type is not 'object' (found: ${inputSchema.type})`,
     });
-    console.log('  ✗ ERROR: inputSchema type is not \'object\'');
+    console.log("  ✗ ERROR: inputSchema type is not 'object'");
   } else if (!inputSchema.properties) {
     warnings.push({
       tool: toolName,
@@ -72,18 +72,20 @@ console.log(`Warnings: ${warnings.length}`);
 
 if (errors.length > 0) {
   console.log('\n=== ERRORS ===');
-  errors.forEach(err => {
+  errors.forEach((err) => {
     console.log(`  ${err.tool}: ${err.issue}`);
   });
 }
 
 if (warnings.length > 0) {
   console.log('\n=== WARNINGS ===');
-  warnings.forEach(warn => {
+  warnings.forEach((warn) => {
     console.log(`  ${warn.tool}: ${warn.issue}`);
   });
 }
 
-console.log(`\n${errors.length === 0 ? '✓ All tools have valid schemas' : '✗ Some tools have invalid schemas'}`);
+console.log(
+  `\n${errors.length === 0 ? '✓ All tools have valid schemas' : '✗ Some tools have invalid schemas'}`
+);
 
 process.exit(errors.length === 0 ? 0 : 1);

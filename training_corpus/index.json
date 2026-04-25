@@ -15,7 +15,14 @@
           "author": "Jared Kaplan, Sam McCandlish, Tom Henighan, Tom B. Brown, Benjamin Chess, Rewon Child, Scott Gray, Alec Radford, Jeffrey Wu, Dario Amodei",
           "description": "Foundational paper on scaling laws for neural language models, investigating how performance depends on model size, compute budget, and dataset size",
           "license": "arXiv",
-          "topics": ["scaling laws", "model size", "compute budget", "dataset size", "sample efficiency", "convergence"],
+          "topics": [
+            "scaling laws",
+            "model size",
+            "compute budget",
+            "dataset size",
+            "sample efficiency",
+            "convergence"
+          ],
           "relevance": "Understanding how model size and data scale affects training efficiency and final performance"
         },
         {
@@ -24,7 +31,14 @@
           "author": "Jordan Hoffmann, Sebastian Borgeaud, Arthur Mensch, et al.",
           "description": "Chinchilla paper establishing optimal compute allocation between model size and training tokens, showing current models are undertrained",
           "license": "arXiv",
-          "topics": ["Chinchilla", "compute-optimal", "model size", "training tokens", "undertraining", "compute budget"],
+          "topics": [
+            "Chinchilla",
+            "compute-optimal",
+            "model size",
+            "training tokens",
+            "undertraining",
+            "compute budget"
+          ],
           "relevance": "Understanding optimal balance between model size and training data for efficient training"
         },
         {
@@ -33,7 +47,13 @@
           "author": "Taku Kudo, John Richardson",
           "description": "SentencePiece subword tokenizer implementation that treats tokenization as a data preprocessing task, enabling language-independent tokenization",
           "license": "arXiv",
-          "topics": ["SentencePiece", "subword tokenization", "language-independent", "preprocessing", "BPE"],
+          "topics": [
+            "SentencePiece",
+            "subword tokenization",
+            "language-independent",
+            "preprocessing",
+            "BPE"
+          ],
           "relevance": "Understanding how tokenization affects model training and representation"
         },
         {
@@ -58,7 +78,13 @@
           "author": "Various",
           "description": "Mathematical treatment of backpropagation algorithm explaining how gradients are computed efficiently through composite structure of neural networks",
           "license": "arXiv",
-          "topics": ["backpropagation", "gradient computation", "neural networks", "composite structure", "efficiency"],
+          "topics": [
+            "backpropagation",
+            "gradient computation",
+            "neural networks",
+            "composite structure",
+            "efficiency"
+          ],
           "relevance": "Understanding mathematical foundation of how gradients encode information during training"
         },
         {
@@ -67,7 +93,14 @@
           "author": "Sebastian Ruder",
           "description": "Comprehensive overview of gradient descent variants including SGD, momentum, Adam, RMSProp, and their properties",
           "license": "arXiv",
-          "topics": ["gradient descent", "SGD", "momentum", "Adam", "RMSProp", "optimization algorithms"],
+          "topics": [
+            "gradient descent",
+            "SGD",
+            "momentum",
+            "Adam",
+            "RMSProp",
+            "optimization algorithms"
+          ],
           "relevance": "Understanding different optimization algorithms and their impact on training dynamics"
         },
         {
@@ -76,7 +109,13 @@
           "author": "Zhang, Sabuncu",
           "description": "Theoretical analysis of cross-entropy loss functions, their properties, and applications in training deep neural networks",
           "license": "arXiv",
-          "topics": ["cross-entropy", "loss functions", "theoretical analysis", "robustness", "noise"],
+          "topics": [
+            "cross-entropy",
+            "loss functions",
+            "theoretical analysis",
+            "robustness",
+            "noise"
+          ],
           "relevance": "Understanding loss function behavior and how it affects gradient flow"
         },
         {
@@ -85,7 +124,14 @@
           "author": "Various",
           "description": "Overview of weight initialization methods including Xavier/Glorot and Kaiming/He initialization, their theory and impact on training",
           "license": "arXiv",
-          "topics": ["weight initialization", "Xavier", "Kaiming", "He", "Glorot", "variance preservation"],
+          "topics": [
+            "weight initialization",
+            "Xavier",
+            "Kaiming",
+            "He",
+            "Glorot",
+            "variance preservation"
+          ],
           "relevance": "Understanding how initialization affects gradient flow and training stability"
         }
       ]
@@ -101,7 +147,13 @@
           "author": "Diederik P. Kingma, Jimmy Ba",
           "description": "Adam optimizer paper introducing adaptive moment estimation for stochastic optimization with regret bounds",
           "license": "arXiv",
-          "topics": ["Adam", "stochastic optimization", "adaptive learning rates", "moment estimation", "convergence"],
+          "topics": [
+            "Adam",
+            "stochastic optimization",
+            "adaptive learning rates",
+            "moment estimation",
+            "convergence"
+          ],
           "relevance": "Understanding Adam optimizer behavior and its impact on training dynamics"
         }
       ]
@@ -117,7 +169,13 @@
           "author": "Chris Olah, Neel Nanda, et al. (Anthropic)",
           "description": "Anthropic paper providing toy models for understanding superposition - how neural networks pack many unrelated concepts into single neurons (polysemanticity)",
           "license": "arXiv",
-          "topics": ["superposition", "polysemanticity", "interpretability", "feature representation", "neural networks"],
+          "topics": [
+            "superposition",
+            "polysemanticity",
+            "interpretability",
+            "feature representation",
+            "neural networks"
+          ],
           "relevance": "Understanding how information is encoded in neural networks and what must be preserved during quantization"
         },
         {
@@ -126,7 +184,13 @@
           "author": "Various",
           "description": "Paper on interpreting attention head specialization in transformers, understanding how different heads learn different functions",
           "license": "arXiv",
-          "topics": ["attention heads", "specialization", "interpretability", "transformers", "mechanistic interpretability"],
+          "topics": [
+            "attention heads",
+            "specialization",
+            "interpretability",
+            "transformers",
+            "mechanistic interpretability"
+          ],
           "relevance": "Understanding attention head behavior and which patterns must be preserved during FDQ transforms"
         }
       ]
@@ -142,7 +206,13 @@
           "author": "Mario Michael Krell, Matej Kosec, Sergio P. Perez, Andrew Fitzgibbon",
           "description": "Paper on efficient sequence packing for training large language models, avoiding cross-contamination while maintaining mathematical equivalence",
           "license": "arXiv",
-          "topics": ["sequence packing", "training efficiency", "cross-contamination", "padding", "computational efficiency"],
+          "topics": [
+            "sequence packing",
+            "training efficiency",
+            "cross-contamination",
+            "padding",
+            "computational efficiency"
+          ],
           "relevance": "Understanding how training pipelines structure data and what this means for model internal representations"
         },
         {
@@ -151,7 +221,13 @@
           "author": "Dongjie Yang, et al.",
           "description": "Paper on learning better masking strategies for masked language modeling pre-training to improve model quality",
           "license": "arXiv",
-          "topics": ["masking", "masked language modeling", "pre-training", "MLM", "denoising objective"],
+          "topics": [
+            "masking",
+            "masked language modeling",
+            "pre-training",
+            "MLM",
+            "denoising objective"
+          ],
           "relevance": "Understanding how masking strategies during training affect what the model learns"
         }
       ]
@@ -167,7 +243,14 @@
           "author": "BigScience Workshop: Teven Le Scao, et al. (392 authors)",
           "description": "BigScience BLOOM training paper documenting training of 176B parameter multilingual model on ROOTS corpus, including training methodology and results",
           "license": "arXiv",
-          "topics": ["BLOOM", "BigScience", "training", "multilingual", "176B parameters", "ROOTS corpus"],
+          "topics": [
+            "BLOOM",
+            "BigScience",
+            "training",
+            "multilingual",
+            "176B parameters",
+            "ROOTS corpus"
+          ],
           "relevance": "Understanding real-world training process and numeric behavior at large scale"
         },
         {
@@ -176,7 +259,14 @@
           "author": "Llama Team, AI @ Meta",
           "description": "Meta's Llama 3 training documentation including data curation, training methodology, quality ranking, and multilingual token balancing",
           "license": "Meta",
-          "topics": ["Llama 3", "Meta", "training", "data curation", "quality ranking", "multilingual"],
+          "topics": [
+            "Llama 3",
+            "Meta",
+            "training",
+            "data curation",
+            "quality ranking",
+            "multilingual"
+          ],
           "relevance": "Understanding modern LLM training methodology and data quality practices"
         },
         {
@@ -185,7 +275,14 @@
           "author": "Ebtesam Almazrouei, et al.",
           "description": "Technology Innovation Institute's Falcon series training paper covering 7B, 40B, and 180B parameter models trained on diverse high-quality corpora",
           "license": "arXiv",
-          "topics": ["Falcon", "TII", "training", "open models", "high-quality data", "competitive performance"],
+          "topics": [
+            "Falcon",
+            "TII",
+            "training",
+            "open models",
+            "high-quality data",
+            "competitive performance"
+          ],
           "relevance": "Understanding training methodology and data quality requirements for competitive open models"
         }
       ]
@@ -201,7 +298,13 @@
           "author": "Various",
           "description": "Review of Zipf's law and its implications for vocabulary and word frequency distributions in natural language",
           "license": "Academic",
-          "topics": ["Zipf's law", "word frequency", "vocabulary", "power laws", "language distribution"],
+          "topics": [
+            "Zipf's law",
+            "word frequency",
+            "vocabulary",
+            "power laws",
+            "language distribution"
+          ],
           "relevance": "Understanding how token frequency distributions affect model training and what must be preserved for rare tokens"
         }
       ]
@@ -210,11 +313,7 @@
   "metadata": {
     "totalDocuments": 14,
     "totalCategories": 7,
-    "supportedLicenses": [
-      "arXiv",
-      "Meta",
-      "Academic"
-    ],
+    "supportedLicenses": ["arXiv", "Meta", "Academic"],
     "integrationStatus": {
       "training_data_theory": "Complete - Core scaling laws and tokenization papers downloaded",
       "training_math": "Complete - Backpropagation, gradient descent, loss functions, and initialization papers downloaded",
