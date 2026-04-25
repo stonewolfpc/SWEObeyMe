@@ -2,6 +2,23 @@
 
 All notable changes to SWEObeyMe will be documented in this file.
 
+## [4.2.5] - 2026-04-24
+
+### Bug Fixes
+
+- **Fixed findSymbolReferences hanging issue** - Added timeout protection, depth limit, and circular reference detection to prevent hanging on large projects:
+  - Added 5000ms timeout (configurable) to prevent infinite searches
+  - Added depth limit (default 10) to prevent excessive recursion
+  - Added circular reference detection using visited directories set
+  - Added timeout warnings with partial results when timeout occurs
+  - This fixes the hanging issue when using refactoring tools (rename, extract, move, split) on large projects like MasterControl-V2-CPP
+
+**Files Modified:**
+- `lib/tools/refactoring/refactoring-utils.js` - Added timeout protection and depth limits to findSymbolReferences
+- `package.json` - Version bump to 4.2.5
+- `README.md` - Updated version shield to 4.2.5
+- `CHANGELOG.md` - Added v4.2.5 entry
+
 ## [4.2.4] - 2026-04-24
 
 ### Refactoring
