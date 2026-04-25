@@ -26,6 +26,8 @@ const tests = [
   { name: 'Git Configuration Validation', file: 'git-configuration-validation.js', critical: true },
   { name: 'URI Validation', file: 'uri-validation.js', critical: true },
   { name: 'Windsurf Runtime Behavior', file: 'windsurf-runtime-behavior.js', critical: false }, // Non-critical: CI environment limitations
+  { name: 'Property-Based Timeout Tests', file: 'property-based-timeout-tests.js', critical: false }, // New: property-based testing
+  { name: 'Invariant Tests', file: 'invariant-tests.js', critical: false }, // New: invariant testing
 ];
 
 class TestRunner {

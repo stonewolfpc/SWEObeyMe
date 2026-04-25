@@ -176,12 +176,586 @@
           "license": "MIT"
         }
       ]
+    },
+    {
+      "name": "quantization",
+      "path": "ide_mcp_corpus/quantization",
+      "description": "GGUF file format internals, quantization schemes, and conversion tooling documentation",
+      "documents": [
+        {
+          "name": "gguf_internal_spec",
+          "path": "ide_mcp_corpus/quantization/gguf-internal-spec.md",
+          "description": "GGUF file structure, header layout, tensor data organization, and block layout maps for quantization formats",
+          "source": "ggml.org, deepwiki.com",
+          "license": "MIT"
+        },
+        {
+          "name": "gguf_metadata_spec",
+          "path": "ide_mcp_corpus/quantization/gguf-metadata-spec.md",
+          "description": "GGUF metadata system, standardized tensor names, common metadata keys, and architecture tags",
+          "source": "ggml.org",
+          "license": "MIT"
+        },
+        {
+          "name": "gguf_quantization_tooling",
+          "path": "ide_mcp_corpus/quantization/gguf-quantization-tooling.md",
+          "description": "llama.cpp quantize tool usage, options, and advanced quantization workflows",
+          "source": "llama.cpp GitHub",
+          "license": "MIT"
+        }
+      ]
+    },
+    {
+      "name": "optimization",
+      "path": "ide_mcp_corpus/optimization",
+      "description": "Attention mechanisms, memory management, SIMD intrinsics, and performance profiling documentation",
+      "documents": [
+        {
+          "name": "flash_attention",
+          "path": "ide_mcp_corpus/optimization/flash-attention.md",
+          "description": "Flash Attention algorithm overview, llama.cpp implementation, and backend-specific optimizations",
+          "source": "deepwiki.com",
+          "license": "MIT"
+        },
+        {
+          "name": "memory_management_kv_cache",
+          "path": "ide_mcp_corpus/optimization/memory-management-kv-cache.md",
+          "description": "llama.cpp memory system architecture, KV cache implementation, and memory planning",
+          "source": "deepwiki.com",
+          "license": "MIT"
+        },
+        {
+          "name": "simd_intrinsics",
+          "path": "ide_mcp_corpus/optimization/simd-intrinsics.md",
+          "description": "SIMD registers, vector types, instruction categories, and performance characteristics for AVX/AVX2/AVX512",
+          "source": "algorithmica.org, simd512e.com",
+          "license": "MIT"
+        },
+        {
+          "name": "xformers_attention",
+          "path": "ide_mcp_corpus/optimization/xformers-attention.md",
+          "description": "xFormers memory-efficient attention, attention biases, and integration with diffusers and vLLM",
+          "source": "facebookresearch.github.io",
+          "license": "MIT"
+        },
+        {
+          "name": "performance_profiling_tools",
+          "path": "ide_mcp_corpus/optimization/performance-profiling-tools.md",
+          "description": "Performance profiling tools including Intel VTune, perf, ETW, Nsight, and AMD uProf",
+          "source": "intel.com, various",
+          "license": "MIT"
+        }
+      ]
+    },
+    {
+      "name": "llm",
+      "path": "ide_mcp_corpus/llm",
+      "description": "LLM tool calling, model architecture notes, model family ecosystem knowledge, and error taxonomy documentation",
+      "documents": [
+        {
+          "name": "tool_calling_best_practices",
+          "path": "ide_mcp_corpus/llm/tool-calling-best-practices.md",
+          "description": "LLM function calling overview, prompt setup, do's and don'ts, and open-source model considerations",
+          "source": "promptingguide.ai",
+          "license": "MIT"
+        },
+        {
+          "name": "model_architecture_notes",
+          "path": "ide_mcp_corpus/llm/model-architecture-notes.md",
+          "description": "Model family architecture notes for Mistral, Qwen, Phi, and common architecture quirks",
+          "source": "mbrenndoerfer.com, various",
+          "license": "MIT"
+        },
+        {
+          "name": "error_taxonomy",
+          "path": "ide_mcp_corpus/llm/error-taxonomy.md",
+          "description": "Error taxonomy for quantization, loader, CUDA/GPU, attention kernel, tensor, and KV cache errors",
+          "source": "apxml.com, mljourney.com",
+          "license": "MIT"
+        },
+        {
+          "name": "model_family_ecosystem",
+          "path": "ide_mcp_corpus/llm/model-family-ecosystem.md",
+          "description": "Comprehensive ecosystem knowledge for LFM, Qwen, Mistral, Phi, LLaMA 3, Gemma, DeepSeek including tokenizer, RoPE scaling, KV cache, attention, quantization, bugs, and performance",
+          "source": "huggingface.co, arxiv.org, liquid.ai, various",
+          "license": "MIT"
+        }
+      ]
+    },
+    {
+      "name": "hardware",
+      "path": "ide_mcp_corpus/hardware",
+      "description": "Hardware profiling and memory hierarchy documentation for Intel, AMD, NVIDIA, and NVMe",
+      "documents": [
+        {
+          "name": "intel_memory_latency_checker",
+          "path": "ide_mcp_corpus/hardware/intel/memory-latency-checker.md",
+          "description": "Intel Memory Latency Checker tool for measuring memory latencies and bandwidth in NUMA systems",
+          "source": "intel.com",
+          "license": "Proprietary"
+        },
+        {
+          "name": "nvme_memory_bandwidth",
+          "path": "ide_mcp_corpus/hardware/nvme-memory-bandwidth.md",
+          "description": "NVMe SSD memory bandwidth specifications, protocol comparisons, and performance characteristics",
+          "source": "techtarget.com, ibm.com",
+          "license": "MIT"
+        }
+      ]
+    },
+    {
+      "name": "agentic",
+      "path": "ide_mcp_corpus/agentic",
+      "description": "Agentic system design patterns including ReAct, Reflexion, Tree-of-Thought, and tool orchestration",
+      "documents": [
+        {
+          "name": "react_reflexion_tot",
+          "path": "ide_mcp_corpus/agentic/react-reflexion-tot.md",
+          "description": "Agentic frameworks including ReAct, Reflexion, Tree-of-Thought, Graph-of-Thought, AutoGen, SWE-bench, and Toolformer for planning, self-correction, and tool orchestration",
+          "source": "promptingguide.ai, arxiv.org",
+          "license": "MIT"
+        }
+      ]
+    },
+    {
+      "name": "compiler",
+      "path": "ide_mcp_corpus/compiler",
+      "description": "Compiler and runtime optimization theory including LLVM, CPU pipeline, branch prediction, and vectorization",
+      "documents": [
+        {
+          "name": "llvm_cpu_optimization",
+          "path": "ide_mcp_corpus/compiler/llvm-cpu-optimization.md",
+          "description": "LLVM optimization passes, CPU pipeline behavior, branch prediction, instruction scheduling, register allocation, cache-aware algorithms, tiling, and vectorization theory",
+          "source": "llvm.org, johnfarrier.com",
+          "license": "MIT"
+        }
+      ]
+    },
+    {
+      "name": "parallel",
+      "path": "ide_mcp_corpus/parallel",
+      "description": "Distributed and parallel systems including thread pools, work-stealing, lock-free queues, NUMA, and batching",
+      "documents": [
+        {
+          "name": "distributed_systems",
+          "path": "ide_mcp_corpus/parallel/distributed-systems.md",
+          "description": "Thread pools, work-stealing schedulers, lock-free queues, NUMA behavior, async runtimes, fiber schedulers, and batching strategies for multi-model concurrency and speculative decoding",
+          "source": "wikipedia.org, hpx.dev, joeduffyblog.com",
+          "license": "MIT"
+        }
+      ]
+    },
+    {
+      "name": "gpu",
+      "path": "ide_mcp_corpus/gpu",
+      "description": "GPU kernel and CUDA fundamentals including warp scheduling, shared memory, tensor cores, and occupancy",
+      "documents": [
+        {
+          "name": "cuda_fundamentals",
+          "path": "ide_mcp_corpus/gpu/cuda-fundamentals.md",
+          "description": "CUDA programming guide, warp scheduling, shared memory, tensor cores, memory coalescing, occupancy calculators, and GPU kernel optimization for LLM inference",
+          "source": "docs.nvidia.com",
+          "license": "Proprietary"
+        }
+      ]
+    },
+    {
+      "name": "security",
+      "path": "ide_mcp_corpus/security",
+      "description": "Security and sandboxing patterns including capability-based security, syscall filtering, and resource limits",
+      "documents": [
+        {
+          "name": "sandboxing",
+          "path": "ide_mcp_corpus/security/sandboxing.md",
+          "description": "Capability-based security, sandboxing patterns, syscall filtering (seccomp, Landlock), resource limits, and safe execution patterns for MCP tools and code execution",
+          "source": "mozilla.org, shayon.dev, starlog.is",
+          "license": "MIT"
+        }
+      ]
+    },
+    {
+      "name": "hci",
+      "path": "ide_mcp_corpus/hci",
+      "description": "Human-Computer Interaction for IDEs including cognitive load theory, UI affordances, and error recovery",
+      "documents": [
+        {
+          "name": "ide_ux",
+          "path": "ide_mcp_corpus/hci/ide-ux.md",
+          "description": "Cognitive load theory, UI affordances, error recovery patterns, progressive disclosure, IDE UX research, debugging workflow studies, and IDE panel design",
+          "source": "lawsofux.com, smashingmagazine.com, mailchimp.com",
+          "license": "MIT"
+        }
+      ]
+    },
+    {
+      "name": "architecture",
+      "path": "ide_mcp_corpus/architecture",
+      "description": "Software architecture patterns including hexagonal architecture, event-driven systems, DDD, and state machines",
+      "documents": [
+        {
+          "name": "software_patterns",
+          "path": "ide_mcp_corpus/architecture/software-patterns.md",
+          "description": "Hexagonal architecture, event-driven systems, domain-driven design, state machine patterns, plugin architectures, and dependency inversion for clean separation of concerns",
+          "source": "sandro-keil.de, github.com, cloudthat.com",
+          "license": "MIT"
+        }
+      ]
+    },
+    {
+      "name": "testing",
+      "path": "ide_mcp_corpus/testing",
+      "description": "Testing and verification theory including property-based testing, invariant testing, and formal verification",
+      "documents": [
+        {
+          "name": "verification_theory",
+          "path": "ide_mcp_corpus/testing/verification-theory.md",
+          "description": "Property-based testing, invariant testing, metamorphic testing, concurrency testing, symbolic execution, formal verification, and fuzzing for unbreakable tools and runtimes",
+          "source": "jsverify.github.io, typeable.io, wikipedia.org",
+          "license": "MIT"
+        }
+      ]
+    },
+    {
+      "name": "compression",
+      "path": "ide_mcp_corpus/compression",
+      "description": "Compression and storage theory including entropy coding, vector quantization, and memory-mapped files",
+      "documents": [
+        {
+          "name": "storage_theory",
+          "path": "ide_mcp_corpus/compression/storage-theory.md",
+          "description": "Entropy coding (Huffman, arithmetic), vector quantization, product quantization, sparse representations, and memory-mapped file theory for GGUF packing and KV cache compression",
+          "source": "speechprocessingbook.aalto.fi, wikipedia.org",
+          "license": "MIT"
+        }
+      ]
+    },
+    {
+      "name": "refactoring",
+      "path": "ide_mcp_corpus/refactoring",
+      "description": "Refactoring and code quality patterns including Martin Fowler's refactoring catalog, code smells, anti-patterns, SOLID principles, and testability patterns",
+      "documents": [
+        {
+          "name": "code_quality_patterns",
+          "path": "ide_mcp_corpus/refactoring/code-quality-patterns.md",
+          "description": "Martin Fowler refactoring catalog, code smells, anti-patterns, SOLID principles, and testability patterns for real code review",
+          "source": "martinfowler.com, wikipedia.org",
+          "license": "MIT"
+        }
+      ]
+    },
+    {
+      "name": "devops",
+      "path": "ide_mcp_corpus/devops",
+      "description": "DevOps and CI/CD patterns including GitHub Actions, deployment pipelines, artifact versioning, canary releases, infrastructure as code, and containerization",
+      "documents": [
+        {
+          "name": "cicd_patterns",
+          "path": "ide_mcp_corpus/devops/cicd-patterns.md",
+          "description": "GitHub Actions patterns, deployment pipelines (blue-green, canary), artifact versioning, infrastructure as code (Terraform), and containerization best practices",
+          "source": "docs.github.com, kubernetes.io, terraform.io",
+          "license": "MIT"
+        }
+      ]
+    },
+    {
+      "name": "api",
+      "path": "ide_mcp_corpus/api",
+      "description": "API and protocol design including REST best practices, GraphQL patterns, gRPC, WebSocket design, versioning strategies, and API error taxonomy",
+      "documents": [
+        {
+          "name": "protocol_design",
+          "path": "ide_mcp_corpus/api/protocol-design.md",
+          "description": "REST best practices, GraphQL patterns, gRPC, WebSocket design, API versioning strategies, and API error taxonomy for stable, future-proof APIs",
+          "source": "restfulapi.net, graphql.org, grpc.io",
+          "license": "MIT"
+        }
+      ]
+    },
+    {
+      "name": "database",
+      "path": "ide_mcp_corpus/database",
+      "description": "Database and storage patterns including indexing strategies, query optimization, transaction isolation, event sourcing, caching patterns, NoSQL vs SQL tradeoffs, and sharding",
+      "documents": [
+        {
+          "name": "storage_patterns",
+          "path": "ide_mcp_corpus/database/storage-patterns.md",
+          "description": "Indexing strategies, query optimization, transaction isolation levels, event sourcing, caching patterns, NoSQL vs SQL tradeoffs, and sharding/partitioning",
+          "source": "postgresql.org, mongodb.org, redis.io",
+          "license": "MIT"
+        }
+      ]
+    },
+    {
+      "name": "process",
+      "path": "ide_mcp_corpus/process",
+      "description": "Project management and engineering process including Agile done correctly, Kanban flow, technical debt management, ADRs, RFC processes, and code review guidelines",
+      "documents": [
+        {
+          "name": "engineering_process",
+          "path": "ide_mcp_corpus/process/engineering-process.md",
+          "description": "Agile done correctly, Kanban flow, technical debt management, Architecture Decision Records (ADRs), RFC processes, and code review guidelines for team leadership",
+          "source": "scrum.org, kanbanize.com",
+          "license": "MIT"
+        }
+      ]
+    },
+    {
+      "name": "documentation",
+      "path": "ide_mcp_corpus/documentation",
+      "description": "Documentation and knowledge architecture including information architecture, documentation patterns, API documentation standards, and diagrams (C4 model, sequence diagrams)",
+      "documents": [
+        {
+          "name": "knowledge_architecture",
+          "path": "ide_mcp_corpus/documentation/knowledge-architecture.md",
+          "description": "Information architecture, documentation patterns (Diátaxis framework), API documentation standards (OpenAPI, GraphQL), and diagrams (C4 model, PlantUML, Mermaid)",
+          "source": "diataxis.fr, swagger.io, c4model.com",
+          "license": "MIT"
+        }
+      ]
+    },
+    {
+      "name": "build",
+      "path": "ide_mcp_corpus/build",
+      "description": "Build systems and toolchains including CMake, Gradle, Cargo, npm/yarn/pnpm, build caching, and incremental builds",
+      "documents": [
+        {
+          "name": "toolchains",
+          "path": "ide_mcp_corpus/build/toolchains.md",
+          "description": "CMake, Gradle, Cargo, npm/yarn/pnpm, build caching strategies, incremental builds, and monorepo tools (Nx, Turborepo) for build engineering",
+          "source": "cmake.org, gradle.org, rust-lang.org, npmjs.com",
+          "license": "MIT"
+        }
+      ]
+    },
+    {
+      "name": "platform",
+      "path": "ide_mcp_corpus/platform",
+      "description": "Cross-platform development including Windows vs Linux differences, filesystem semantics, path handling, process management, environment variables, and packaging",
+      "documents": [
+        {
+          "name": "cross_platform",
+          "path": "ide_mcp_corpus/platform/cross-platform.md",
+          "description": "Windows vs Linux differences, filesystem semantics, path handling, process management, environment variables, and packaging to avoid platform-specific bugs",
+          "source": "docs.microsoft.com, linux.die.net",
+          "license": "MIT"
+        }
+      ]
+    },
+    {
+      "name": "debugging",
+      "path": "ide_mcp_corpus/debugging",
+      "description": "Debugging theory including logging patterns, tracing, profiling, breakpoint strategies, post-mortem debugging, memory leak detection, and race condition debugging",
+      "documents": [
+        {
+          "name": "debugging_theory",
+          "path": "ide_mcp_corpus/debugging/debugging-theory.md",
+          "description": "Logging patterns, distributed tracing (OpenTelemetry, Jaeger), profiling strategies, breakpoint techniques, post-mortem debugging, memory leak detection, and race condition debugging",
+          "source": "opentelemetry.io, jaegertracing.io, valgrind.org",
+          "license": "MIT"
+        }
+      ]
+    },
+    {
+      "name": "frontend",
+      "path": "ide_mcp_corpus/frontend",
+      "description": "Frontend/UI engineering including design systems, layout systems, framework architecture, UI/UX best practices, accessibility, performance optimization, animation, design tokens, cross-platform UI, tooling, information architecture, anti-patterns, design workflow, debugging, and case studies",
+      "documents": [
+        {
+          "name": "design_systems",
+          "path": "ide_mcp_corpus/frontend/design-systems.md",
+          "description": "Material Design, Fluent Design, Apple HIG, Carbon Design, Atlassian Design System, Chakra/Radix/MUI component patterns, and Atomic Design for coherent, professional UI systems",
+          "source": "material.io, fluent.microsoft.com, developer.apple.com, carbondesignsystem.com, atlassian.design",
+          "license": "MIT"
+        },
+        {
+          "name": "layout_systems",
+          "path": "ide_mcp_corpus/frontend/layout-systems.md",
+          "description": "CSS Grid, Flexbox, Intrinsic design, Container queries, Responsive breakpoints, Mobile-first vs content-first, and Adaptive layouts for senior frontend engineering",
+          "source": "css-tricks.com, web.dev, developer.mozilla.org",
+          "license": "MIT"
+        },
+        {
+          "name": "framework_architecture",
+          "path": "ide_mcp_corpus/frontend/framework-architecture.md",
+          "description": "React component patterns, Vue composition patterns, Svelte reactivity, SolidJS fine-grained reactivity, Angular architecture, State management (Redux, Zustand, MobX, Pinia), and Routing patterns for framework-agnostic UI architecture",
+          "source": "react.dev, vuejs.org, svelte.dev, solidjs.com, angular.io",
+          "license": "MIT"
+        },
+        {
+          "name": "ui_ux_best_practices",
+          "path": "ide_mcp_corpus/frontend/ui-ux-best-practices.md",
+          "description": "Nielsen Norman heuristics, Cognitive load theory, Fitts's Law, Hick's Law, Error recovery patterns, Progressive disclosure, Affordances, and Interaction design patterns for UX design",
+          "source": "nngroup.com, lawsux.com, smashingmagazine.com",
+          "license": "MIT"
+        },
+        {
+          "name": "accessibility",
+          "path": "ide_mcp_corpus/frontend/accessibility.md",
+          "description": "WCAG 2.2, ARIA roles, Keyboard navigation, Color contrast, Screen reader patterns, and Focus management for accessible UI by default",
+          "source": "w3.org, webaim.org, developer.mozilla.org",
+          "license": "MIT"
+        },
+        {
+          "name": "performance_optimization",
+          "path": "ide_mcp_corpus/frontend/performance-optimization.md",
+          "description": "Reconciliation & diffing, Virtual DOM vs signals, Render batching, Memoization, Lazy loading, Code splitting, Image optimization, and Web vitals for performance coaching",
+          "source": "web.dev, developer.mozilla.org",
+          "license": "MIT"
+        },
+        {
+          "name": "animation_motion",
+          "path": "ide_mcp_corpus/frontend/animation-motion.md",
+          "description": "CSS transitions, CSS animations, FLIP technique, Framer Motion, Easing curves, Micro-interactions, and Motion guidelines for delightful UI",
+          "source": "framer.com, css-tricks.com, web.dev",
+          "license": "MIT"
+        },
+        {
+          "name": "design_tokens",
+          "path": "ide_mcp_corpus/frontend/design-tokens.md",
+          "description": "Design token standards (W3C), Color systems, Typography scales, Spacing systems, Shadow systems, and Theme switching for consistent, theme-ready UI",
+          "source": "tr.designtokens.org, material.io",
+          "license": "MIT"
+        },
+        {
+          "name": "cross_platform_ui",
+          "path": "ide_mcp_corpus/frontend/cross-platform-ui.md",
+          "description": "Desktop vs mobile patterns, Touch vs pointer, Native vs web differences, Electron vs Tauri vs native, and Windows vs macOS UI conventions for cross-platform design",
+          "source": "developer.apple.com, learn.microsoft.com",
+          "license": "MIT"
+        },
+        {
+          "name": "tooling_build_systems",
+          "path": "ide_mcp_corpus/frontend/tooling-build-systems.md",
+          "description": "Vite, Webpack, SWC, Babel, TypeScript best practices, Linting + formatting, and Testing (Vitest, Jest, Cypress, Playwright) for full frontend engineering",
+          "source": "vitejs.dev, webpack.js.org, swc.rs, babeljs.io",
+          "license": "MIT"
+        },
+        {
+          "name": "information_architecture",
+          "path": "ide_mcp_corpus/frontend/information-architecture.md",
+          "description": "Navigation patterns, Hierarchy, Card sorting, Content grouping, User flows, and Wireframing patterns for apps that make sense",
+          "source": "nngroup.com, uxboothcamp.com",
+          "license": "MIT"
+        },
+        {
+          "name": "ui_anti_patterns",
+          "path": "ide_mcp_corpus/frontend/ui-anti-patterns.md",
+          "description": "Over-nesting, Uncontrolled re-renders, Layout thrashing, Poor contrast, Hidden interactions, and Confusing affordances to prevent bad UI",
+          "source": "web.dev, react.dev",
+          "license": "MIT"
+        },
+        {
+          "name": "design_workflow",
+          "path": "ide_mcp_corpus/frontend/design-workflow.md",
+          "description": "Figma workflows, Design handoff, Component libraries, Versioning design systems, and Documentation patterns for design-ops assistance",
+          "source": "figma.com,storybook.js.org",
+          "license": "MIT"
+        },
+        {
+          "name": "ui_debugging",
+          "path": "ide_mcp_corpus/frontend/ui-debugging.md",
+          "description": "CSS debugging, Layout debugging, React devtools, Performance profiling, Accessibility debugging, and Event flow debugging for UI debugging",
+          "source": "developer.chrome.com, react.dev",
+          "license": "MIT"
+        },
+        {
+          "name": "case_studies",
+          "path": "ide_mcp_corpus/frontend/case-studies.md",
+          "description": "Shopify Polaris, GitHub Primer, Microsoft Fluent, Airbnb design language, and Stripe UI patterns for learning from giants",
+          "source": "polaris.shopify.com, primer.style, fluent.microsoft.com, airbnb.design, stripe.design",
+          "license": "MIT"
+        }
+      ]
+    },
+    {
+      "name": "backend_engineering",
+      "path": "ide_mcp_corpus/backend_engineering",
+      "description": "Backend engineering patterns including API design, database patterns, caching strategies, distributed systems, microservices, message queues, authentication/authorization, rate limiting, and error handling",
+      "documents": [
+        {
+          "name": "cursor_apis_overview",
+          "path": "ide_mcp_corpus/backend_engineering/api_design/cursor_apis_overview.md",
+          "description": "Cursor APIs overview including authentication, rate limiting, HTTP caching with ETags, and best practices for API usage",
+          "source": "https://cursor.com/docs/api",
+          "license": "Proprietary"
+        },
+        {
+          "name": "lm_studio_developer_docs",
+          "path": "ide_mcp_corpus/backend_engineering/api_design/lm_studio_developer_docs.md",
+          "description": "LM Studio developer documentation including TypeScript/Python SDKs, REST API, OpenAI-compatible endpoints, tool calling, structured output, embeddings, and model management",
+          "source": "https://lmstudio.ai/docs/developer",
+          "license": "Proprietary"
+        },
+        {
+          "name": "web_api_design_best_practices",
+          "path": "ide_mcp_corpus/backend_engineering/api_design/web_api_design_best_practices.md",
+          "description": "Web API design best practices including RESTful principles, resource URIs, HTTP methods, pagination, filtering, versioning strategies, HATEOAS, and security considerations",
+          "source": "https://learn.microsoft.com/en-us/azure/architecture/best-practices/api-design",
+          "license": "MIT"
+        },
+        {
+          "name": "database_patterns",
+          "path": "ide_mcp_corpus/backend_engineering/database_patterns/database_patterns.md",
+          "description": "Database patterns including indexing strategies, query optimization, transaction isolation levels, event sourcing, sharding, partitioning, caching patterns, and performance tuning",
+          "source": "bennadel.com, geeksforgeeks.org",
+          "license": "MIT"
+        },
+        {
+          "name": "caching_strategies",
+          "path": "ide_mcp_corpus/backend_engineering/caching_strategies/caching_strategies.md",
+          "description": "Caching strategies including cache-aside, write-through, write-behind, write-around patterns, cache invalidation types (time-based, event-based, command-based, group-based), distributed caching considerations, and performance optimization",
+          "source": "AWS Whitepapers, Redis.io",
+          "license": "MIT"
+        },
+        {
+          "name": "distributed_systems",
+          "path": "ide_mcp_corpus/backend_engineering/distributed_systems/distributed_systems.md",
+          "description": "Distributed systems patterns including CAP theorem, PACELC theorem, consensus algorithms (Paxos, Raft), replication strategies, sharding, consistent hashing, fault tolerance, distributed transactions, and clock synchronization",
+          "source": "PingCAP, Google SRE",
+          "license": "MIT"
+        },
+        {
+          "name": "microservices",
+          "path": "ide_mcp_corpus/backend_engineering/microservices/microservices.md",
+          "description": "Microservices architecture patterns including API Gateway, Service Mesh, Event Sourcing, CQRS, Saga, Strangler Fig, Backend for Frontend, Bulkhead, Sidecar, and Ambassador patterns",
+          "source": "ArchitectureDiagram.ai, Microsoft Learn",
+          "license": "MIT"
+        },
+        {
+          "name": "message_queues",
+          "path": "ide_mcp_corpus/backend_engineering/message_queues/message_queues.md",
+          "description": "Message queues and event systems including request-reply, fanout, dead letter queues, retry mechanisms, pub/sub, event streaming, and implementation strategies for RabbitMQ, Kafka, and AWS SQS/SNS",
+          "source": "Backend Engineering Course, Dev.to",
+          "license": "MIT"
+        },
+        {
+          "name": "authentication_authorization",
+          "path": "ide_mcp_corpus/backend_engineering/authentication_authorization/authentication_authorization.md",
+          "description": "Authentication and authorization including JWT security best practices, OAuth 2.0 and OpenID Connect flows, authentication patterns (MFA, session management), authorization patterns (RBAC, ABAC), API security, and token management",
+          "source": "Curity, WorkOS, OWASP",
+          "license": "MIT"
+        },
+        {
+          "name": "rate_limiting",
+          "path": "ide_mcp_corpus/backend_engineering/rate_limiting/rate_limiting.md",
+          "description": "Rate limiting algorithms including fixed window counter, rolling window log, leaky bucket, token bucket, sliding window counter, implementation strategies, distributed systems challenges, and monitoring",
+          "source": "API7.ai, GeeksforGeeks",
+          "license": "MIT"
+        },
+        {
+          "name": "error_handling_patterns",
+          "path": "ide_mcp_corpus/backend_engineering/error_handling_patterns/error_handling_patterns.md",
+          "description": "Error handling and resilience patterns including retry, fallback, timeout, circuit breaker, combining patterns, implementation approaches, best practices, and common pitfalls",
+          "source": "Codecentric, Microsoft Learn, Martin Fowler",
+          "license": "MIT"
+        }
+      ]
     }
   ],
   "documents": [],
   "metadata": {
-    "totalDocuments": 17,
-    "totalCategories": 6,
+    "totalDocuments": 73,
+    "totalCategories": 27,
     "supportedLicenses": [
       "MIT",
       "Apache-2.0",
@@ -199,7 +773,48 @@
       "Continue",
       "Model Context Protocol",
       "Open VSX registry",
-      "Codebase orientation"
+      "Codebase orientation",
+      "GGUF quantization",
+      "LLM optimization",
+      "Attention mechanisms",
+      "Memory management",
+      "SIMD intrinsics",
+      "Hardware profiling",
+      "NVMe SSD performance",
+      "Model family ecosystem",
+      "Agentic system design",
+      "Compiler optimization",
+      "Distributed systems",
+      "GPU programming",
+      "Security sandboxing",
+      "IDE UX design",
+      "Software architecture",
+      "Testing verification",
+      "Compression theory",
+      "Refactoring patterns",
+      "DevOps CI/CD",
+      "API protocol design",
+      "Database storage",
+      "Engineering process",
+      "Documentation architecture",
+      "Build toolchains",
+      "Cross-platform development",
+      "Debugging theory",
+      "Frontend design systems",
+      "Frontend layout systems",
+      "Frontend framework architecture",
+      "UI/UX best practices",
+      "Accessibility",
+      "Frontend performance",
+      "Animation and motion",
+      "Design tokens",
+      "Cross-platform UI",
+      "Frontend tooling",
+      "Information architecture",
+      "UI anti-patterns",
+      "Design workflow",
+      "UI debugging",
+      "Frontend case studies"
     ]
   },
   "instructions": {
@@ -207,38 +822,6 @@
     "downloadingSources": "Download from official documentation sites including docs.windsurf.com, modelcontextprotocol.io, code.visualstudio.com, and docs.continue.dev.",
     "namingConvention": "Use clear filenames like: mcp_config.md, server_concepts.md, extension_api_overview.md",
     "licenseCompliance": "Include license information for each document. Most official docs are MIT or proprietary.",
-    "guardRails": "When retrieving documentation, prioritize MCP server and Windsurf-Next specific content. Use this corpus when answering questions about IDE extensions, MCP protocol, Windsurf configuration, or VS Code extension development."
-  },
-  "retrievalRules": {
-    "mcpServers": {
-      "priority": "HIGH",
-      "categories": ["mcp_spec", "windsurf"],
-      "keywords": ["MCP", "Model Context Protocol", "server", "transport", "stdio", "HTTP", "tools", "resources"]
-    },
-    "windsurfNext": {
-      "priority": "HIGH",
-      "categories": ["windsurf"],
-      "keywords": ["Windsurf", "Cascade", "mcp_config", "admin", "whitelist", "regex"]
-    },
-    "vscodeExtensions": {
-      "priority": "MEDIUM",
-      "categories": ["vscode"],
-      "keywords": ["VS Code", "extension", "API", "contribution points", "webview"]
-    },
-    "continue": {
-      "priority": "MEDIUM",
-      "categories": ["continue"],
-      "keywords": ["Continue", "checks", "review", "pull request"]
-    },
-    "openvsx": {
-      "priority": "MEDIUM",
-      "categories": ["openvsx"],
-      "keywords": ["Open VSX", "publish", "registry", "marketplace", "namespace", "extension"]
-    },
-    "codebase": {
-      "priority": "HIGH",
-      "categories": ["codebase"],
-      "keywords": ["codebase", "architecture", "module", "dependency", "entry point", "structure", "orientation"]
-    }
+    "guardRails": "When retrieving documentation, prioritize MCP server and Windsurf-Next specific content. Use this corpus when answering questions about IDE extensions, MCP protocol, Windsurf configuration, VS Code extension development, backend engineering patterns, database design, or performance optimization."
   }
 }

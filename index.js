@@ -475,6 +475,10 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
           
           const reminderText = `[CONTEXT REMINDER] Call ${callCount}. Task ${currentIndex + 1}/${taskList.length}: "${currentTask.description || currentTask}" (${currentTask.status || 'pending'}). Remaining: ${remaining}. Resume with project_track when complete.`;
           
+          // Ensure result.content exists before pushing
+          if (!result.content) {
+            result.content = [];
+          }
           result.content.push({
             type: 'text',
             text: reminderText,
@@ -552,6 +556,10 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
           })
           .join('\n');
 
+        // Ensure result.content exists before pushing
+        if (!result.content) {
+          result.content = [];
+        }
         result.content.push({
           type: 'text',
           text: `\n=== SWEObeyMe Proactive Guidance ===\n${recommendationsText}\n=== End Guidance ===\nIntegrity Score: ${proactiveAnalysis.integrityScore}/100`,
@@ -560,6 +568,10 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
 
       // If the AI is failing too much, force it to check the Constitution
       if (internalAudit.consecutiveFailures >= CONSTITUTION.ERROR_THRESHOLD && result) {
+        // Ensure result.content exists before pushing
+        if (!result.content) {
+          result.content = [];
+        }
         result.content.push({
           type: 'text',
           text: '\n[SYSTEM ALERT]: High failure rate detected. Call \'get_architectural_directive\' before your next move.',
