@@ -2,6 +2,21 @@
 
 All notable changes to SWEObeyMe will be documented in this file.
 
+## [4.2.8] - 2026-04-25
+
+### Bug Fixes
+
+- **Fixed incorrect import path in project-memory-structure.js** - Changed import from `../shared/async-utils.js` to `./shared/async-utils.js` to fix module resolution error:
+  - The async-utils.js file is in lib/shared/, not in a sibling directory
+  - This was causing ERR_MODULE_NOT_FOUND error in integration tests
+  - Corrected relative import path to match actual file structure
+
+**Files Modified:**
+- `lib/project-memory-structure.js` - Fixed import path
+- `package.json` - Version bump to 4.2.8
+- `README.md` - Updated version shield to 4.2.8
+- `CHANGELOG.md` - Added v4.2.8 entry
+
 ## [4.2.7] - 2026-04-25
 
 ### Bug Fixes
