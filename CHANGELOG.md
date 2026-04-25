@@ -2,6 +2,22 @@
 
 All notable changes to SWEObeyMe will be documented in this file.
 
+## [4.2.6] - 2026-04-25
+
+### Bug Fixes
+
+- **Fixed read_file hanging issue** - Added timeout protection to read_file handler to prevent hanging on large files:
+  - Replaced fs.readFile with readFileSafe (30000ms timeout)
+  - Added withTimeout wrapper to fs.stat (5000ms timeout)
+  - This fixes the hanging issue when reading large files like CMakeLists.txt (1465 lines)
+  - Previously read_file could hang indefinitely on slow file systems or large files
+
+**Files Modified:**
+- `lib/tools/handlers-file-ops.js` - Added timeout protection to read_file handler
+- `package.json` - Version bump to 4.2.6
+- `README.md` - Updated version shield to 4.2.6
+- `CHANGELOG.md` - Added v4.2.6 entry
+
 ## [4.2.5] - 2026-04-24
 
 ### Bug Fixes
