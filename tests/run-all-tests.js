@@ -28,6 +28,8 @@ const tests = [
   { name: 'Windsurf Runtime Behavior', file: 'windsurf-runtime-behavior.js', critical: false }, // Non-critical: CI environment limitations
   { name: 'Property-Based Timeout Tests', file: 'property-based-timeout-tests.js', critical: false }, // New: property-based testing
   { name: 'Invariant Tests', file: 'invariant-tests.js', critical: false }, // New: invariant testing
+  { name: 'Codebase Orientation Property Tests', file: 'codebase-orientation-property-tests.js', critical: false }, // New: codebase orientation refactor
+  { name: 'Codebase Orientation Fuzzer Cases', file: 'codebase-orientation-fuzzer-cases.js', critical: false }, // New: codebase orientation refactor
 ];
 
 class TestRunner {
