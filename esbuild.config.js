@@ -41,6 +41,23 @@ function copyPackageJson() {
   }
 }
 
+// Helper to recursively copy a directory
+function copyRecursive(src, dest) {
+  const entries = fs.readdirSync(src, { withFileTypes: true });
+  for (const entry of entries) {
+    const srcPath = join(src, entry.name);
+    const destPath = join(dest, entry.name);
+    if (entry.isDirectory()) {
+      if (!fs.existsSync(destPath)) {
+        fs.mkdirSync(destPath, { recursive: true });
+      }
+      copyRecursive(srcPath, destPath);
+    } else {
+      fs.copyFileSync(srcPath, destPath);
+    }
+  }
+}
+
 // Helper function to copy lib folder to dist/lib for dynamic imports
 function copyLibFolder() {
   const sourceLib = join(__dirname, 'lib');
@@ -50,30 +67,32 @@ function copyLibFolder() {
     if (!fs.existsSync(targetLib)) {
       fs.mkdirSync(targetLib, { recursive: true });
     }
-
-    // Copy all files from lib to dist/lib
-    function copyRecursive(src, dest) {
-      const entries = fs.readdirSync(src, { withFileTypes: true });
-
-      for (const entry of entries) {
-        const srcPath = join(src, entry.name);
-        const destPath = join(dest, entry.name);
-
-        if (entry.isDirectory()) {
-          if (!fs.existsSync(destPath)) {
-            fs.mkdirSync(destPath, { recursive: true });
-          }
-          copyRecursive(srcPath, destPath);
-        } else {
-          fs.copyFileSync(srcPath, destPath);
-        }
-      }
-    }
-
     copyRecursive(sourceLib, targetLib);
     console.log('Copied lib folder to dist/lib/');
   } catch (error) {
     console.error('Failed to copy lib folder:', error);
+    throw error;
+  }
+}
+
+// Helper function to copy ide_mcp_corpus to dist/mcp for MCP server runtime access
+function copyCorpusFolder() {
+  const sourceCorpus = join(__dirname, 'ide_mcp_corpus');
+  const targetCorpus = join(__dirname, 'dist', 'mcp', 'ide_mcp_corpus');
+
+  if (!fs.existsSync(sourceCorpus)) {
+    console.log('ide_mcp_corpus not found at source, skipping copy.');
+    return;
+  }
+
+  try {
+    if (!fs.existsSync(targetCorpus)) {
+      fs.mkdirSync(targetCorpus, { recursive: true });
+    }
+    copyRecursive(sourceCorpus, targetCorpus);
+    console.log('Copied ide_mcp_corpus to dist/mcp/ide_mcp_corpus/');
+  } catch (error) {
+    console.error('Failed to copy ide_mcp_corpus:', error);
     throw error;
   }
 }
@@ -159,6 +178,9 @@ async function buildPublic() {
   // Copy lib folder for dynamic imports
   copyLibFolder();
 
+  // Copy documentation corpus for MCP server
+  copyCorpusFolder();
+
   console.log('Public bundle built successfully!');
 }
 
@@ -174,6 +196,9 @@ async function buildEnterprise() {
 
   // Copy lib folder for dynamic imports
   copyLibFolder();
+
+  // Copy documentation corpus for MCP server
+  copyCorpusFolder();
 
   console.log('Enterprise bundle built successfully!');
 }
@@ -199,6 +224,9 @@ async function buildDev() {
 
   // Copy lib folder for dynamic imports
   copyLibFolder();
+
+  // Copy documentation corpus for MCP server
+  copyCorpusFolder();
 
   console.log('Dev bundle built successfully!');
 }
@@ -227,6 +255,9 @@ async function buildWatch() {
 
   // Copy lib folder for dynamic imports
   copyLibFolder();
+
+  // Copy documentation corpus for MCP server
+  copyCorpusFolder();
 
   console.log('Watching for changes...');
 }
