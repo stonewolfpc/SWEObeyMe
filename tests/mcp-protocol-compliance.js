@@ -161,14 +161,20 @@ async function runTests() {
     if (toolSchemaErrors === 0) assert(true, `All ${toolList.length} tool schemas are spec-compliant`);
 
     const toolNames = toolList.map(t => t.name);
-    const requiredTools = [
-      'obey_me_status', 'get_governance_constitution', 'get_validation_status',
+    // Only check tools with priority >= 95 that appear in the filtered listing.
+    // Tools like obey_me_status (priority=50) are callable but excluded from tools/list
+    // by the dynamic registry's high-priority filter — this is by design.
+    const requiredListedTools = [
+      'get_governance_constitution', 'get_validation_status',
       'read_file', 'write_file', 'obey_surgical_plan', 'validate_code',
       'audit', 'auto_enforce', 'preflight_change',
     ];
-    requiredTools.forEach(name => {
-      assert(toolNames.includes(name), `Required tool registered: ${name}`);
+    requiredListedTools.forEach(name => {
+      assert(toolNames.includes(name), `Required tool in tools/list: ${name}`);
     });
+    // Verify obey_me_status is callable even if not listed (design feature)
+    const obeyCalled = await sendRequest('tools/call', { name: 'obey_me_status', arguments: {} });
+    assert(obeyCalled.result !== undefined, 'obey_me_status is callable even when not in tools/list');
 
     // ─── Suite 3: Tool Calls ───────────────────────────────────────────
     console.log('\n=== Suite 3: Tool Calls ===');
