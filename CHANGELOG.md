@@ -2,6 +2,80 @@
 
 All notable changes to SWEObeyMe will be documented in this file.
 
+## [4.3.4] - 2026-04-26
+
+### Critical Bug Fixes
+
+**UI Fixes (C# Bridge):**
+
+- **Fixed [object Object] display in sidebar panel** - Webview provider was assigning a Promise directly to `webview.html`:
+  - Modified `lib/ui/providers/webview-provider-factory.js` to await async HTML generators
+  - Added `getConfig` message handler to populate panel with configuration data
+
+- **Fixed tabs collapsing to single list** - Script execution timing and CSS layout issues:
+  - Wrapped JavaScript in `lib/csharp-settings-template.html` within `DOMContentLoaded` event listener
+  - Fixed broken DOMContentLoaded closure scope to ensure all event listeners are enclosed
+  - Removed `overflow: hidden` and `height: 100vh` from body and container CSS causing sidebar collapse
+  - Made `.tabs` sticky and scrollable for proper sidebar rendering
+
+- **Fixed settings button placement** - Root cause was the [object Object] rendering issue above
+  - Panel now correctly renders with all controls in proper positions
+
+- **Fixed CSP nonce injection** - Only first script tag was getting nonce:
+  - Modified `lib/csharp-settings-provider.js` to use `replaceAll` for all script tags
+
+**Fuzzer Fixes:**
+
+- **Fixed TimingFuzzer method call** - Called non-existent `generateFuzzBatch`:
+  - Changed line 660 in `tests/fuzzer-windsurf-runtime.js` to use correct `runFuzzBatch` with operation callback
+
+- **Fixed safety invariant tests** - Checked wrong response field for errors:
+  - MCP tool errors are returned in `result.content[0].text`, not JSON-RPC `error` field
+  - Updated `testNoPathTraversal`, `testNoWritesOutsideRoots`, `testNoSensitiveDataExposure` to check content text
+  - Updated `testNoDenialOfService` to accept timeout as valid DoS protection (not failure)
+
+- **Fixed multi-line JSON-RPC parsing** - Server emits multiple JSON lines:
+  - Updated `testNoInvalidJson`, `testValidRequestId`, `testNoValidJsonRpc` to parse each line individually
+  - Prevents false SyntaxError violations from multi-line server output
+
+**Test Hardening:**
+
+- **Added UI regression tests** - New `tests/ui-regression-tests.js` file:
+  - 53 checks covering template integrity, webview providers, nonce injection, corpus bundling
+  - Validates no [object Object] patterns, correct async HTML handling, DOMContentLoaded guards
+  - Added to `package.json` as `test:ui-regression` and included in `prepackage` script
+
+- **Hardened git validation test** - Expanded `tests/git-configuration-validation.js`:
+  - 15 comprehensive checks: version sync, forbidden patterns, corpus presence, file size limits
+  - Added checks for required release files, platform-specific commands, last commit message
+  - Warns on files exceeding 700-line surgical limit
+
+- **Hardened MCP protocol compliance test** - Rewrote `tests/mcp-protocol-compliance.js`:
+  - 8 test suites: handshake, tool listing, tool calls, error handling, concurrency, consistency, large payload, unknown methods
+  - 86 total assertions covering JSON-RPC 2.0 compliance, tool schema validation, concurrent request handling
+  - Fixed required tools list to match dynamic registry (only priority >= 95 tools appear in tools/list)
+
+**Build Configuration:**
+
+- **Fixed corpus documentation bundling** - Not included in releases:
+  - Added `copyCorpusFolder()` function to `esbuild.config.js`
+  - Calls `copyCorpusFolder()` in all build modes (public, enterprise, dev, watch)
+  - Copies `ide_mcp_corpus` to `dist/mcp/ide_mcp_corpus` for MCP server runtime access
+
+**Tool Fixes:**
+
+- **Fixed project_context fs.existsSync bug** - Used wrong fs module:
+  - Modified `lib/project-awareness.js` to import `fssync` from 'fs' for synchronous operations
+  - Replaced `fs.existsSync`, `fs.mkdirSync`, `fs.writeFileSync` with `fssync` equivalents in `ensureRegistryExists()`
+  - Replaced `fs.existsSync` with `fssync.existsSync` in `findProjectRoot()`
+  - Async `fs/promises` import retained for async operations
+
+**Other:**
+
+- **Added .lintstagedrc.cjs** - Fixed husky pre-commit failure:
+  - Converted `.lintstagedrc.js` to `.lintstagedrc.cjs` for ESM compatibility
+  - `module.exports` syntax incompatible with `"type": "module"` package
+
 ## [4.3.0] - 2026-04-25
 
 ### Major Update - Developer Mode & Comprehensive Error Detection
