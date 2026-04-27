@@ -517,3 +517,7 @@ See [LICENSE](LICENSE) for full terms.
 ---
 
 **Stone Wolf Systems, Architecting your dreams.**
+
+---
+
+*Most of this readme and all changelogs were written by AI, and so was the project. Surprise folks, I'm the anti-vibe coding non-programmer your bosses warned you about! I seriously hope this project helps you as much as it's helping me!*
