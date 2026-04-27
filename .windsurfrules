@@ -47,3 +47,14 @@ The MCP tool enforces architectural rules. The built-in does not.
 - NEVER invent file paths. Verify with `mcp1_read_file` or `mcp1_check_file_exists`.
 - NEVER call tools not in the registry. If unsure, call `mcp1_obey_me_status` to list available tools.
 - NEVER assume file contents. Always read first.
+
+## SWEOBEYME ISSUE INBOX
+<!-- AUTO-UPDATED by sweobeyme-tools/sync-sweobeyme-issues.js — DO NOT EDIT THIS SECTION MANUALLY -->
+<!-- SWEOBEYME_INBOX_START -->
+_No unread issues._
+<!-- SWEOBEYME_INBOX_END -->
+When the inbox above contains issue entries (not "_No unread issues._"), at session start:
+1. Immediately report: "⚠️ SWEObeyMe has N unread auto-reported issue(s) from users."
+2. List each: issue number, title, GitHub URL.
+3. Ask if the user wants to review or act on them.
+4. User clears inbox by running: `node %USERPROFILE%\sweobeyme-tools\clear-inbox.js`
