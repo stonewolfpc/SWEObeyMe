@@ -97,6 +97,28 @@ function copyCorpusFolder() {
   }
 }
 
+// Helper function to copy tests folder to dist for cockpit validation tests
+function copyTestsFolder() {
+  const sourceTests = join(__dirname, 'tests');
+  const targetTests = join(__dirname, 'dist', 'tests');
+
+  if (!fs.existsSync(sourceTests)) {
+    console.log('tests not found at source, skipping copy.');
+    return;
+  }
+
+  try {
+    if (!fs.existsSync(targetTests)) {
+      fs.mkdirSync(targetTests, { recursive: true });
+    }
+    copyRecursive(sourceTests, targetTests);
+    console.log('Copied tests to dist/tests/');
+  } catch (error) {
+    console.error('Failed to copy tests:', error);
+    throw error;
+  }
+}
+
 const commonConfig = {
   platform: 'node',
   target: 'node18',
@@ -210,6 +232,9 @@ async function buildPublic() {
   // Copy documentation corpus for MCP server
   copyCorpusFolder();
 
+  // Copy tests folder for cockpit validation tests
+  copyTestsFolder();
+
   // Sync to installed Windsurf extension for live dev testing
   syncToInstalledExtension();
 
@@ -231,6 +256,9 @@ async function buildEnterprise() {
 
   // Copy documentation corpus for MCP server
   copyCorpusFolder();
+
+  // Copy tests folder for cockpit validation tests
+  copyTestsFolder();
 
   syncToInstalledExtension();
 
@@ -261,6 +289,9 @@ async function buildDev() {
 
   // Copy documentation corpus for MCP server
   copyCorpusFolder();
+
+  // Copy tests folder for cockpit validation tests
+  copyTestsFolder();
 
   syncToInstalledExtension();
 
