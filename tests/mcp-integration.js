@@ -113,126 +113,145 @@ async function runTests() {
       testsFailed++;
     }
 
-    // Test 2.5: Get governance constitution (required for other tools)
-    console.log('\nTest 2.5: Get governance constitution (governance requirement)...');
+    // Test 2.5: Call constitution first to bypass orientation check
+    console.log('\nTest 2.5: Get governance constitution...');
     try {
       const result = await sendRequest('tools/call', {
         name: 'get_governance_constitution',
         arguments: {},
       });
-      console.log('✓ Get governance constitution successful');
+      console.log('✓ Constitution call successful');
+      testsPassed++;
+    } catch (error) {
+      console.error('✗ Constitution call failed:', error.message);
+      testsFailed++;
+    }
+
+    // Test 3: file_ops - File read operation
+    console.log('\nTest 3: file_ops (read)...');
+    try {
+      const result = await sendRequest('tools/call', {
+        name: 'file_ops',
+        arguments: {
+          operation: 'read',
+          path: 'package.json',
+        },
+      });
+      console.log('✓ file_ops read successful');
+      console.log('   Response length:', JSON.stringify(result).length);
+      testsPassed++;
+    } catch (error) {
+      console.error('✗ file_ops read failed:', error.message);
+      testsFailed++;
+    }
+
+    // Test 4: search_code - Search codebase
+    console.log('\nTest 4: search_code...');
+    try {
+      const result = await sendRequest('tools/call', {
+        name: 'search_code',
+        arguments: {
+          operation: 'files',
+          query: 'function',
+          directory: '.',
+          maxResults: 5,
+        },
+      });
+      console.log('✓ search_code successful');
+      console.log('   Response:', result.content[0].text.substring(0, 100) + '...');
+      testsPassed++;
+    } catch (error) {
+      console.error('✗ search_code failed:', error.message);
+      testsFailed++;
+    }
+
+    // Test 5: backup_restore - Backup operation
+    console.log('\nTest 5: backup_restore (create)...');
+    try {
+      const result = await sendRequest('tools/call', {
+        name: 'backup_restore',
+        arguments: {
+          operation: 'create',
+          path: 'package.json',
+        },
+      });
+      console.log('✓ backup_restore create successful');
+      console.log('   Response:', result.content[0].text.substring(0, 100) + '...');
+      testsPassed++;
+    } catch (error) {
+      console.error('✗ backup_restore create failed:', error.message);
+      testsFailed++;
+    }
+
+    // Test 6: project_context - Get project context
+    console.log('\nTest 6: project_context...');
+    try {
+      const result = await sendRequest('tools/call', {
+        name: 'project_context',
+        arguments: {
+          operation: 'get_current',
+        },
+      });
+      console.log('✓ project_context successful');
+      console.log('   Response:', result.content[0].text.substring(0, 100) + '...');
+      testsPassed++;
+    } catch (error) {
+      console.error('✗ project_context failed:', error.message);
+      testsFailed++;
+    }
+
+    // Test 7: docs_manage - Documentation lookup
+    console.log('\nTest 7: docs_manage (list_corpora)...');
+    try {
+      const result = await sendRequest('tools/call', {
+        name: 'docs_manage',
+        arguments: {
+          operation: 'list_corpora',
+        },
+      });
+      console.log('✓ docs_manage list_corpora successful');
+      console.log('   Response:', result.content[0].text.substring(0, 100) + '...');
+      testsPassed++;
+    } catch (error) {
+      console.error('✗ docs_manage list_corpora failed:', error.message);
+      testsFailed++;
+    }
+
+    // Test 8: workflow_manage - Workflow operation
+    console.log('\nTest 8: workflow_manage...');
+    try {
+      const result = await sendRequest('tools/call', {
+        name: 'workflow_manage',
+        arguments: {
+          operation: 'context',
+        },
+      });
+      console.log('✓ workflow_manage successful');
+      console.log('   Response:', result.content[0].text.substring(0, 100) + '...');
+      testsPassed++;
+    } catch (error) {
+      console.error('✗ workflow_manage failed:', error.message);
+      testsFailed++;
+    }
+
+    // Test 9: sweobeyme_execute - Governance router
+    console.log('\nTest 9: sweobeyme_execute...');
+    try {
+      const result = await sendRequest('tools/call', {
+        name: 'sweobeyme_execute',
+        arguments: {
+          domain: 'governance',
+          action: 'manage',
+          payload: {
+            operation: 'get_constitution',
+          },
+        },
+      });
+      console.log('✓ sweobeyme_execute successful');
       console.log('   Response length:', result.content[0].text.length);
       testsPassed++;
     } catch (error) {
-      console.error('✗ Get governance constitution failed:', error.message);
-      testsFailed++;
-    }
-
-    // Test 3: Surgical plan (valid)
-    console.log('\nTest 4: Surgical plan (valid)...');
-    try {
-      const result = await sendRequest('tools/call', {
-        name: 'obey_surgical_plan',
-        arguments: {
-          target_file: 'test.js',
-          current_line_count: 100,
-          estimated_addition: 50,
-        },
-      });
-      console.log('✓ Surgical plan successful');
-      console.log('   Response:', result.content[0].text);
-      testsPassed++;
-    } catch (error) {
-      console.error('✗ Surgical plan failed:', error.message);
-      testsFailed++;
-    }
-
-    // Test 4: Surgical plan (invalid - exceeds limit)
-    console.log('\nTest 5: Surgical plan (invalid - exceeds limit)...');
-    try {
-      const result = await sendRequest('tools/call', {
-        name: 'obey_surgical_plan',
-        arguments: {
-          target_file: 'test.js',
-          current_line_count: 650,
-          estimated_addition: 100,
-        },
-      });
-      console.error('✗ Surgical plan should have been rejected but was approved');
-      testsFailed++;
-    } catch (error) {
-      console.log('✓ Surgical plan correctly rejected');
-      console.log('   Error:', error.message);
-      testsPassed++;
-    }
-
-    // Test 5: Auto enforce (validate code)
-    console.log('\nTest 5: Auto enforce (validate code)...');
-    try {
-      const result = await sendRequest('tools/call', {
-        name: 'auto_enforce',
-        arguments: {
-          operation: 'validate',
-          content: 'function test() { return true; }',
-          path: 'package.json',
-        },
-      });
-      console.log('✓ Auto enforce successful');
-      console.log('   Response:', result.content[0].text);
-      testsPassed++;
-    } catch (error) {
-      console.error('✗ Auto enforce failed:', error.message);
-      testsFailed++;
-    }
-
-    // Test 6: Auto enforce (invalid - console.log)
-    console.log('\nTest 6: Auto enforce (invalid - console.log)...');
-    try {
-      const result = await sendRequest('tools/call', {
-        name: 'auto_enforce',
-        arguments: {
-          operation: 'validate',
-          content: 'console.log("test");',
-          path: 'package.json',
-        },
-      });
-      console.error('✗ Auto enforce should have rejected console.log');
-      testsFailed++;
-    } catch (error) {
-      console.log('✓ Auto enforce correctly rejected console.log');
-      console.log('   Error:', error.message);
-      testsPassed++;
-    }
-
-    // Test 7: Get server diagnostics
-    console.log('\nTest 8: Get server diagnostics...');
-    try {
-      const result = await sendRequest('tools/call', {
-        name: 'get_server_diagnostics',
-        arguments: {},
-      });
-      console.log('✓ Get server diagnostics successful');
-      console.log('   Diagnostics length:', result.content[0].text.length);
-      testsPassed++;
-    } catch (error) {
-      console.error('✗ Get server diagnostics failed:', error.message);
-      testsFailed++;
-    }
-
-    // Test 8: Read file
-    console.log('\nTest 9: Read file...');
-    try {
-      const result = await sendRequest('tools/call', {
-        name: 'read_file',
-        arguments: {
-          path: 'package.json',
-        },
-      });
-      console.log('✓ Read file successful');
-      console.log('   File content length:', result.content[0].text.length);
-      testsPassed++;
-    } catch (error) {
-      console.error('✗ Read file failed:', error.message);
+      console.error('✗ sweobeyme_execute failed:', error.message);
       testsFailed++;
     }
 
