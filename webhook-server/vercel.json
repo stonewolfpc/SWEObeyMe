@@ -16,8 +16,6 @@
     }
   ],
   "env": {
-    "GITHUB_PAT": "@github_pat",
-    "WEBHOOK_SECRET": "@webhook_secret",
     "GITHUB_OWNER": "stonewolfpc",
     "GITHUB_REPO": "SWEObeyMe"
   }
