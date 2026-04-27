@@ -43,30 +43,45 @@ let diffReviewManager = null;
 // Lazy load modules to reduce startup time
 async function loadCheckpointManager(context) {
   if (!checkpointManager) {
-    const { CheckpointManager } = await import(
-      toFileUrl(path.join(__dirname, 'lib', 'checkpoint-manager.js'))
-    );
-    checkpointManager = new CheckpointManager(context);
+    try {
+      const { CheckpointManager } = await import(
+        toFileUrl(path.join(__dirname, 'lib', 'checkpoint-manager.js'))
+      );
+      checkpointManager = new CheckpointManager(context);
+    } catch (err) {
+      // Module not available in public builds (enterprise-only)
+      console.warn('[SWEObeyMe] Checkpoint manager not available (enterprise feature)');
+    }
   }
   return checkpointManager;
 }
 
 async function loadProviderManager() {
   if (!providerManager) {
-    const { ProviderManager } = await import(
-      toFileUrl(path.join(__dirname, 'lib', 'provider-manager.js'))
-    );
-    providerManager = new ProviderManager();
+    try {
+      const { ProviderManager } = await import(
+        toFileUrl(path.join(__dirname, 'lib', 'provider-manager.js'))
+      );
+      providerManager = new ProviderManager();
+    } catch (err) {
+      // Module not available in public builds (enterprise-only)
+      console.warn('[SWEObeyMe] Provider manager not available (enterprise feature)');
+    }
   }
   return providerManager;
 }
 
 async function loadDiffReviewManager() {
   if (!diffReviewManager) {
-    const { DiffReviewManager } = await import(
-      toFileUrl(path.join(__dirname, 'lib', 'diff-review-manager.js'))
-    );
-    diffReviewManager = new DiffReviewManager();
+    try {
+      const { DiffReviewManager } = await import(
+        toFileUrl(path.join(__dirname, 'lib', 'diff-review-manager.js'))
+      );
+      diffReviewManager = new DiffReviewManager();
+    } catch (err) {
+      // Module not available in public builds (enterprise-only)
+      console.warn('[SWEObeyMe] Diff review manager not available (enterprise feature)');
+    }
   }
   return diffReviewManager;
 }
