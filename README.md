@@ -1,6 +1,6 @@
 # SWEObeyMe MCP Server
 
-[![Version](https://img.shields.io/badge/version-5.0.24-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-5.0.25-blue.svg)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/license-Dual--License-yellow.svg)](LICENSE)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-green.svg)](https://nodejs.org)
 [![VS Code](https://img.shields.io/badge/VS%20Code-Extension-purple.svg)](https://marketplace.visualstudio.com)

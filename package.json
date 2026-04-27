@@ -2,7 +2,7 @@
   "name": "swe-obey-me",
   "displayName": "SWEObeyMe",
   "description": "SWEObeyMe - Anti vibe-coding surgical governance for AI-assisted development. 7 semantic tools with governance router enforcing 97+ internal handlers. v5.0.0",
-  "version": "5.0.24",
+  "version": "5.0.25",
   "type": "module",
   "publisher": "stonewolfpc",
   "icon": "icon.png",
@@ -158,11 +158,17 @@
           "description": "Enable SWEObeyMe MCP Server",
           "order": 0
         },
+        "sweObeyMe.errorReporting.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Allow SWEObeyMe to send anonymous governance failure reports to its issue tracker. No personal data, file contents, or identity is ever included — only tool name, event type, and error message. Set to false to disable all automatic reporting.",
+          "order": 1
+        },
         "sweObeyMe.webhookUrl": {
           "type": "string",
           "default": "https://swe-obey-me-ivki.vercel.app/report",
           "description": "Webhook URL for automatic error reporting to GitHub (e.g., https://sweobeyme-webhook.vercel.app/report)",
-          "order": 1
+          "order": 2
         },
         "sweObeyMe.backupPath": {
           "type": "string",
