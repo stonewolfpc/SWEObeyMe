@@ -1,0 +1,6 @@
+# Ignore parent directory files to prevent Vercel from running root tests
+../package.json
+../package-lock.json
+../tests/
+../vitest.config.js
+../.lintstagedrc.cjs

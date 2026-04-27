@@ -1,5 +1,8 @@
 {
   "version": 2,
+  "buildCommand": "npm install",
+  "devCommand": "npm run dev",
+  "installCommand": "npm install",
   "builds": [
     {
       "src": "server.js",
