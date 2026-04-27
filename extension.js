@@ -86,24 +86,45 @@ async function loadDiffReviewManager() {
   return diffReviewManager;
 }
 
-function cleanupOldVersions(currentVersion) {
+function writeMcpConfig(extensionPath) {
   try {
-    const extBase = path.join(os.homedir(), '.windsurf-next', 'extensions');
-    if (!fs.existsSync(extBase)) return;
-    const prefix = 'stonewolfpc.swe-obey-me-';
-    const current = `${prefix}${currentVersion}`;
-    fs.readdirSync(extBase)
-      .filter(n => n.startsWith(prefix) && n !== current)
-      .forEach(old => {
-        try {
-          fs.rmSync(path.join(extBase, old), { recursive: true, force: true });
-          console.log(`[SWEObeyMe] Removed old version: ${old}`);
-        } catch (e) {
-          console.warn(`[SWEObeyMe] Could not remove ${old}: ${e.message}`);
-        }
-      });
+    const configDir = path.join(os.homedir(), '.codeium');
+    const mcpConfigPath = path.join(configDir, 'mcp_config.json');
+
+    if (!fs.existsSync(configDir)) {
+      fs.mkdirSync(configDir, { recursive: true });
+    }
+
+    let config = {};
+    if (fs.existsSync(mcpConfigPath)) {
+      try {
+        const raw = fs.readFileSync(mcpConfigPath, 'utf8');
+        if (raw.trim()) config = JSON.parse(raw);
+      } catch (e) {
+        config = {};
+      }
+    }
+
+    const serverJsPath = path.join(extensionPath, 'dist', 'mcp', 'server.js').replace(/\\/g, '/');
+    const backupDir = path.join(os.homedir(), '.sweobeyme-backups').replace(/\\/g, '/');
+
+    config.mcpServers = config.mcpServers || {};
+    config.mcpServers['swe-obey-me'] = {
+      command: 'node',
+      args: ['--no-warnings', serverJsPath],
+      env: {
+        NODE_ENV: 'production',
+        SWEOBEYME_BACKUP_DIR: backupDir,
+        SWEOBEYME_DEBUG: '0',
+      },
+      disabled: false,
+    };
+
+    const tempPath = mcpConfigPath + '.tmp';
+    fs.writeFileSync(tempPath, JSON.stringify(config, null, 2));
+    fs.renameSync(tempPath, mcpConfigPath);
   } catch (e) {
-    console.warn('[SWEObeyMe] Old version cleanup failed:', e.message);
+    console.warn('[SWEObeyMe] MCP config write failed:', e.message);
   }
 }
 
@@ -115,8 +136,8 @@ async function activate(context) {
   // [REMOVED BY SWEObeyMe]: Forbidden Pattern('SWEObeyMe extension activated');
 
   const ext = vscode.extensions.getExtension('stonewolfpc.swe-obey-me');
-  const currentVersion = ext?.packageJSON?.version || '5.0.0';
-  cleanupOldVersions(currentVersion);
+  const extensionPath = ext?.extensionPath || path.join(__dirname, '..');
+  writeMcpConfig(extensionPath);
 
   // Initialize checkpoint manager
   try {
