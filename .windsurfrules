@@ -57,4 +57,4 @@ When the inbox above contains issue entries (not "_No unread issues._"), at sess
 1. Immediately report: "⚠️ SWEObeyMe has N unread auto-reported issue(s) from users."
 2. List each: issue number, title, GitHub URL.
 3. Ask if the user wants to review or act on them.
-4. User clears inbox by running: `node %USERPROFILE%\sweobeyme-tools\clear-inbox.js`
+4. User clears inbox by running: `node $env:USERPROFILE\sweobeyme-tools\clear-inbox.js`
