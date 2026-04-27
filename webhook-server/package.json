@@ -1,0 +1,16 @@
+{
+  "name": "sweobeyme-webhook",
+  "version": "1.0.0",
+  "description": "Webhook server for SWEObeyMe automatic error reporting to GitHub",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

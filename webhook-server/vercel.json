@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "server.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/server.js"
+    }
+  ],
+  "env": {
+    "GITHUB_PAT": "@github_pat",
+    "WEBHOOK_SECRET": "@webhook_secret",
+    "GITHUB_OWNER": "stonewolfpc",
+    "GITHUB_REPO": "SWEObeyMe"
+  }
+}
