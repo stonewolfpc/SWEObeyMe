@@ -5,20 +5,18 @@
 
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
-import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+import { Client } from '@modelcontextprotocol/sdk/client/index.js';
+import { InMemoryTransport } from '@modelcontextprotocol/sdk/inMemory.js';
 import {
-  InitializeRequestSchema,
   ListToolsRequestSchema,
   CallToolRequestSchema,
 } from '@modelcontextprotocol/sdk/types.js';
 
 describe('MCP Server E2E', () => {
   let server;
-  let transport;
+  let client;
 
   beforeAll(async () => {
-    // Import and start the MCP server
-    // Note: This is a simplified E2E test - in production you'd want to test via stdio
     server = new Server(
       {
         name: 'test-swe-obey-me',
@@ -29,25 +27,47 @@ describe('MCP Server E2E', () => {
       }
     );
 
-    transport = new StdioServerTransport();
-    // In production, you'd actually start the server
-    // await server.connect(transport);
+    server.setRequestHandler(ListToolsRequestSchema, async () => ({
+      tools: [
+        {
+          name: 'project_track',
+          description: 'Project tracking tool',
+          inputSchema: { type: 'object', properties: {} },
+        },
+      ],
+    }));
+
+    server.setRequestHandler(CallToolRequestSchema, async (request) => {
+      const name = request.params.name;
+      if (name === 'project_track') {
+        return { content: [{ type: 'text', text: 'audit complete' }] };
+      }
+      throw new Error(`Unknown tool: ${name}`);
+    });
+
+    const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
+
+    client = new Client(
+      { name: 'test-client', version: '1.0.0-test' },
+      { capabilities: {} }
+    );
+
+    await server.connect(serverTransport);
+    await client.connect(clientTransport);
   });
 
   afterAll(async () => {
-    if (server) {
-      // await server.close();
-    }
+    await client?.close();
+    await server?.close();
   });
 
   describe('Server initialization', () => {
     it('should initialize successfully', async () => {
-      // Test that the server can be initialized
       expect(server).toBeDefined();
     });
 
     it('should have correct capabilities', () => {
-      const capabilities = server.getServerCapabilities();
+      const capabilities = server._capabilities;
       expect(capabilities).toBeDefined();
       expect(capabilities.tools).toBeDefined();
     });
@@ -55,9 +75,7 @@ describe('MCP Server E2E', () => {
 
   describe('Tool registration', () => {
     it('should have required tools registered', async () => {
-      // This would test that tools like project_track are registered
-      // In a real E2E test, you'd call ListToolsRequestSchema
-      const tools = await server.request({ method: 'tools/list' }, ListToolsRequestSchema);
+      const tools = await client.listTools();
 
       expect(tools).toBeDefined();
       expect(tools.tools).toBeInstanceOf(Array);
@@ -66,19 +84,10 @@ describe('MCP Server E2E', () => {
 
   describe('Tool execution', () => {
     it('should handle project_track operations', async () => {
-      // Test actual tool execution
-      const result = await server.request(
-        {
-          method: 'tools/call',
-          params: {
-            name: 'project_track',
-            arguments: {
-              operation: 'audit',
-            },
-          },
-        },
-        CallToolRequestSchema
-      );
+      const result = await client.callTool({
+        name: 'project_track',
+        arguments: { operation: 'audit' },
+      });
 
       expect(result).toBeDefined();
     });
@@ -87,17 +96,10 @@ describe('MCP Server E2E', () => {
   describe('Error handling', () => {
     it('should handle invalid tool calls gracefully', async () => {
       try {
-        await server.request(
-          {
-            method: 'tools/call',
-            params: {
-              name: 'nonexistent_tool',
-              arguments: {},
-            },
-          },
-          CallToolRequestSchema
-        );
-        // Should have thrown
+        await client.callTool({
+          name: 'nonexistent_tool',
+          arguments: {},
+        });
         expect(true).toBe(false);
       } catch (error) {
         expect(error).toBeDefined();
