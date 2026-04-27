@@ -12,6 +12,8 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import * as os from 'os';
 import * as fs from 'fs';
+import * as http from 'http';
+import * as https from 'https';
 import { fileURLToPath, pathToFileURL } from 'url';
 
 // ESM-safe __dirname with Windows path handling
@@ -86,6 +88,35 @@ async function loadDiffReviewManager() {
   return diffReviewManager;
 }
 
+function reportError(component, err) {
+  try {
+    const webhookUrl =
+      vscode.workspace.getConfiguration().get('sweObeyMe.webhookUrl') ||
+      'https://swe-obey-me-ivki.vercel.app/report';
+    if (!webhookUrl) return;
+    const body = JSON.stringify({
+      type: 'extension_host_error',
+      domain: 'extension',
+      action: component,
+      handlerName: component,
+      diagnostics: err?.message || String(err),
+      routerTrace: err?.stack || '',
+    });
+    const url = new URL(webhookUrl);
+    const mod = url.protocol === 'https:' ? https : http;
+    const req = mod.request({
+      hostname: url.hostname,
+      port: url.port || (url.protocol === 'https:' ? 443 : 80),
+      path: url.pathname,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(body) },
+    });
+    req.on('error', () => {});
+    req.write(body);
+    req.end();
+  } catch (_) {}
+}
+
 function writeMcpConfig(extensionPath) {
   try {
     const configDir = path.join(os.homedir(), '.codeium', 'windsurf-next');
@@ -144,6 +175,7 @@ async function activate(context) {
     await loadCheckpointManager(context);
   } catch (err) {
     console.error('[SWEObeyMe] Checkpoint manager failed to load:', err);
+    reportError('checkpoint-manager', err);
   }
 
   // Initialize provider manager
@@ -151,6 +183,7 @@ async function activate(context) {
     await loadProviderManager();
   } catch (err) {
     console.error('[SWEObeyMe] Provider manager failed to load:', err);
+    reportError('provider-manager', err);
   }
 
   // Initialize diff review manager
@@ -158,6 +191,7 @@ async function activate(context) {
     await loadDiffReviewManager();
   } catch (err) {
     console.error('[SWEObeyMe] Diff review manager failed to load:', err);
+    reportError('diff-review-manager', err);
   }
 
   // Register all commands declared in package.json
@@ -283,6 +317,7 @@ async function activate(context) {
     setupLanguageBridges(context, __dirname);
   } catch (err) {
     console.error('[SWEObeyMe] Language bridges failed to load:', err);
+    reportError('language-bridge-manager', err);
   }
 
   // Register unified v5.0 cockpit provider
@@ -296,6 +331,8 @@ async function activate(context) {
     );
   } catch (err) {
     console.error('[SWEObeyMe] Cockpit provider failed to load:', err);
+    vscode.window.showErrorMessage(`SWEObeyMe: Cockpit failed to load: ${err.message}`);
+    reportError('cockpit-provider', err);
   }
 }
 

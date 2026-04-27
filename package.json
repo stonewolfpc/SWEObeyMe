@@ -2,7 +2,7 @@
   "name": "swe-obey-me",
   "displayName": "SWEObeyMe",
   "description": "SWEObeyMe - Anti vibe-coding surgical governance for AI-assisted development. 7 semantic tools with governance router enforcing 97+ internal handlers. v5.0.0",
-  "version": "5.0.15",
+  "version": "5.0.16",
   "type": "module",
   "publisher": "stonewolfpc",
   "icon": "icon.png",
@@ -160,7 +160,7 @@
         },
         "sweObeyMe.webhookUrl": {
           "type": "string",
-          "default": "",
+          "default": "https://swe-obey-me-ivki.vercel.app/report",
           "description": "Webhook URL for automatic error reporting to GitHub (e.g., https://sweobeyme-webhook.vercel.app/report)",
           "order": 1
         },
