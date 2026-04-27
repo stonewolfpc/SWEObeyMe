@@ -107,6 +107,31 @@ function copyTestsFolder() {
   }
 }
 
+// Node.js built-ins - always external (provided by Node runtime)
+const nodeBuiltins = [
+  'fs', 'fs/promises', 'path', 'os', 'crypto', 'stream', 'util',
+  'url', 'http', 'https', 'net', 'tls', 'child_process', 'events',
+  'buffer', 'zlib', 'assert', 'readline', 'worker_threads', 'perf_hooks',
+  'node:fs', 'node:path', 'node:os', 'node:crypto', 'node:stream',
+  'node:util', 'node:url', 'node:http', 'node:https', 'node:net',
+  'node:tls', 'node:child_process', 'node:events', 'node:buffer',
+  'node:zlib', 'node:assert', 'node:readline', 'node:worker_threads',
+  'node:perf_hooks', 'node:process', 'node:original-fs',
+];
+
+// Dev-only tools: dynamically required by detection/analysis logic only.
+// Never statically imported, never needed at runtime in installed extension.
+const devToolsExternal = [
+  '@vue/compiler-sfc',
+  'typescript',
+  'madge',
+  'eslint',
+  'prettier',
+  'cross-spawn',
+  'express',
+  'cors',
+];
+
 const commonConfig = {
   platform: 'node',
   target: 'node18',
@@ -114,30 +139,7 @@ const commonConfig = {
   sourcemap: isDev,
   minify: isProduction && !isDev,
   treeShaking: true,
-  external: [
-    'vscode',
-    'express',
-    'cors',
-    '@hono/node-server',
-    'hono',
-    'jose',
-    'pkce-challenge',
-    'eventsource-parser',
-    'eventsource',
-    'ajv',
-    'ajv-formats',
-    'content-type',
-    'cross-spawn',
-    'json-schema-typed',
-    'zod-to-json-schema',
-    'raw-body',
-    'crypto',
-    '@vue/compiler-sfc',
-    'typescript',
-    'madge',
-    'eslint',
-    'prettier',
-  ],
+  external: [...nodeBuiltins, ...devToolsExternal],
   logLevel: 'info',
 };
 
@@ -147,6 +149,7 @@ const extensionConfig = {
   entryPoints: [join(__dirname, 'extension.js')],
   outfile: join(__dirname, 'dist', 'extension.js'),
   bundle: true,
+  external: [...nodeBuiltins, 'vscode'],
   define: {
     'process.env.NODE_ENV': JSON.stringify(isProduction ? 'production' : 'development'),
     'process.env.BUILD_MODE': JSON.stringify(isEnterprise ? 'enterprise' : 'public'),

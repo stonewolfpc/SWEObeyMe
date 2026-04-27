@@ -10,8 +10,6 @@ import {
 import fs from 'fs';
 import os from 'os';
 import crypto from 'crypto';
-import express from 'express';
-import cors from 'cors';
 import { fileURLToPath } from 'url';
 import path from 'path';
 
@@ -644,6 +642,8 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
     }
   } else if (TRANSPORT_MODE === 'http') {
     // HTTP REST API mode - Express server only (no MCP transport)
+    const { default: express } = await import('express');
+    const { default: cors } = await import('cors');
     const app = express();
 
     // Add request logging middleware
