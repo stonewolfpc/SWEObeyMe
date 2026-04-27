@@ -2,7 +2,7 @@
   "name": "swe-obey-me",
   "displayName": "SWEObeyMe",
   "description": "SWEObeyMe - Anti vibe-coding surgical governance for AI-assisted development. 7 semantic tools with governance router enforcing 97+ internal handlers. v5.0.0",
-  "version": "5.0.2",
+  "version": "5.0.3",
   "type": "module",
   "publisher": "stonewolfpc",
   "icon": "icon.png",
@@ -130,6 +130,27 @@
         "icon": "$(search)"
       }
     ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "sweObeyMe",
+          "title": "SWEObeyMe",
+          "icon": "$(shield)",
+          "when": "sweObeyMe.enabled"
+        }
+      ]
+    },
+    "views": {
+      "sweObeyMe": [
+        {
+          "id": "sweObeyMe.cockpit",
+          "name": "Cockpit",
+          "type": "webview",
+          "icon": "$(shield)",
+          "when": "sweObeyMe.enabled"
+        }
+      ]
+    },
     "configuration": {
       "title": "SWEObeyMe",
       "properties": {
