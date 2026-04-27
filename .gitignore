@@ -74,7 +74,12 @@ error_log.json
 error_patterns.json
 
 # Generated files (can be regenerated)
-# Note: project_map.json and tool-memory.json are committed as they are referenced by code
+# Note: project_map.json and .sweobeyme-memory.json are now gitignored to prevent committing absolute paths
+project_map.json
+.sweobeyme-memory.json
+lib/project_map.json
+lib/.sweobeyme-memory.json
+tool-memory.json
 
 # Deprecated documentation registries (consolidated into registry-docs.js)
 lib/tools/registry-math.js
