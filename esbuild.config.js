@@ -11,21 +11,9 @@ const isProduction = process.env.NODE_ENV === 'production';
 const isEnterprise = process.env.BUILD_MODE === 'enterprise';
 const isDev = process.env.BUILD_MODE === 'dev';
 
-// Enterprise modules to exclude in public builds
-const enterpriseModules = [
-  'lib/api-key-manager.js',
-  'lib/audit-logger.js',
-  'lib/backup-manager.js',
-  'lib/checkpoint-manager.js',
-  'lib/diff-review-manager.js',
-  'lib/metrics-manager.js',
-  'lib/permission-manager.js',
-  'lib/provider-manager.js',
-  'lib/quota-manager.js',
-  'lib/skills-marketplace-manager.js',
-  'lib/tools/patreon-handlers.js',
-  'lib/tools/registry-patreon.js',
-];
+// Enterprise modules are bundled normally - externalizing them breaks path resolution
+// at runtime (esbuild emits relative paths that don't resolve correctly post-install)
+const enterpriseModules = [];
 
 // Helper function to copy package.json to dist/mcp/
 function copyPackageJson() {
