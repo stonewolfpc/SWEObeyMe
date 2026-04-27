@@ -33,10 +33,9 @@ const rateLimitMap = new Map();
 const RATE_LIMIT_WINDOW = 60_000; // 1 minute
 const RATE_LIMIT_MAX = 30; // max 30 requests per minute per IP
 
-// Validate PAT
-if (!GITHUB_PAT) {
-  console.error('[ERROR] GITHUB_PAT environment variable is required');
-  process.exit(1);
+const PAT_CONFIGURED = Boolean(GITHUB_PAT);
+if (!PAT_CONFIGURED) {
+  console.error('[ERROR] GITHUB_PAT environment variable is not set - /report will return 503');
 }
 
 app.use(express.json({ limit: '1mb' }));
@@ -75,6 +74,9 @@ function validateSignature(payload, signature) {
 
 // POST /report - Receive error report
 app.post('/report', async (req, res) => {
+  if (!PAT_CONFIGURED) {
+    return res.status(503).json({ error: 'GITHUB_PAT not configured on server. Set it in Vercel Environment Variables.' });
+  }
   try {
     const ip = req.ip;
     
@@ -120,7 +122,11 @@ app.post('/report', async (req, res) => {
 
 // Health check
 app.get('/health', (req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+  res.json({
+    status: PAT_CONFIGURED ? 'ok' : 'degraded',
+    patConfigured: PAT_CONFIGURED,
+    timestamp: new Date().toISOString(),
+  });
 });
 
 // Post issue to GitHub
