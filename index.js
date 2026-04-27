@@ -407,6 +407,24 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
       throw new Error(`Prompt ${name} not found`);
     }
 
+    // Dynamic prompts: call generate() exported from the definition module
+    if (prompt.dynamic) {
+      try {
+        const defDir = path.join(__dirname, 'lib', 'prompts', 'definitions');
+        const files = fs.readdirSync(defDir).filter((f) => f.endsWith('.js'));
+        for (const file of files) {
+          const fileUrl = `file://${path.join(defDir, file).replace(/\\/g, '/')}`;
+          const mod = await import(fileUrl);
+          if (mod.promptDefinition?.name === name && typeof mod.generate === 'function') {
+            const result = mod.generate(args);
+            return { description: prompt.description, messages: result.messages };
+          }
+        }
+      } catch (e) {
+        // fall through to static template on error
+      }
+    }
+
     // Apply arguments to template if it exists
     let messages = prompt.messages || [];
     if (prompt.template) {
