@@ -22,7 +22,26 @@
 
 ---
 
-## 🚀 New in v5.0 - Automatic Error Reporting
+## � A Note on v5.0.10 through v5.0.15 — "It Worked On My Machine"
+
+Okay, real talk — I owe you guys an apology.
+
+Versions 5.0.10 through 5.0.15 were, to put it diplomatically, a mess for anyone who wasn't me. The MCP server crashed on startup, the sidebar icon never appeared, and the config file wrote to the wrong directory. Every single one of these worked perfectly on my local machine, which made them genuinely hard to catch before release.
+
+Here's what was broken and what fixed it:
+
+- **v5.0.12** — The real killer: enterprise modules were marked `external` in the build config, so the bundler emitted broken relative import paths that only resolved correctly inside my dev folder. For everyone else, the MCP server crashed immediately on launch.
+- **v5.0.13** — MCP config was writing to `~/.codeium/mcp_config.json` instead of `~/.codeium/windsurf-next/mcp_config.json`. Windsurf-Next reads the second one. Total facepalm.
+- **v5.0.14** — Runtime npm packages weren't bundled, so the server crashed on `raw-body` not found.
+- **v5.0.15** — The sidebar icon had a `"when": "sweObeyMe.enabled"` condition on both the container and the view. The context key was never set. So the panel was permanently invisible for everyone.
+
+**v5.0.16 is the one that works.** Fresh install, no leftover versions in your extensions folder, full restart of Windsurf-Next. That's all it takes.
+
+I'm sorry for the headache. Genuinely. This extension means a lot to me and you all deserve better than "oops, worked locally." The error reporting pipeline is now live so I'll catch these before you do going forward. — Chris
+
+---
+
+## �🚀 New in v5.0 - Automatic Error Reporting
 
 **Governance failures now automatically report to GitHub.** When the extension detects a router failure, validation error, or forbidden pattern, it:
 
@@ -33,6 +52,55 @@
 5. Issues appear in the Cascade inbox for review and repair
 
 This means I can see what's breaking in real time and fix it faster. The full pipeline is silent on failure — it won't crash your session, just queue the issue for review.
+
+---
+
+## 🔧 Auto-Repair Pipeline
+
+### How It Works (My Setup)
+
+When something breaks in any user's install, here's the full chain:
+
+1. **Extension detects the failure** — any catch block in activation, or any governance violation in the MCP router
+2. **Posts to Vercel webhook** → `https://swe-obey-me-ivki.vercel.app/report`
+3. **Vercel creates a GitHub issue** on `stonewolfpc/SWEObeyMe` labeled `auto-reported`
+4. **Local sync daemon** (`Start-SWEObeyMe-Sync.bat`) polls GitHub every 60 seconds, downloads new issues to `%USERPROFILE%\sweobeyme-issues\`
+5. **Issues appear in the Cascade inbox** inside the workspace rules file — I open the project, see the alert, and can say *"hey check this issue out"* directly to the AI
+
+The auto-repair prompts live **inside the MCP server tools** — not in Windsurf's global rules. This is intentional. Hooking into Windsurf's rule system globally risks breaking the IDE for everyone. The MCP layer is the safe, isolated place for this.
+
+### For Everyone Else — The Door Is There, Just Closed
+
+The auto-repair system exists in your install but is completely silent by default. It won't do anything you didn't ask for. Your session is safe.
+
+If you want to **build your own repair pipeline** that works the same way, here's what you need:
+
+**1. A GitHub token** with `repo` scope — set it as an environment variable:
+
+```bat
+setx SWEOBEYME_GITHUB_TOKEN "ghp_your_token_here"
+```
+
+**2. The sync daemon** — `sync-sweobeyme-issues.js` in your tools folder. It polls `api.github.com` for issues labeled `auto-reported` and writes them to a local folder. The key variable to set:
+
+```js
+const WORKSPACE_RULES = path.join('YOUR_DRIVE', 'YOUR_PROJECT', '.windsurfrules');
+```
+
+Point that at your workspace's `.windsurfrules` file and the inbox section will auto-populate.
+
+**3. The inbox block** — your `.windsurfrules` (or equivalent AI rules file) needs these markers somewhere in it:
+
+```html
+<!-- SWEOBEYME_INBOX_START -->
+<!-- SWEOBEYME_INBOX_END -->
+```
+
+The sync daemon writes issue summaries between those markers. Your AI sees them on session start.
+
+**4. Enable auto-repair** — run `Start-SWEObeyMe-Sync.bat` (or equivalent), answer `Y` to auto-repair. That sets `SWEOBEYME_AUTO_REPAIR_ENABLED=true` in the environment before launching the daemon.
+
+That's the whole thing. Four steps and you have the same pipeline I use.
 
 ---
 
