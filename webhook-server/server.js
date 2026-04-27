@@ -60,16 +60,21 @@ function checkRateLimit(ip) {
 // Optional webhook signature validation
 function validateSignature(payload, signature) {
   if (!WEBHOOK_SECRET) return true;
+  if (!signature) return false;
   
   const expectedSignature = 'sha256=' + crypto
     .createHmac('sha256', WEBHOOK_SECRET)
     .update(payload)
     .digest('hex');
   
-  return crypto.timingSafeEqual(
-    Buffer.from(signature),
-    Buffer.from(expectedSignature)
-  );
+  try {
+    return crypto.timingSafeEqual(
+      Buffer.from(signature),
+      Buffer.from(expectedSignature)
+    );
+  } catch {
+    return false;
+  }
 }
 
 // POST /report - Receive error report
