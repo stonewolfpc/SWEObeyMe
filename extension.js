@@ -119,28 +119,17 @@ function reportError(component, err) {
 
 function writeMcpConfig(extensionPath) {
   try {
-    const configDir = path.join(os.homedir(), '.codeium', 'windsurf-next');
-    const mcpConfigPath = path.join(configDir, 'mcp_config.json');
-
-    if (!fs.existsSync(configDir)) {
-      fs.mkdirSync(configDir, { recursive: true });
-    }
-
-    let config = {};
-    if (fs.existsSync(mcpConfigPath)) {
-      try {
-        const raw = fs.readFileSync(mcpConfigPath, 'utf8');
-        if (raw.trim()) config = JSON.parse(raw);
-      } catch (e) {
-        config = {};
-      }
-    }
+    const homeDir = os.homedir();
+    const configLocations = [
+      path.join(homeDir, '.codeium', 'windsurf-next', 'mcp_config.json'),
+      path.join(homeDir, '.codeium', 'windsurf', 'mcp_config.json'),
+      path.join(homeDir, '.codeium', 'mcp_config.json'),
+    ];
 
     const serverJsPath = path.join(extensionPath, 'dist', 'mcp', 'server.js').replace(/\\/g, '/');
-    const backupDir = path.join(os.homedir(), '.sweobeyme-backups').replace(/\\/g, '/');
+    const backupDir = path.join(homeDir, '.sweobeyme-backups').replace(/\\/g, '/');
 
-    config.mcpServers = config.mcpServers || {};
-    config.mcpServers['swe-obey-me'] = {
+    const serverConfig = {
       command: 'node',
       args: ['--no-warnings', serverJsPath],
       env: {
@@ -151,9 +140,33 @@ function writeMcpConfig(extensionPath) {
       disabled: false,
     };
 
-    const tempPath = mcpConfigPath + '.tmp';
-    fs.writeFileSync(tempPath, JSON.stringify(config, null, 2));
-    fs.renameSync(tempPath, mcpConfigPath);
+    for (const mcpConfigPath of configLocations) {
+      const configDir = path.dirname(mcpConfigPath);
+      if (!fs.existsSync(configDir)) {
+        fs.mkdirSync(configDir, { recursive: true });
+      }
+
+      let config = {};
+      if (fs.existsSync(mcpConfigPath)) {
+        try {
+          const raw = fs.readFileSync(mcpConfigPath, 'utf8');
+          if (raw.trim()) config = JSON.parse(raw);
+        } catch (e) {
+          config = {};
+        }
+      }
+
+      config.mcpServers = config.mcpServers || {};
+      const existing = config.mcpServers['swe-obey-me'];
+      const pathChanged = existing && existing.args?.[1] !== serverJsPath;
+
+      if (!existing || pathChanged) {
+        config.mcpServers['swe-obey-me'] = serverConfig;
+        const tempPath = mcpConfigPath + '.tmp';
+        fs.writeFileSync(tempPath, JSON.stringify(config, null, 2));
+        fs.renameSync(tempPath, mcpConfigPath);
+      }
+    }
   } catch (e) {
     console.warn('[SWEObeyMe] MCP config write failed:', e.message);
   }
