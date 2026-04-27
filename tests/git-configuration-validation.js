@@ -187,7 +187,7 @@ requiredFiles.forEach(f => {
 
 // ─── Check 11: No debug/forbidden patterns in source ────────────────────────
 console.log('\nCheck 11: Forbidden patterns in source');
-const srcDirs = ['lib', 'extension.js', 'index.js'];
+const srcDirs = ['lib', 'lib/ui', 'lib/github', 'extension.js', 'index.js'];
 const forbiddenPatterns = [
   { pattern: /debugger;/, label: 'debugger statement' },
   { pattern: /\bconsole\.log\(/, label: 'console.log (use structured logging)' },
@@ -195,21 +195,59 @@ const forbiddenPatterns = [
   { pattern: /\/\/\s*TODO[^:]/i, label: 'TODO comment without colon' },
 ];
 
+function scanDirRecursive(dir) {
+  const results = [];
+  const fullPath = path.join(repoPath, dir);
+  if (!fs.existsSync(fullPath)) return results;
+
+  const entries = fs.readdirSync(fullPath, { withFileTypes: true });
+  for (const entry of entries) {
+    if (entry.isDirectory()) {
+      results.push(...scanDirRecursive(path.join(dir, entry.name)));
+    } else if (entry.isFile() && entry.name.endsWith('.js')) {
+      results.push(path.join(dir, entry.name));
+    }
+  }
+  return results;
+}
+
 function scanForForbidden(dir) {
-  if (!fs.existsSync(path.join(repoPath, dir))) return;
-  const result = execSafe(`git grep -rn --include="*.js" -E "${forbiddenPatterns.map(p => p.pattern.source).join('|')}" -- ${dir}`);
-  if (result && result.trim()) {
-    const lines = result.trim().split('\n');
-    lines.forEach(line => {
+  const fullPath = path.join(repoPath, dir);
+  if (!fs.existsSync(fullPath)) {
+    pass(`${dir} does not exist (skipping)`);
+    return;
+  }
+
+  const jsFiles = fs.statSync(fullPath).isFile() ? [dir] : scanDirRecursive(dir);
+  let found = false;
+
+  // Known false positives: strings used for pattern detection, not actual eval() calls
+  const falsePositiveLines = [
+    '/eval\\s*\\(/g', // regex pattern in guardrails.js
+    "'eval('", // string in verification.js forbidden patterns array
+  ];
+
+  jsFiles.forEach(relPath => {
+    const absPath = path.join(repoPath, relPath);
+    const content = fs.readFileSync(absPath, 'utf-8');
+    const lines = content.split('\n');
+
+    lines.forEach((line, idx) => {
       forbiddenPatterns.forEach(fp => {
         if (fp.pattern.test(line)) {
-          fail(`Found ${fp.label} in: ${line.split(':').slice(0, 2).join(':')}`);
+          // Check if this is a known false positive line
+          const isFalsePositive = falsePositiveLines.some(fpLine => line.includes(fpLine));
+          if (isFalsePositive) {
+            return;
+          }
+          fail(`Found ${fp.label} in: ${relPath}:${idx + 1}`);
+          found = true;
         }
       });
     });
-  } else {
-    pass(`No forbidden patterns in ${dir}`);
-  }
+  });
+
+  if (!found) pass(`No forbidden patterns in ${dir}`);
 }
 srcDirs.forEach(scanForForbidden);
 

@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://file+.vscode-resource.vscode-cdn.net; style-src https://file+.vscode-resource.vscode-cdn.net 'nonce-k7mstgdvefesgobfgl3hl'; script-src https://file+.vscode-resource.vscode-cdn.net 'nonce-k7mstgdvefesgobfgl3hl';">
+  <title>SWEObeyMe v5.0 Cockpit</title>
+  <style nonce="k7mstgdvefesgobfgl3hl">
+    :root {
+      --bg: #0d0d12;
+      --surface: #13131c;
+      --border: #1e1e2e;
+      --text: #e0e0e0;
+      --text-dim: #777;
+      --accent-cyan: #00d4ff;
+      --accent-purple: #7b2fff;
+      --accent-orange: #ff6b2b;
+      --accent-green: #00e676;
+      --accent-red: #ff3d71;
+      --accent-yellow: #ffd600;
+      --font-mono: 'JetBrains Mono', 'Cascadia Code', 'Consolas', monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: var(--font-mono); font-size: 12px; overflow-y: auto; }
+    #cockpit { display: flex; flex-direction: column; min-height: 100vh; }
+    .cockpit-header { display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; background: var(--surface); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; }
+    .header-brand { display: flex; align-items: center; gap: 6px; }
+    .brand-icon { color: var(--accent-cyan); font-size: 18px; line-height: 1; }
+    .brand-name { font-weight: 700; font-size: 13px; color: var(--text); letter-spacing: 0.5px; }
+    .brand-version { font-size: 10px; color: var(--accent-purple); background: #7b2fff22; border: 1px solid #7b2fff44; border-radius: 4px; padding: 1px 5px; }
+    .header-controls { display: flex; align-items: center; gap: 10px; }
+    .mode-toggle { display: flex; align-items: center; gap: 4px; cursor: pointer; background: var(--border); border: 1px solid #333; border-radius: 6px; padding: 4px 10px; user-select: none; transition: background 0.2s; }
+    .mode-toggle:hover { background: #232335; }
+    .mode-label { font-size: 11px; font-weight: 600; }
+    .mode-caret { font-size: 10px; color: var(--text-dim); }
+    .status-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent-green); box-shadow: 0 0 6px var(--accent-green); animation: pulse 2s infinite; }
+    .status-dot.error { background: var(--accent-red); box-shadow: 0 0 6px var(--accent-red); }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+    .panel { padding: 12px; flex: 1; }
+    .hidden { display: none !important; }
+    .health-indicator { margin-bottom: 16px; }
+    .health-bar { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; margin-bottom: 6px; }
+    .health-fill { height: 100%; width: 100%; background: linear-gradient(90deg, var(--accent-green), var(--accent-cyan)); border-radius: 3px; transition: width 0.5s; }
+    .health-label { font-size: 11px; color: var(--accent-green); font-weight: 600; letter-spacing: 0.5px; }
+    .status-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+    .status-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 10px; display: flex; align-items: center; gap: 8px; }
+    .status-icon { font-size: 16px; }
+    .status-title { font-size: 9px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
+    .status-value { font-size: 11px; color: var(--text); }
+    .layer-diagram-simple { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 12px; margin-bottom: 12px; }
+    .layer-label { font-size: 9px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+    #archSvgSimple { width: 100%; height: auto; }
+    .tool-counts { display: flex; gap: 16px; font-size: 11px; color: var(--text-dim); }
+    .tool-count strong { color: var(--accent-cyan); }
+    .tab-nav { display: flex; gap: 2px; margin-bottom: 12px; background: var(--surface); border-radius: 8px; padding: 4px; border: 1px solid var(--border); }
+    .tab-btn { flex: 1; padding: 6px 4px; font-size: 10px; font-family: var(--font-mono); background: transparent; border: none; color: var(--text-dim); border-radius: 6px; cursor: pointer; transition: all 0.2s; }
+    .tab-btn:hover { color: var(--text); background: var(--border); }
+    .tab-btn.active { background: var(--accent-purple); color: #fff; font-weight: 600; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+    .arch-controls, .monitor-controls, .validation-controls, .history-controls { display: flex; gap: 6px; margin-bottom: 10px; align-items: center; flex-wrap: wrap; }
+    .ctrl-btn { padding: 4px 10px; font-size: 11px; font-family: var(--font-mono); background: var(--surface); border: 1px solid var(--border); color: var(--text); border-radius: 6px; cursor: pointer; transition: all 0.2s; }
+    .ctrl-btn:hover { border-color: var(--accent-cyan); color: var(--accent-cyan); }
+    .ctrl-btn.primary { border-color: var(--accent-purple); color: var(--accent-purple); }
+    .ctrl-btn.primary:hover { background: var(--accent-purple); color: #fff; }
+    .ctrl-btn.danger { border-color: var(--accent-red); color: var(--accent-red); }
+    .ctrl-btn.danger:hover { background: var(--accent-red); color: #fff; }
+    .filter-select, .search-input, .config-input { background: var(--surface); border: 1px solid var(--border); color: var(--text); border-radius: 6px; padding: 4px 8px; font-family: var(--font-mono); font-size: 11px; }
+    .filter-select:focus, .search-input:focus, .config-input:focus { outline: none; border-color: var(--accent-purple); }
+    .search-input { flex: 1; }
+    .arch-container { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 10px; overflow: auto; cursor: grab; max-height: 320px; }
+    .arch-container:active { cursor: grabbing; }
+    #archSvg { width: 100%; min-height: 480px; }
+    .layer-node rect { transition: fill 0.2s; }
+    .layer-node:hover rect:first-child { fill-opacity: 0.25; }
+    .layer-node.selected rect:first-child { fill-opacity: 0.3; stroke-width: 2.5; }
+    .layer-detail { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 12px; margin-top: 10px; min-height: 60px; }
+    .layer-detail h4 { font-size: 12px; color: var(--accent-cyan); margin-bottom: 6px; }
+    .layer-detail-body { font-size: 11px; color: var(--text-dim); line-height: 1.6; }
+    .event-stream { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 10px; max-height: 380px; overflow-y: auto; font-family: var(--font-mono); }
+    .event-item { padding: 5px 8px; border-bottom: 1px solid var(--border); display: flex; gap: 8px; align-items: flex-start; animation: fadeIn 0.3s; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+    .event-time { color: var(--text-dim); font-size: 9px; min-width: 56px; padding-top: 1px; }
+    .event-badge { font-size: 9px; padding: 1px 5px; border-radius: 4px; white-space: nowrap; }
+    .event-badge.router { background: #7b2fff33; color: var(--accent-purple); }
+    .event-badge.backup { background: #00d4ff22; color: var(--accent-cyan); }
+    .event-badge.validation { background: #00e67622; color: var(--accent-green); }
+    .event-badge.error { background: #ff3d7122; color: var(--accent-red); }
+    .event-badge.info { background: #ffd60022; color: var(--accent-yellow); }
+    .event-text { font-size: 11px; color: var(--text); flex: 1; }
+    .event-placeholder, .test-placeholder, .history-placeholder { color: var(--text-dim); font-size: 11px; padding: 20px; text-align: center; }
+    .test-summary { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+    .test-badge { padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: 600; }
+    .test-badge.pass { background: #00e67622; color: var(--accent-green); }
+    .test-badge.fail { background: #ff3d7122; color: var(--accent-red); }
+    .test-badge.skip { background: #ffd60022; color: var(--accent-yellow); }
+    .test-results { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 10px; max-height: 340px; overflow-y: auto; }
+    .test-item { padding: 6px 8px; border-bottom: 1px solid var(--border); display: flex; gap: 8px; align-items: center; }
+    .test-icon { width: 16px; text-align: center; }
+    .test-name { font-size: 11px; flex: 1; }
+    .test-duration { font-size: 10px; color: var(--text-dim); }
+    .test-rerun { font-size: 10px; cursor: pointer; color: var(--accent-purple); }
+    .test-detail { font-size: 10px; color: var(--accent-red); padding: 4px 8px 6px 28px; background: #ff3d7108; border-radius: 4px; }
+    .history-list { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; max-height: 360px; overflow-y: auto; }
+    .history-item { padding: 6px 12px; border-bottom: 1px solid var(--border); display: flex; gap: 8px; align-items: center; }
+    .history-time { font-size: 9px; color: var(--text-dim); min-width: 80px; }
+    .history-text { font-size: 11px; flex: 1; }
+    .github-config { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px; margin-bottom: 14px; }
+    .section-title { font-size: 11px; font-weight: 700; color: var(--accent-cyan); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+    .config-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+    .config-label { font-size: 10px; color: var(--text-dim); min-width: 120px; }
+    .config-input { flex: 1; min-width: 140px; }
+    .pat-row { display: flex; gap: 6px; flex: 1; flex-wrap: wrap; }
+    .config-status { font-size: 11px; color: var(--accent-green); }
+    .config-status.unconfigured { color: var(--text-dim); }
+    .rate-limit-bar { display: flex; justify-content: space-between; font-size: 10px; color: var(--text-dim); margin: 10px 0; padding: 6px 0; border-top: 1px solid var(--border); }
+    .rate-status { color: var(--accent-green); }
+    .toggle-switch { position: relative; display: inline-block; width: 36px; height: 20px; }
+    .toggle-switch input { opacity: 0; width: 0; height: 0; }
+    .toggle-slider { position: absolute; cursor: pointer; inset: 0; background: var(--border); border-radius: 20px; transition: 0.3s; }
+    .toggle-slider:before { position: absolute; content: ""; height: 14px; width: 14px; left: 3px; bottom: 3px; background: var(--text-dim); border-radius: 50%; transition: 0.3s; }
+    .toggle-switch input:checked + .toggle-slider { background: var(--accent-purple); }
+    .toggle-switch input:checked + .toggle-slider:before { transform: translateX(16px); background: #fff; }
+    .github-history { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
+    .issue-list { max-height: 220px; overflow-y: auto; margin-top: 8px; }
+    .issue-item { padding: 6px; border-bottom: 1px solid var(--border); display: flex; gap: 8px; align-items: center; }
+    .issue-number { font-size: 10px; color: var(--accent-purple); min-width: 32px; }
+    .issue-title { font-size: 11px; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .issue-link { font-size: 10px; color: var(--accent-cyan); text-decoration: none; }
+    .issue-link:hover { text-decoration: underline; }
+    .issue-time { font-size: 9px; color: var(--text-dim); }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #333; }
+    .icon-pass { color: var(--accent-green); }
+    .icon-fail { color: var(--accent-red); }
+    .icon-skip { color: var(--accent-yellow); }
+    .layer-node { cursor: pointer; }
+    .detail-list { margin: 8px 0 0 16px; line-height: 2; }
+  </style>
+</head>
+<body>
+  <div id="cockpit">
+    <!-- Header -->
+    <header class="cockpit-header">
+      <div class="header-brand">
+        <span class="brand-icon">⬡</span>
+        <span class="brand-name">SWEObeyMe</span>
+        <span class="brand-version">v5.0</span>
+      </div>
+      <div class="header-controls">
+        <div class="mode-toggle" id="modeToggle" title="Toggle Simple/Advanced mode">
+          <span class="mode-label" id="modeLabel">Simple</span>
+          <span class="mode-caret">▾</span>
+        </div>
+        <div class="status-dot" id="systemStatusDot" title="System status"></div>
+      </div>
+    </header>
+
+    <!-- Simple Mode Panel -->
+    <div id="simplePanel" class="panel">
+      <div class="health-indicator" id="healthIndicator">
+        <div class="health-bar">
+          <div class="health-fill" id="healthFill"></div>
+        </div>
+        <span class="health-label" id="healthLabel">System Healthy</span>
+      </div>
+
+      <div class="status-grid">
+        <div class="status-card">
+          <span class="status-icon">💾</span>
+          <div class="status-content">
+            <div class="status-title">Last Backup</div>
+            <div class="status-value" id="simpleLastBackup">—</div>
+          </div>
+        </div>
+        <div class="status-card">
+          <span class="status-icon">✅</span>
+          <div class="status-content">
+            <div class="status-title">Validation</div>
+            <div class="status-value" id="simpleLastValidation">—</div>
+          </div>
+        </div>
+        <div class="status-card">
+          <span class="status-icon">⚡</span>
+          <div class="status-content">
+            <div class="status-title">Last Router Event</div>
+            <div class="status-value" id="simpleLastEvent">—</div>
+          </div>
+        </div>
+        <div class="status-card" id="githubStatusCard">
+          <span class="status-icon">🐙</span>
+          <div class="status-content">
+            <div class="status-title">GitHub</div>
+            <div class="status-value" id="simpleGitHubStatus">Not configured</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="layer-diagram-simple" id="layerDiagramSimple">
+        <div class="layer-label">5-Layer Architecture</div>
+        <svg id="archSvgSimple" viewBox="0 0 320 260" xmlns="http://www.w3.org/2000/svg">
+          
+    <rect x="10" y="10" width="300" height="36" rx="6" fill="#00d4ff22" stroke="#00d4ff" stroke-width="1.5"/>
+    <text x="20" y="24" fill="#00d4ff" font-size="10" font-weight="600" font-family="monospace">Surface Layer</text>
+    <text x="20" y="38" fill="#888" font-size="9" font-family="monospace">7 semantic entry points</text>
+  
+    <rect x="10" y="56" width="300" height="36" rx="6" fill="#7b2fff22" stroke="#7b2fff" stroke-width="1.5"/>
+    <text x="20" y="70" fill="#7b2fff" font-size="10" font-weight="600" font-family="monospace">Core Layer</text>
+    <text x="20" y="84" fill="#888" font-size="9" font-family="monospace">Governance Router</text>
+  
+    <rect x="10" y="102" width="300" height="36" rx="6" fill="#ff6b2b22" stroke="#ff6b2b" stroke-width="1.5"/>
+    <text x="20" y="116" fill="#ff6b2b" font-size="10" font-weight="600" font-family="monospace">Engine Layer</text>
+    <text x="20" y="130" fill="#888" font-size="9" font-family="monospace">Internal Handlers</text>
+  
+    <rect x="10" y="148" width="300" height="36" rx="6" fill="#00e67622" stroke="#00e676" stroke-width="1.5"/>
+    <text x="20" y="162" fill="#00e676" font-size="10" font-weight="600" font-family="monospace">Validation Layer</text>
+    <text x="20" y="176" fill="#888" font-size="9" font-family="monospace">Test Suite</text>
+  
+    <rect x="10" y="194" width="300" height="36" rx="6" fill="#ff3d7122" stroke="#ff3d71" stroke-width="1.5"/>
+    <text x="20" y="208" fill="#ff3d71" font-size="10" font-weight="600" font-family="monospace">Soul Layer</text>
+    <text x="20" y="222" fill="#888" font-size="9" font-family="monospace">Philosophy Firewall</text>
+  
+        </svg>
+      </div>
+
+      <div class="tool-counts">
+        <span class="tool-count">Surface Tools: <strong id="simpleSurfaceCount">7/7</strong></span>
+        <span class="tool-count">Handlers: <strong id="simpleHandlerCount">—</strong></span>
+      </div>
+    </div>
+
+    <!-- Advanced Mode Panel -->
+    <div id="advancedPanel" class="panel hidden">
+      <nav class="tab-nav">
+        <button class="tab-btn active" data-tab="architecture">Architecture</button>
+        <button class="tab-btn" data-tab="monitor">Monitor</button>
+        <button class="tab-btn" data-tab="validation">Validation</button>
+        <button class="tab-btn" data-tab="history">History</button>
+        <button class="tab-btn" data-tab="github">GitHub</button>
+      </nav>
+
+      <!-- Architecture Tab -->
+      <div class="tab-panel active" id="tab-architecture">
+        <div class="arch-controls">
+          <button class="ctrl-btn" id="zoomIn" title="Zoom in">+</button>
+          <button class="ctrl-btn" id="zoomOut" title="Zoom out">−</button>
+          <button class="ctrl-btn" id="resetView" title="Reset view">⌂</button>
+        </div>
+        <div class="arch-container" id="archContainer">
+          <svg id="archSvg" viewBox="0 0 600 480" xmlns="http://www.w3.org/2000/svg">
+            
+    <defs>
+      <marker id="arrowHead" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+        <path d="M0,0 L8,4 L0,8 Z" fill="#555"/>
+      </marker>
+    </defs>
+    <line x1="300" y1="96" x2="300" y2="106" stroke="#555" stroke-width="1.5" marker-end="url(#arrowHead)"/>
+    <line x1="300" y1="192" x2="300" y2="202" stroke="#555" stroke-width="1.5" marker-end="url(#arrowHead)"/>
+    <line x1="300" y1="288" x2="300" y2="298" stroke="#555" stroke-width="1.5" marker-end="url(#arrowHead)"/>
+    <line x1="300" y1="384" x2="300" y2="394" stroke="#555" stroke-width="1.5" marker-end="url(#arrowHead)"/>
+  
+    <g class="layer-node" data-layer="surface">
+      <rect x="10" y="10" width="580" height="86" rx="8" fill="#00d4ff18" stroke="#00d4ff" stroke-width="1.5"/>
+      <rect x="10" y="10" width="6" height="86" rx="3" fill="#00d4ff"/>
+      <text x="30" y="36" fill="#00d4ff" font-size="13" font-weight="700" font-family="monospace">Surface Layer</text>
+      <text x="30" y="58" fill="#aaa" font-size="10" font-family="monospace">file_ops · search_code · backup_restore · project_context · docs_manage · workflow_manage · sweobeyme_execute</text>
+    </g>
+  
+    <g class="layer-node" data-layer="core">
+      <rect x="10" y="106" width="580" height="86" rx="8" fill="#7b2fff18" stroke="#7b2fff" stroke-width="1.5"/>
+      <rect x="10" y="106" width="6" height="86" rx="3" fill="#7b2fff"/>
+      <text x="30" y="132" fill="#7b2fff" font-size="13" font-weight="700" font-family="monospace">Core Layer</text>
+      <text x="30" y="154" fill="#aaa" font-size="10" font-family="monospace">Governance Router · Philosophy Enforcement · Self-Healing · Surgical Compliance</text>
+    </g>
+  
+    <g class="layer-node" data-layer="engine">
+      <rect x="10" y="202" width="580" height="86" rx="8" fill="#ff6b2b18" stroke="#ff6b2b" stroke-width="1.5"/>
+      <rect x="10" y="202" width="6" height="86" rx="3" fill="#ff6b2b"/>
+      <text x="30" y="228" fill="#ff6b2b" font-size="13" font-weight="700" font-family="monospace">Engine Layer</text>
+      <text x="30" y="250" fill="#aaa" font-size="10" font-family="monospace">Internal Handlers · Tool Arbitration · Rule Engine · Config Manager</text>
+    </g>
+  
+    <g class="layer-node" data-layer="validation">
+      <rect x="10" y="298" width="580" height="86" rx="8" fill="#00e67618" stroke="#00e676" stroke-width="1.5"/>
+      <rect x="10" y="298" width="6" height="86" rx="3" fill="#00e676"/>
+      <text x="30" y="324" fill="#00e676" font-size="13" font-weight="700" font-family="monospace">Validation Layer</text>
+      <text x="30" y="346" fill="#aaa" font-size="10" font-family="monospace">Structural · Safety · Router · Integration · Chaos Tests</text>
+    </g>
+  
+    <g class="layer-node" data-layer="soul">
+      <rect x="10" y="394" width="580" height="86" rx="8" fill="#ff3d7118" stroke="#ff3d71" stroke-width="1.5"/>
+      <rect x="10" y="394" width="6" height="86" rx="3" fill="#ff3d71"/>
+      <text x="30" y="420" fill="#ff3d71" font-size="13" font-weight="700" font-family="monospace">Soul Layer</text>
+      <text x="30" y="442" fill="#aaa" font-size="10" font-family="monospace">Philosophy Firewall · Oracle · Ethics Guards · Governance Constitution</text>
+    </g>
+  
+          </svg>
+        </div>
+        <div class="layer-detail" id="layerDetail">
+          <h4 id="layerDetailTitle">Select a layer</h4>
+          <div id="layerDetailBody" class="layer-detail-body">Click any layer in the diagram to see details.</div>
+        </div>
+      </div>
+
+      <!-- Monitor Tab -->
+      <div class="tab-panel hidden" id="tab-monitor">
+        <div class="monitor-controls">
+          <button class="ctrl-btn" id="pauseMonitor">⏸ Pause</button>
+          <button class="ctrl-btn" id="clearMonitor">✕ Clear</button>
+          <select id="monitorFilter" class="filter-select">
+            <option value="all">All Events</option>
+            <option value="router">Router</option>
+            <option value="backup">Backup</option>
+            <option value="validation">Validation</option>
+            <option value="error">Errors</option>
+          </select>
+        </div>
+        <div class="event-stream" id="eventStream">
+          <div class="event-placeholder">Waiting for governance router events...</div>
+        </div>
+      </div>
+
+      <!-- Validation Tab -->
+      <div class="tab-panel hidden" id="tab-validation">
+        <div class="validation-controls">
+          <button class="ctrl-btn primary" id="runAllTests">▶ Run All Tests</button>
+          <select id="testCategory" class="filter-select">
+            <option value="all">All Categories</option>
+            <option value="structural">Structural</option>
+            <option value="safety">Safety</option>
+            <option value="router">Router</option>
+            <option value="integration">Integration</option>
+            <option value="chaos">Chaos</option>
+          </select>
+        </div>
+        <div class="test-summary" id="testSummary"></div>
+        <div class="test-results" id="testResults">
+          <div class="test-placeholder">Run tests to see results.</div>
+        </div>
+      </div>
+
+      <!-- History Tab -->
+      <div class="tab-panel hidden" id="tab-history">
+        <div class="history-controls">
+          <input type="search" id="historySearch" class="search-input" placeholder="Search events…">
+          <select id="historyFilter" class="filter-select">
+            <option value="all">All Types</option>
+            <option value="router">Router</option>
+            <option value="backup">Backup</option>
+            <option value="validation">Validation</option>
+            <option value="error">Errors</option>
+          </select>
+          <button class="ctrl-btn" id="exportHistory">⬇ Export</button>
+        </div>
+        <div class="history-list" id="historyList">
+          <div class="history-placeholder">No events recorded yet.</div>
+        </div>
+      </div>
+
+      <!-- GitHub Tab -->
+      <div class="tab-panel hidden" id="tab-github">
+        <div class="github-config">
+          <h3 class="section-title">GitHub Integration</h3>
+          <div class="config-row">
+            <label class="config-label">Enable</label>
+            <label class="toggle-switch">
+              <input type="checkbox" id="githubEnabled">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="config-row">
+            <label class="config-label">Repository Owner</label>
+            <input type="text" id="githubOwner" class="config-input" placeholder="e.g. stonewolfpc">
+          </div>
+          <div class="config-row">
+            <label class="config-label">Repository Name</label>
+            <input type="text" id="githubRepo" class="config-input" placeholder="e.g. SWEObeyMe">
+          </div>
+          <div class="config-row">
+            <label class="config-label">Personal Access Token</label>
+            <div class="pat-row">
+              <input type="password" id="githubPat" class="config-input" placeholder="ghp_…">
+              <button class="ctrl-btn" id="savePat">Save</button>
+              <button class="ctrl-btn danger" id="deletePat">Delete</button>
+            </div>
+          </div>
+          <div class="config-row">
+            <label class="config-label">PAT Status</label>
+            <span class="config-status" id="patStatus">Not configured</span>
+          </div>
+          <div class="rate-limit-bar">
+            <span class="rate-label">Rate limit: 1 issue/min</span>
+            <span class="rate-status" id="rateLimitStatus">Ready</span>
+          </div>
+          <button class="ctrl-btn primary" id="testGitHubConnection">Test Connection</button>
+        </div>
+        <div class="github-history">
+          <h3 class="section-title">Issue History</h3>
+          <div class="issue-list" id="issueList">
+            <div class="history-placeholder">No issues created yet.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script nonce="k7mstgdvefesgobfgl3hl">
+    (function() {
+      const vscode = acquireVsCodeApi();
+      const state = {};
+      
+    let currentMode = state.mode || 'simple';
+    let currentTab = state.activeTab || 'architecture';
+    let monitorPaused = state.monitor?.paused || false;
+    let monitorFilter = state.monitor?.filter || 'all';
+    let historyFilter = state.history?.filterType || 'all';
+    let archZoom = state.architecture?.zoom || 1.0;
+    let archPanX = state.architecture?.panX || 0;
+    let archPanY = state.architecture?.panY || 0;
+    let isDragging = false;
+    let lastMouse = { x: 0, y: 0 };
+    const eventHistory = [];
+
+    function applyMode() {
+      const simple = document.getElementById('simplePanel');
+      const advanced = document.getElementById('advancedPanel');
+      const label = document.getElementById('modeLabel');
+      if (currentMode === 'advanced') {
+        simple.classList.add('hidden');
+        advanced.classList.remove('hidden');
+        label.textContent = 'Advanced';
+      } else {
+        simple.classList.remove('hidden');
+        advanced.classList.add('hidden');
+        label.textContent = 'Simple';
+      }
+      vscode.postMessage({ command: 'saveState', key: 'mode', value: currentMode });
+    }
+
+    function switchTab(tab) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => { p.style.display = 'none'; p.classList.remove('active'); });
+      document.querySelector('.tab-btn[data-tab="' + tab + '"]').classList.add('active');
+      const panel = document.getElementById('tab-' + tab);
+      if (panel) { panel.style.display = 'block'; panel.classList.add('active'); }
+      currentTab = tab;
+      vscode.postMessage({ command: 'saveState', key: 'activeTab', value: tab });
+    }
+
+    function addEvent(ev) {
+      eventHistory.unshift(ev);
+      if (eventHistory.length > 500) eventHistory.pop();
+      if (!monitorPaused) renderMonitor();
+      renderHistory();
+      updateSimpleStatus(ev);
+    }
+
+    function renderMonitor() {
+      const stream = document.getElementById('eventStream');
+      const filtered = monitorFilter === 'all' ? eventHistory : eventHistory.filter(e => e.type === monitorFilter);
+      if (filtered.length === 0) { stream.innerHTML = '<div class="event-placeholder">No events match filter.</div>'; return; }
+      stream.innerHTML = filtered.slice(0, 100).map(e => {
+        const time = new Date(e.timestamp).toLocaleTimeString();
+        return '<div class="event-item"><span class="event-time">' + time + '</span><span class="event-badge ' + (e.type||'info') + '">' + (e.type||'info') + '</span><span class="event-text">' + _esc(e.message||'') + '</span></div>';
+      }).join('');
+    }
+
+    function renderHistory() {
+      const list = document.getElementById('historyList');
+      const search = (document.getElementById('historySearch')?.value || '').toLowerCase();
+      let filtered = historyFilter === 'all' ? eventHistory : eventHistory.filter(e => e.type === historyFilter);
+      if (search) filtered = filtered.filter(e => (e.message||'').toLowerCase().includes(search));
+      if (filtered.length === 0) { list.innerHTML = '<div class="history-placeholder">No events match.</div>'; return; }
+      list.innerHTML = filtered.slice(0, 200).map(e => {
+        const time = new Date(e.timestamp).toLocaleTimeString();
+        return '<div class="history-item"><span class="history-time">' + time + '</span><span class="event-badge ' + (e.type||'info') + '">' + (e.type||'info') + '</span><span class="history-text">' + _esc(e.message||'') + '</span></div>';
+      }).join('');
+    }
+
+    function updateSimpleStatus(ev) {
+      if (ev.type === 'backup') document.getElementById('simpleLastBackup').textContent = _relTime(ev.timestamp);
+      if (ev.type === 'validation') document.getElementById('simpleLastValidation').textContent = ev.summary || 'Ran';
+      if (ev.type === 'router') document.getElementById('simpleLastEvent').textContent = ev.message ? ev.message.slice(0,40) : '—';
+    }
+
+    function renderArchDiagram() {
+      const svg = document.getElementById('archSvg');
+      if (!svg) return;
+      svg.style.transform = 'translate(' + archPanX + 'px,' + archPanY + 'px) scale(' + archZoom + ')';
+      svg.style.transformOrigin = '0 0';
+    }
+
+    function setupArchInteraction() {
+      const container = document.getElementById('archContainer');
+      if (!container) return;
+      container.addEventListener('mousedown', e => { isDragging = true; lastMouse = { x: e.clientX, y: e.clientY }; });
+      document.addEventListener('mousemove', e => {
+        if (!isDragging) return;
+        archPanX += e.clientX - lastMouse.x;
+        archPanY += e.clientY - lastMouse.y;
+        lastMouse = { x: e.clientX, y: e.clientY };
+        renderArchDiagram();
+      });
+      document.addEventListener('mouseup', () => {
+        if (isDragging) { isDragging = false; vscode.postMessage({ command: 'saveState', key: 'architecture.panX', value: archPanX }); vscode.postMessage({ command: 'saveState', key: 'architecture.panY', value: archPanY }); }
+      });
+      container.addEventListener('wheel', e => {
+        e.preventDefault();
+        archZoom = Math.max(0.4, Math.min(3.0, archZoom - e.deltaY * 0.001));
+        renderArchDiagram();
+        vscode.postMessage({ command: 'saveState', key: 'architecture.zoom', value: archZoom });
+      });
+      document.querySelectorAll('.layer-node').forEach(node => {
+        node.addEventListener('click', () => {
+          document.querySelectorAll('.layer-node').forEach(n => n.classList.remove('selected'));
+          node.classList.add('selected');
+          const layerId = node.dataset.layer;
+          vscode.postMessage({ command: 'getLayerDetail', layerId });
+          vscode.postMessage({ command: 'saveState', key: 'architecture.selectedLayer', value: layerId });
+        });
+      });
+    }
+
+    function setupControls() {
+      document.getElementById('modeToggle')?.addEventListener('click', () => {
+        currentMode = currentMode === 'simple' ? 'advanced' : 'simple';
+        applyMode();
+      });
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+      });
+      document.getElementById('zoomIn')?.addEventListener('click', () => { archZoom = Math.min(3.0, archZoom + 0.2); renderArchDiagram(); });
+      document.getElementById('zoomOut')?.addEventListener('click', () => { archZoom = Math.max(0.4, archZoom - 0.2); renderArchDiagram(); });
+      document.getElementById('resetView')?.addEventListener('click', () => { archZoom = 1; archPanX = 0; archPanY = 0; renderArchDiagram(); });
+      document.getElementById('pauseMonitor')?.addEventListener('click', function() {
+        monitorPaused = !monitorPaused;
+        this.textContent = monitorPaused ? '▶ Resume' : '⏸ Pause';
+      });
+      document.getElementById('clearMonitor')?.addEventListener('click', () => { eventHistory.length = 0; renderMonitor(); renderHistory(); });
+      document.getElementById('monitorFilter')?.addEventListener('change', function() { monitorFilter = this.value; renderMonitor(); });
+      document.getElementById('historySearch')?.addEventListener('input', () => renderHistory());
+      document.getElementById('historyFilter')?.addEventListener('change', function() { historyFilter = this.value; renderHistory(); });
+      document.getElementById('exportHistory')?.addEventListener('click', () => {
+        vscode.postMessage({ command: 'exportHistory', data: eventHistory });
+      });
+      document.getElementById('testResults')?.addEventListener('click', e => {
+        const btn = e.target.closest('.test-rerun');
+        if (btn) vscode.postMessage({ command: 'rerunTest', test: btn.dataset.test });
+      });
+      document.getElementById('runAllTests')?.addEventListener('click', () => {
+        const cat = document.getElementById('testCategory')?.value || 'all';
+        document.getElementById('testResults').innerHTML = '<div class="test-placeholder">Running tests…</div>';
+        vscode.postMessage({ command: 'runValidationTests', category: cat });
+      });
+      document.getElementById('savePat')?.addEventListener('click', () => {
+        const pat = document.getElementById('githubPat')?.value;
+        if (!pat) return;
+        vscode.postMessage({ command: 'storeGitHubPat', pat });
+        document.getElementById('githubPat').value = '';
+      });
+      document.getElementById('deletePat')?.addEventListener('click', () => {
+        vscode.postMessage({ command: 'deleteGitHubPat' });
+      });
+      document.getElementById('githubEnabled')?.addEventListener('change', function() {
+        vscode.postMessage({ command: 'updateGitHubConfig', key: 'enabled', value: this.checked });
+      });
+      document.getElementById('githubOwner')?.addEventListener('change', function() {
+        vscode.postMessage({ command: 'updateGitHubConfig', key: 'owner', value: this.value });
+      });
+      document.getElementById('githubRepo')?.addEventListener('change', function() {
+        vscode.postMessage({ command: 'updateGitHubConfig', key: 'repo', value: this.value });
+      });
+      document.getElementById('testGitHubConnection')?.addEventListener('click', () => {
+        vscode.postMessage({ command: 'testGitHubConnection' });
+      });
+      document.getElementById('issueList')?.addEventListener('click', e => {
+        const link = e.target.closest('.issue-link');
+        if (link) { e.preventDefault(); vscode.postMessage({ command: 'openUrl', url: link.dataset.url }); }
+      });
+    }
+
+    function handleMessage(msg) {
+      switch(msg.command) {
+        case 'routerEvent': addEvent(msg.event); break;
+        case 'systemStatus': updateSystemStatus(msg); break;
+        case 'validationResults': renderTestResults(msg.results); break;
+        case 'layerDetail': renderLayerDetail(msg); break;
+        case 'githubStatus': updateGitHubStatus(msg); break;
+        case 'issueHistory': renderIssueHistory(msg.issues); break;
+        case 'error': addEvent({ type: 'error', message: msg.message, timestamp: Date.now() }); break;
+      }
+    }
+
+    function updateSystemStatus(msg) {
+      const healthy = msg.healthy !== false;
+      document.getElementById('healthFill').style.width = healthy ? '100%' : '40%';
+      document.getElementById('healthLabel').textContent = healthy ? 'System Healthy' : 'Issues Detected';
+      document.getElementById('healthLabel').style.color = healthy ? 'var(--accent-green)' : 'var(--accent-red)';
+      document.getElementById('systemStatusDot').className = 'status-dot' + (healthy ? '' : ' error');
+      if (msg.surfaceCount != null) document.getElementById('simpleSurfaceCount').textContent = msg.surfaceCount + '/7';
+      if (msg.handlerCount != null) document.getElementById('simpleHandlerCount').textContent = msg.handlerCount;
+    }
+
+    function renderTestResults(results) {
+      if (!results || !results.tests) return;
+      const summary = document.getElementById('testSummary');
+      const list = document.getElementById('testResults');
+      const pass = results.tests.filter(t => t.status === 'pass').length;
+      const fail = results.tests.filter(t => t.status === 'fail').length;
+      const skip = results.tests.filter(t => t.status === 'skip').length;
+      summary.innerHTML = '<span class="test-badge pass">✓ ' + pass + ' Pass</span><span class="test-badge fail">✗ ' + fail + ' Fail</span>' + (skip ? '<span class="test-badge skip">⚡ ' + skip + ' Skip</span>' : '');
+      list.innerHTML = results.tests.map(t => {
+        const icon = t.status === 'pass' ? '<span class="icon-pass">✓</span>' : t.status === 'fail' ? '<span class="icon-fail">✗</span>' : '<span class="icon-skip">⚡</span>';
+        const detail = t.error ? '<div class="test-detail">' + _esc(t.error) + '</div>' : '';
+        return '<div class="test-item"><span class="test-icon">' + icon + '</span><span class="test-name">' + _esc(t.name) + '</span><span class="test-duration">' + (t.duration||0) + 'ms</span><span class="test-rerun" data-test="' + _esc(t.name) + '">↺</span></div>' + detail;
+      }).join('');
+    }
+
+    function renderLayerDetail(msg) {
+      document.getElementById('layerDetailTitle').textContent = msg.title || 'Layer';
+      document.getElementById('layerDetailBody').innerHTML = msg.html || '';
+    }
+
+    function updateGitHubStatus(msg) {
+      const patStatus = document.getElementById('patStatus');
+      if (patStatus) { patStatus.textContent = msg.hasPat ? 'Configured ✓' : 'Not configured'; patStatus.className = 'config-status' + (msg.hasPat ? '' : ' unconfigured'); }
+      if (document.getElementById('githubEnabled')) document.getElementById('githubEnabled').checked = msg.enabled || false;
+      if (document.getElementById('githubOwner')) document.getElementById('githubOwner').value = msg.owner || '';
+      if (document.getElementById('githubRepo')) document.getElementById('githubRepo').value = msg.repo || '';
+      const simpleStatus = document.getElementById('simpleGitHubStatus');
+      if (simpleStatus) simpleStatus.textContent = msg.hasPat && msg.enabled ? '✓ Connected' : msg.hasPat ? 'Configured (disabled)' : 'Not configured';
+    }
+
+    function renderIssueHistory(issues) {
+      const list = document.getElementById('issueList');
+      if (!issues || issues.length === 0) { list.innerHTML = '<div class="history-placeholder">No issues created yet.</div>'; return; }
+      list.innerHTML = issues.map(i => {
+        return '<div class="issue-item"><span class="issue-number">#' + i.id + '</span><span class="issue-title">' + _esc(i.title) + '</span><a class="issue-link" data-url="' + _esc(i.url) + '" href="#">Open</a><span class="issue-time">' + _relTime(i.createdAt) + '</span></div>';
+      }).join('');
+    }
+
+    function _esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+    function _relTime(ts) {
+      const d = Date.now() - new Date(ts).getTime();
+      if (d < 60000) return 'just now';
+      if (d < 3600000) return Math.floor(d/60000) + 'm ago';
+      if (d < 86400000) return Math.floor(d/3600000) + 'h ago';
+      return Math.floor(d/86400000) + 'd ago';
+    }
+
+    try {
+      window.addEventListener('message', e => handleMessage(e.data));
+      applyMode();
+      switchTab(currentTab);
+      renderArchDiagram();
+      setupArchInteraction();
+      setupControls();
+      vscode.postMessage({ command: 'cockpitReady' });
+    } catch (err) {
+      document.body.innerHTML = '<div style="color:#ff3d71;padding:16px;font-family:monospace"><strong>Cockpit init error:</strong><br>' + err.message + '<br><pre>' + (err.stack || '') + '</pre></div>';
+    }
+  
+    })();
+  </script>
+</body>
+</html>

@@ -11,6 +11,7 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import * as os from 'os';
+import * as fs from 'fs';
 import { fileURLToPath, pathToFileURL } from 'url';
 
 // ESM-safe __dirname with Windows path handling
@@ -70,12 +71,37 @@ async function loadDiffReviewManager() {
   return diffReviewManager;
 }
 
+function cleanupOldVersions(currentVersion) {
+  try {
+    const extBase = path.join(os.homedir(), '.windsurf-next', 'extensions');
+    if (!fs.existsSync(extBase)) return;
+    const prefix = 'stonewolfpc.swe-obey-me-';
+    const current = `${prefix}${currentVersion}`;
+    fs.readdirSync(extBase)
+      .filter(n => n.startsWith(prefix) && n !== current)
+      .forEach(old => {
+        try {
+          fs.rmSync(path.join(extBase, old), { recursive: true, force: true });
+          console.log(`[SWEObeyMe] Removed old version: ${old}`);
+        } catch (e) {
+          console.warn(`[SWEObeyMe] Could not remove ${old}: ${e.message}`);
+        }
+      });
+  } catch (e) {
+    console.warn('[SWEObeyMe] Old version cleanup failed:', e.message);
+  }
+}
+
 /**
  * Extension activation - Entry point
  * @param {vscode.ExtensionContext} context
  */
 async function activate(context) {
   // [REMOVED BY SWEObeyMe]: Forbidden Pattern('SWEObeyMe extension activated');
+
+  const ext = vscode.extensions.getExtension('stonewolfpc.swe-obey-me');
+  const currentVersion = ext?.packageJSON?.version || '5.0.0';
+  cleanupOldVersions(currentVersion);
 
   // Initialize checkpoint manager
   try {
@@ -223,41 +249,18 @@ async function activate(context) {
     console.error('[SWEObeyMe] Language bridges failed to load:', err);
   }
 
-  // Register webview providers
-  const { makeWebviewProvider } = await import(
-    toFileUrl(path.join(__dirname, 'lib', 'ui', 'providers', 'webview-provider-factory.js'))
-  );
-  const { getSettingsHtml } = await import(
-    toFileUrl(path.join(__dirname, 'lib', 'ui', 'generators', 'settings-html.js'))
-  );
-  const { getCSharpBridgeHtml } = await import(
-    toFileUrl(path.join(__dirname, 'lib', 'ui', 'generators', 'csharp-bridge-html.js'))
-  );
-  const { getAdminDashboardHtml } = await import(
-    toFileUrl(path.join(__dirname, 'lib', 'ui', 'generators', 'admin-dashboard-html.js'))
-  );
-
-  // Settings panel provider
-  const settingsProvider = makeWebviewProvider(getSettingsHtml);
-  context.subscriptions.push(
-    vscode.window.registerWebviewViewProvider('sweObeyMe.settings', settingsProvider)
-  );
-
-  // C# Bridge panel provider (async wrapper for template loading)
-  const csharpProvider = makeWebviewProvider(async (webview) => {
-    return await getCSharpBridgeHtml(webview);
-  });
-  context.subscriptions.push(
-    vscode.window.registerWebviewViewProvider('sweObeyMe.csharpSettings', csharpProvider)
-  );
-
-  // Admin Dashboard panel provider
-  const adminProvider = makeWebviewProvider(getAdminDashboardHtml);
-  context.subscriptions.push(
-    vscode.window.registerWebviewViewProvider('sweObeyMe.adminDashboard', adminProvider)
-  );
-
-  // [REMOVED BY SWEObeyMe]: Forbidden Pattern('SWEObeyMe providers registered');
+  // Register unified v5.0 cockpit provider
+  try {
+    const { makeCockpitProvider } = await import(
+      toFileUrl(path.join(__dirname, 'lib', 'ui', 'providers', 'cockpit-provider.js'))
+    );
+    const cockpitProvider = makeCockpitProvider(context);
+    context.subscriptions.push(
+      vscode.window.registerWebviewViewProvider('sweObeyMe.cockpit', cockpitProvider)
+    );
+  } catch (err) {
+    console.error('[SWEObeyMe] Cockpit provider failed to load:', err);
+  }
 }
 
 /**

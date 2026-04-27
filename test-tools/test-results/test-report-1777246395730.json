@@ -1,0 +1,148 @@
+{
+  "summary": {
+    "total": 19,
+    "passed": 19,
+    "failed": 0,
+    "warnings": 0,
+    "duration": "0.39s",
+    "passRate": "100.0%"
+  },
+  "passed": [
+    {
+      "name": "StreamingFileReader: Normal file",
+      "passed": true,
+      "error": null,
+      "duration": 3,
+      "timestamp": 1777246395356
+    },
+    {
+      "name": "StreamingFileReader: 10K lines (chunked)",
+      "passed": true,
+      "error": null,
+      "duration": 6,
+      "timestamp": 1777246395368
+    },
+    {
+      "name": "StreamingFileReader: 100K lines (memory bounded)",
+      "passed": true,
+      "error": null,
+      "duration": 41,
+      "timestamp": 1777246395649
+    },
+    {
+      "name": "StreamingFileReader: Empty file",
+      "passed": true,
+      "error": null,
+      "duration": 0,
+      "timestamp": 1777246395650
+    },
+    {
+      "name": "StreamingFileReader: Non-existent file (graceful fail)",
+      "passed": true,
+      "error": null,
+      "duration": 0,
+      "timestamp": 1777246395650
+    },
+    {
+      "name": "StreamingFileReader: Single line",
+      "passed": true,
+      "error": null,
+      "duration": 0,
+      "timestamp": 1777246395652
+    },
+    {
+      "name": "StreamingFileWriter: Normal write",
+      "passed": true,
+      "error": null,
+      "duration": 2,
+      "timestamp": 1777246395654
+    },
+    {
+      "name": "StreamingFileWriter: 100K lines",
+      "passed": true,
+      "error": null,
+      "duration": 71,
+      "timestamp": 1777246395725
+    },
+    {
+      "name": "StreamingFileWriter: Empty content",
+      "passed": true,
+      "error": null,
+      "duration": 0,
+      "timestamp": 1777246395726
+    },
+    {
+      "name": "StreamingFileWriter: Special characters",
+      "passed": true,
+      "error": null,
+      "duration": 0,
+      "timestamp": 1777246395727
+    },
+    {
+      "name": "DocumentConverter: Detect test.pdf",
+      "passed": true,
+      "error": null,
+      "duration": 0,
+      "timestamp": 1777246395729
+    },
+    {
+      "name": "DocumentConverter: Detect test.docx",
+      "passed": true,
+      "error": null,
+      "duration": 0,
+      "timestamp": 1777246395729
+    },
+    {
+      "name": "DocumentConverter: Detect test.xlsx",
+      "passed": true,
+      "error": null,
+      "duration": 0,
+      "timestamp": 1777246395730
+    },
+    {
+      "name": "DocumentConverter: Detect test.pptx",
+      "passed": true,
+      "error": null,
+      "duration": 0,
+      "timestamp": 1777246395730
+    },
+    {
+      "name": "DocumentConverter: Detect test.epub",
+      "passed": true,
+      "error": null,
+      "duration": 0,
+      "timestamp": 1777246395730
+    },
+    {
+      "name": "DocumentConverter: Detect test.tex",
+      "passed": true,
+      "error": null,
+      "duration": 0,
+      "timestamp": 1777246395730
+    },
+    {
+      "name": "DocumentConverter: Detect test.txt",
+      "passed": true,
+      "error": null,
+      "duration": 0,
+      "timestamp": 1777246395730
+    },
+    {
+      "name": "DocumentConverter: Detect test.js",
+      "passed": true,
+      "error": null,
+      "duration": 0,
+      "timestamp": 1777246395730
+    },
+    {
+      "name": "DocumentConverter: Binary detection",
+      "passed": true,
+      "error": null,
+      "duration": 0,
+      "timestamp": 1777246395730
+    }
+  ],
+  "failed": [],
+  "warnings": [],
+  "timestamp": "2026-04-26T23:33:15.730Z"
+}

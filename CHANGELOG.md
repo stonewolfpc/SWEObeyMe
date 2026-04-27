@@ -2,6 +2,111 @@
 
 All notable changes to SWEObeyMe will be documented in this file.
 
+## [5.0.1] - 2026-04-26
+
+### Bug Fixes
+
+- **Auto-cleanup of old versions** — Extension now removes previous installed versions (`4.x`, older `5.x`) on activation, preventing stale cached UI from silently overriding the running extension
+- **Webview CSP fixed** — `default-src 'none'` was blocking VS Code's own webview bridge, preventing `acquireVsCodeApi()` from loading and making all buttons unresponsive
+- **Null state crash fixed** — Fresh installs with no persisted state caused `TypeError: Cannot read properties of null` before any event listeners were bound
+- **DOMContentLoaded race fixed** — Settings, Admin, and C# Bridge panels were binding listeners to a `DOMContentLoaded` event that had already fired in the webview context; switched to `readyState` guard
+- **`cspNonce` removed** — `webview.cspNonce` does not exist on the VS Code API; all generators now produce their own nonce
+- **Inline onclick removed** — Remaining inline `onclick` handler in issue history was a CSP violation and a JS syntax trap; replaced with delegated listener
+- **`acquireVsCodeApi()` hardened** — Wrapped in try/catch with `window.__vscodeApi` fallback to survive tab restore cycles
+- **Registry path corrected** — `_onCockpitReady` was resolving the tool registry to a non-existent path; corrected relative path for runtime `__dirname`
+
+## [5.0.0] - 2026-04-26
+
+### Major Architecture Overhaul - Governance Router System
+
+**Privacy & Data Collection:**
+
+- **Automated Issue Tracking** - Extension can automatically create GitHub issues for governance failures:
+  - Logs (diagnostics, router traces, diffs) may be sent to GitHub when failures occur
+  - Requires user configuration (owner, repo, PAT) in Governance Cockpit
+  - **Opt-out available** - Users can disable GitHub integration entirely in settings
+  - Data sent: error diagnostics, code context, router traces - no personal information
+  - Purpose: Enables automated self-repair pipeline for rapid bug fixes
+
+**User Controls:**
+
+- **GitHub Integration Toggle** - Settings option to enable/disable GitHub issue creation
+- **Data Disclosure** - Clear disclaimer in settings about what data is sent to GitHub
+- **Opt-out Default** - GitHub integration disabled by default, requires explicit user opt-in
+
+### Major Architecture Overhaul - Governance Router System
+
+**Breaking Change:** Tool surface reduced from 97 to 7 tools. Internal handlers now hidden behind governance router.
+
+**New Architecture - 5-Layer System:**
+
+- **Surface Layer:** 7 semantic entry point tools (file_ops, search_code, backup_restore, project_context, docs_manage, workflow_manage, sweobeyme_execute)
+- **Core Layer:** Single governance router that enforces all philosophy rules (surgical compliance, backup-before-edit, validation, self-healing)
+- **Engine Layer:** 97 internal handlers as pure functions, hidden from AI
+- **Validation Layer:** Comprehensive test suite with 5 categories (structural, safety, router, integration, chaos)
+- **Soul Layer:** Philosophy enforcement centralized in router
+
+**Benefits:**
+
+- **93% tool reduction:** From 97 tools to 7 surface tools, solving AI tool salience dilution
+- **Bypasses 100-tool limit:** Internal handlers don't count against MCP tool cap
+- **Governance enforcement:** All philosophy rules enforced at router level before operations execute
+- **Self-healing:** Automatic backup/restore on errors with rollback capability
+- **Future-proof:** Add internal capabilities without changing MCP schema
+
+**Files Created:**
+
+- `lib/tools/governance-router-handler.js` (11,398 bytes) - Core routing with domain/action/payload schema
+- `lib/tools/surface/file-ops-surface.js` (1,847 bytes) - File operations wrapper
+- `lib/tools/surface/backup-restore-surface.js` (1,410 bytes) - Backup/restore wrapper
+- `lib/tools/surface/project-context-surface.js` (1,621 bytes) - Project context wrapper
+- `lib/tools/surface/sweobeyme-execute-surface.js` (1,136 bytes) - Catch-all router wrapper
+- `tests/validation-layer-tester.js` (4,847 bytes) - Structural tests
+- `tests/safety-tester.js` (4,123 bytes) - Safety validation tests
+- `tests/router-tester.js` (4,678 bytes) - Router logic tests
+- `tests/integration-tester.js` (5,234 bytes) - Integration flow tests
+- `tests/chaos-tester.js` (5,678 bytes) - Resilience tests
+- `tests/validation-layer/index.js` (2,847 bytes) - Unified test entry point
+
+**Files Modified:**
+
+- `lib/tools/handlers.js` - Removed 90 individual tool exports, now exports only 7 surface tools
+- `lib/tools/governance-router-handler.js` - Fixed config imports (MAX_LINES, FORBIDDEN_PATTERNS as functions)
+
+**Governance Router Features:**
+
+- **Surgical Compliance:** Enforces 700-line limit, forbidden patterns (console.log, TODO, debugger, eval), path validation
+- **Backup-Before-Edit:** Auto-creates backups before any write operation
+- **Validation Rules:** Syntax validation, JSON validation, bracket balancing
+- **Self-Healing Rollback:** Auto-restores from backup on errors with diagnostic feedback
+- **Error Reporting:** Structured responses with status, result, diagnostics, next_steps
+- **Internal Registry:** 22 domains mapped to 97 internal handlers
+
+**Surface Tools (7 total):**
+
+1. **file_ops** - File read/write/analyze/extract operations
+2. **search_code** - Codebase search
+3. **backup_restore** - Backup and restore operations
+4. **project_context** - Project context and information
+5. **docs_manage** - Documentation lookup and management
+6. **workflow_manage** - Workflow orchestration
+7. **sweobeyme_execute** - Catch-all governance router for advanced operations
+
+**Validation Layer Test Categories:**
+
+- **Structural Tests:** Line count limits, forbidden patterns, naming conventions, directory structure, handler purity
+- **Safety Tests:** Backup-before-edit enforcement, rollback correctness, no partial writes, path validation, no cross-project contamination
+- **Router Tests:** Domain/action routing, fallback behavior, error translation, diagnostics formatting, philosophy enforcement
+- **Integration Tests:** Surface→Router→Handler flow for all 7 surface tools, end-to-end write/read cycles
+- **Chaos Tests:** Concurrency spikes, random tool call sequences, corrupted state injection, malformed payloads
+
+**Migration Notes:**
+
+- AI models now see only 7 semantic tools instead of 97
+- All existing functionality preserved through internal handler registry
+- Use `sweobeyme_execute` with domain/action/payload for direct access to internal handlers
+- Philosophy enforcement now automatic at router level (no manual tool calls needed)
+
 ## [4.3.4] - 2026-04-26
 
 ### Critical Bug Fixes

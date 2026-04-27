@@ -20,7 +20,6 @@ const enterpriseModules = [
   'lib/diff-review-manager.js',
   'lib/metrics-manager.js',
   'lib/permission-manager.js',
-  'lib/policy-as-code-manager.js',
   'lib/provider-manager.js',
   'lib/quota-manager.js',
   'lib/skills-marketplace-manager.js',

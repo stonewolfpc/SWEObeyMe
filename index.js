@@ -1,4 +1,4 @@
-﻿import { Server } from '@modelcontextprotocol/sdk/server/index.js';
+import { Server } from '@modelcontextprotocol/sdk/server/index.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import {
   InitializeRequestSchema,
@@ -8,6 +8,7 @@ import {
   GetPromptRequestSchema,
 } from '@modelcontextprotocol/sdk/types.js';
 import fs from 'fs';
+import os from 'os';
 import crypto from 'crypto';
 import express from 'express';
 import cors from 'cors';
@@ -121,7 +122,7 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
         maxRetries: 3,
       },
     });
-    console.log('[SWEObeyMe] Refresh/recovery mechanisms initialized');
+    // Debug log removed
   } catch (error) {
     console.error('[SWEObeyMe]: Failed to initialize refresh/recovery:', error);
   }
@@ -145,7 +146,7 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
         },
       },
     });
-    console.log('[SWEObeyMe] URL handler initialized');
+    // Debug log removed
   } catch (error) {
     console.error('[SWEObeyMe]: Failed to initialize URL handler:', error);
   }
@@ -157,7 +158,7 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
       stateTimeout: 300000,
       cleanupInterval: 60000,
     });
-    console.log('[SWEObeyMe] Loading state manager initialized');
+    // Debug log removed
   } catch (error) {
     console.error('[SWEObeyMe]: Failed to initialize loading state manager:', error);
   }
@@ -176,7 +177,7 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
       },
       forbiddenPatterns: [/console\.log\(/, /debugger/, /TODO/, /FIXME/, /XXX/],
     });
-    console.log('[SWEObeyMe] Automated rule enforcement initialized');
+    // Debug log removed
   } catch (error) {
     console.error('[SWEObeyMe]: Failed to initialize auto enforcement:', error);
   }
@@ -191,7 +192,7 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
         similarityThreshold: 0.7,
       },
     });
-    console.log('[SWEObeyMe] Audit system initialized');
+    // Debug log removed
   } catch (error) {
     console.error('[SWEObeyMe]: Failed to initialize audit system:', error);
   }
@@ -203,7 +204,7 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
       scanDepth: 3,
       similarityThreshold: 0.7,
     });
-    console.log('[SWEObeyMe] Duplicate scanner initialized');
+    // Debug log removed
   } catch (error) {
     console.error('[SWEObeyMe]: Failed to initialize duplicate scanner:', error);
   }
@@ -211,7 +212,7 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
   // Initialize session tracker
   try {
     initializeSessionTracker();
-    console.log('[SWEObeyMe] Session tracker initialized');
+    // Debug log removed
   } catch (error) {
     console.error('[SWEObeyMe]: Failed to initialize session tracker:', error);
   }
@@ -219,7 +220,7 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
   // Initialize shadow memory ledger
   try {
     await initializeShadowMemoryLedger();
-    console.log('[SWEObeyMe] Shadow memory ledger initialized');
+    // Debug log removed
   } catch (error) {
     console.error('[SWEObeyMe]: Failed to initialize shadow memory ledger:', error);
   }
@@ -227,7 +228,7 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
   // Initialize startup prompt injector
   try {
     await initializeStartupPromptInjector();
-    console.log('[SWEObeyMe] Startup prompt injector initialized');
+    // Debug log removed
   } catch (error) {
     console.error('[SWEObeyMe]: Failed to initialize startup prompt injector:', error);
   }
@@ -235,7 +236,7 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
   // Initialize project memory system
   try {
     await initializeProjectMemorySystem();
-    console.log('[SWEObeyMe] Project memory system initialized');
+    // Debug log removed
   } catch (error) {
     console.error('[SWEObeyMe]: Failed to initialize project memory system:', error);
   }
@@ -243,7 +244,7 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
   // Initialize project registry
   try {
     await initializeProjectRegistry();
-    console.log('[SWEObeyMe] Project registry initialized');
+    // Debug log removed
   } catch (error) {
     console.error('[SWEObeyMe]: Failed to initialize project registry:', error);
   }
@@ -251,7 +252,7 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
   // Initialize archive manager
   try {
     await initializeArchiveManager();
-    console.log('[SWEObeyMe] Archive manager initialized');
+    // Debug log removed
   } catch (error) {
     console.error('[SWEObeyMe]: Failed to initialize archive manager:', error);
   }
@@ -259,7 +260,7 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
   // Load session state for task reminder system
   try {
     await loadSessionState();
-    console.log('[SWEObeyMe] Session state loaded');
+    // Debug log removed
   } catch (error) {
     console.error('[SWEObeyMe] Failed to load session state:', error);
   }
@@ -299,9 +300,9 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
   try {
     const oldShadowMemoryDir = path.join(os.homedir(), '.sweobeyme-shadow-memory');
     if (fs.existsSync(oldShadowMemoryDir)) {
-      console.log('[SWEObeyMe] Resetting old shadow memory directory:', oldShadowMemoryDir);
+      // Debug log removed
       fs.rmSync(oldShadowMemoryDir, { recursive: true, force: true });
-      console.log('[SWEObeyMe] Old shadow memory directory deleted');
+      // Debug log removed
     }
   } catch (error) {
     console.error('[SWEObeyMe]: Failed to reset old shadow memory directory:', error);
@@ -350,7 +351,7 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
     const isNewConversation = injector.detectNewConversation(modelInfo);
 
     if (isNewConversation) {
-      console.log(`[SWEObeyMe] New conversation detected: ${modelInfo}`);
+      // Debug log removed
       ledger.startNewSession();
     }
 
@@ -456,7 +457,7 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
     });
 
     if (startupPrompt) {
-      console.log('[SWEObeyMe] Injecting startup prompt');
+      // Debug log removed
       // Record the startup prompt in the ledger
       ledger.recordEvent('startup_prompt_injected', {
         sessionId: startupPrompt.sessionId,

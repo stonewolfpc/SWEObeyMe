@@ -113,22 +113,22 @@ async function runTests() {
       testsFailed++;
     }
 
-    // Test 3: Obey me status
-    console.log('\nTest 3: Obey me status...');
+    // Test 2.5: Get governance constitution (required for other tools)
+    console.log('\nTest 2.5: Get governance constitution (governance requirement)...');
     try {
       const result = await sendRequest('tools/call', {
-        name: 'obey_me_status',
+        name: 'get_governance_constitution',
         arguments: {},
       });
-      console.log('✓ Obey me status successful');
-      console.log('   Response:', result.content[0].text);
+      console.log('✓ Get governance constitution successful');
+      console.log('   Response length:', result.content[0].text.length);
       testsPassed++;
     } catch (error) {
-      console.error('✗ Obey me status failed:', error.message);
+      console.error('✗ Get governance constitution failed:', error.message);
       testsFailed++;
     }
 
-    // Test 4: Surgical plan (valid)
+    // Test 3: Surgical plan (valid)
     console.log('\nTest 4: Surgical plan (valid)...');
     try {
       const result = await sendRequest('tools/call', {
@@ -137,7 +137,6 @@ async function runTests() {
           target_file: 'test.js',
           current_line_count: 100,
           estimated_addition: 50,
-          action: 'repair',
         },
       });
       console.log('✓ Surgical plan successful');
@@ -148,7 +147,7 @@ async function runTests() {
       testsFailed++;
     }
 
-    // Test 5: Surgical plan (invalid - exceeds limit)
+    // Test 4: Surgical plan (invalid - exceeds limit)
     console.log('\nTest 5: Surgical plan (invalid - exceeds limit)...');
     try {
       const result = await sendRequest('tools/call', {
@@ -157,7 +156,6 @@ async function runTests() {
           target_file: 'test.js',
           current_line_count: 650,
           estimated_addition: 100,
-          action: 'repair',
         },
       });
       console.error('✗ Surgical plan should have been rejected but was approved');
@@ -168,68 +166,73 @@ async function runTests() {
       testsPassed++;
     }
 
-    // Test 6: Enforce surgical rules (valid code)
-    console.log('\nTest 6: Enforce surgical rules (valid code)...');
+    // Test 5: Auto enforce (validate code)
+    console.log('\nTest 5: Auto enforce (validate code)...');
     try {
       const result = await sendRequest('tools/call', {
-        name: 'enforce_surgical_rules',
+        name: 'auto_enforce',
         arguments: {
-          proposed_code: 'function test() { return true; }',
-          file_path: 'test.js',
+          operation: 'validate',
+          content: 'function test() { return true; }',
+          path: 'package.json',
         },
       });
-      console.log('✓ Enforce surgical rules successful');
+      console.log('✓ Auto enforce successful');
       console.log('   Response:', result.content[0].text);
       testsPassed++;
     } catch (error) {
-      console.error('✗ Enforce surgical rules failed:', error.message);
+      console.error('✗ Auto enforce failed:', error.message);
       testsFailed++;
     }
 
-    // Test 7: Enforce surgical rules (invalid - console.log)
-    console.log('\nTest 7: Enforce surgical rules (invalid - console.log)...');
+    // Test 6: Auto enforce (invalid - console.log)
+    console.log('\nTest 6: Auto enforce (invalid - console.log)...');
     try {
       const result = await sendRequest('tools/call', {
-        name: 'enforce_surgical_rules',
+        name: 'auto_enforce',
         arguments: {
-          proposed_code: 'console.log("test");',
-          file_path: 'test.js',
+          operation: 'validate',
+          content: 'console.log("test");',
+          path: 'package.json',
         },
       });
-      console.error('✗ Enforce surgical rules should have rejected console.log');
+      console.error('✗ Auto enforce should have rejected console.log');
       testsFailed++;
     } catch (error) {
-      console.log('✓ Enforce surgical rules correctly rejected console.log');
+      console.log('✓ Auto enforce correctly rejected console.log');
       console.log('   Error:', error.message);
       testsPassed++;
     }
 
-    // Test 8: Get session context
-    console.log('\nTest 8: Get session context...');
+    // Test 7: Get server diagnostics
+    console.log('\nTest 8: Get server diagnostics...');
     try {
       const result = await sendRequest('tools/call', {
-        name: 'get_session_context',
+        name: 'get_server_diagnostics',
         arguments: {},
       });
-      console.log('✓ Get session context successful');
+      console.log('✓ Get server diagnostics successful');
+      console.log('   Diagnostics length:', result.content[0].text.length);
       testsPassed++;
     } catch (error) {
-      console.error('✗ Get session context failed:', error.message);
+      console.error('✗ Get server diagnostics failed:', error.message);
       testsFailed++;
     }
 
-    // Test 9: Query the oracle
-    console.log('\nTest 9: Query the oracle...');
+    // Test 8: Read file
+    console.log('\nTest 9: Read file...');
     try {
       const result = await sendRequest('tools/call', {
-        name: 'query_the_oracle',
-        arguments: {},
+        name: 'read_file',
+        arguments: {
+          path: 'package.json',
+        },
       });
-      console.log('✓ Query the oracle successful');
-      console.log('   Oracle says:', result.content[0].text);
+      console.log('✓ Read file successful');
+      console.log('   File content length:', result.content[0].text.length);
       testsPassed++;
     } catch (error) {
-      console.error('✗ Query the oracle failed:', error.message);
+      console.error('✗ Read file failed:', error.message);
       testsFailed++;
     }
 
