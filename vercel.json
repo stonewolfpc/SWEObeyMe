@@ -1,0 +1,6 @@
+{
+  "version": 2,
+  "buildCommand": "cd webhook-server && npm install",
+  "installCommand": "cd webhook-server && npm install",
+  "outputDirectory": "webhook-server"
+}
