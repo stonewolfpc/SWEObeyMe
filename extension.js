@@ -88,7 +88,7 @@ async function loadDiffReviewManager() {
 
 function writeMcpConfig(extensionPath) {
   try {
-    const configDir = path.join(os.homedir(), '.codeium');
+    const configDir = path.join(os.homedir(), '.codeium', 'windsurf-next');
     const mcpConfigPath = path.join(configDir, 'mcp_config.json');
 
     if (!fs.existsSync(configDir)) {
