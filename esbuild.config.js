@@ -2,6 +2,7 @@ import esbuild from 'esbuild';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import fs from 'fs';
+import os from 'os';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -140,6 +141,8 @@ const extensionConfig = {
   define: {
     'process.env.NODE_ENV': JSON.stringify(isProduction ? 'production' : 'development'),
     'process.env.BUILD_MODE': JSON.stringify(isEnterprise ? 'enterprise' : 'public'),
+    '__dirname': '__dirname',
+    '__filename': '__filename',
   },
 };
 
@@ -155,8 +158,35 @@ const mcpConfig = {
   define: {
     'process.env.NODE_ENV': JSON.stringify(isProduction ? 'production' : 'development'),
     'process.env.BUILD_MODE': JSON.stringify(isEnterprise ? 'enterprise' : 'public'),
+    '__dirname': '__dirname',
+    '__filename': '__filename',
   },
 };
+
+// Sync built dist to the installed Windsurf extension directory (dev convenience)
+function syncToInstalledExtension() {
+  const extBase = join(os.homedir(), '.windsurf-next', 'extensions');
+  if (!fs.existsSync(extBase)) return;
+
+  const candidates = fs.readdirSync(extBase).filter(n => n.startsWith('stonewolfpc.swe-obey-me-'));
+  if (candidates.length === 0) return;
+
+  // Pick the highest version
+  candidates.sort((a, b) => b.localeCompare(a, undefined, { numeric: true }));
+  const target = join(extBase, candidates[0], 'dist');
+  if (!fs.existsSync(target)) return;
+
+  const src = join(__dirname, 'dist');
+  try {
+    fs.copyFileSync(join(src, 'extension.js'), join(target, 'extension.js'));
+    fs.copyFileSync(join(src, 'mcp', 'server.js'), join(target, 'mcp', 'server.js'));
+    fs.copyFileSync(join(src, 'mcp', 'package.json'), join(target, 'mcp', 'package.json'));
+    copyRecursive(join(src, 'lib'), join(target, 'lib'));
+    console.log(`Synced to installed extension: ${candidates[0]}`);
+  } catch (err) {
+    console.warn(`Sync to installed extension failed: ${err.message}`);
+  }
+}
 
 // Public build - excludes enterprise modules
 async function buildPublic() {
@@ -181,6 +211,9 @@ async function buildPublic() {
   // Copy documentation corpus for MCP server
   copyCorpusFolder();
 
+  // Sync to installed Windsurf extension for live dev testing
+  syncToInstalledExtension();
+
   console.log('Public bundle built successfully!');
 }
 
@@ -199,6 +232,8 @@ async function buildEnterprise() {
 
   // Copy documentation corpus for MCP server
   copyCorpusFolder();
+
+  syncToInstalledExtension();
 
   console.log('Enterprise bundle built successfully!');
 }
@@ -227,6 +262,8 @@ async function buildDev() {
 
   // Copy documentation corpus for MCP server
   copyCorpusFolder();
+
+  syncToInstalledExtension();
 
   console.log('Dev bundle built successfully!');
 }
