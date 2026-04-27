@@ -116,7 +116,7 @@ app.post('/report', async (req, res) => {
     });
   } catch (err) {
     console.error('[Webhook] Error:', err.message);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Internal server error', detail: err.message });
   }
 });
 
@@ -134,7 +134,7 @@ async function postToGitHub(failure) {
   const { type, domain, action, handlerName, diagnostics, filePath, backupDiff, routerTrace } = failure;
   
   const timestamp = new Date().toISOString();
-  const env = `- **Node**: ${process.version}\n- **Platform**: ${process.platform} ${process.release()}`;
+  const env = `- **Node**: ${process.version}\n- **Platform**: ${process.platform} ${process.release?.name || 'node'}`;  
   
   const body = [
     `## Summary`,
