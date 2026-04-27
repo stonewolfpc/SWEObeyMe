@@ -2,7 +2,7 @@
   "name": "swe-obey-me",
   "displayName": "SWEObeyMe",
   "description": "SWEObeyMe - Anti vibe-coding surgical governance for AI-assisted development. 7 semantic tools with governance router enforcing 97+ internal handlers. v5.0.0",
-  "version": "5.0.7",
+  "version": "5.0.8",
   "type": "module",
   "publisher": "stonewolfpc",
   "icon": "icon.png",
@@ -1290,7 +1290,16 @@
     "prepare": "husky",
     "commit": "git-cz",
     "dev:install": "npm install --save-dev eslint@9.39.4 prettier@3.2.5 typescript@5.9.3 madge@8.0.0 husky@9.0.11 lint-staged@15.2.2",
-    "test:webhook": "node scripts/test-webhook.js"
+    "test:webhook": "node scripts/test-webhook.js",
+    "qa": "vitest run --config vitest.config.qa.js",
+    "qa:watch": "vitest --config vitest.config.qa.js",
+    "qa:unit": "vitest run --config vitest.config.qa.js qa/unit",
+    "qa:integration": "vitest run --config vitest.config.qa.js qa/integration",
+    "qa:e2e": "vitest run --config vitest.config.qa.js qa/e2e",
+    "qa:static": "vitest run --config vitest.config.qa.js qa/static",
+    "qa:property": "vitest run --config vitest.config.qa.js qa/property",
+    "qa:coverage": "vitest run --config vitest.config.qa.js --coverage",
+    "qa:full": "npm run qa:unit && npm run qa:integration && npm run qa:e2e && npm run qa:static && npm run qa:property"
   },
   "devDependencies": {
     "@semantic-release/changelog": "^6.0.3",
