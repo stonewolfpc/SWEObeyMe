@@ -1,38 +1,66 @@
 {
-  "version": "1.0.0",
-  "lastUpdated": "2026-04-22T20:32:00.000Z",
+  "version": "1.1.0",
+  "lastUpdated": "2026-04-27T00:00:00.000Z",
   "categories": [
     {
       "name": "windsurf",
       "path": "ide_mcp_corpus/windsurf",
-      "description": "Windsurf IDE documentation including MCP integration, configuration, and admin controls",
+      "description": "Windsurf IDE documentation — MCP integration, Rules/Memories/AGENTS.md, Cascade Hooks, Workflows/Skills, and Windsurf-Next platform compatibility. Updated from Windsurf University and docs.windsurf.com (Wave 14+, Windsurf 2.0 era).",
       "documents": [
         {
           "name": "mcp_overview",
           "path": "ide_mcp_corpus/windsurf/mcp_overview.md",
-          "description": "Overview of MCP (Model Context Protocol) integration in Windsurf Cascade",
-          "source": "https://docs.windsurf.com/plugins/cascade/mcp",
+          "description": "Overview of MCP (Model Context Protocol) integration in Windsurf Cascade. Includes OAuth support, one-click deeplink install, and key facts for extension authors.",
+          "source": "https://docs.windsurf.com/windsurf/cascade/mcp",
           "license": "Proprietary"
         },
         {
           "name": "mcp_config",
           "path": "ide_mcp_corpus/windsurf/mcp_config.md",
-          "description": "How to configure MCP servers in Windsurf using mcp_config.json",
-          "source": "https://docs.windsurf.com/plugins/cascade/mcp",
+          "description": "How to configure MCP servers in Windsurf using mcp_config.json, including popular server examples and one-click install via deeplink",
+          "source": "https://docs.windsurf.com/windsurf/cascade/mcp",
           "license": "Proprietary"
         },
         {
           "name": "mcp_remote_http",
           "path": "ide_mcp_corpus/windsurf/mcp_remote_http.md",
           "description": "Remote HTTP MCP configuration and environment variable interpolation",
-          "source": "https://docs.windsurf.com/plugins/cascade/mcp",
+          "source": "https://docs.windsurf.com/windsurf/cascade/mcp",
           "license": "Proprietary"
         },
         {
           "name": "mcp_admin_controls",
           "path": "ide_mcp_corpus/windsurf/mcp_admin_controls.md",
-          "description": "Admin controls for Teams and Enterprises including server whitelisting and regex pattern matching",
-          "source": "https://docs.windsurf.com/plugins/cascade/mcp",
+          "description": "Admin controls for Teams and Enterprises including MCP registry, server whitelisting, regex pattern matching, and MCP Whitelist",
+          "source": "https://docs.windsurf.com/windsurf/cascade/mcp",
+          "license": "Proprietary"
+        },
+        {
+          "name": "memories_rules",
+          "path": "ide_mcp_corpus/windsurf/memories_rules.md",
+          "description": "Windsurf Memories, Rules, AGENTS.md, and activation modes (always_on, glob, model_decision, manual). Covers scope levels, storage locations, character limits, and best practices.",
+          "source": "https://docs.windsurf.com/windsurf/cascade/memories",
+          "license": "Proprietary"
+        },
+        {
+          "name": "cascade_hooks",
+          "path": "ide_mcp_corpus/windsurf/cascade_hooks.md",
+          "description": "Cascade Hooks — shell commands triggered at key workflow points (pre/post MCP tool use, write code, run command, user prompt, cascade response). Introduced Wave 13. Exit code 2 blocks action.",
+          "source": "https://docs.windsurf.com/windsurf/cascade/hooks",
+          "license": "Proprietary"
+        },
+        {
+          "name": "workflows_skills",
+          "path": "ide_mcp_corpus/windsurf/workflows_skills.md",
+          "description": "Windsurf Workflows (slash-command triggered multi-step procedures), Skills (progressive-disclosure bundles with supporting files), and AGENTS.md (location-scoped always-on/glob rules).",
+          "source": "https://docs.windsurf.com/windsurf/cascade/workflows",
+          "license": "Proprietary"
+        },
+        {
+          "name": "platform_compat",
+          "path": "ide_mcp_corpus/windsurf/platform_compat.md",
+          "description": "Windsurf-Next vs VS Code API surface truth: FULL/PARTIAL/BLOCKED/REPLACED/STUBBED API matrix, tool schema compliance rules, known name conflicts, compliance checklist, and current model list.",
+          "source": "https://docs.windsurf.com + windsurf.com/university",
           "license": "Proprietary"
         }
       ]

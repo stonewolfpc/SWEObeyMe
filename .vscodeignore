@@ -42,6 +42,12 @@ vscode/
 test-electron/
 
 # ============================================
+# Exclude QA Suite (local-only, NEVER in release)
+# ============================================
+qa/
+vitest.config.qa.js
+
+# ============================================
 # Exclude Git and Development Files
 # ============================================
 .git/
