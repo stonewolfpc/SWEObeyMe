@@ -1268,7 +1268,8 @@
     "format:check": "prettier --check \"**/*.{js,json,md}\"",
     "prepare": "husky",
     "commit": "git-cz",
-    "dev:install": "npm install --save-dev eslint@9.39.4 prettier@3.2.5 typescript@5.9.3 madge@8.0.0 husky@9.0.11 lint-staged@15.2.2"
+    "dev:install": "npm install --save-dev eslint@9.39.4 prettier@3.2.5 typescript@5.9.3 madge@8.0.0 husky@9.0.11 lint-staged@15.2.2",
+    "test:webhook": "node scripts/test-webhook.js"
   },
   "devDependencies": {
     "@semantic-release/changelog": "^6.0.3",

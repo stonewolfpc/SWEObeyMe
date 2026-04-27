@@ -22,6 +22,7 @@ test-*.js
 !tests/mcp-integration.js
 !tests/mcp-protocol-compliance.js
 !tests/test-pre-release-validation.js
+!scripts/test-webhook.js
 
 # Fuzzer-generated regression tests (auto-generated, can be regenerated)
 tests/fuzzer-generated/
