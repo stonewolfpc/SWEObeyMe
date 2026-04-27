@@ -3,5 +3,20 @@
   "version": 2,
   "buildCommand": "cd webhook-server && npm install",
   "installCommand": "cd webhook-server && npm install",
-  "outputDirectory": "webhook-server"
+  "builds": [
+    {
+      "src": "webhook-server/server.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/webhook-server/server.js"
+    }
+  ],
+  "env": {
+    "GITHUB_OWNER": "stonewolfpc",
+    "GITHUB_REPO": "SWEObeyMe"
+  }
 }
