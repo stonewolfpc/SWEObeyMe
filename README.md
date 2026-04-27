@@ -1,6 +1,6 @@
 # SWEObeyMe MCP Server
 
-[![Version](https://img.shields.io/badge/version-5.0.18-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-5.0.19-blue.svg)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/license-Dual--License-yellow.svg)](LICENSE)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-green.svg)](https://nodejs.org)
 [![VS Code](https://img.shields.io/badge/VS%20Code-Extension-purple.svg)](https://marketplace.visualstudio.com)
@@ -307,7 +307,7 @@ For developers who want the exact industrial-grade environment:
 - **ESLint 9.x required** - ESLint 10.x has breaking changes
 - **Peer dependencies are optional** - SWEObeyMe will gracefully skip unavailable tools
 
-### Installation
+### Developer Suite Installation
 
 Run the following command to install the full developer suite:
 
