@@ -1,6 +1,6 @@
 # SWEObeyMe MCP Server
 
-[![Version](https://img.shields.io/badge/version-4.3.4-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-4.3.5-blue.svg)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/license-Dual--License-yellow.svg)](LICENSE)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-green.svg)](https://nodejs.org)
 [![VS Code](https://img.shields.io/badge/VS%20Code-Extension-purple.svg)](https://marketplace.visualstudio.com)
@@ -345,15 +345,15 @@ Configure via VS Code Settings (`Ctrl+,`) or `settings.json`:
 
 ## Troubleshooting
 
-| Symptom                   | Fix                                                                                   |
-| ------------------------- | ------------------------------------------------------------------------------------- |
-| MCP server not loading    | Check extension activation; reload window                                             |
-| File write rejected       | Check line count (max 700) and forbidden patterns                                     |
-| Duplicate server detected | Extension auto-cleans stale instances on reload                                       |
-| Backup failed             | Check backup directory permissions                                                    |
-| C# Bridge silent          | Ensure .NET project is loaded and bridge is enabled in settings                       |
-| C++ Bridge silent         | Install clang-tidy or cppcheck for deeper analysis; pattern matching works out of box |
-| Slow performance          | Disable C# Bridge if not using .NET; reduce maxBackupsPerFile                         |
+| Symptom                               | Fix                                                                                                              |
+| ------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| MCP server not loading                | Check extension activation; reload window                                                                        |
+| File write rejected                   | Check line count (max 700) and forbidden patterns                                                                |
+| Duplicate server detected             | Extension auto-cleans stale instances on reload                                                                  |
+| Backup failed                         | Check backup directory permissions                                                                               |
+| C# Bridge silent                      | Ensure .NET project is loaded and bridge is enabled in settings                                                  |
+| C++ Bridge silent                     | Install clang-tidy or cppcheck for deeper analysis; pattern matching works out of box                            |
+| Slow performance                      | Disable C# Bridge if not using .NET; reduce maxBackupsPerFile                                                    |
 | **Transport error: transport closed** | MCP server connection was terminated; restart IDE or reload window; check if MCP server process is still running |
 
 **Debug mode:** set `SWEOBEYME_DEBUG=1` before launching your IDE.
@@ -365,15 +365,18 @@ Configure via VS Code Settings (`Ctrl+,`) or `settings.json`:
 **Error encountered:** `transport error: transport closed`
 
 **Context:**
+
 - When attempting to call `mcp1_get_governance_constitution` from the SWEObeyMe MCP server
 - The MCP server transport closed unexpectedly during tool invocation
 - This prevents the AI from retrieving the governance constitution at session start
 
 **What was being done:**
+
 - Attempting to establish the required workflow and governance rules by calling the governance constitution tool
 - This is a prerequisite operation that should be called at the start of every session according to the documentation
 
 **Potential fixes:**
+
 1. **Restart the IDE** - The MCP server process may have crashed or hung
 2. **Reload the window** - Use the "Developer: Reload Window" command in VS Code/Windsurf
 3. **Check MCP server status** - Verify the SWEObeyMe extension is activated and the MCP server is running
