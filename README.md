@@ -1,6 +1,6 @@
 # SWEObeyMe MCP Server
 
-[![Version](https://img.shields.io/badge/version-4.3.5-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-5.0.0-blue.svg)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/license-Dual--License-yellow.svg)](LICENSE)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-green.svg)](https://nodejs.org)
 [![VS Code](https://img.shields.io/badge/VS%20Code-Extension-purple.svg)](https://marketplace.visualstudio.com)
@@ -12,13 +12,43 @@
 
 ---
 
-> **Hello ladies and gentlemen, coders, and non coders, Stone Wolf Systems here.**
+> **Ladies and Gentlemen, Chris with Stone Wolf Systems here, proud to present VERSION 5.0!**
 >
-> With the April 21st, 2026 update to Windsurf-Next we have released a whole new package for you. This is geared towards non coders, the anti vibe coding agent. The dream? Make the system do the job you tell it to, just as you **HOPED** it would as a vibe coder, without all the half implemented functions.
+> It's been a fun trip working on this. Updated features..... see the changelog, it's a list. Latest warning, we now send logs for the mcp server to vercel which automatically get fed to my git so I can track issues and make this thing WORK for you.
 >
-> If you can't make the AI smarter, you make the architecture so firm it can't deny you. That's the hope I have, that this extension will provide you with relief. No more 3 AM "lets give it a list before bed" and wake up to 20 questions, 30 bracket nightmares, and simulated functions where you just had working implementations.
+> It's been awesome building this for you guys, but I built it for me first.
 >
-> Coders who know what they're doing can appreciate the speedup and automation. Professionals can appreciate the fact their side projects are now completing in record time with less intervention, but they're also able to provide far more control now.
+> Just install the server, tell the ai "Use SWEObeyMe tools" and then your usual instructions. The ai will automatically start using the MCP server! Governance, anti drift, anti vibe, full ENGINEERING level support. Leave me some feedback, I want to know if this works for you, I want to know if it doesn't!
+
+---
+
+## 🚀 New in v5.0 - Automatic Error Reporting
+
+**Governance failures now automatically report to GitHub.** When the extension detects a router failure, validation error, or forbidden pattern, it:
+
+1. Posts the error to the Vercel webhook server
+2. Creates a GitHub issue with full diagnostics (type, domain, action, handler, file path, backup diff, router trace)
+3. Labels the issue with `auto-reported` + type-specific tag
+4. The local sync daemon downloads issues to your `sweobeyme-issues\` folder
+5. Issues appear in the Cascade inbox for review and repair
+
+This means I can see what's breaking in real time and fix it faster. The full pipeline is silent on failure — it won't crash your session, just queue the issue for review.
+
+---
+
+## ⚠️ Important Notice - v5.0.3
+
+**Major Architecture Overhaul - Governance Router System.** v5.0.0 includes:
+
+- **93% Tool Reduction:** From 97 tools to 7 semantic entry points (file_ops, search_code, backup_restore, project_context, docs_manage, workflow_manage, sweobeyme_execute)
+- **Governance Router:** Centralized philosophy enforcement (surgical compliance, backup-before-edit, validation, self-healing rollback)
+- **Internal Handler Registry:** All 97 internal handlers hidden behind router, bypassing MCP 100-tool limit
+- **Validation Layer:** Comprehensive test suite with 5 categories (structural, safety, router, integration, chaos)
+- **Automatic Enforcement:** Philosophy rules now enforced at router level before operations execute
+
+**Breaking Change:** AI models now see only 7 surface tools instead of 97. All existing functionality preserved through internal registry. Use `sweobeyme_execute` for direct access to internal handlers.
+
+**Please upgrade to v5.0.0** to ensure all features function correctly.
 
 ---
 
