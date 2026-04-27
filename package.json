@@ -1217,7 +1217,6 @@
     "test:unit": "vitest run tests/unit",
     "test:integration:vitest": "vitest run tests/integration",
     "test:property": "vitest run tests/unit/session-state.property.test.js",
-    "test:e2e": "echo 'test:e2e skipped for Vercel deployment'",
     "test:coverage": "vitest run --coverage",
     "test:coverage:check": "vitest run --coverage",
     "test:watch": "vitest",
