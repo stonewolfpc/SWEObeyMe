@@ -5,7 +5,7 @@
 
 import { fileURLToPath } from 'url';
 import { join, dirname } from 'path';
-import { existsSync, readFileSync, readdirSync, statSync } from 'fs';
+import { readFileSync, readdirSync, statSync } from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = join(__filename, '..');
@@ -102,73 +102,38 @@ class PathNormalizationChecker {
   }
 
   async testScanBackslashes() {
-    try {
-      // Skip on Windows development environment - legitimate uses in regex patterns and string normalization
-      return true;
-    } catch (e) {
-      console.log('[PathNormalization] Scan failed:', e.message);
-      return true; // Skip if scan fails
-    }
+    // Skip on Windows development environment - legitimate uses in regex patterns and string normalization
+    return true;
   }
 
   async testScanUppercaseDrives() {
-    try {
-      // Skip on Windows development environment - legitimate uses in Windows paths
-      return true;
-    } catch (e) {
-      console.log('[PathNormalization] Scan failed:', e.message);
-      return true; // Skip if scan fails
-    }
+    // Skip on Windows development environment - legitimate uses in Windows paths
+    return true;
   }
 
   async testScanDoubleDots() {
-    try {
-      // Skip on Windows development environment - legitimate uses in relative paths
-      return true;
-    } catch (e) {
-      console.log('[PathNormalization] Scan failed:', e.message);
-      return true; // Skip if scan fails
-    }
+    // Skip on Windows development environment - legitimate uses in relative paths
+    return true;
   }
 
   async testScanDoubleSlashes() {
-    try {
-      // Skip on Windows development environment - legitimate uses in URL protocols
-      return true;
-    } catch (e) {
-      console.log('[PathNormalization] Scan failed:', e.message);
-      return true; // Skip if scan fails
-    }
+    // Skip on Windows development environment - legitimate uses in URL protocols
+    return true;
   }
 
   async testScanTrailingSlashes() {
-    try {
-      // Skip on Windows development environment - legitimate uses in directory paths
-      return true;
-    } catch (e) {
-      console.log('[PathNormalization] Scan failed:', e.message);
-      return true; // Skip if scan fails
-    }
+    // Skip on Windows development environment - legitimate uses in directory paths
+    return true;
   }
 
   async testCheckConfigFiles() {
-    try {
-      // Skip on Windows development environment - legitimate uses in regex patterns and string normalization
-      return true;
-    } catch (e) {
-      console.log('[PathNormalization] Config check failed:', e.message);
-      return true; // Skip if check fails
-    }
+    // Skip on Windows development environment - legitimate uses in regex patterns and string normalization
+    return true;
   }
 
   async testCheckLibFiles() {
-    try {
-      // Skip on Windows development environment - legitimate uses in regex patterns and string normalization
-      return true;
-    } catch (e) {
-      console.log('[PathNormalization] Lib check failed:', e.message);
-      return true; // Skip if check fails
-    }
+    // Skip on Windows development environment - legitimate uses in regex patterns and string normalization
+    return true;
   }
 
   scanRepoForPattern(pattern) {

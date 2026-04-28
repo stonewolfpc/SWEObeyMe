@@ -171,20 +171,9 @@ class MCPServerStartup {
   }
 
   async testValidateResponse() {
-    const expectedResponse = {
-      jsonrpc: '2.0',
-      id: 1,
-      result: {
-        protocolVersion: '2024-11-05',
-        capabilities: {},
-        serverInfo: {
-          name: 'swe-obey-me',
-          version: '2.0.0',
-        },
-      },
-    };
-
-    return true; // Would validate actual response
+    // Response validation structure (for future implementation):
+    // Expected: jsonrpc, id, result with protocolVersion, capabilities, serverInfo
+    return true; // Would validate actual response against expected structure
   }
 
   async testToolRegistration() {
