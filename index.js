@@ -48,6 +48,12 @@ import {
   updateLastReminder,
   getSessionState,
 } from './lib/session-state.js';
+import {
+  checkAllDependencies,
+  printHealthReport,
+  startClangdWatchdog,
+  stopClangdWatchdog,
+} from './lib/health/dependency-sentinel.js';
 
 // Read version from package.json (single source of truth)
 const __filename = fileURLToPath(import.meta.url);
@@ -368,6 +374,8 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
       'ERR-PREMATURE-EXIT',
       `Server exiting with code ${code}. If this followed a stall, stdin/SDK likely failed upstream.`
     );
+    printHealthReport('External Dependency Health (Shutdown)');
+    stopClangdWatchdog();
   });
 
   process.on('uncaughtException', (err) => {
@@ -407,6 +415,17 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
 
   // Initialize proactive voice system
   const proactiveVoice = getProactiveVoice();
+
+  // Run dependency health check on startup
+  checkAllDependencies();
+  printHealthReport('External Dependency Health (Startup)');
+
+  // Periodic dependency rechecks every 5 minutes (catches mid-session corruption)
+  const PERIODIC_CHECK_INTERVAL_MS = 5 * 60 * 1000; // 5 minutes
+  setInterval(() => {
+    checkAllDependencies();
+    printHealthReport('External Dependency Health (Periodic)');
+  }, PERIODIC_CHECK_INTERVAL_MS);
 
   // Initialize server diagnostics
   const diagnostics = getServerDiagnostics();
