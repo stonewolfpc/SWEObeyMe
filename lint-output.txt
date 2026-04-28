@@ -1,0 +1,1054 @@
+﻿
+> swe-obey-me@5.0.30 lint
+> eslint . --ext .js
+
+
+D:\SWEObeyMe-restored\.github\scripts\check-duplicates.js
+  66:44  error  Unnecessary escape character: \s  no-useless-escape
+
+D:\SWEObeyMe-restored\.github\scripts\debug-ui-issues.js
+  55:42  error  Unnecessary escape character: \/  no-useless-escape
+  76:16  error  Unnecessary escape character: \W  no-useless-escape
+
+D:\SWEObeyMe-restored\.github\scripts\test-brutal-final.js
+  58:11  warning  'child' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\.github\scripts\test-brutal-ui-validation.js
+   12:10  warning  'spawn' is defined but never used. Allowed unused vars must match /^_/u              no-unused-vars
+   59:10  warning  'execAsync' is defined but never used. Allowed unused vars must match /^_/u          no-unused-vars
+   61:11  warning  'child' is assigned a value but never used. Allowed unused vars must match /^_/u     no-unused-vars
+  200:55  error    Unnecessary escape character: \/                                                     no-useless-escape
+  315:15  warning  'joined' is assigned a value but never used. Allowed unused vars must match /^_/u    no-unused-vars
+  316:15  warning  'resolved' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\.github\scripts\test-brutal-validation.js
+   27:10  warning  'createHash' is defined but never used. Allowed unused vars must match /^_/u        no-unused-vars
+   63:11  warning  'child' is assigned a value but never used. Allowed unused vars must match /^_/u    no-unused-vars
+  194:26  warning  'code' is defined but never used. Allowed unused args must match /^_/u              no-unused-vars
+  252:29  warning  'code' is defined but never used. Allowed unused args must match /^_/u              no-unused-vars
+  574:17  error    Unnecessary escape character: \/                                                    no-useless-escape
+  575:16  error    Unnecessary escape character: \/                                                    no-useless-escape
+  594:15  warning  'content' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\.github\scripts\test-build-artifacts.js
+  81:11  warning  'hasMain' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\.github\scripts\test-clean-env-simulation.js
+   33:5   warning  'exitCode' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  259:58  warning  'name' is defined but never used. Allowed unused args must match /^_/u               no-unused-vars
+
+D:\SWEObeyMe-restored\.github\scripts\test-extension-installation.js
+   11:17  warning  'exec' is defined but never used. Allowed unused vars must match /^_/u        no-unused-vars
+   14:10  warning  'createHash' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  448:52  warning  'pathRoot' is not defined                                                     no-undef
+
+D:\SWEObeyMe-restored\.github\scripts\test-mcp-compliance.js
+   7:17  warning  'execSync' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+   9:8   warning  'fs' is defined but never used. Allowed unused vars must match /^_/u        no-unused-vars
+  10:8   warning  'os' is defined but never used. Allowed unused vars must match /^_/u        no-unused-vars
+
+D:\SWEObeyMe-restored\.github\scripts\test-mcp-startup.js
+    7:17  warning  'execSync' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+   10:8   warning  'os' is defined but never used. Allowed unused vars must match /^_/u        no-unused-vars
+  113:5   warning  'cleanup' is not defined                                                    no-undef
+  121:5   warning  'cleanup' is not defined                                                    no-undef
+  129:5   warning  'cleanup' is not defined                                                    no-undef
+
+D:\SWEObeyMe-restored\.github\scripts\test-os-compatibility.js
+  69:7  warning  'hasWin32Check' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\.github\scripts\test-ui-components.js
+  50:7  warning  'commandIds' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\.github\scripts\test-windsurf-integration.js
+   11:17  warning  'exec' is defined but never used. Allowed unused vars must match /^_/u                  no-unused-vars
+   13:8   warning  'os' is defined but never used. Allowed unused vars must match /^_/u                    no-unused-vars
+   14:10  warning  'createHash' is defined but never used. Allowed unused vars must match /^_/u            no-unused-vars
+   79:25  warning  'code' is defined but never used. Allowed unused args must match /^_/u                  no-unused-vars
+  186:21  warning  'toolCount' is not defined                                                              no-undef
+  266:11  warning  'configValid' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  496:11  warning  'output' is assigned a value but never used. Allowed unused vars must match /^_/u       no-unused-vars
+
+D:\SWEObeyMe-restored\.github\scripts\validate-tools.js
+   80:56  warning  'name' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+  114:10  warning  't' is not defined                                                      no-undef
+  115:10  warning  't' is not defined                                                      no-undef
+
+D:\SWEObeyMe-restored\.github\scripts\validate-windsurf-schema.js
+  35:11  warning  'afterName' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\.local\test-cpp-bridge.js
+  10:46  warning  'errorRules' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\ares-rig\ares-rig.js
+  10:48  warning  'readFileSync' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\ares-rig\simulators\checkpoint-stress.js
+  527:11  warning  'checkpoint' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\ares-rig\simulators\e2e-software-factory.js
+  154:13  warning  'hasGitDir' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\ares-rig\simulators\editor-simulation.js
+  7:22  warning  'mkdirSync' is defined but never used. Allowed unused vars must match /^_/u      no-unused-vars
+  7:33  warning  'writeFileSync' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\ares-rig\simulators\fs-chaos.js
+  15:3  warning  'statSync' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\ares-rig\simulators\mcp-loader-stress.js
+   15:3   warning  'rmdirSync' is defined but never used. Allowed unused vars must match /^_/u        no-unused-vars
+   16:3   warning  'renameSync' is defined but never used. Allowed unused vars must match /^_/u       no-unused-vars
+  195:11  error    Duplicate key 'swe-obey-me'                                                        no-dupe-keys
+  205:13  warning  'loaded' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\ares-rig\simulators\os-simulation.js
+    7:16  warning  'sep' is defined but never used. Allowed unused vars must match /^_/u           no-unused-vars
+    7:21  warning  'delimiter' is defined but never used. Allowed unused vars must match /^_/u     no-unused-vars
+   16:3   warning  'lstatSync' is defined but never used. Allowed unused vars must match /^_/u     no-unused-vars
+   17:3   warning  'readlinkSync' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  301:33  warning  'profile' is defined but never used. Allowed unused args must match /^_/u       no-unused-vars
+
+D:\SWEObeyMe-restored\ares-rig\simulators\provider-failure.js
+  8:33  warning  'writeFileSync' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  8:48  warning  'readFileSync' is defined but never used. Allowed unused vars must match /^_/u   no-unused-vars
+  8:62  warning  'unlinkSync' is defined but never used. Allowed unused vars must match /^_/u     no-unused-vars
+  8:74  warning  'rmdirSync' is defined but never used. Allowed unused vars must match /^_/u      no-unused-vars
+
+D:\SWEObeyMe-restored\ares-rig\simulators\tool-arbitration.js
+  8:33  warning  'writeFileSync' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  8:48  warning  'readFileSync' is defined but never used. Allowed unused vars must match /^_/u   no-unused-vars
+
+D:\SWEObeyMe-restored\ares-rig\simulators\webview-failure.js
+  496:38  warning  'htmlPath' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+  507:25  warning  'htmlPath' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+  514:27  warning  'htmlPath' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\ares-rig\simulators\workspace-awareness.js
+  8:48  warning  'readFileSync' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\esbuild.config.js
+   25:5  warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+   59:5  warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+   72:5  warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+   81:5  warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+   94:5  warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  103:5  warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  197:5  warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  205:3  warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  232:3  warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  237:3  warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  256:3  warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  261:3  warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  289:3  warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  294:3  warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  320:3  warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+
+D:\SWEObeyMe-restored\git-governor\checks\mcp-config-validator.js
+    8:10  error  'existsSync' is defined but never used. Allowed unused vars must match /^_/u           no-unused-vars
+  130:11  error  'configPath' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  216:17  error  'serverName' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  238:17  error  'serverName' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  252:17  error  'serverName' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  266:17  error  'serverName' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\git-governor\checks\mcp-server-startup.js
+  174:11  error  'expectedResponse' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\git-governor\checks\path-normalization.js
+    8:10  error  'existsSync' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  108:17  error  Unreachable code                                                              no-unreachable
+  118:17  error  Unreachable code                                                              no-unreachable
+  128:17  error  Unreachable code                                                              no-unreachable
+  138:17  error  Unreachable code                                                              no-unreachable
+  148:17  error  Unreachable code                                                              no-unreachable
+  158:17  error  Unreachable code                                                              no-unreachable
+  168:17  error  Unreachable code                                                              no-unreachable
+
+D:\SWEObeyMe-restored\git-governor\checks\tool-arbitration-fuzzer.js
+  7:16  error  'dirname' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\git-governor\git-governor.js
+  10:48  error  'readFileSync' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\index.js
+    20:24  warning  'getToolDefinitions' is defined but never used. Allowed unused vars must match /^_/u           no-unused-vars
+    23:10  warning  'getLanguageSpecificTools' is defined but never used. Allowed unused vars must match /^_/u     no-unused-vars
+    24:29  warning  'GOVERNANCE_CONSTITUTION' is defined but never used. Allowed unused vars must match /^_/u      no-unused-vars
+    28:32  warning  'getURLHandler' is defined but never used. Allowed unused vars must match /^_/u                no-unused-vars
+    32:38  warning  'getDuplicateScanner' is defined but never used. Allowed unused vars must match /^_/u          no-unused-vars
+    33:36  warning  'getSessionTracker' is defined but never used. Allowed unused vars must match /^_/u            no-unused-vars
+    44:36  warning  'getArchiveManager' is defined but never used. Allowed unused vars must match /^_/u            no-unused-vars
+    45:1   error    './lib/backup.js' import is duplicated                                                         no-duplicate-imports
+    52:3   warning  'setTaskListSnapshot' is defined but never used. Allowed unused vars must match /^_/u          no-unused-vars
+    53:3   warning  'setCurrentTaskId' is defined but never used. Allowed unused vars must match /^_/u             no-unused-vars
+    86:5   warning  'SSEServerTransport' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+   267:50  warning  'timestamp' is defined but never used. Allowed unused args must match /^_/u                    no-unused-vars
+  1017:29  warning  'next' is defined but never used. Allowed unused args must match /^_/u                         no-unused-vars
+
+D:\SWEObeyMe-restored\index.mjs
+  2:21  warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  3:1   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+
+D:\SWEObeyMe-restored\lib\api-key-manager.js
+    1:13  warning  'vscode' is defined but never used. Allowed unused vars must match /^_/u            no-unused-vars
+  260:21  warning  'keyData' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  266:20  warning  'id' is defined but never used. Allowed unused args must match /^_/u                no-unused-vars
+
+D:\SWEObeyMe-restored\lib\audit-logger.js
+  1:13  warning  'vscode' is defined but never used. Allowed unused vars must match /^_/u         no-unused-vars
+  5:24  warning  'writeFileSafe' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\auto-enforcement.js
+    7:8   warning  'fs' is defined but never used. Allowed unused vars must match /^_/u       no-unused-vars
+  310:39  warning  'i' is defined but never used. Allowed unused args must match /^_/u        no-unused-vars
+  391:22  warning  'content' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\backup-auto.js
+  144:55  warning  'editInfo' is assigned a value but never used. Allowed unused args must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\backup-manager.js
+  5:13  warning  'crypto' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\checkpoint-manager.js
+   3:13  warning  'fs' is defined but never used. Allowed unused vars must match /^_/u               no-unused-vars
+  57:18  warning  'folder' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\code-search.js
+  227:9  warning  'searchPattern' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\comprehensive-error-detection.js
+   15:8   warning  'fs' is defined but never used. Allowed unused vars must match /^_/u               no-unused-vars
+   16:8   warning  'path' is defined but never used. Allowed unused vars must match /^_/u             no-unused-vars
+  126:23  warning  'stderr' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  182:15  warning  'stdout' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  182:23  warning  'stderr' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  203:15  warning  'stdout' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  203:23  warning  'stderr' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  234:23  warning  'stderr' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  262:23  warning  'stderr' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\csharp-bridge.js
+    2:8   warning  'path' is defined but never used. Allowed unused vars must match /^_/u                 no-unused-vars
+  548:43  warning  'result' is defined but never used. Allowed unused args must match /^_/u               no-unused-vars
+  550:9   warning  'lines' is assigned a value but never used. Allowed unused vars must match /^_/u       no-unused-vars
+  560:13  warning  'afterMatch' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  569:7   warning  'lastIndex' is assigned a value but never used. Allowed unused vars must match /^_/u   no-unused-vars
+
+D:\SWEObeyMe-restored\lib\csharp-settings-provider.js
+   5:8   warning  'os' is defined but never used. Allowed unused vars must match /^_/u       no-unused-vars
+  18:41  warning  'context' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\diff-review-manager.js
+  75:13  warning  'editor' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\documentation-updater.js
+  235:58  warning  'timestamp' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\error-detection.js
+  10:29  warning  'executeFallback' is defined but never used. Allowed unused vars must match /^_/u         no-unused-vars
+  10:46  warning  'getFallbackSuggestions' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\fallback-system.js
+    8:10  warning  'getProjectMemory' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+    9:10  warning  'sessionMemory' is defined but never used. Allowed unused vars must match /^_/u     no-unused-vars
+    9:25  warning  'recordAction' is defined but never used. Allowed unused vars must match /^_/u      no-unused-vars
+  305:54  error    'path' is not defined                                                               no-undef
+  307:29  error    'path' is not defined                                                               no-undef
+  336:42  warning  'context' is assigned a value but never used. Allowed unused args must match /^_/u  no-unused-vars
+  365:53  warning  'context' is assigned a value but never used. Allowed unused args must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\file-operations-safe.js
+  7:8  warning  'path' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\file-registry.js
+   10:8   warning  'path' is defined but never used. Allowed unused vars must match /^_/u           no-unused-vars
+   12:10  warning  'calculateHash' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+   95:12  error    'findDuplicateFiles' is not defined                                              no-undef
+  102:12  error    'findSameNameFiles' is not defined                                               no-undef
+  109:12  error    'findSimilarFiles' is not defined                                                no-undef
+
+D:\SWEObeyMe-restored\lib\godot-workflow-rules.js
+  267:69  error  'dataNeedsNodeFunctionality' is not defined  no-undef
+
+D:\SWEObeyMe-restored\lib\governance-system.js
+   7:39  warning  'getGovernanceManager' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+   8:39  warning  'getArbitrationEngine' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+   9:39  warning  'getHeuristicEnforcer' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  10:39  warning  'getTransparencyLayer' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  11:35  warning  'getDriftDetector' is defined but never used. Allowed unused vars must match /^_/u      no-unused-vars
+
+D:\SWEObeyMe-restored\lib\language-upper-functions.js
+   10:34  warning  'context' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+   63:37  warning  'context' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+  115:37  warning  'context' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\metrics-manager.js
+  186:19  warning  'labelKey' is assigned a value but never used. Allowed unused vars must match /^_/u     no-unused-vars
+  197:19  warning  'labelKey' is assigned a value but never used. Allowed unused vars must match /^_/u     no-unused-vars
+  221:19  warning  'labelKey' is assigned a value but never used. Allowed unused vars must match /^_/u     no-unused-vars
+  281:19  warning  'labelKey' is assigned a value but never used. Allowed unused vars must match /^_/u     no-unused-vars
+  288:19  warning  'labelKey' is assigned a value but never used. Allowed unused vars must match /^_/u     no-unused-vars
+  333:9   warning  'data' is assigned a value but never used. Allowed unused vars must match /^_/u         no-unused-vars
+  334:9   warning  'contentType' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  562:27  warning  'code' is defined but never used. Allowed unused args must match /^_/u                  no-unused-vars
+  591:13  warning  'config' is assigned a value but never used. Allowed unused vars must match /^_/u       no-unused-vars
+
+D:\SWEObeyMe-restored\lib\oauth-manager.js
+  89:36  warning  Empty block statement  no-empty
+
+D:\SWEObeyMe-restored\lib\proactive-voice.js
+  135:13  warning  'registry' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\project-awareness.js
+  192:27  error  'readdirSafe' is not defined  no-undef
+
+D:\SWEObeyMe-restored\lib\project-initialization-workflow.js
+   6:36  warning  'getProjectScanner' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+   8:35  warning  'getProjectMemory' is defined but never used. Allowed unused vars must match /^_/u   no-unused-vars
+  90:25  warning  'scanResults' is defined but never used. Allowed unused args must match /^_/u        no-unused-vars
+
+D:\SWEObeyMe-restored\lib\project-memory-conventions.js
+  37:25  warning  'fileInfo' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  48:24  warning  'dirInfo' is assigned a value but never used. Allowed unused vars must match /^_/u   no-unused-vars
+
+D:\SWEObeyMe-restored\lib\project-memory-core.js
+  13:25  warning  'recordAction' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\project-memory-detection.js
+  11:8  warning  'path' is defined but never used. Allowed unused vars must match /^_/u                 no-unused-vars
+  30:9  warning  'indicators' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  78:9  warning  'domains' is assigned a value but never used. Allowed unused vars must match /^_/u     no-unused-vars
+
+D:\SWEObeyMe-restored\lib\project-memory-location.js
+  28:67  warning  'purpose' is defined but never used. Allowed unused args must match /^_/u           no-unused-vars
+  32:24  warning  'dirInfo' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\project-memory-structure.js
+  11:8   warning  'fs' is defined but never used. Allowed unused vars must match /^_/u           no-unused-vars
+  14:23  warning  'withTimeout' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\project-scanner.js
+    8:10  warning  'getProjectMemory' is defined but never used. Allowed unused vars must match /^_/u         no-unused-vars
+    8:28  warning  'initializeProjectMemory' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  405:11  warning  'libFileCount' is assigned a value but never used. Allowed unused vars must match /^_/u    no-unused-vars
+
+D:\SWEObeyMe-restored\lib\prompts\validator.js
+  7:10  warning  'PROMPT_METADATA_SCHEMA' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\quota-manager.js
+    1:13  warning  'vscode' is defined but never used. Allowed unused vars must match /^_/u               no-unused-vars
+  119:17  warning  'identifier' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\refresh-recovery.js
+  103:21  warning  'context' is assigned a value but never used. Allowed unused args must match /^_/u  no-unused-vars
+  343:25  error    Expected error to be handled                                                        handle-callback-err
+
+D:\SWEObeyMe-restored\lib\rule-engine.js
+    7:10  warning  'sessionMemory' is defined but never used. Allowed unused vars must match /^_/u     no-unused-vars
+    7:25  warning  'recordAction' is defined but never used. Allowed unused vars must match /^_/u      no-unused-vars
+    8:10  warning  'shouldIgnore' is defined but never used. Allowed unused vars must match /^_/u      no-unused-vars
+    9:10  warning  'toolHandlers' is defined but never used. Allowed unused vars must match /^_/u      no-unused-vars
+   47:24  warning  'context' is defined but never used. Allowed unused args must match /^_/u           no-unused-vars
+  309:15  warning  'ruleKey' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\server-diagnostics.js
+  177:15  warning  'analyzeCSharpFile' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\shared\streaming-utils.js
+  8:10  warning  'Readable' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\shared\vsdev-detector.js
+    6:20  warning  'spawn' is defined but never used. Allowed unused vars must match /^_/u                 no-unused-vars
+  440:11  warning  'vcxprojPath' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\shared\vsdev-executor.js
+   7:17  warning  'execSync' is defined but never used. Allowed unused vars must match /^_/u               no-unused-vars
+  10:10  warning  'existsSync' is defined but never used. Allowed unused vars must match /^_/u             no-unused-vars
+  11:10  warning  'createErrorResponse' is defined but never used. Allowed unused vars must match /^_/u    no-unused-vars
+  11:31  warning  'createSuccessResponse' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  12:10  warning  'detectVisualStudio' is defined but never used. Allowed unused vars must match /^_/u     no-unused-vars
+
+D:\SWEObeyMe-restored\lib\spec-driven-development.js
+  239:46  warning  'updateContent' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\startup-prompt-injector.js
+  22:10  warning  'CONSTITUTION' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\tool-arbitration.js
+  157:11  warning  'failures' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  194:31  warning  'attempt' is defined but never used. Allowed unused args must match /^_/u            no-unused-vars
+  234:11  warning  'failures' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\tool-governance.js
+   54:29  warning  'config' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+   62:27  warning  'config' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  110:27  warning  'context' is defined but never used. Allowed unused args must match /^_/u          no-unused-vars
+
+D:\SWEObeyMe-restored\lib\tool-transparency.js
+   32:61  warning  'context' is assigned a value but never used. Allowed unused args must match /^_/u  no-unused-vars
+  132:34  warning  'task' is defined but never used. Allowed unused args must match /^_/u              no-unused-vars
+
+D:\SWEObeyMe-restored\lib\tools\codebase-orientation-utils.js
+  26:60  warning  'projectRoot' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+  52:56  warning  'projectRoot' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\tools\comprehensive-error-handlers.js
+  32:11  warning  'results' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\tools\context-handlers.js
+  142:29  warning  'stderr' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\tools\cpp\bridge-handlers.js
+  12:10  warning  'restoreBackup' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\tools\csharp-handlers.js
+  21:3   warning  'analyzeCSharpFile' is defined but never used. Allowed unused vars must match /^_/u   no-unused-vars
+  22:3   warning  'getIntegrityReport' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  23:3   warning  'clearAnalysisCache' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  24:3   warning  'clearCaches' is defined but never used. Allowed unused vars must match /^_/u         no-unused-vars
+  25:3   warning  'errorRules' is defined but never used. Allowed unused vars must match /^_/u          no-unused-vars
+  27:10  warning  'internalAudit' is defined but never used. Allowed unused vars must match /^_/u       no-unused-vars
+  28:10  warning  'restoreBackup' is defined but never used. Allowed unused vars must match /^_/u       no-unused-vars
+  29:8   warning  'path' is defined but never used. Allowed unused vars must match /^_/u                no-unused-vars
+
+D:\SWEObeyMe-restored\lib\tools\docs-handlers.js
+  209:16  warning  'corpus' is assigned a value but never used. Allowed unused vars must match /^_/u       no-unused-vars
+  331:31  warning  'constraints' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  331:44  warning  'properties' is assigned a value but never used. Allowed unused vars must match /^_/u   no-unused-vars
+
+D:\SWEObeyMe-restored\lib\tools\godot-handlers.js
+    1:8   warning  'fs' is defined but never used. Allowed unused vars must match /^_/u                         no-unused-vars
+   54:16  warning  'getGodotVersion' is defined but never used. Allowed unused vars must match /^_/u            no-unused-vars
+  233:19  warning  'resourceId' is assigned a value but never used. Allowed unused vars must match /^_/u        no-unused-vars
+  280:9   warning  'expectedFolders' is assigned a value but never used. Allowed unused vars must match /^_/u   no-unused-vars
+  299:9   warning  'hasExportPresets' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\tools\godot-practices-handler.js
+   7:36  warning  'readdirSafe' is defined but never used. Allowed unused vars must match /^_/u               no-unused-vars
+  44:9   warning  'folderStructure' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\tools\handlers-audit.js
+   76:48  warning  'args' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+  111:50  warning  'args' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\tools\handlers-auto-enforcement.js
+    9:8   warning  'path' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+   68:54  warning  'args' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+  163:53  warning  'args' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+  211:48  warning  'args' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\tools\handlers-code-search-safe.js
+  13:31  warning  'searchFileUnlimited' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\tools\handlers-corpus.js
+  165:35  warning  'args' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\tools\handlers-error-test.js
+  10:42  warning  'args' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\tools\handlers-file-backup.js
+  10:10  warning  'toWindsurfUri' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  11:24  warning  'restoreBackup' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  12:10  warning  'internalAudit' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\tools\handlers-file-ops.js
+  14:27  warning  'fileInfoHandler' is defined but never used. Allowed unused vars must match /^_/u       no-unused-vars
+  61:38  warning  'raw_content' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\tools\handlers-file-read.js
+  10:31  warning  'readFileUnlimited' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  14:1   error    '../project.js' import is duplicated                                                 no-duplicate-imports
+  15:25  warning  'CONSTITUTION' is defined but never used. Allowed unused vars must match /^_/u       no-unused-vars
+  21:10  warning  'toWindsurfUri' is defined but never used. Allowed unused vars must match /^_/u      no-unused-vars
+  21:25  warning  'normalizePath' is defined but never used. Allowed unused vars must match /^_/u      no-unused-vars
+
+D:\SWEObeyMe-restored\lib\tools\handlers-file-write.js
+   7:8   warning  'path' is defined but never used. Allowed unused vars must match /^_/u                    no-unused-vars
+  13:24  warning  'BACKUP_DIR' is defined but never used. Allowed unused vars must match /^_/u              no-unused-vars
+  14:55  warning  'getBackupStatus' is defined but never used. Allowed unused vars must match /^_/u         no-unused-vars
+  14:72  warning  'quickRestore' is defined but never used. Allowed unused vars must match /^_/u            no-unused-vars
+  15:56  warning  'CONSTITUTION' is defined but never used. Allowed unused vars must match /^_/u            no-unused-vars
+  19:24  warning  'getProjectContract' is defined but never used. Allowed unused vars must match /^_/u      no-unused-vars
+  22:10  warning  'wasFileRecentlyWritten' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  22:34  warning  'checkForDuplicateWrite' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\tools\handlers-memory.js
+   56:9   error    Unexpected lexical declaration in case block                            no-case-declarations
+   67:9   error    Unexpected lexical declaration in case block                            no-case-declarations
+   72:9   error    Unexpected lexical declaration in case block                            no-case-declarations
+   77:9   error    Unexpected lexical declaration in case block                            no-case-declarations
+   82:9   error    Unexpected lexical declaration in case block                            no-case-declarations
+   87:9   error    Unexpected lexical declaration in case block                            no-case-declarations
+   98:9   error    Unexpected lexical declaration in case block                            no-case-declarations
+  179:36  warning  'args' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\tools\handlers-multi-agent.js
+  180:27  warning  'args' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+  269:33  warning  'args' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\tools\handlers-preflight.js
+   7:10  warning  'getPromptRegistry' is defined but never used. Allowed unused vars must match /^_/u       no-unused-vars
+  26:11  warning  'startTime' is assigned a value but never used. Allowed unused vars must match /^_/u      no-unused-vars
+  81:17  warning  'contextResult' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  92:17  warning  'impactResult' is assigned a value but never used. Allowed unused vars must match /^_/u   no-unused-vars
+
+D:\SWEObeyMe-restored\lib\tools\handlers-spec-driven.js
+   61:27  warning  'args' is defined but never used. Allowed unused args must match /^_/u             no-unused-vars
+  114:13  warning  'result' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  168:27  warning  'args' is defined but never used. Allowed unused args must match /^_/u             no-unused-vars
+
+D:\SWEObeyMe-restored\lib\tools\handlers-status.js
+  3:10  warning  'SurgicalWorkflow' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  3:28  warning  'activeWorkflows' is defined but never used. Allowed unused vars must match /^_/u   no-unused-vars
+
+D:\SWEObeyMe-restored\lib\tools\handlers-vsdev.js
+   21:3   warning  'listVsInstallations' is assigned a value but never used. Allowed unused vars must match /^_/u   no-unused-vars
+   28:3   warning  'executeVsDevCommand' is assigned a value but never used. Allowed unused vars must match /^_/u   no-unused-vars
+   29:3   warning  'executeMsBuild' is assigned a value but never used. Allowed unused vars must match /^_/u        no-unused-vars
+   30:3   warning  'executeClCompile' is assigned a value but never used. Allowed unused vars must match /^_/u      no-unused-vars
+   31:3   warning  'getVsEnvironmentVars' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+   32:3   warning  'isVsDevTool' is assigned a value but never used. Allowed unused vars must match /^_/u           no-unused-vars
+   33:3   warning  'validateVsCommand' is assigned a value but never used. Allowed unused vars must match /^_/u     no-unused-vars
+   39:39  warning  'args' is assigned a value but never used. Allowed unused args must match /^_/u                  no-unused-vars
+  176:11  warning  'installed' is assigned a value but never used. Allowed unused vars must match /^_/u             no-unused-vars
+
+D:\SWEObeyMe-restored\lib\tools\handlers-workflow.js
+  3:10  warning  'internalAudit' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\tools\handlers.js
+  24:13  warning  'projectAwarenessHandlers' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\tools\patreon-handlers.js
+    7:16  warning  'dirname' is defined but never used. Allowed unused vars must match /^_/u     no-unused-vars
+  267:20  warning  'apiKey' is defined but never used. Allowed unused args must match /^_/u      no-unused-vars
+  278:20  warning  'apiKey' is defined but never used. Allowed unused args must match /^_/u      no-unused-vars
+  289:20  warning  'apiKey' is defined but never used. Allowed unused args must match /^_/u      no-unused-vars
+  300:23  warning  'apiKey' is defined but never used. Allowed unused args must match /^_/u      no-unused-vars
+  347:26  warning  'focusAreas' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+  430:22  warning  'plan' is defined but never used. Allowed unused args must match /^_/u        no-unused-vars
+  454:22  warning  'plan' is defined but never used. Allowed unused args must match /^_/u        no-unused-vars
+  478:24  warning  'plan' is defined but never used. Allowed unused args must match /^_/u        no-unused-vars
+
+D:\SWEObeyMe-restored\lib\tools\project-awareness-handlers.js
+  141:51  warning  'params' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\tools\project-initialization-handlers.js
+   14:49  warning  'args' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+   44:44  warning  'args' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+   79:46  warning  'args' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+  114:46  warning  'args' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+  158:42  warning  'args' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\tools\project-map-handlers.js
+  12:38  warning  'args' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\tools\project-memory-handlers.js
+  51:49  warning  'args' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+  87:47  warning  'args' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\tools\project-task-handlers.js
+    8:3   warning  'PROJECT_TYPES' is defined but never used. Allowed unused vars must match /^_/u      no-unused-vars
+    9:3   warning  'PROJECT_RULE_SETS' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+   11:51  warning  'params' is defined but never used. Allowed unused args must match /^_/u             no-unused-vars
+   38:48  warning  'params' is defined but never used. Allowed unused args must match /^_/u             no-unused-vars
+   98:44  warning  'params' is defined but never used. Allowed unused args must match /^_/u             no-unused-vars
+  126:43  warning  'params' is defined but never used. Allowed unused args must match /^_/u             no-unused-vars
+  149:45  warning  'params' is defined but never used. Allowed unused args must match /^_/u             no-unused-vars
+  368:51  warning  'params' is defined but never used. Allowed unused args must match /^_/u             no-unused-vars
+  428:49  warning  'params' is defined but never used. Allowed unused args must match /^_/u             no-unused-vars
+
+D:\SWEObeyMe-restored\lib\tools\publish-validation-handlers.js
+   11:45  warning  'args' is defined but never used. Allowed unused args must match /^_/u              no-unused-vars
+   14:11  warning  'results' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+   32:48  warning  'args' is defined but never used. Allowed unused args must match /^_/u              no-unused-vars
+  105:46  warning  'args' is defined but never used. Allowed unused args must match /^_/u              no-unused-vars
+  163:45  warning  'args' is defined but never used. Allowed unused args must match /^_/u              no-unused-vars
+  207:52  warning  'args' is defined but never used. Allowed unused args must match /^_/u              no-unused-vars
+  267:46  warning  'args' is defined but never used. Allowed unused args must match /^_/u              no-unused-vars
+
+D:\SWEObeyMe-restored\lib\tools\refactoring\bracket-validator.js
+  18:49  warning  'filePath' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\tools\refactoring\refactoring-extract.js
+  22:3  warning  'buildDependencyGraph' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\tools\refactoring\refactoring-rename.js
+  11:8  warning  'path' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\tools\refactoring\refactoring-split.js
+  12:25  warning  'normalizePath' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\tools\refactoring\refactoring-utils.js
+  379:46  warning  'filePath' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\tools\registry-corpus.js
+  6:10  warning  'getDynamicToolRegistry' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\tools\registry-governance.js
+  6:10  warning  'GOVERNANCE_CONSTITUTION' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\tools\registry-project-awareness.js
+   8:3  warning  'detect_project_type_handler' is defined but never used. Allowed unused vars must match /^_/u    no-unused-vars
+   9:3  warning  'detect_project_switch_handler' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  10:3  warning  'get_current_project_handler' is defined but never used. Allowed unused vars must match /^_/u    no-unused-vars
+  11:3  warning  'validate_action_handler' is defined but never used. Allowed unused vars must match /^_/u        no-unused-vars
+  12:3  warning  'add_pending_task_handler' is defined but never used. Allowed unused vars must match /^_/u       no-unused-vars
+  13:3  warning  'get_project_rules_handler' is defined but never used. Allowed unused vars must match /^_/u      no-unused-vars
+  14:3  warning  'switch_project_handler' is defined but never used. Allowed unused vars must match /^_/u         no-unused-vars
+  15:3  warning  'add_project_warning_handler' is defined but never used. Allowed unused vars must match /^_/u    no-unused-vars
+  16:3  warning  'add_project_error_handler' is defined but never used. Allowed unused vars must match /^_/u      no-unused-vars
+  17:3  warning  'clear_pending_tasks_handler' is defined but never used. Allowed unused vars must match /^_/u    no-unused-vars
+  18:3  warning  'get_all_projects_handler' is defined but never used. Allowed unused vars must match /^_/u       no-unused-vars
+
+D:\SWEObeyMe-restored\lib\tools\safety-handlers.js
+   2:29  warning  'runRelatedTests' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  24:20  error    'check_test_coverage' is not defined                                               no-undef
+  26:20  error    'confirm_dangerous_operation' is not defined                                       no-undef
+  28:20  error    'check_for_repetitive_patterns' is not defined                                     no-undef
+  30:20  error    'run_related_tests' is not defined                                                 no-undef
+
+D:\SWEObeyMe-restored\lib\tools\version-tracker-handlers.js
+   11:42  warning  'args' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+   61:42  warning  'args' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+  140:45  warning  'args' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+  181:43  warning  'args' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+  210:44  warning  'args' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+  283:42  warning  'args' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+  331:36  warning  'args' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\ui\generators\admin-dashboard-html.js
+  19:39  warning  'webview' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\ui\generators\csharp-bridge-html.js
+  37:26  warning  'webview' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\ui\generators\settings-html.js
+  17:33  warning  'webview' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\ui\providers\cockpit-provider.js
+  20:3  warning  'saveState' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\ui\state-persistence.js
+  10:13  warning  'vscode' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\url-handler.js
+  72:9  error  Unexpected control character(s) in regular expression: \x00, \x1f  no-control-regex
+
+D:\SWEObeyMe-restored\lib\validation.js
+  275:77  warning  'lines' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\lib\workflow.js
+  167:25  warning  'scanResults' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\plugins\example-plugin.js
+  25:25  error    'params' is defined but never used. Allowed unused args must match /^_/u                 no-unused-vars
+  40:5   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+
+D:\SWEObeyMe-restored\qa\integration\windsurf-platform-compat.qa.test.js
+  29:53  warning  'vi' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\qa\property\enforcement-and-validation.qa.test.js
+  27:7  warning  'arbLineCount' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\qa\static\structural-lint.qa.test.js
+  142:7  warning  'pkg' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\scripts\diagnostic-audit.js
+  106:57  error  'docs_list_categories_handler' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  287:7   error  'mockWebview' is assigned a value but never used. Allowed unused vars must match /^_/u                   no-unused-vars
+  288:7   error  'mockVscode' is assigned a value but never used. Allowed unused vars must match /^_/u                    no-unused-vars
+
+D:\SWEObeyMe-restored\scripts\generate-icon.js
+  75:10  error  'drawLine' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\scripts\mcp-stress-test.js
+   21:10  error  'godot_lookup_handler' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+   43:22  error  Promise executor functions should not be async                                          no-async-promise-executor
+  138:13  error  'unifiedHandlers' is not defined                                                        no-undef
+  157:11  error  'math_lookup_handler' is not defined                                                    no-undef
+  171:11  error  'fdq_lookup_handler' is not defined                                                     no-undef
+  185:11  error  'training_lookup_handler' is not defined                                                no-undef
+
+D:\SWEObeyMe-restored\scripts\preflight-checklist.js
+  18:7  error  'checklist' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\scripts\preinstall-validation.js
+   57:22  error  Promise executor functions should not be async                                         no-async-promise-executor
+  327:11  error  'project' is assigned a value but never used. Allowed unused vars must match /^_/u     no-unused-vars
+  331:11  error  'rules' is assigned a value but never used. Allowed unused vars must match /^_/u       no-unused-vars
+  335:11  error  'validation' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\scripts\release-validation.js
+  118:9  error  'output' is assigned a value but never used. Allowed unused vars must match /^_/u       no-unused-vars
+  119:9  error  'errorOutput' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\test-github-history.js
+  11:1  warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  16:1  warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  17:1  warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  20:3  warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  21:3  warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  22:3  warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  23:3  warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  24:3  warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  25:3  warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  26:3  warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  27:3  warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  28:3  warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  31:5  warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  32:5  warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  33:5  warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  34:5  warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  35:5  warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  36:5  warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  37:5  warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  41:1  warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  42:1  warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  43:1  warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  44:1  warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+
+D:\SWEObeyMe-restored\test-github-upload.js
+  12:13  warning  'crypto' is defined but never used. Allowed unused vars must match /^_/u                 no-unused-vars
+  24:1   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  25:1   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  26:1   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  27:1   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  28:1   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  62:1   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  72:5   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  73:5   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  78:9   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  79:9   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  80:9   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  81:9   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  82:9   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  83:9   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  84:9   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+
+D:\SWEObeyMe-restored\test-mcp.cjs
+   8:7  error    'log' is assigned a value but never used. Allowed unused vars must match /^_/u           no-unused-vars
+  16:3  warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  22:7  warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  29:7  warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  30:7  warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  37:3  warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  51:3  warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  56:3  warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  57:3  warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+
+D:\SWEObeyMe-restored\test-tools\comprehensive-tool-tester.js
+   10:10  warning  'execSync' is defined but never used. Allowed unused vars must match /^_/u                      no-unused-vars
+   10:20  warning  'spawn' is defined but never used. Allowed unused vars must match /^_/u                         no-unused-vars
+   28:7   warning  'TEST_CONFIG' is assigned a value but never used. Allowed unused vars must match /^_/u          no-unused-vars
+  163:16  warning  'createBinaryTestFiles' is defined but never used. Allowed unused vars must match /^_/u         no-unused-vars
+  250:7   warning  'lineCount' is assigned a value but never used. Allowed unused vars must match /^_/u            no-unused-vars
+  297:11  warning  'init' is assigned a value but never used. Allowed unused vars must match /^_/u                 no-unused-vars
+  409:5   warning  'extractDocumentText' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  410:5   warning  'DOCUMENT_TYPES' is assigned a value but never used. Allowed unused vars must match /^_/u       no-unused-vars
+
+D:\SWEObeyMe-restored\test-tools\edge-case-fuzzer.js
+    7:26  warning  'createWriteStream' is defined but never used. Allowed unused vars must match /^_/u             no-unused-vars
+    9:8   warning  'crypto' is defined but never used. Allowed unused vars must match /^_/u                        no-unused-vars
+   68:7   error    Unexpected lexical declaration in case block                                                    no-case-declarations
+  181:40  error    Unexpected control character(s) in regular expression: \x00, \x1f                               no-control-regex
+  185:13  warning  'detected' is assigned a value but never used. Allowed unused vars must match /^_/u             no-unused-vars
+  210:15  warning  'result' is assigned a value but never used. Allowed unused vars must match /^_/u               no-unused-vars
+  239:16  warning  'fuzzStreamingReader' is defined but never used. Allowed unused vars must match /^_/u           no-unused-vars
+  340:5   warning  'validateVsCommand' is assigned a value but never used. Allowed unused vars must match /^_/u    no-unused-vars
+  341:5   warning  'executeVsDevCommand' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  379:13  warning  'isTool' is assigned a value but never used. Allowed unused vars must match /^_/u               no-unused-vars
+  415:15  warning  'name' is assigned a value but never used. Allowed unused vars must match /^_/u                 no-unused-vars
+
+D:\SWEObeyMe-restored\test-tools\hang-prevention-tester.js
+  10:10  warning  'execSync' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\test-tools\test-error-detection.js
+  6:42  warning  'getErrorDetectionSystem' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  6:67  warning  'ERROR_TYPES' is defined but never used. Allowed unused vars must match /^_/u              no-unused-vars
+
+D:\SWEObeyMe-restored\test-tools\test-governance-system.js
+   6:38  warning  'getGovernanceSystem' is defined but never used. Allowed unused vars must match /^_/u   no-unused-vars
+  57:11  warning  'explanation' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\test-tools\test-prompts-comprehensive.js
+  241:11  warning  'registry' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\test-tools\test-prompts-integration.js
+   6:36  warning  'getPromptRegistry' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  41:11  warning  'registry' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\test-tools\test-prompts-mcp-protocol.js
+    6:36  warning  'getPromptRegistry' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  154:11  warning  'response' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\test-tools\test-prompts-timing.js
+   6:36  warning  'getPromptRegistry' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  40:11  warning  'registry' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  77:11  warning  'registry' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  97:11  warning  'registry' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\test-tools\test-safe-file-ops.js
+  6:55  warning  'THRESHOLDS' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\test-tools\test-utils.js
+    8:8  warning  'crypto' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  196:7  error    Unexpected lexical declaration in case block                              no-case-declarations
+  200:7  error    Unexpected lexical declaration in case block                              no-case-declarations
+
+D:\SWEObeyMe-restored\tests\backend-mcp-concurrency.js
+  6:10  warning  'spawn' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\tests\backend-mcp-file-system-safety.js
+  268:15  warning  'normalized' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\tests\backend-mcp-schema-validation.js
+    6:10  warning  'spawn' is defined but never used. Allowed unused vars must match /^_/u                     no-unused-vars
+   79:13  warning  'testPayload' is assigned a value but never used. Allowed unused vars must match /^_/u      no-unused-vars
+  114:13  warning  'testPayload' is assigned a value but never used. Allowed unused vars must match /^_/u      no-unused-vars
+  146:18  warning  'test' is assigned a value but never used. Allowed unused vars must match /^_/u             no-unused-vars
+  167:13  warning  'nullTests' is assigned a value but never used. Allowed unused vars must match /^_/u        no-unused-vars
+  188:13  warning  'largeString' is assigned a value but never used. Allowed unused vars must match /^_/u      no-unused-vars
+  191:13  warning  'veryLargeString' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  194:13  warning  'largeArray' is assigned a value but never used. Allowed unused vars must match /^_/u       no-unused-vars
+
+D:\SWEObeyMe-restored\tests\chaos-engineering.js
+  6:10  warning  'spawn' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  7:8   warning  'fs' is defined but never used. Allowed unused vars must match /^_/u     no-unused-vars
+
+D:\SWEObeyMe-restored\tests\chaos-tester.js
+  128:25  error  Do not access Object.prototype method 'hasOwnProperty' from target object  no-prototype-builtins
+  156:21  error  Do not access Object.prototype method 'hasOwnProperty' from target object  no-prototype-builtins
+  180:21  error  Do not access Object.prototype method 'hasOwnProperty' from target object  no-prototype-builtins
+  230:22  error  Do not access Object.prototype method 'hasOwnProperty' from target object  no-prototype-builtins
+  254:21  error  Do not access Object.prototype method 'hasOwnProperty' from target object  no-prototype-builtins
+
+D:\SWEObeyMe-restored\tests\enterprise\boundary-tests.js
+  296:53  warning  'userPermissions' is assigned a value but never used. Allowed unused vars must match /^_/u   no-unused-vars
+  330:23  warning  'method' is assigned a value but never used. Allowed unused vars must match /^_/u            no-unused-vars
+  361:34  warning  'responsibilities' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\tests\enterprise\cross-platform-runner.js
+  16:45  error  Parsing error: Unexpected token assert
+
+D:\SWEObeyMe-restored\tests\enterprise\github-governance.js
+  166:11  warning  'rules' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  431:20  warning  'prNumber' is defined but never used. Allowed unused args must match /^_/u        no-unused-vars
+  436:22  warning  'prNumber' is defined but never used. Allowed unused args must match /^_/u        no-unused-vars
+  484:22  warning  'prNumber' is defined but never used. Allowed unused args must match /^_/u        no-unused-vars
+  488:37  warning  'feedback' is defined but never used. Allowed unused args must match /^_/u        no-unused-vars
+  492:26  warning  'prNumber' is defined but never used. Allowed unused args must match /^_/u        no-unused-vars
+  496:29  warning  'prNumber' is defined but never used. Allowed unused args must match /^_/u        no-unused-vars
+  500:29  warning  'prNumber' is defined but never used. Allowed unused args must match /^_/u        no-unused-vars
+
+D:\SWEObeyMe-restored\tests\enterprise\lunch-break-suite.js
+  436:25  warning  'refactorResult' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+  440:19  warning  'refactorResult' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\tests\fuzzer-filesystem.js
+  227:13  warning  'hugeSize' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\tests\fuzzer-generated\fuzz_transport_fuzzer_unknown_1777221090903.js
+  23:68  error  Parsing error: Unexpected token e
+
+D:\SWEObeyMe-restored\tests\fuzzer-generated\fuzz_transport_fuzzer_unknown_1777221090906.js
+  23:68  error  Parsing error: Unexpected token e
+
+D:\SWEObeyMe-restored\tests\fuzzer-generic-runtime.js
+  152:22  warning  'description' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  278:22  warning  'description' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  362:22  warning  'description' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\tests\fuzzer-test-generator.js
+  67:30  warning  'message' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\tests\fuzzer-windsurf-runtime.js
+  193:22  warning  'description' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  329:22  warning  'description' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  431:22  warning  'description' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\tests\github-actions-error-detection.js
+  28:10  warning  'execSync' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  30:1   error    'url' import is duplicated                                                  no-duplicate-imports
+
+D:\SWEObeyMe-restored\tests\integration-tester.js
+   49:21  error  Do not access Object.prototype method 'hasOwnProperty' from target object  no-prototype-builtins
+   57:21  error  Do not access Object.prototype method 'hasOwnProperty' from target object  no-prototype-builtins
+   75:17  error  Do not access Object.prototype method 'hasOwnProperty' from target object  no-prototype-builtins
+   98:19  error  Do not access Object.prototype method 'hasOwnProperty' from target object  no-prototype-builtins
+  119:17  error  Do not access Object.prototype method 'hasOwnProperty' from target object  no-prototype-builtins
+  136:17  error  Do not access Object.prototype method 'hasOwnProperty' from target object  no-prototype-builtins
+  153:17  error  Do not access Object.prototype method 'hasOwnProperty' from target object  no-prototype-builtins
+  172:17  error  Do not access Object.prototype method 'hasOwnProperty' from target object  no-prototype-builtins
+
+D:\SWEObeyMe-restored\tests\marketplace-packaging.js
+  49:13  warning  'ignorePatterns' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\tests\mcp-integration.js
+  119:13  warning  'result' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\tests\mcp-protocol-compliance.js
+  111:7  warning  'stderrBuffer' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\tests\multi-agent-orchestration.js
+  6:8  warning  'fs' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\tests\router-tester.js
+   71:19  error  Do not access Object.prototype method 'hasOwnProperty' from target object  no-prototype-builtins
+  149:17  error  Do not access Object.prototype method 'hasOwnProperty' from target object  no-prototype-builtins
+  150:17  error  Do not access Object.prototype method 'hasOwnProperty' from target object  no-prototype-builtins
+  151:17  error  Do not access Object.prototype method 'hasOwnProperty' from target object  no-prototype-builtins
+  152:17  error  Do not access Object.prototype method 'hasOwnProperty' from target object  no-prototype-builtins
+
+D:\SWEObeyMe-restored\tests\run-all-tests.js
+  99:13  warning  'passed' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\tests\safety-tester.js
+  202:17  error  Do not access Object.prototype method 'hasOwnProperty' from target object  no-prototype-builtins
+  203:17  error  Do not access Object.prototype method 'hasOwnProperty' from target object  no-prototype-builtins
+
+D:\SWEObeyMe-restored\tests\test-mcp-config.js
+   11:8   warning  'os' is defined but never used. Allowed unused vars must match /^_/u      no-unused-vars
+   91:30  warning  'config' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+  107:27  warning  'config' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+  123:32  warning  'config' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+  139:34  warning  'config' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+  155:35  warning  'config' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\tests\test-pre-release-validation.js
+  12:10  warning  'execSync' is defined but never used. Allowed unused vars must match /^_/u              no-unused-vars
+  52:9   warning  'packageJson' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\tests\test-tool-registration.js
+  38:62  warning  'name' is defined but never used. Allowed unused args must match /^_/u   no-unused-vars
+  50:5   warning  'name' is defined but never used. Allowed unused args must match /^_/u   no-unused-vars
+  97:37  warning  'index' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\tests\ui-ide-integration.js
+  326:15  warning  'temp' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  613:19  warning  'id' is assigned a value but never used. Allowed unused vars must match /^_/u    no-unused-vars
+
+D:\SWEObeyMe-restored\tests\unit\session-state.property.test.js
+  10:24  warning  'expect' is defined but never used. Allowed unused vars must match /^_/u           no-unused-vars
+  21:3   warning  'getSessionState' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\tests\unit\session-state.test.js
+  11:3   warning  'saveSessionState' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+  67:21  warning  'sessionState' is not defined                                                       no-undef
+  67:35  warning  'defaultState' is not defined                                                       no-undef
+
+D:\SWEObeyMe-restored\tests\user-experience-safety.js
+  539:13  warning  'temp' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\tests\validation-layer-tester.js
+   14:41  warning  'getAllConfig' is defined but never used. Allowed unused vars must match /^_/u  no-unused-vars
+   16:8   warning  'path' is defined but never used. Allowed unused vars must match /^_/u          no-unused-vars
+  135:17  error    Do not access Object.prototype method 'hasOwnProperty' from target object       no-prototype-builtins
+  136:17  error    Do not access Object.prototype method 'hasOwnProperty' from target object       no-prototype-builtins
+  137:17  error    Do not access Object.prototype method 'hasOwnProperty' from target object       no-prototype-builtins
+  138:17  error    Do not access Object.prototype method 'hasOwnProperty' from target object       no-prototype-builtins
+
+D:\SWEObeyMe-restored\tests\validation-layer\index.js
+   87:11  warning  'category' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+   88:11  warning  'status' is assigned a value but never used. Allowed unused vars must match /^_/u    no-unused-vars
+  141:32  warning  'result' is defined but never used. Allowed unused args must match /^_/u             no-unused-vars
+
+D:\SWEObeyMe-restored\tests\windsurf-runtime-behavior.js
+  462:15  warning  'temp' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\windsurf-rig\simulators\config-loader.js
+    8:36  error    'writeFileSync' is defined but never used. Allowed unused vars must match /^_/u          no-unused-vars
+   35:5   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+   64:5   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  130:7   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  133:7   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  181:17  error    'serverName' is assigned a value but never used. Allowed unused vars must match /^_/u    no-unused-vars
+  216:17  error    'serverName' is assigned a value but never used. Allowed unused vars must match /^_/u    no-unused-vars
+  230:21  error    'key' is assigned a value but never used. Allowed unused vars must match /^_/u           no-unused-vars
+  289:13  error    'config' is assigned a value but never used. Allowed unused vars must match /^_/u        no-unused-vars
+  496:21  error    'key' is assigned a value but never used. Allowed unused vars must match /^_/u           no-unused-vars
+
+D:\SWEObeyMe-restored\windsurf-rig\simulators\path-normalization.js
+   26:5   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+   49:5   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+   97:7   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  100:7   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  220:17  error    'serverName' is assigned a value but never used. Allowed unused vars must match /^_/u    no-unused-vars
+
+D:\SWEObeyMe-restored\windsurf-rig\simulators\race-conditions.js
+   7:16  error    'dirname' is defined but never used. Allowed unused vars must match /^_/u                no-unused-vars
+   8:74  error    'rmdirSync' is defined but never used. Allowed unused vars must match /^_/u              no-unused-vars
+  35:5   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  54:5   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  90:7   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  93:7   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+
+D:\SWEObeyMe-restored\windsurf-rig\simulators\server-startup.js
+    8:10  error    'existsSync' is defined but never used. Allowed unused vars must match /^_/u                     no-unused-vars
+    8:22  error    'readFileSync' is defined but never used. Allowed unused vars must match /^_/u                   no-unused-vars
+   29:5   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info          no-console
+   51:5   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info          no-console
+   96:7   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info          no-console
+   99:7   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info          no-console
+  153:11  error    'stderr' is assigned a value but never used. Allowed unused vars must match /^_/u                no-unused-vars
+  222:11  error    'expectedResponse' is assigned a value but never used. Allowed unused vars must match /^_/u      no-unused-vars
+  241:11  error    'expectedToolSchema' is assigned a value but never used. Allowed unused vars must match /^_/u    no-unused-vars
+  257:11  error    'expectedServerInfo' is assigned a value but never used. Allowed unused vars must match /^_/u    no-unused-vars
+  268:11  error    'expectedCapabilities' is assigned a value but never used. Allowed unused vars must match /^_/u  no-unused-vars
+
+D:\SWEObeyMe-restored\windsurf-rig\simulators\startup-sequence.js
+   28:5  warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+   55:5  warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  115:7  warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  118:7  warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+
+D:\SWEObeyMe-restored\windsurf-rig\simulators\tool-invocation.js
+   8:10  error    'spawn' is defined but never used. Allowed unused vars must match /^_/u                  no-unused-vars
+  28:5   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  49:5   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  91:7   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  94:7   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+
+D:\SWEObeyMe-restored\windsurf-rig\simulators\tool-schema.js
+    8:10  error    'readFileSync' is defined but never used. Allowed unused vars must match /^_/u           no-unused-vars
+   28:5   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+   51:5   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+   99:7   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  102:7   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  341:19  error    'propName' is assigned a value but never used. Allowed unused vars must match /^_/u      no-unused-vars
+
+D:\SWEObeyMe-restored\windsurf-rig\windsurf-rig.js
+   10:48  error    'readFileSync' is defined but never used. Allowed unused vars must match /^_/u           no-unused-vars
+   37:5   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+   38:5   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+   50:5   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+   54:5   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+   67:7   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+   92:5   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  122:7   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  156:5   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  172:5   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  173:5   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  174:5   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  175:5   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  176:5   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  177:5   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  178:5   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  179:5   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  180:5   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  181:5   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  184:7   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  189:7   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  196:5   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  197:5   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  198:5   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  201:7   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  202:7   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  203:7   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  204:7   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  205:7   warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  210:11  warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+  212:13  warning  Unexpected console statement. Only these console methods are allowed: error, warn, info  no-console
+
+Γ£û 659 problems (117 errors, 542 warnings)
+
