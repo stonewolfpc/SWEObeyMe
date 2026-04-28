@@ -2,6 +2,12 @@
 
 All notable changes to SWEObeyMe will be documented in this file.
 
+## [5.0.32] - 2026-04-28
+
+### Bug Fixes
+
+- Tool hang fixed and hopefully mcp server crash fixed
+
 ## [5.0.31] - 2026-04-27
 
 ### Bug Fixes
@@ -20,12 +26,14 @@ All notable changes to SWEObeyMe will be documented in this file.
 ### Bug Fixes - UI Robustness and Error Recovery
 
 **postMessage Error Handling (Prevents Extension Host Crashes):**
+
 - Added try-catch around all webview.postMessage calls in cockpit-provider.js
 - Added try-catch around all webview.postMessage calls in webview-provider-factory.js
 - Added try-catch around postMessage in csharp-settings-provider.js
 - Prevents crashes when webview is disposed during message delivery
 
 **Extension Command Handler Error Recovery:**
+
 - Wrapped all extension command handlers in try-catch with user error messages
 - Commands: checkpoint.create, checkpoint.list, checkpoint.revert, checkpoint.delete
 - Commands: showMenu, csharpSettings, openCSharpSettings, analyzeCSharp, analyzeCpp
@@ -33,6 +41,7 @@ All notable changes to SWEObeyMe will be documented in this file.
 - Prevents command failures from crashing the extension
 
 **HTTP Request Timeout Protection (Prevents Indefinite Hangs):**
+
 - Added 10-second timeout to webhook HTTP request in extension.js reportError
 - Added 30-second timeout to GitHub API HTTPS request in github-issue-creator.js
 - Added 30-second timeout to webhook POST request in github-issue-creator.js
@@ -40,6 +49,7 @@ All notable changes to SWEObeyMe will be documented in this file.
 - Prevents indefinite hangs on slow/unresponsive network endpoints
 
 **File Operation Timeout Protection:**
+
 - Added 30-second timeout to eslint execAsync in comprehensive-error-detection.js
 - Added 30-second timeout to prettier execAsync in comprehensive-error-detection.js
 - Added 30-second timeout to tsc execAsync in comprehensive-error-detection.js
@@ -55,18 +65,21 @@ All notable changes to SWEObeyMe will be documented in this file.
 ### New Features - Issue Read/Unread Tracking
 
 **Issue Tracking System:**
+
 - Added read/unread state tracking for issues synced from GitHub
 - Added markIssueRead, markIssueUnread, isIssueRead, getUnreadIssues, getUnreadCount functions to github-issue-creator.js
 - Read state persisted to .sweobeyme-issue-tracker.json across sessions
 - Enables users to track which issues they've reviewed
 
 **Cockpit UI Integration:**
+
 - Added unread count badge to GitHub Integration section in cockpit
 - Added "Mark Read" button to each issue in issue history
 - Added markIssueRead message handler in cockpit-provider.js
 - Unread count updates in real-time without window reload
 
 **Error Reporting Tools (AI-Accessible):**
+
 - Created error-reporting-handlers.js with tools for error reporting without GitHub
 - Handlers: get_error_logs, get_issue_history, send_error_to_webhook
 - Handlers: mark_issue_read, mark_issue_unread, get_unread_issues, get_unread_count, get_webhook_url
