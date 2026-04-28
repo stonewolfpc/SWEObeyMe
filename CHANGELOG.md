@@ -2,6 +2,12 @@
 
 All notable changes to SWEObeyMe will be documented in this file.
 
+## [5.0.31] - 2026-04-27
+
+### Bug Fixes
+
+- Fixed all lint errors and warnings (0 errors, 0 warnings)
+
 ## [5.0.30] - 2026-04-27
 
 ### Bug Fixes
