@@ -1,6 +1,6 @@
 # SWEObeyMe MCP Server
 
-[![Version](https://img.shields.io/badge/version-5.0.32-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-5.1.0-blue.svg)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/license-Dual--License-yellow.svg)](LICENSE)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-green.svg)](https://nodejs.org)
 [![VS Code](https://img.shields.io/badge/VS%20Code-Extension-purple.svg)](https://marketplace.visualstudio.com)
@@ -19,6 +19,8 @@
 > It's been awesome building this for you guys, but I built it for me first.
 >
 > Just install the server, tell the ai "Use SWEObeyMe tools" and then your usual instructions. The ai will automatically start using the MCP server! Governance, anti drift, anti vibe, full ENGINEERING level support. Leave me some feedback, I want to know if this works for you, I want to know if it doesn't!
+>
+> Error tracking is finally live, so when your install goes sideways, it should tell me and I can fix it for you, FINALLY.
 
 ---
 

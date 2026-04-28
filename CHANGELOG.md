@@ -2,6 +2,19 @@
 
 All notable changes to SWEObeyMe will be documented in this file.
 
+## [5.1.0] - 2026-04-28
+
+### Features
+
+- **External Dependency Health Sentinel** - Comprehensive monitoring of NPM packages, system tools (git, dotnet, clangd, clang-tidy, cppcheck), MCP SDK health, Node.js environment health, and clangd LSP channel health with loud, tagged error attribution
+- **Windsurf MCP Config Validator** - Validates Windsurf's mcp_config.json schema, file:/// URIs, entrypoints, and paths with fast-fail on invalid config (exit code 42)
+- **Windsurf MCP Config Polygraph** - Core module with load/validate/repair functions, sweobeyme-doctor CLI for manual diagnostics, and test phase integration
+- **Error Tracking Pipeline** - Full error attribution with distinct error codes across all monitoring systems, eliminating silent failures in the Windsurf → MCP → Runtime chain
+
+### Bug Fixes
+
+- Tool hang fixed and hopefully mcp server crash fixed
+
 ## [5.0.32] - 2026-04-28
 
 ### Bug Fixes

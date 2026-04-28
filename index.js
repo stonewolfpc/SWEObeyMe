@@ -12,10 +12,12 @@ import os from 'os';
 import crypto from 'crypto';
 import { fileURLToPath } from 'url';
 import path from 'path';
+import { fork } from 'child_process';
 import {
   validateWindsurfMcpConfig,
   getWindsurfConfigPath,
 } from './lib/health/validate-windsurf-mcp-config.js';
+import { registerError } from './lib/health/error-registry.js';
 
 // Fast-fail: Validate Windsurf MCP config before anything else
 const configPath = getWindsurfConfigPath();
@@ -429,16 +431,41 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
   // Initialize proactive voice system
   const proactiveVoice = getProactiveVoice();
 
-  // Run dependency health check on startup
-  checkAllDependencies();
-  printHealthReport('External Dependency Health (Startup)');
+  // Spawn external dependency checker process (non-blocking)
+  const checkerPath = path.resolve(__dirname, 'dependency-checker.js');
+  let checker = fork(checkerPath, [], { stdio: ['pipe', 'pipe', 'pipe', 'ipc'] });
 
-  // Periodic dependency rechecks every 5 minutes (catches mid-session corruption)
-  const PERIODIC_CHECK_INTERVAL_MS = 5 * 60 * 1000; // 5 minutes
-  setInterval(() => {
-    checkAllDependencies();
-    printHealthReport('External Dependency Health (Periodic)');
-  }, PERIODIC_CHECK_INTERVAL_MS);
+  checker.on('message', (msg) => {
+    if (msg.type === 'dependency-health') {
+      for (const [tool, result] of Object.entries(msg.results)) {
+        if (!result.ok) {
+          registerError({
+            code: `ERR-DEPENDENCY-${tool.toUpperCase()}`,
+            message: `${tool} failed health check`,
+            detail: result.error || result.stderr || result.stdout,
+            source: 'dependency-checker',
+            severity: 'error',
+          });
+        }
+      }
+    }
+  });
+
+  checker.on('exit', () => {
+    registerError({
+      code: 'ERR-DEPENDENCY-CHECKER-CRASH',
+      message: 'Dependency checker crashed and was restarted',
+      source: 'dependency-checker',
+      severity: 'error',
+    });
+
+    setTimeout(() => {
+      checker = fork(checkerPath, [], { stdio: ['pipe', 'pipe', 'pipe', 'ipc'] });
+    }, 1000);
+  });
+
+  // Run once at startup
+  checker.send('run-once');
 
   // Initialize server diagnostics
   const diagnostics = getServerDiagnostics();
