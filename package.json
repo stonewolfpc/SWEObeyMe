@@ -7,6 +7,9 @@
   "publisher": "stonewolfpc",
   "icon": "icon.png",
   "main": "dist/extension.js",
+  "bin": {
+    "sweobeyme-doctor": "bin/sweobeyme-doctor.js"
+  },
   "engines": {
     "vscode": "^1.61.0"
   },

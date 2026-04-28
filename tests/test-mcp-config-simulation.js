@@ -9,6 +9,11 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import os from 'os';
+import {
+  loadConfig,
+  validateConfig,
+  getWindsurfConfigPath,
+} from '../lib/health/validate-windsurf-mcp-config.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -310,6 +315,114 @@ function testEnvironmentVariables() {
 }
 
 /**
+ * Windsurf MCP Config Polygraph Test Phase
+ * Validates the actual Windsurf MCP config using the core validator
+ */
+function testWindsurfMcpConfigPolygraph() {
+  const testName = 'Windsurf MCP Config Polygraph';
+  try {
+    const configPath = getWindsurfConfigPath();
+
+    // Load config
+    const { config, issues: loadIssues } = loadConfig(configPath);
+
+    const configFileExists = config !== null;
+    const configJsonValid = !loadIssues.some((i) => i.code === 'ERR-MCP-CONFIG-JSON');
+
+    recordTest(
+      `${testName}: configFileExists`,
+      configFileExists,
+      configFileExists ? '' : 'Config file not found or unreadable'
+    );
+    recordTest(
+      `${testName}: configJsonValid`,
+      configJsonValid,
+      configJsonValid ? '' : 'Config JSON is malformed'
+    );
+
+    if (!configFileExists) {
+      return;
+    }
+
+    // Validate config
+    const validationIssues = validateConfig(configPath, config);
+
+    const mcpServersPresent = config.mcpServers && typeof config.mcpServers === 'object';
+    const sweObeyMeEntryPresent = config.mcpServers && config.mcpServers['swe-obey-me'];
+    const noCriticalIssues = !validationIssues.some(
+      (i) =>
+        i.code === 'ERR-MCP-CONFIG-MISSING-MCP-SERVERS' ||
+        i.code === 'ERR-MCP-CONFIG-MISSING-COMMAND' ||
+        i.code === 'ERR-MCP-CONFIG-MISSING-ARGS' ||
+        i.code === 'ERR-MCP-CONFIG-ENTRYPOINT-NOT-FOUND'
+    );
+
+    recordTest(
+      `${testName}: mcpServersPresent`,
+      mcpServersPresent,
+      mcpServersPresent ? '' : 'mcpServers object missing'
+    );
+    recordTest(
+      `${testName}: swe-obey-meEntryPresent`,
+      sweObeyMeEntryPresent,
+      sweObeyMeEntryPresent ? '' : 'swe-obey-me entry missing'
+    );
+
+    if (sweObeyMeEntryPresent) {
+      const server = config.mcpServers['swe-obey-me'];
+      const commandValid = !!server.command;
+      const argsValid = Array.isArray(server.args) && server.args.length > 0;
+      const disabledFlagValid =
+        server.disabled === undefined || typeof server.disabled === 'boolean';
+
+      recordTest(
+        `${testName}: commandValid`,
+        commandValid,
+        commandValid ? '' : 'command field missing'
+      );
+      recordTest(
+        `${testName}: argsValid`,
+        argsValid,
+        argsValid ? '' : 'args array missing or empty'
+      );
+      recordTest(
+        `${testName}: disabledFlagValid`,
+        disabledFlagValid,
+        disabledFlagValid ? '' : 'disabled flag invalid'
+      );
+
+      if (argsValid) {
+        const entry = server.args[server.args.length - 1];
+        const entrypointUriValid = entry.startsWith('file:///') && !entry.includes('\\');
+        recordTest(
+          `${testName}: entrypointUriValid`,
+          entrypointUriValid,
+          entrypointUriValid ? '' : 'Entrypoint not a valid file:/// URI'
+        );
+
+        if (entrypointUriValid) {
+          const localPath = entry.replace('file:///', '');
+          const entrypointFileExists = fs.existsSync(localPath);
+          recordTest(
+            `${testName}: entrypointFileExists`,
+            entrypointFileExists,
+            entrypointFileExists ? '' : `Entrypoint file not found: ${localPath}`
+          );
+        }
+      }
+    }
+
+    recordTest(
+      `${testName}: noCriticalIssues`,
+      noCriticalIssues,
+      noCriticalIssues ? '' : 'Critical config issues detected'
+    );
+  } catch (error) {
+    recordTest(testName, false, error.message);
+  }
+}
+
+/**
  * Run all tests
  */
 function runAllTests() {
@@ -322,6 +435,7 @@ function runAllTests() {
   testMacInstallation();
   testAtomicWrite();
   testEnvironmentVariables();
+  testWindsurfMcpConfigPolygraph();
 
   // Print summary
   log('\n=== Test Summary ===\n', 'info');
