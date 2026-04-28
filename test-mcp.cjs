@@ -5,7 +5,7 @@ const child = spawn('node', ['dist/mcp/server.js'], { stdio: ['pipe', 'pipe', 'p
 
 let output = '';
 let initialized = false;
-const log = (msg) => {
+const _log = (msg) => {
   output += msg + '\n';
   fs.appendFileSync('test-mcp-output.txt', msg + '\n');
 };

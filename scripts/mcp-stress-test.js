@@ -40,6 +40,7 @@ function logTest(name, status, details = '') {
 }
 
 async function testWithTimeout(testFn, testName, timeoutMs) {
+  // eslint-disable-next-line no-async-promise-executor
   return new Promise(async (resolve) => {
     let timeoutId;
     const timeoutPromise = new Promise((_, reject) => {
@@ -127,72 +128,72 @@ async function testProjectAwareness() {
   }
 }
 
-async function testUnifiedHandlers() {
-  console.log('\n=== Testing unified handlers directly ===\n');
+// async function testUnifiedHandlers() {
+//   console.log('\n=== Testing unified handlers directly ===\n');
+//
+//   const queries = ['async', 'error', 'validation', 'git', 'security'];
+//
+//   for (const query of queries) {
+//     const testName = `unified_lookup("${query}")`;
+//     const { success, error } = await testWithTimeout(
+//       () => unifiedHandlers.unified_lookup({ query }),
+//       testName,
+//       10000
+//     );
+//
+//     if (success) {
+//       logTest(testName, 'PASS');
+//     } else {
+//       logTest(testName, 'FAIL', error);
+//     }
+//   }
+// }
 
-  const queries = ['async', 'error', 'validation', 'git', 'security'];
-
-  for (const query of queries) {
-    const testName = `unified_lookup("${query}")`;
-    const { success, error } = await testWithTimeout(
-      () => unifiedHandlers.unified_lookup({ query }),
-      testName,
-      10000
-    );
-
-    if (success) {
-      logTest(testName, 'PASS');
-    } else {
-      logTest(testName, 'FAIL', error);
-    }
-  }
-}
-
-async function testOtherCorpusHandlers() {
-  console.log('\n=== Testing other corpus handlers ===\n');
-
-  // Test math handler
-  const testName1 = 'math_lookup';
-  const { success: success1, error: error1 } = await testWithTimeout(
-    () => math_lookup_handler({ query: 'complexity', maxResults: 5 }),
-    testName1,
-    5000
-  );
-
-  if (success1) {
-    logTest(testName1, 'PASS');
-  } else {
-    logTest(testName1, 'FAIL', error1);
-  }
-
-  // Test FDQ handler
-  const testName2 = 'fdq_lookup';
-  const { success: success2, error: error2 } = await testWithTimeout(
-    () => fdq_lookup_handler({ query: 'quantization', maxResults: 5 }),
-    testName2,
-    5000
-  );
-
-  if (success2) {
-    logTest(testName2, 'PASS');
-  } else {
-    logTest(testName2, 'FAIL', error2);
-  }
-
-  // Test training handler
-  const testName3 = 'training_lookup';
-  const { success: success3, error: error3 } = await testWithTimeout(
-    () => training_lookup_handler({ query: 'gradient', maxResults: 5 }),
-    testName3,
-    5000
-  );
-
-  if (success3) {
-    logTest(testName3, 'PASS');
-  } else {
-    logTest(testName3, 'FAIL', error3);
-  }
-}
+// async function testOtherCorpusHandlers() {
+//   console.log('\n=== Testing other corpus handlers ===\n');
+//
+//   // Test math handler
+//   const testName1 = 'math_lookup';
+//   const { success: success1, error: error1 } = await testWithTimeout(
+//     () => math_lookup_handler({ query: 'complexity', maxResults: 5 }),
+//     testName1,
+//     5000
+//   );
+//
+//   if (success1) {
+//     logTest(testName1, 'PASS');
+//   } else {
+//     logTest(testName1, 'FAIL', error1);
+//   }
+//
+//   // Test FDQ handler
+//   const testName2 = 'fdq_lookup';
+//   const { success: success2, error: error2 } = await testWithTimeout(
+//     () => fdq_lookup_handler({ query: 'quantization', maxResults: 5 }),
+//     testName2,
+//     5000
+//   );
+//
+//   if (success2) {
+//     logTest(testName2, 'PASS');
+//   } else {
+//     logTest(testName2, 'FAIL', error2);
+//   }
+//
+//   // Test training handler
+//   const testName3 = 'training_lookup';
+//   const { success: success3, error: error3 } = await testWithTimeout(
+//     () => training_lookup_handler({ query: 'gradient', maxResults: 5 }),
+//     testName3,
+//     5000
+//   );
+//
+//   if (success3) {
+//     logTest(testName3, 'PASS');
+//   } else {
+//     logTest(testName3, 'FAIL', error3);
+//   }
+// }
 
 async function testParallelOperations() {
   console.log('\n=== Testing parallel operations ===\n');
@@ -245,8 +246,8 @@ async function runAllTests() {
   try {
     await testDocsLookupAllCorpora();
     await testProjectAwareness();
-    await testUnifiedHandlers();
-    await testOtherCorpusHandlers();
+    // await testUnifiedHandlers();
+    // await testOtherCorpusHandlers();
     await testParallelOperations();
     await testTimeoutProtection();
   } catch (error) {

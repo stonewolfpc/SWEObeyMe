@@ -54,6 +54,7 @@ function logTest(category, name, status, details = '') {
 }
 
 async function testWithTimeout(testFn, testName, timeoutMs) {
+  // eslint-disable-next-line no-async-promise-executor
   return new Promise(async (resolve) => {
     let timeoutId;
     const timeoutPromise = new Promise((_, reject) => {

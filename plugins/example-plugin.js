@@ -22,7 +22,7 @@ export default class ExamplePlugin {
       {
         name: 'example.hello',
         description: 'Say hello from the example plugin',
-        handler: async (params) => {
+        handler: async (_params) => {
           return { message: 'Hello from example plugin!' };
         },
       },

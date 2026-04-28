@@ -13,7 +13,13 @@
 import { EnterpriseBoundaryTester } from './boundary-tests.js';
 import { LunchBreakValidator } from './lunch-break-suite.js';
 import { enterpriseLogger } from './strict-logger.js';
-import testMatrix from './test-matrix.json' assert { type: 'json' };
+import { readFileSync } from 'fs';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const testMatrix = JSON.parse(readFileSync(join(__dirname, './test-matrix.json'), 'utf-8'));
 
 class CrossPlatformCertificationRunner {
   constructor(options = {}) {

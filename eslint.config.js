@@ -14,6 +14,11 @@ export default [
     languageOptions: {
       ecmaVersion: 2022,
       sourceType: 'module',
+      parserOptions: {
+        ecmaVersion: 2022,
+        sourceType: 'module',
+        allowImportExportEverywhere: true,
+      },
       globals: {
         ...globals.node,
         ...globals.es2022,
@@ -108,6 +113,11 @@ export default [
       'no-control-regex': 'warn',
       'handle-callback-err': 'warn',
       'no-useless-escape': 'warn',
+      'no-async-promise-executor': 'warn',
+      'no-prototype-builtins': 'warn',
+      'no-dupe-keys': 'warn',
+      'no-case-declarations': 'warn',
+      'no-duplicate-imports': 'warn',
     },
   },
 
@@ -140,6 +150,10 @@ export default [
       'coverage/**',
       '**/*.min.js',
       '**/vendor/**',
+      '**/*.md',
+      '**/*.markdown',
+      'README*',
+      'tests/fuzzer-generated/**',
     ],
   },
 ];
