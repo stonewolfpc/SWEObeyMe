@@ -16,8 +16,8 @@ console.log('🖥️  OS COMPATIBILITY TESTS\n');
 
 const platform = os.platform();
 const projectRoot = path.join(__dirname, '..', '..');
-let errors = [];
-let warnings = [];
+const errors = [];
+const warnings = [];
 
 console.log(`Running on: ${platform} (${os.release()})`);
 console.log(`Home: ${os.homedir()}\n`);
@@ -34,7 +34,7 @@ const normalizedPaths = testPaths.map((p) => path.normalize(p));
 const allSame = normalizedPaths.every((p) => p === normalizedPaths[0]);
 
 if (allSame) {
-  console.log(`   ✅ Path normalization works correctly`);
+  console.log('   ✅ Path normalization works correctly');
   console.log(`   Result: ${normalizedPaths[0]}`);
 } else {
   errors.push('Path normalization inconsistent');

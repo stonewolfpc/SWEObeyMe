@@ -21,7 +21,7 @@ const rootDir = path.resolve(__dirname, '..');
 let totalChecks = 0;
 let passedChecks = 0;
 let failedChecks = 0;
-let warnings = [];
+const warnings = [];
 
 console.log('╔════════════════════════════════════════════════════════════╗');
 console.log('║     NPM Package Deprecation Detection Test                ║');
@@ -127,10 +127,10 @@ async function checkDeprecatedPackages() {
     }
 
     if (foundDeprecated) {
-      console.log(`  ❌ FAIL: Found deprecated packages\n`);
+      console.log('  ❌ FAIL: Found deprecated packages\n');
       failedChecks++;
     } else {
-      console.log(`  ✅ PASS: No deprecated packages found\n`);
+      console.log('  ✅ PASS: No deprecated packages found\n');
       passedChecks++;
     }
   } catch (error) {
@@ -163,7 +163,7 @@ async function checkOutdatedPackages() {
         }
         console.log(`  ⚠️  WARNING: Found ${Object.keys(outdated).length} outdated packages\n`);
       } else {
-        console.log(`  ✅ PASS: All packages are up to date\n`);
+        console.log('  ✅ PASS: All packages are up to date\n');
         passedChecks++;
       }
     } catch (error) {
@@ -180,14 +180,14 @@ async function checkOutdatedPackages() {
             }
             console.log(`  ⚠️  WARNING: Found ${Object.keys(outdated).length} outdated packages\n`);
           } else {
-            console.log(`  ✅ PASS: All packages are up to date\n`);
+            console.log('  ✅ PASS: All packages are up to date\n');
             passedChecks++;
           }
         } catch {
-          console.log(`  ⚠️  WARNING: Could not check for outdated packages\n`);
+          console.log('  ⚠️  WARNING: Could not check for outdated packages\n');
         }
       } else {
-        console.log(`  ✅ PASS: All packages are up to date\n`);
+        console.log('  ✅ PASS: All packages are up to date\n');
         passedChecks++;
       }
     }

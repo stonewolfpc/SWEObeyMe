@@ -17,9 +17,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const projectRoot = path.join(__dirname, '..', '..');
-let errors = [];
-let warnings = [];
-let testResults = [];
+const errors = [];
+const warnings = [];
+const testResults = [];
 
 console.log('BRUTAL UI VALIDATION TEST');
 console.log('Cross-platform: Windows, Linux, macOS');

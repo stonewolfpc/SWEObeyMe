@@ -55,9 +55,9 @@ for (const file of registryFiles) {
     const requiredMatch = schemaBlock.match(/required:\s*\[([^\]]*)\]/);
     const required = requiredMatch
       ? requiredMatch[1]
-          .split(',')
-          .map((s) => s.trim().replace(/['"]/g, ''))
-          .filter(Boolean)
+        .split(',')
+        .map((s) => s.trim().replace(/['"]/g, ''))
+        .filter(Boolean)
       : [];
 
     // Extract property names

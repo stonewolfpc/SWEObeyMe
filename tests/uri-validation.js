@@ -97,7 +97,7 @@ if (fs.existsSync(extensionFile)) {
     if (matches) {
       for (const match of matches) {
         if (!match.includes('vscode.Uri')) {
-          console.log(`  ❌ ERROR in extension.js: Bare path in VS Code API call`);
+          console.log('  ❌ ERROR in extension.js: Bare path in VS Code API call');
           console.log(`     ${match}`);
           hasErrors = true;
           extensionIssuesFound = true;

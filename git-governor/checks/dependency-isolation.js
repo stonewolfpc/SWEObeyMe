@@ -213,9 +213,9 @@ class DependencyIsolationTest {
         const importPatterns = [
           `import.*\\b${module}\\b`,
           `require.*\\b${module}\\b`,
-          `from.*\\benterprise\\b`,
-          `from.*'../enterprise`,
-          `from.*"../enterprise`,
+          'from.*\\benterprise\\b',
+          'from.*\'../enterprise',
+          'from.*"../enterprise',
         ];
 
         for (const pattern of importPatterns) {

@@ -13,8 +13,8 @@ const __dirname = path.dirname(__filename);
 console.log('🖥️  UI COMPONENT TESTS\n');
 
 const projectRoot = path.join(__dirname, '..', '..');
-let errors = [];
-let warnings = [];
+const errors = [];
+const warnings = [];
 
 // Test 1: Check extension.js has all required activation events
 console.log('1️⃣  Checking extension.js structure...');

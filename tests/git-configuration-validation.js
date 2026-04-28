@@ -94,7 +94,7 @@ if (globalSsh) { warn(`Global core.sshCommand is set: ${globalSsh}`); }
 else { pass('No global core.sshCommand'); }
 
 const globalHeader = execSafe('git config --global http.https://github.com/.extraheader');
-if (globalHeader) { warn(`Global GitHub extraheader is set — may break CI push`); }
+if (globalHeader) { warn('Global GitHub extraheader is set — may break CI push'); }
 else { pass('No global GitHub extraheader'); }
 
 // ─── Check 5: Repository state ──────────────────────────────────────────────

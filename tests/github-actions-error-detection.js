@@ -36,7 +36,7 @@ const rootDir = path.resolve(__dirname, '..');
 let totalChecks = 0;
 let passedChecks = 0;
 let failedChecks = 0;
-let warnings = [];
+const warnings = [];
 
 console.log('╔════════════════════════════════════════════════════════════╗');
 console.log('║     GitHub Actions Error Detection Test Suite             ║');
@@ -147,7 +147,7 @@ async function checkWorkflowSyntax() {
       console.log(`  ✅ PASS: ${yamlFiles.length} workflow files are valid\n`);
       passedChecks++;
     } else {
-      console.log(`  ⚠️  WARNING: Workflow files have issues\n`);
+      console.log('  ⚠️  WARNING: Workflow files have issues\n');
     }
   } catch (error) {
     console.log(`  ❌ FAIL: ${error.message}\n`);
@@ -190,9 +190,9 @@ async function checkGitHubActionsNodeVersions() {
     }
 
     if (usesDeprecated) {
-      console.log(`  ⚠️  WARNING: Workflows use deprecated Node.js versions or actions\n`);
+      console.log('  ⚠️  WARNING: Workflows use deprecated Node.js versions or actions\n');
     } else {
-      console.log(`  ✅ PASS: All workflows use supported Node.js versions\n`);
+      console.log('  ✅ PASS: All workflows use supported Node.js versions\n');
       passedChecks++;
     }
   } catch (error) {
@@ -225,13 +225,13 @@ async function checkGitConfiguration() {
       }
 
       if (hasProblematicSettings) {
-        console.log(`  ⚠️  WARNING: Git config has potentially problematic settings\n`);
+        console.log('  ⚠️  WARNING: Git config has potentially problematic settings\n');
       } else {
-        console.log(`  ✅ PASS: Git configuration is CI-compatible\n`);
+        console.log('  ✅ PASS: Git configuration is CI-compatible\n');
         passedChecks++;
       }
     } catch (error) {
-      console.log(`  ⚠️  WARNING: Cannot access .git/config (may not be in git repo)\n`);
+      console.log('  ⚠️  WARNING: Cannot access .git/config (may not be in git repo)\n');
     }
   } catch (error) {
     console.log(`  ❌ FAIL: ${error.message}\n`);
@@ -266,7 +266,7 @@ async function checkTestFilesExitCodes() {
       console.log(`  ✅ PASS: ${testFiles.length} test files have proper exit codes\n`);
       passedChecks++;
     } else {
-      console.log(`  ⚠️  WARNING: Some test files may not have proper exit codes\n`);
+      console.log('  ⚠️  WARNING: Some test files may not have proper exit codes\n');
     }
   } catch (error) {
     console.log(`  ❌ FAIL: ${error.message}\n`);
@@ -298,7 +298,7 @@ async function checkGitignore() {
       console.log(`  ❌ FAIL: Critical files may be ignored: ${ignoredCritical.join(', ')}\n`);
       failedChecks++;
     } else {
-      console.log(`  ✅ PASS: .gitignore is properly configured\n`);
+      console.log('  ✅ PASS: .gitignore is properly configured\n');
       passedChecks++;
     }
   } catch (error) {
@@ -361,9 +361,9 @@ async function checkConsoleStatements() {
     }
 
     if (hasConsole) {
-      console.log(`  ⚠️  WARNING: Console statements found in production code\n`);
+      console.log('  ⚠️  WARNING: Console statements found in production code\n');
     } else {
-      console.log(`  ✅ PASS: No console statements in production code\n`);
+      console.log('  ✅ PASS: No console statements in production code\n');
       passedChecks++;
     }
   } catch (error) {
@@ -425,9 +425,9 @@ async function checkTodoComments() {
     }
 
     if (hasTodo) {
-      console.log(`  ⚠️  WARNING: TODO/FIXME comments found in code\n`);
+      console.log('  ⚠️  WARNING: TODO/FIXME comments found in code\n');
     } else {
-      console.log(`  ✅ PASS: No TODO/FIXME comments in code\n`);
+      console.log('  ✅ PASS: No TODO/FIXME comments in code\n');
       passedChecks++;
     }
   } catch (error) {
@@ -457,9 +457,9 @@ async function checkFileLineCounts() {
     }
 
     if (hasViolations) {
-      console.log(`  ⚠️  WARNING: Some files exceed 700 lines (pre-existing violations)\n`);
+      console.log('  ⚠️  WARNING: Some files exceed 700 lines (pre-existing violations)\n');
     } else {
-      console.log(`  ✅ PASS: All files are under 700 lines\n`);
+      console.log('  ✅ PASS: All files are under 700 lines\n');
       passedChecks++;
     }
   } catch (error) {
@@ -482,7 +482,7 @@ async function checkNpmLockFileSync() {
     try {
       await fs.access(lockJsonPath);
     } catch {
-      console.log(`  ❌ FAIL: package-lock.json does not exist\n`);
+      console.log('  ❌ FAIL: package-lock.json does not exist\n');
       failedChecks++;
       return;
     }
@@ -512,7 +512,7 @@ async function checkNpmLockFileSync() {
       return;
     }
 
-    console.log(`  ✅ PASS: package-lock.json is in sync with package.json\n`);
+    console.log('  ✅ PASS: package-lock.json is in sync with package.json\n');
     passedChecks++;
   } catch (error) {
     console.log(`  ❌ FAIL: ${error.message}\n`);

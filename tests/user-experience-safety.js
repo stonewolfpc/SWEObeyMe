@@ -415,7 +415,7 @@ class UserExperienceSafetyTest {
 
     try {
       // Simulate autonomous execution without user intervention
-      let askedQuestions = false;
+      const askedQuestions = false;
 
       // Execute tasks without asking
       for (let i = 0; i < 5; i++) {

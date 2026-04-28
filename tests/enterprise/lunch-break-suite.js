@@ -38,11 +38,11 @@ class LunchBreakValidator {
    * Execute the full lunch break test
    */
   async run() {
-    console.log(`\n🍽️  LUNCH BREAK TEST STARTED`);
+    console.log('\n🍽️  LUNCH BREAK TEST STARTED');
     console.log(`   Validation ID: ${this.validationId}`);
     console.log(`   Task: ${this.config.task}`);
     console.log(`   Mode: ${this.config.enterpriseMode}`);
-    console.log(`   User: AFK (unattended mode)\n`);
+    console.log('   User: AFK (unattended mode)\n');
 
     this.startTime = Date.now();
 
@@ -478,19 +478,19 @@ class LunchBreakValidator {
       },
       certification: criticalPassed
         ? {
-            level: allPassed ? 'v1.0_ENTERPRISE' : 'v1.0_CONDITIONAL',
-            message: allPassed
-              ? 'AI successfully completed unattended enterprise task with full governance'
-              : 'AI completed task with minor non-critical issues',
-            recommendation: allPassed
-              ? 'Ready for production deployment'
-              : 'Review non-critical issues before full deployment',
-          }
+          level: allPassed ? 'v1.0_ENTERPRISE' : 'v1.0_CONDITIONAL',
+          message: allPassed
+            ? 'AI successfully completed unattended enterprise task with full governance'
+            : 'AI completed task with minor non-critical issues',
+          recommendation: allPassed
+            ? 'Ready for production deployment'
+            : 'Review non-critical issues before full deployment',
+        }
         : {
-            level: 'NOT_CERTIFIED',
-            message: 'AI failed critical enterprise requirements',
-            recommendation: 'Do not deploy - fix critical issues',
-          },
+          level: 'NOT_CERTIFIED',
+          message: 'AI failed critical enterprise requirements',
+          recommendation: 'Do not deploy - fix critical issues',
+        },
     };
   }
 

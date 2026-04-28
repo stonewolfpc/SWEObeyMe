@@ -118,7 +118,7 @@ class FuzzerRunner {
     const iterations = Math.min(this.iterations, 25); // Cap at 25 for filesystem tests
     const results = await fsFuzzer.runFuzzBatch(iterations);
 
-    console.log(`Filesystem Fuzzer Results:`);
+    console.log('Filesystem Fuzzer Results:');
     console.log(`  Total scenarios: ${results.length}`);
     console.log(`  Successful: ${results.filter((r) => r.success).length}`);
     console.log(`  Failed: ${results.filter((r) => !r.success).length}`);
@@ -168,7 +168,7 @@ class FuzzerRunner {
     try {
       const results = await this.testGenerator.runGeneratedTests();
 
-      console.log(`Regression Test Results:`);
+      console.log('Regression Test Results:');
       console.log(`  Total tests: ${results.length}`);
       console.log(`  Passed: ${results.filter((r) => r.result).length}`);
       console.log(`  Failed: ${results.filter((r) => !r.result).length}`);
@@ -224,7 +224,7 @@ class FuzzerRunner {
     console.log('║     Nuclear Button: Guaranteed Failure Detection         ║');
     console.log('╚════════════════════════════════════════════════════════════╝\n');
 
-    console.log(`Configuration:`);
+    console.log('Configuration:');
     console.log(`  Parallel: ${this.parallel ? 'enabled' : 'disabled'}`);
     console.log(`  Timeout: ${this.timeout}ms`);
     console.log(`  Batch Size: ${this.batchSize}`);

@@ -221,7 +221,7 @@ function testServerStartup(extensionDir) {
           resolve(true); // Soft pass
         }
       } catch (e) {
-        console.error(`\n   ❌ Server crashed`);
+        console.error('\n   ❌ Server crashed');
         console.error(`   STDOUT: ${stdout || '(empty)'}`);
         console.error(`   STDERR: ${stderr || '(empty)'}`);
         exitCode = 1;
@@ -314,7 +314,7 @@ function cleanup() {
   if (tempDir && fs.existsSync(tempDir)) {
     try {
       fs.rmSync(tempDir, { recursive: true, force: true });
-      console.log(`   Temp directory removed`);
+      console.log('   Temp directory removed');
     } catch (e) {
       console.warn(`   ⚠️  Could not remove temp: ${tempDir}`);
     }

@@ -1,6 +1,6 @@
 /**
  * Validation Layer Index
- * 
+ *
  * Unified entry point for all validation layer tests.
  * Organizes tests into categories and provides unified reporting.
  */
@@ -47,21 +47,21 @@ export async function runAllValidationTests(categories = Object.keys(TEST_CATEGO
   // [REMOVED BY SWEObeyMe]: Forbidden Pattern('\n' + '='.repeat(70));
   // [REMOVED BY SWEObeyMe]: Forbidden Pattern('SWEObeyMe Validation Layer Test Suite');
   // [REMOVED BY SWEObeyMe]: Forbidden Pattern('='.repeat(70));
-  
+
   const results = {};
   let totalPassed = 0;
   let totalFailed = 0;
-  
+
   for (const categoryKey of categories) {
     const category = TEST_CATEGORIES[categoryKey];
     if (!category) {
       console.warn(`Unknown test category: ${categoryKey}`);
       continue;
     }
-    
+
     // [REMOVED BY SWEObeyMe]: Forbidden Pattern(`\n📦 Running: ${category.name}`);
     // [REMOVED BY SWEObeyMe]: Forbidden Pattern(`   ${category.description}`);
-    
+
     try {
       const result = await category.runner();
       results[categoryKey] = result;
@@ -77,25 +77,25 @@ export async function runAllValidationTests(categories = Object.keys(TEST_CATEGO
       totalFailed += 1;
     }
   }
-  
+
   // Print summary
   // [REMOVED BY SWEObeyMe]: Forbidden Pattern('\n' + '='.repeat(70));
   // [REMOVED BY SWEObeyMe]: Forbidden Pattern('VALIDATION LAYER SUMMARY');
   // [REMOVED BY SWEObeyMe]: Forbidden Pattern('='.repeat(70));
-  
+
   for (const [key, result] of Object.entries(results)) {
     const category = TEST_CATEGORIES[key];
     const status = result.failed === 0 ? '✓' : '✗';
     // [REMOVED BY SWEObeyMe]: Forbidden Pattern(`${status} ${category.name}: ${result.passed} passed, ${result.failed} failed`);
   }
-  
+
   // [REMOVED BY SWEObeyMe]: Forbidden Pattern('-'.repeat(70));
   // [REMOVED BY SWEObeyMe]: Forbidden Pattern(`TOTAL: ${totalPassed} passed, ${totalFailed} failed`);
-  
+
   const success = totalFailed === 0;
   // [REMOVED BY SWEObeyMe]: Forbidden Pattern(`STATUS: ${success ? '✓ ALL TESTS PASSED' : '✗ SOME TESTS FAILED'}`);
   // [REMOVED BY SWEObeyMe]: Forbidden Pattern('='.repeat(70));
-  
+
   return {
     success,
     totalPassed,
@@ -112,7 +112,7 @@ export async function runTestCategory(categoryKey) {
   if (!category) {
     throw new Error(`Unknown test category: ${categoryKey}. Valid: ${Object.keys(TEST_CATEGORIES).join(', ')}`);
   }
-  
+
   return await category.runner();
 }
 

@@ -1,6 +1,6 @@
 /**
  * Validation Layer Tester
- * 
+ *
  * Structural tests for the governance architecture:
  * - Line count limits
  * - Forbidden patterns
@@ -37,10 +37,10 @@ function assert(condition, message) {
  */
 async function testLineCountLimits() {
   // [REMOVED BY SWEObeyMe]: Forbidden Pattern('\n📏 Test 1: Line Count Limits');
-  
+
   const maxLines = MAX_LINES();
   assert(maxLines === 700, `Max lines should be 700, got ${maxLines}`);
-  
+
   // Test governance router enforces line count
   const result = await governanceRouterHandler({
     domain: 'files',
@@ -50,7 +50,7 @@ async function testLineCountLimits() {
       content: '\n'.repeat(701), // 701 lines (exceeds limit)
     },
   });
-  
+
   assert(result.status === 'error', 'Should reject files exceeding line count');
   assert(result.diagnostics.includes('line count'), 'Error should mention line count');
 }
@@ -60,13 +60,13 @@ async function testLineCountLimits() {
  */
 async function testForbiddenPatterns() {
   // [REMOVED BY SWEObeyMe]: Forbidden Pattern('\n🚫 Test 2: Forbidden Patterns');
-  
+
   const patterns = FORBIDDEN_PATTERNS();
   assert(patterns.includes('console\\.log'), 'Should include // [REMOVED BY SWEObeyMe]: Forbidden Pattern pattern');
   assert(patterns.includes('// [REMOVED BY SWEObeyMe]: Forbidden Pattern'), 'Should include // [REMOVED BY SWEObeyMe]: Forbidden Pattern pattern');
   assert(patterns.includes('eval\\('), 'Should include eval pattern');
   assert(patterns.includes('// [REMOVED BY SWEObeyMe]: Forbidden Pattern'), 'Should include // [REMOVED BY SWEObeyMe]: Forbidden Pattern pattern');
-  
+
   // Test governance router detects forbidden patterns
   const result = await governanceRouterHandler({
     domain: 'files',
@@ -76,7 +76,7 @@ async function testForbiddenPatterns() {
       content: '// [REMOVED BY SWEObeyMe]: Forbidden Pattern("debug");',
     },
   });
-  
+
   assert(result.status === 'error', 'Should reject files with forbidden patterns');
   assert(result.diagnostics.includes('Forbidden pattern'), 'Error should mention forbidden pattern');
 }
@@ -86,7 +86,7 @@ async function testForbiddenPatterns() {
  */
 async function testRouterSchemaCompliance() {
   // [REMOVED BY SWEObeyMe]: Forbidden Pattern('\n📋 Test 3: Router Schema Compliance');
-  
+
   // Test missing domain
   const noDomain = await governanceRouterHandler({
     action: 'read',
@@ -94,7 +94,7 @@ async function testRouterSchemaCompliance() {
   });
   assert(noDomain.status === 'error', 'Should reject missing domain');
   assert(noDomain.diagnostics.includes('domain'), 'Error should mention domain');
-  
+
   // Test missing action
   const noAction = await governanceRouterHandler({
     domain: 'files',
@@ -102,7 +102,7 @@ async function testRouterSchemaCompliance() {
   });
   assert(noAction.status === 'error', 'Should reject missing action');
   assert(noAction.diagnostics.includes('action'), 'Error should mention action');
-  
+
   // Test unknown domain
   const unknownDomain = await governanceRouterHandler({
     domain: 'unknown',
@@ -110,7 +110,7 @@ async function testRouterSchemaCompliance() {
     payload: {},
   });
   assert(unknownDomain.status === 'error', 'Should reject unknown domain');
-  
+
   // Test unknown action
   const unknownAction = await governanceRouterHandler({
     domain: 'files',
@@ -125,13 +125,13 @@ async function testRouterSchemaCompliance() {
  */
 async function testResponseFormatCompliance() {
   // [REMOVED BY SWEObeyMe]: Forbidden Pattern('\n📦 Test 4: Response Format Compliance');
-  
+
   const result = await governanceRouterHandler({
     domain: 'files',
     action: 'read',
     payload: { path: 'package.json' },
   });
-  
+
   assert(result.hasOwnProperty('status'), 'Response should have status property');
   assert(result.hasOwnProperty('result'), 'Response should have result property');
   assert(result.hasOwnProperty('diagnostics'), 'Response should have diagnostics property');
@@ -144,13 +144,13 @@ async function testResponseFormatCompliance() {
  */
 async function testHandlerPurity() {
   // [REMOVED BY SWEObeyMe]: Forbidden Pattern('\n🧪 Test 5: Handler Purity Check');
-  
+
   // Call same operation twice with same input
   const payload = { domain: 'files', action: 'read', payload: { path: 'package.json' } };
-  
+
   const result1 = await governanceRouterHandler(payload);
   const result2 = await governanceRouterHandler(payload);
-  
+
   // Results should be consistent (both succeed or both fail)
   assert(result1.status === result2.status, 'Handler should be deterministic');
 }
@@ -160,9 +160,9 @@ async function testHandlerPurity() {
  */
 async function testGovernanceCapabilities() {
   // [REMOVED BY SWEObeyMe]: Forbidden Pattern('\n🎯 Test 6: Governance Capabilities');
-  
+
   const caps = listGovernanceCapabilities();
-  
+
   assert(caps.totalDomains > 0, 'Should have at least one domain');
   assert(caps.totalHandlers > 0, 'Should have at least one handler');
   assert(caps.capabilities.files, 'Should have files domain');
@@ -176,11 +176,11 @@ async function testGovernanceCapabilities() {
  */
 async function testDirectoryStructure() {
   // [REMOVED BY SWEObeyMe]: Forbidden Pattern('\n📁 Test 7: Directory Structure');
-  
+
   // Check surface directory exists
   const surfaceDir = await fs.access('lib/tools/surface').then(() => true).catch(() => false);
   assert(surfaceDir, 'Surface directory should exist');
-  
+
   // Check surface files exist
   const surfaceFiles = [
     'lib/tools/surface/file-ops-surface.js',
@@ -188,7 +188,7 @@ async function testDirectoryStructure() {
     'lib/tools/surface/project-context-surface.js',
     'lib/tools/surface/sweobeyme-execute-surface.js',
   ];
-  
+
   for (const file of surfaceFiles) {
     const exists = await fs.access(file).then(() => true).catch(() => false);
     assert(exists, `${file} should exist`);
@@ -202,7 +202,7 @@ export async function runValidationLayerTests() {
   // [REMOVED BY SWEObeyMe]: Forbidden Pattern('\n' + '='.repeat(60));
   // [REMOVED BY SWEObeyMe]: Forbidden Pattern('Validation Layer Tests');
   // [REMOVED BY SWEObeyMe]: Forbidden Pattern('='.repeat(60));
-  
+
   try {
     await testLineCountLimits();
     await testForbiddenPatterns();
@@ -215,16 +215,16 @@ export async function runValidationLayerTests() {
     console.error('Test suite error:', error);
     TEST_RESULTS.errors.push(error.message);
   }
-  
+
   // [REMOVED BY SWEObeyMe]: Forbidden Pattern('\n' + '='.repeat(60));
   // [REMOVED BY SWEObeyMe]: Forbidden Pattern(`Results: ${TEST_RESULTS.passed} passed, ${TEST_RESULTS.failed} failed`);
   // [REMOVED BY SWEObeyMe]: Forbidden Pattern('='.repeat(60));
-  
+
   if (TEST_RESULTS.errors.length > 0) {
     console.error('\nErrors:');
     TEST_RESULTS.errors.forEach((err, i) => console.error(`  ${i + 1}. ${err}`));
   }
-  
+
   return TEST_RESULTS;
 }
 

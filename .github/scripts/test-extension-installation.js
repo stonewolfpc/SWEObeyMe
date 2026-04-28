@@ -17,8 +17,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const projectRoot = path.join(__dirname, '..', '..');
-let errors = [];
-let warnings = [];
+const errors = [];
+const warnings = [];
 
 console.log('EXTENSION INSTALLATION TEST');
 console.log('='.repeat(50));
@@ -281,7 +281,7 @@ async function testConfigSchema() {
     }
 
     // Validate configuration structure
-    let validConfig = true;
+    const validConfig = true;
     for (const [key, prop] of Object.entries(properties)) {
       if (!prop.type) {
         console.log(`  WARN: ${key} missing type`);
@@ -324,7 +324,7 @@ async function testCommandRegistration() {
     // Check command structure
     for (const cmd of commands) {
       if (!cmd.command) {
-        console.log(`  FAIL: Command missing ID`);
+        console.log('  FAIL: Command missing ID');
         errors.push('Command missing ID');
         continue;
       }
@@ -409,7 +409,7 @@ async function testViewRegistration() {
         console.log(`  View: ${viewId} (${view.name})`);
 
         if (view.type !== 'webview') {
-          console.log(`    WARN: Not a webview type`);
+          console.log('    WARN: Not a webview type');
           warnings.push(`View ${viewId} is not a webview`);
         }
       } else {

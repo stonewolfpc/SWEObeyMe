@@ -89,7 +89,7 @@ if (template) {
 
   // Tab switching logic present
   assert(
-    template.includes("dataset.tab") || template.includes("data-tab"),
+    template.includes('dataset.tab') || template.includes('data-tab'),
     'Tab switching uses data-tab attribute'
   );
 }
@@ -212,17 +212,17 @@ assert(provider !== null, 'csharp-settings-provider.js exists');
 if (provider) {
   // Must inject nonce on ALL script tags (via regex), not just first
   assert(
-    provider.includes('/<script>/g') || provider.includes("replace(/<script>/g"),
+    provider.includes('/<script>/g') || provider.includes('replace(/<script>/g'),
     'Nonce injected into ALL script tags (not just first)'
   );
 
   assert(
-    provider.includes("getNonce"),
+    provider.includes('getNonce'),
     'Provider generates nonce per session'
   );
 
   assert(
-    provider.includes('script-src') && provider.includes("nonce-"),
+    provider.includes('script-src') && provider.includes('nonce-'),
     'CSP header includes nonce-based script-src'
   );
 }

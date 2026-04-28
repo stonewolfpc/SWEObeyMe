@@ -14,7 +14,7 @@ child.stdout.on('data', (d) => {
   const str = d.toString();
   output += str;
   console.log('[STDOUT]', str.slice(0, 200));
-  
+
   if (!initialized && str.includes('serverInfo')) {
     initialized = true;
     setTimeout(() => {
@@ -23,7 +23,7 @@ child.stdout.on('data', (d) => {
       child.stdin.write(msg);
     }, 100);
   }
-  
+
   if (str.includes('tools')) {
     setTimeout(() => {
       console.log('\n=== FULL OUTPUT ===');

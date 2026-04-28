@@ -17,8 +17,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const projectRoot = path.join(__dirname, '..', '..');
-let errors = [];
-let warnings = [];
+const errors = [];
+const warnings = [];
 
 console.log('WINDSURF INTEGRATION TEST');
 console.log('='.repeat(50));
@@ -107,7 +107,7 @@ async function testMCPProtocol() {
 
       let responseReceived = false;
 
-      serverProcess.stdout.on('data', function initHandler(data) {
+      serverProcess.stdout.on('data', (data) => {
         if (responseReceived) return;
 
         try {
@@ -149,7 +149,7 @@ async function testMCPProtocol() {
 
       let responseReceived = false;
 
-      serverProcess.stdout.on('data', function toolsHandler(data) {
+      serverProcess.stdout.on('data', (data) => {
         if (responseReceived) return;
 
         try {
@@ -213,7 +213,7 @@ async function testMCPProtocol() {
 
       let responseReceived = false;
 
-      serverProcess.stdout.on('data', function callHandler(data) {
+      serverProcess.stdout.on('data', (data) => {
         if (responseReceived) return;
 
         try {
@@ -263,7 +263,7 @@ async function testWindsurfConfig() {
       'sweObeyMe.backupPath': 'Backup configuration',
     };
 
-    let configValid = true;
+    const configValid = true;
     for (const [key, description] of Object.entries(windsurfSettings)) {
       if (config[key]) {
         console.log(`  Present: ${key} - ${description}`);
@@ -332,29 +332,29 @@ async function testUIRendering() {
               functionBody.includes('<body') ||
               functionBody.includes('<div')
             ) {
-              console.log(`    PASS: Valid HTML structure`);
+              console.log('    PASS: Valid HTML structure');
             } else {
-              console.log(`    WARN: Unusual HTML structure`);
+              console.log('    WARN: Unusual HTML structure');
               warnings.push(`HTML generator ${generator} has unusual structure`);
             }
 
             // Check for Windsurf-specific CSS
             if (functionBody.includes('vscode') || functionBody.includes('var(--vscode-')) {
-              console.log(`    PASS: Uses VS Code CSS variables`);
+              console.log('    PASS: Uses VS Code CSS variables');
             } else {
-              console.log(`    WARN: No VS Code theming detected`);
+              console.log('    WARN: No VS Code theming detected');
               warnings.push(`HTML generator ${generator} missing VS Code theming`);
             }
 
             // Check for CSP nonce
             if (functionBody.includes('nonce-')) {
-              console.log(`    PASS: CSP nonce present`);
+              console.log('    PASS: CSP nonce present');
             } else {
-              console.log(`    WARN: No CSP nonce detected`);
+              console.log('    WARN: No CSP nonce detected');
               warnings.push(`HTML generator ${generator} missing CSP nonce`);
             }
           } else {
-            console.log(`    FAIL: Could not extract HTML content`);
+            console.log('    FAIL: Could not extract HTML content');
             errors.push(`HTML generator ${generator} malformed`);
           }
         }

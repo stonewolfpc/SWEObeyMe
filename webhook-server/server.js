@@ -44,14 +44,14 @@ app.use(express.json({ limit: '1mb' }));
 function checkRateLimit(ip) {
   const now = Date.now();
   const requests = rateLimitMap.get(ip) || [];
-  
+
   // Filter out old requests
   const recent = requests.filter(t => now - t < RATE_LIMIT_WINDOW);
-  
+
   if (recent.length >= RATE_LIMIT_MAX) {
     return false;
   }
-  
+
   recent.push(now);
   rateLimitMap.set(ip, recent);
   return true;
@@ -61,12 +61,12 @@ function checkRateLimit(ip) {
 function validateSignature(payload, signature) {
   if (!WEBHOOK_SECRET) return true;
   if (!signature) return false;
-  
+
   const expectedSignature = 'sha256=' + crypto
     .createHmac('sha256', WEBHOOK_SECRET)
     .update(payload)
     .digest('hex');
-  
+
   try {
     return crypto.timingSafeEqual(
       Buffer.from(signature),
@@ -84,24 +84,24 @@ app.post('/report', async (req, res) => {
   }
   try {
     const ip = req.ip;
-    
+
     // Rate limit
     if (!checkRateLimit(ip)) {
       return res.status(429).json({ error: 'Rate limit exceeded' });
     }
-    
+
     // Validate signature if secret is set
     const signature = req.headers['x-webhook-signature'];
     if (WEBHOOK_SECRET && !validateSignature(JSON.stringify(req.body), signature)) {
       return res.status(401).json({ error: 'Invalid signature' });
     }
-    
+
     const { type, domain, action, handlerName, diagnostics, filePath, backupDiff, routerTrace } = req.body;
-    
+
     if (!type || !domain || !action) {
       return res.status(400).json({ error: 'Missing required fields: type, domain, action' });
     }
-    
+
     // Build GitHub issue
     const issue = await postToGitHub({
       type,
@@ -113,7 +113,7 @@ app.post('/report', async (req, res) => {
       backupDiff: backupDiff || '_No diff available_',
       routerTrace: routerTrace || '_No trace available_',
     });
-    
+
     res.json({
       success: true,
       issueNumber: issue.number,
@@ -137,48 +137,48 @@ app.get('/health', (req, res) => {
 // Post issue to GitHub
 async function postToGitHub(failure) {
   const { type, domain, action, handlerName, diagnostics, filePath, backupDiff, routerTrace } = failure;
-  
+
   const timestamp = new Date().toISOString();
-  const env = `- **Node**: ${process.version}\n- **Platform**: ${process.platform} ${process.release?.name || 'node'}`;  
-  
+  const env = `- **Node**: ${process.version}\n- **Platform**: ${process.platform} ${process.release?.name || 'node'}`;
+
   const body = [
-    `## Summary`,
+    '## Summary',
     `Auto-reported governance router failure of type \`${type}\` in \`${domain}.${action}\`.`,
-    ``,
-    `## Domain / Action`,
+    '',
+    '## Domain / Action',
     `\`${domain}\` / \`${action}\``,
-    ``,
-    `## Handler`,
+    '',
+    '## Handler',
     `\`${handlerName}\``,
-    ``,
-    `## File Path`,
+    '',
+    '## File Path',
     filePath,
-    ``,
-    `## Diagnostics`,
-    `\`\`\``,
+    '',
+    '## Diagnostics',
+    '```',
     diagnostics,
-    `\`\`\``,
-    ``,
-    `## Backup Diff`,
-    `\`\`\`diff`,
+    '```',
+    '',
+    '## Backup Diff',
+    '```diff',
     backupDiff,
-    `\`\`\``,
-    ``,
-    `## Router Trace`,
-    `\`\`\``,
+    '```',
+    '',
+    '## Router Trace',
+    '```',
     routerTrace,
-    `\`\`\``,
-    ``,
-    `## Environment`,
+    '```',
+    '',
+    '## Environment',
     env,
-    ``,
-    `## Timestamp`,
+    '',
+    '## Timestamp',
     timestamp,
-    ``,
-    `---`,
-    `_Auto-reported by SWEObeyMe Extension_`,
+    '',
+    '---',
+    '_Auto-reported by SWEObeyMe Extension_',
   ].join('\n');
-  
+
   const labelMap = {
     validation_failure: 'validation',
     self_healing: 'self-healing',
@@ -188,13 +188,13 @@ async function postToGitHub(failure) {
     backup_restore: 'backup',
     chaos_test: 'chaos',
   };
-  
+
   const payload = {
     title: `[AUTO] ${type.replace(/_/g, ' ')} in ${domain}.${action}`,
     body,
     labels: ['auto-reported', labelMap[type] || 'unknown'].filter(Boolean),
   };
-  
+
   const response = await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/issues`, {
     method: 'POST',
     headers: {
@@ -205,12 +205,12 @@ async function postToGitHub(failure) {
     },
     body: JSON.stringify(payload),
   });
-  
+
   if (!response.ok) {
     const text = await response.text();
     throw new Error(`GitHub API error ${response.status}: ${text}`);
   }
-  
+
   return response.json();
 }
 

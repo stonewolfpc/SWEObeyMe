@@ -844,7 +844,7 @@ class WindsurfRuntimeBehaviorTest {
     // Step 5: Run chaos events
     polygraphResults.push(
       await this.runPolygraphStep('runChaosEvents', async () => {
-        let survived = true;
+        const survived = true;
         for (let i = 0; i < 5; i++) {
           const proc = spawn('node', [this.mcpServerPath], { stdio: 'pipe' });
           proc.stdin.write(`garbage ${i}\n`);

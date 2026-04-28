@@ -87,7 +87,7 @@ function drawLine(image, x0, y0, x1, y1, color, thickness) {
   const b = (color >> 8) & 0xff;
   const a = color & 0xff;
 
-  // eslint-disable-next-line no-constant-condition
+
   while (true) {
     // Draw a circle of thickness at current point
     for (let i = -thickness; i <= thickness; i++) {

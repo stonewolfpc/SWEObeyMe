@@ -16,7 +16,7 @@ const HANG_TEST_DIR = path.join(__dirname, 'hang-test-files');
 const HANG_CONFIG = {
   // Maximum acceptable response time (ms)
   MAX_ACCEPTABLE_TIME: 5000,
-  
+
   // Timeout test values
   TIMEOUTS: {
     very_short: 100,
@@ -24,7 +24,7 @@ const HANG_CONFIG = {
     normal: 2000,
     generous: 10000,
   },
-  
+
   // File sizes that could cause hangs
   PROBLEMATIC_SIZES: [
     0,                    // Empty
@@ -43,19 +43,19 @@ const HANG_CONFIG = {
 async function createSizedFile(name, bytes) {
   await fs.mkdir(HANG_TEST_DIR, { recursive: true });
   const filePath = path.join(HANG_TEST_DIR, name);
-  
+
   // Use streaming for large files
   if (bytes > 1000000) {
     const stream = createWriteStream(filePath);
     const chunk = Buffer.alloc(65536, 'x');
     let written = 0;
-    
+
     while (written < bytes) {
       const toWrite = Math.min(chunk.length, bytes - written);
       stream.write(chunk.slice(0, toWrite));
       written += toWrite;
     }
-    
+
     await new Promise((resolve, reject) => {
       stream.on('finish', resolve);
       stream.on('error', reject);
@@ -65,7 +65,7 @@ async function createSizedFile(name, bytes) {
     const content = Buffer.alloc(bytes, 'x');
     await fs.writeFile(filePath, content);
   }
-  
+
   return filePath;
 }
 
@@ -77,7 +77,7 @@ async function testWithTimeout(name, testFn, maxTime) {
   let completed = false;
   let error = null;
   let result = null;
-  
+
   const timeoutPromise = new Promise((_, reject) => {
     setTimeout(() => {
       if (!completed) {
@@ -85,7 +85,7 @@ async function testWithTimeout(name, testFn, maxTime) {
       }
     }, maxTime);
   });
-  
+
   try {
     result = await Promise.race([
       testFn().then(r => { completed = true; return r; }),
@@ -95,9 +95,9 @@ async function testWithTimeout(name, testFn, maxTime) {
     completed = true;
     error = e;
   }
-  
+
   const duration = Date.now() - start;
-  
+
   return {
     name,
     duration,
@@ -113,10 +113,10 @@ async function testWithTimeout(name, testFn, maxTime) {
  */
 async function testStreamingReaderNoHang() {
   console.log('Testing StreamingFileReader hang prevention...');
-  
+
   const results = [];
   const { StreamingFileReader } = await import('../lib/shared/streaming-utils.js');
-  
+
   // Test 1: Empty file (should return immediately)
   const emptyFile = await createSizedFile('empty.txt', 0);
   const test1 = await testWithTimeout(
@@ -128,7 +128,7 @@ async function testStreamingReaderNoHang() {
     HANG_CONFIG.TIMEOUTS.short
   );
   results.push(test1);
-  
+
   // Test 2: Large file initialization (streaming, not loading)
   const largeFile = await createSizedFile('large_10mb.txt', 10485760);
   const test2 = await testWithTimeout(
@@ -140,7 +140,7 @@ async function testStreamingReaderNoHang() {
     HANG_CONFIG.TIMEOUTS.generous
   );
   results.push(test2);
-  
+
   // Test 3: Read small portion from huge file
   const hugeFile = await createSizedFile('huge_100mb.txt', 104857600);
   const test3 = await testWithTimeout(
@@ -153,7 +153,7 @@ async function testStreamingReaderNoHang() {
     HANG_CONFIG.TIMEOUTS.generous
   );
   results.push(test3);
-  
+
   // Test 4: Non-existent file (should fail fast, not hang)
   const test4 = await testWithTimeout(
     'Non-existent file',
@@ -164,14 +164,14 @@ async function testStreamingReaderNoHang() {
     HANG_CONFIG.TIMEOUTS.short
   );
   results.push(test4);
-  
+
   // Test 5: Permission-denied simulation (read-only dir)
   // Skip on Windows due to different permission model
   if (process.platform !== 'win32') {
     const noPermDir = path.join(HANG_TEST_DIR, 'noperm');
     await fs.mkdir(noPermDir, { mode: 0o000 }).catch(() => {});
     const noPermFile = path.join(noPermDir, 'test.txt');
-    
+
     const test5 = await testWithTimeout(
       'Permission denied',
       async () => {
@@ -181,20 +181,20 @@ async function testStreamingReaderNoHang() {
       HANG_CONFIG.TIMEOUTS.short
     );
     results.push(test5);
-    
+
     // Cleanup
     await fs.chmod(noPermDir, 0o755).catch(() => {});
   }
-  
+
   // Test 6: Circular symlink (if supported)
   const linkDir = path.join(HANG_TEST_DIR, 'links');
   await fs.mkdir(linkDir, { recursive: true });
   const linkTarget = path.join(linkDir, 'circular');
   const linkSource = path.join(linkDir, 'circular_link');
-  
+
   try {
     await fs.symlink(linkTarget, linkSource);
-    
+
     const test6 = await testWithTimeout(
       'Circular symlink',
       async () => {
@@ -207,7 +207,7 @@ async function testStreamingReaderNoHang() {
   } catch {
     // Symlinks not supported, skip
   }
-  
+
   // Test 7: File with no newlines (single huge line)
   const noNewlineFile = await createSizedFile('no_newlines.txt', 1000000);
   const test7 = await testWithTimeout(
@@ -221,10 +221,10 @@ async function testStreamingReaderNoHang() {
     HANG_CONFIG.TIMEOUTS.generous
   );
   results.push(test7);
-  
+
   // Cleanup
   await fs.rm(HANG_TEST_DIR, { recursive: true, force: true });
-  
+
   return results;
 }
 
@@ -233,10 +233,10 @@ async function testStreamingReaderNoHang() {
  */
 async function testDocumentConverterNoHang() {
   console.log('Testing DocumentConverter hang prevention...');
-  
+
   const results = [];
   const { extractDocumentText } = await import('../lib/shared/document-converter.js');
-  
+
   // Test 1: Non-existent file (should fail fast)
   const test1 = await testWithTimeout(
     'Non-existent PDF',
@@ -246,12 +246,12 @@ async function testDocumentConverterNoHang() {
     HANG_CONFIG.TIMEOUTS.short
   );
   results.push(test1);
-  
+
   // Test 2: Empty file
   await fs.mkdir(HANG_TEST_DIR, { recursive: true });
   const emptyPdf = path.join(HANG_TEST_DIR, 'empty.pdf');
   await fs.writeFile(emptyPdf, '');
-  
+
   const test2 = await testWithTimeout(
     'Empty PDF file',
     async () => {
@@ -260,11 +260,11 @@ async function testDocumentConverterNoHang() {
     HANG_CONFIG.TIMEOUTS.short
   );
   results.push(test2);
-  
+
   // Test 3: Corrupted/truncated binary
   const corruptFile = path.join(HANG_TEST_DIR, 'corrupt.bin');
   await fs.writeFile(corruptFile, Buffer.from([0xFF, 0xD8, 0xFF, 0xE0])); // Fake JPEG header
-  
+
   const test3 = await testWithTimeout(
     'Corrupted binary',
     async () => {
@@ -273,12 +273,12 @@ async function testDocumentConverterNoHang() {
     HANG_CONFIG.TIMEOUTS.normal
   );
   results.push(test3);
-  
+
   // Test 4: Large text file (pass-through)
   const largeText = path.join(HANG_TEST_DIR, 'large_text.txt');
   const largeContent = 'Line content\n'.repeat(100000);
   await fs.writeFile(largeText, largeContent);
-  
+
   const test4 = await testWithTimeout(
     '100K line text file',
     async () => {
@@ -287,10 +287,10 @@ async function testDocumentConverterNoHang() {
     HANG_CONFIG.TIMEOUTS.generous
   );
   results.push(test4);
-  
+
   // Cleanup
   await fs.rm(HANG_TEST_DIR, { recursive: true, force: true });
-  
+
   return results;
 }
 
@@ -299,14 +299,14 @@ async function testDocumentConverterNoHang() {
  */
 async function testVsDevExecutorNoHang() {
   console.log('Testing VSDevExecutor hang prevention...');
-  
+
   const results = [];
-  const { 
+  const {
     executeVsDevCommand,
     isVsDevTool,
     findVsDevCmd
   } = await import('../lib/shared/vsdev-executor.js');
-  
+
   // Test 1: Tool detection (should be instant)
   const test1 = await testWithTimeout(
     'Tool detection',
@@ -316,7 +316,7 @@ async function testVsDevExecutorNoHang() {
     HANG_CONFIG.TIMEOUTS.very_short
   );
   results.push(test1);
-  
+
   // Test 2: Find VsDevCmd (should not hang searching)
   const test2 = await testWithTimeout(
     'Find VsDevCmd 2022',
@@ -326,7 +326,7 @@ async function testVsDevExecutorNoHang() {
     HANG_CONFIG.TIMEOUTS.normal
   );
   results.push(test2);
-  
+
   // Test 3: Non-existent version (should fail fast)
   const test3 = await testWithTimeout(
     'Find VsDevCmd 2099',
@@ -336,7 +336,7 @@ async function testVsDevExecutorNoHang() {
     HANG_CONFIG.TIMEOUTS.normal
   );
   results.push(test3);
-  
+
   // Test 4: Execute with very short timeout
   // This tests that timeout mechanism actually works
   if (process.platform === 'win32') {
@@ -352,7 +352,7 @@ async function testVsDevExecutorNoHang() {
     );
     results.push(test4);
   }
-  
+
   return results;
 }
 
@@ -361,12 +361,12 @@ async function testVsDevExecutorNoHang() {
  */
 async function testTimeoutEdgeCases() {
   console.log('Testing timeout edge cases...');
-  
+
   const results = [];
-  
+
   // Test 1: Timeout of 0 (should still work or fail gracefully)
   const { executeVsDevCommand } = await import('../lib/shared/vsdev-executor.js');
-  
+
   if (process.platform === 'win32') {
     const test1 = await testWithTimeout(
       'Zero timeout',
@@ -377,7 +377,7 @@ async function testTimeoutEdgeCases() {
     );
     results.push(test1);
   }
-  
+
   // Test 2: Negative timeout (edge case)
   const test2 = await testWithTimeout(
     'Negative timeout handling',
@@ -391,7 +391,7 @@ async function testTimeoutEdgeCases() {
     HANG_CONFIG.TIMEOUTS.short
   );
   results.push(test2);
-  
+
   // Test 3: Very long timeout (should not affect operation)
   const test3 = await testWithTimeout(
     'Very long timeout (60s)',
@@ -405,7 +405,7 @@ async function testTimeoutEdgeCases() {
     HANG_CONFIG.TIMEOUTS.normal
   );
   results.push(test3);
-  
+
   return results;
 }
 
@@ -416,7 +416,7 @@ async function generateHangReport(allResults) {
   let hung = 0;
   let slow = 0;
   let passed = 0;
-  
+
   for (const results of Object.values(allResults)) {
     for (const r of results) {
       if (r.hung) hung++;
@@ -424,7 +424,7 @@ async function generateHangReport(allResults) {
       else if (!r.error) passed++;
     }
   }
-  
+
   const report = {
     timestamp: new Date().toISOString(),
     summary: {
@@ -437,7 +437,7 @@ async function generateHangReport(allResults) {
     slowTests: [],
     details: allResults,
   };
-  
+
   // Collect hung and slow tests
   for (const [suite, results] of Object.entries(allResults)) {
     for (const r of results) {
@@ -448,12 +448,12 @@ async function generateHangReport(allResults) {
       }
     }
   }
-  
+
   // Save report
   await fs.mkdir(HANG_TEST_DIR, { recursive: true });
   const reportPath = path.join(HANG_TEST_DIR, `hang-report-${Date.now()}.json`);
   await fs.writeFile(reportPath, JSON.stringify(report, null, 2));
-  
+
   // Console output
   console.log('\n' + '='.repeat(60));
   console.log('HANG PREVENTION TEST RESULTS');
@@ -464,14 +464,14 @@ async function generateHangReport(allResults) {
   console.log(`HUNG: ${report.summary.hung} ❌`);
   console.log(`Report: ${reportPath}`);
   console.log('='.repeat(60));
-  
+
   if (report.hungTests.length > 0) {
     console.log('\n🚨 HUNG TESTS (CRITICAL):');
     for (const test of report.hungTests) {
       console.log(`  ❌ [${test.suite}] ${test.name}: ${test.duration}ms`);
     }
   }
-  
+
   return report;
 }
 
@@ -483,19 +483,19 @@ async function runHangTests() {
   console.log('HANG PREVENTION & TIMEOUT TESTER');
   console.log('Ensuring tools NEVER hang, always return');
   console.log('='.repeat(60));
-  
+
   const allResults = {
     streamingReader: await testStreamingReaderNoHang(),
     documentConverter: await testDocumentConverterNoHang(),
     vsDevExecutor: await testVsDevExecutorNoHang(),
     timeoutEdgeCases: await testTimeoutEdgeCases(),
   };
-  
+
   const report = await generateHangReport(allResults);
-  
+
   // Cleanup
   await fs.rm(HANG_TEST_DIR, { recursive: true, force: true });
-  
+
   // Exit with error if any hangs
   process.exit(report.summary.hung > 0 ? 1 : 0);
 }

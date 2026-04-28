@@ -30,9 +30,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const projectRoot = path.join(__dirname, '..', '..');
-let errors = [];
-let warnings = [];
-let testResults = [];
+const errors = [];
+const warnings = [];
+const testResults = [];
 
 console.log(''.repeat(80));
 console.log('BRUTAL VALIDATION TEST SUITE');
@@ -928,7 +928,7 @@ async function testEdgeCases() {
 
       // Special handling for NaN
       if (isNaN(num) && isNaN(decoded)) {
-        logTest(`Boundary number: NaN`, 'PASS', 'NaN handled correctly');
+        logTest('Boundary number: NaN', 'PASS', 'NaN handled correctly');
       } else if (decoded === num) {
         logTest(`Boundary number: ${num}`, 'PASS', 'Boundary value preserved');
       } else {

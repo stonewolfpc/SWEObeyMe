@@ -26,9 +26,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const projectRoot = path.join(__dirname, '..', '..');
-let errors = [];
-let warnings = [];
-let testResults = [];
+const errors = [];
+const warnings = [];
+const testResults = [];
 
 console.log('BRUTAL FINAL VALIDATION');
 console.log('No excuses. Only working code survives.');
@@ -205,7 +205,7 @@ async function testMCPServer() {
       serverProcess.stdin.write(JSON.stringify(initRequest) + '\n');
 
       let responded = false;
-      serverProcess.stdout.on('data', function handler(data) {
+      serverProcess.stdout.on('data', (data) => {
         if (responded) return;
 
         try {
@@ -226,7 +226,7 @@ async function testMCPServer() {
 
               serverProcess.stdin.write(JSON.stringify(toolsRequest) + '\n');
 
-              serverProcess.stdout.on('data', function toolsHandler(data) {
+              serverProcess.stdout.on('data', (data) => {
                 try {
                   const toolsResponse = JSON.parse(data.toString().trim());
                   if (toolsResponse.id === 2) {

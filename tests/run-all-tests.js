@@ -107,7 +107,7 @@ class TestRunner {
       });
 
       this.passed++;
-      console.log(`  Result: ✅ PASSED`);
+      console.log('  Result: ✅ PASSED');
     } catch (error) {
       this.results.push({
         name: test.name,
@@ -123,9 +123,9 @@ class TestRunner {
         this.criticalFailed++;
       }
 
-      console.log(`  Result: ❌ FAILED`);
+      console.log('  Result: ❌ FAILED');
       if (error.message.includes('timeout')) {
-        console.log(`  Reason: Test timed out (30s)`);
+        console.log('  Reason: Test timed out (30s)');
       } else {
         console.log(`  Reason: ${error.message}`);
       }

@@ -16,8 +16,8 @@ const __dirname = path.dirname(__filename);
 console.log('📦 BUILD ARTIFACT VALIDATION\n');
 
 const projectRoot = path.join(__dirname, '..', '..');
-let errors = [];
-let warnings = [];
+const errors = [];
+const warnings = [];
 
 // Test 1: Check dist directory exists
 console.log('1️⃣  Checking dist directory...');

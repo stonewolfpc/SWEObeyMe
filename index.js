@@ -280,9 +280,9 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
           const sessionState = getSessionState();
           const taskContext = sessionState.currentTaskId
             ? {
-                taskId: sessionState.currentTaskId,
-                taskList: sessionState.taskListSnapshot || [],
-              }
+              taskId: sessionState.currentTaskId,
+              taskList: sessionState.taskListSnapshot || [],
+            }
             : null;
 
           memoryManager.linkToBackup(filePath, backupPath, taskContext);

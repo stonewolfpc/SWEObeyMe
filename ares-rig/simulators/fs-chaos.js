@@ -464,7 +464,7 @@ class FileSystemChaosTest {
   attemptResolve(filePath) {
     try {
       let resolved = filePath;
-      let visited = new Set();
+      const visited = new Set();
       let iterations = 0;
 
       while (iterations < 100) {

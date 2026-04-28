@@ -392,7 +392,7 @@ class CodebaseOrientationFuzzer {
 
       const successful = results.filter((r) => r.success).length;
       if (successful === specialChars.length) {
-        this.recordResult(testName, true, `All special characters handled correctly`);
+        this.recordResult(testName, true, 'All special characters handled correctly');
       } else {
         this.recordResult(
           testName,

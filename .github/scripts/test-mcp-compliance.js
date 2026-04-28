@@ -34,7 +34,7 @@ const server = spawn(nodePath, [serverPath], {
 });
 
 let buffer = '';
-let testResults = {
+const testResults = {
   initialized: false,
   toolsListed: false,
   noDuplicates: false,
@@ -141,7 +141,7 @@ function validateTools(tools) {
   const schemaErrors = [];
 
   for (const tool of tools) {
-    if (!tool.name) schemaErrors.push(`Tool missing name`);
+    if (!tool.name) schemaErrors.push('Tool missing name');
     if (!tool.description) schemaErrors.push(`${tool.name}: missing description`);
     if (!tool.inputSchema) schemaErrors.push(`${tool.name}: missing inputSchema`);
     if (tool.inputSchema?.type !== 'object') {
@@ -179,7 +179,7 @@ function finishTest() {
 
     if (allPassed) {
       console.log('✅ ALL MCP COMPLIANCE TESTS PASSED');
-      console.log(`   Server is compatible with WindSurf`);
+      console.log('   Server is compatible with WindSurf');
       console.log(`   ${toolsList.length} tools validated`);
       process.exit(0);
     } else {

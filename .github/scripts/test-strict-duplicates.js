@@ -111,7 +111,7 @@ for (const tool of allTools) {
     const existing = caseInsensitiveMap.get(lowerName);
     if (existing.name !== tool.name) {
       console.warn(`\n⚠️  CASE-INSENSITIVE MATCH: "${existing.name}" vs "${tool.name}"`);
-      console.warn(`   WindSurf may treat these as the same tool`);
+      console.warn('   WindSurf may treat these as the same tool');
     }
   } else {
     caseInsensitiveMap.set(lowerName, tool);

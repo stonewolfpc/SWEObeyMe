@@ -167,7 +167,7 @@ async function runAllTests() {
 
     // If we already have critical failures, ask whether to continue
     if (criticalFailures > 0 && test.critical) {
-      console.log(`\n⚠️  Skipping remaining critical tests due to previous failure`);
+      console.log('\n⚠️  Skipping remaining critical tests due to previous failure');
       skipped++;
       continue;
     }
