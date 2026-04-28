@@ -2,6 +2,75 @@
 
 All notable changes to SWEObeyMe will be documented in this file.
 
+## [5.0.30] - 2026-04-27
+
+### Bug Fixes
+
+- **Double-initialization deadlock fixed** — `ProjectAwarenessManager` constructor was calling `this.initialize().catch(() => {})` fire-and-forget style, then `getProjectAwarenessManager()` factory function called `initialize()` again. When `initializeProjectMemorySystem()` or `initializeProjectRegistry()` have re-entrancy guards, the second call deadlocked waiting for the first. Fix: Removed the fire-and-forget call from constructor; factory function is now the sole caller.
+- **mcp1_project_context hang resolved** — Root cause was the double-initialization deadlock above. The `project_context` tool routes through `project-task-handlers.js` which calls `getProjectAwarenessManager()`, triggering the hang.
+
+## [5.0.29] - 2026-04-27
+
+### Bug Fixes - UI Robustness and Error Recovery
+
+**postMessage Error Handling (Prevents Extension Host Crashes):**
+- Added try-catch around all webview.postMessage calls in cockpit-provider.js
+- Added try-catch around all webview.postMessage calls in webview-provider-factory.js
+- Added try-catch around postMessage in csharp-settings-provider.js
+- Prevents crashes when webview is disposed during message delivery
+
+**Extension Command Handler Error Recovery:**
+- Wrapped all extension command handlers in try-catch with user error messages
+- Commands: checkpoint.create, checkpoint.list, checkpoint.revert, checkpoint.delete
+- Commands: showMenu, csharpSettings, openCSharpSettings, analyzeCSharp, analyzeCpp
+- Commands: showDiagnostics, gitStatus, gitBranch, queryOracle, showOnboarding, patreonAudit
+- Prevents command failures from crashing the extension
+
+**HTTP Request Timeout Protection (Prevents Indefinite Hangs):**
+- Added 10-second timeout to webhook HTTP request in extension.js reportError
+- Added 30-second timeout to GitHub API HTTPS request in github-issue-creator.js
+- Added 30-second timeout to webhook POST request in github-issue-creator.js
+- Added timeout handlers that destroy requests and reject with timeout error
+- Prevents indefinite hangs on slow/unresponsive network endpoints
+
+**File Operation Timeout Protection:**
+- Added 30-second timeout to eslint execAsync in comprehensive-error-detection.js
+- Added 30-second timeout to prettier execAsync in comprehensive-error-detection.js
+- Added 30-second timeout to tsc execAsync in comprehensive-error-detection.js
+- Added 30-second timeout to npm audit execAsync in comprehensive-error-detection.js
+- Added 30-second timeout to eslint a11y execAsync in comprehensive-error-detection.js
+- Added 30-second timeout to find execAsync in comprehensive-error-detection.js
+- Added 30-second timeout to eslint dead code execAsync in comprehensive-error-detection.js
+- Added 30-second timeout to madge circular dependency execAsync in comprehensive-error-detection.js
+- Added depth limit (maxDepth = 20) to findFilesRecursive in code-search.js
+- Added 10-second timeout to fs.readFile calls in validation-handlers.js
+- Prevents hanging on large files, slow I/O, or deeply nested directory structures
+
+### New Features - Issue Read/Unread Tracking
+
+**Issue Tracking System:**
+- Added read/unread state tracking for issues synced from GitHub
+- Added markIssueRead, markIssueUnread, isIssueRead, getUnreadIssues, getUnreadCount functions to github-issue-creator.js
+- Read state persisted to .sweobeyme-issue-tracker.json across sessions
+- Enables users to track which issues they've reviewed
+
+**Cockpit UI Integration:**
+- Added unread count badge to GitHub Integration section in cockpit
+- Added "Mark Read" button to each issue in issue history
+- Added markIssueRead message handler in cockpit-provider.js
+- Unread count updates in real-time without window reload
+
+**Error Reporting Tools (AI-Accessible):**
+- Created error-reporting-handlers.js with tools for error reporting without GitHub
+- Handlers: get_error_logs, get_issue_history, send_error_to_webhook
+- Handlers: mark_issue_read, mark_issue_unread, get_unread_issues, get_unread_count, get_webhook_url
+- Enables AI to retrieve errors and send to webhooks from any computer
+
+### Documentation Updates
+
+- **README.md** — Added detailed warning about log uploads (what data is sent, what is NOT sent, how to disable)
+- **CHANGELOG.md** — Documented all v5.0.29 changes
+
 ## [5.0.1] - 2026-04-26
 
 ### Bug Fixes
