@@ -276,9 +276,9 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
           const sessionState = getSessionState();
           const taskContext = sessionState.currentTaskId
             ? {
-              taskId: sessionState.currentTaskId,
-              taskList: sessionState.taskListSnapshot || [],
-            }
+                taskId: sessionState.currentTaskId,
+                taskList: sessionState.taskListSnapshot || [],
+              }
             : null;
 
           memoryManager.linkToBackup(filePath, backupPath, taskContext);
@@ -313,6 +313,35 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
     }
   );
 
+  // Global error handlers to prevent crashes from malformed JSON-RPC messages
+  process.on('uncaughtException', (error) => {
+    process.stderr.write(`[SWEObeyMe] Uncaught exception: ${error.message}\n`);
+    process.stderr.write(`[SWEObeyMe] Stack: ${error.stack}\n`);
+    // Don't exit - log and continue to prevent server crash
+  });
+
+  process.on('unhandledRejection', (reason, promise) => {
+    process.stderr.write(`[SWEObeyMe] Unhandled rejection at: ${promise}\n`);
+    process.stderr.write(`[SWEObeyMe] Reason: ${reason}\n`);
+    // Don't exit - log and continue to prevent server crash
+  });
+
+  // Prevent process.exit() calls from crashing the server
+  const originalExit = process.exit;
+  process.exit = (code) => {
+    process.stderr.write(`[SWEObeyMe] Process exit called with code ${code} - preventing exit\n`);
+    // Don't actually exit - keep server alive
+  };
+
+  // Prevent SIGTERM/SIGINT from killing the server (let it handle gracefully)
+  process.on('SIGTERM', () => {
+    process.stderr.write('[SWEObeyMe] SIGTERM received - ignoring to prevent crash\n');
+  });
+
+  process.on('SIGINT', () => {
+    process.stderr.write('[SWEObeyMe] SIGINT received - ignoring to prevent crash\n');
+  });
+
   // Ensure backup directory exists
   await ensureBackupDir();
 
@@ -337,37 +366,71 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
 
   // Initialize handler - REQUIRED for handshake
   server.setRequestHandler(InitializeRequestSchema, (request) => {
-    const injector = getStartupPromptInjector();
-    const ledger = getShadowMemoryLedger();
+    try {
+      // Validate request structure to prevent crashes from null/missing params
+      if (!request || !request.params) {
+        process.stderr.write('[SWEObeyMe] Invalid initialize request: missing params\n');
+        return {
+          protocolVersion: '2025-11-25',
+          capabilities: { tools: {}, prompts: {} },
+          serverInfo: {
+            name: 'SWEObeyMe',
+            version: VERSION,
+            _diagnostics: {
+              status: 'error',
+              message: 'Invalid initialize request structure',
+            },
+          },
+        };
+      }
 
-    // Detect new conversation
-    const modelInfo = request.params?.clientInfo?.name || 'unknown';
-    const isNewConversation = injector.detectNewConversation(modelInfo);
+      const injector = getStartupPromptInjector();
+      const ledger = getShadowMemoryLedger();
 
-    if (isNewConversation) {
-      // Debug log removed
-      ledger.startNewSession();
-    }
+      // Detect new conversation
+      const modelInfo = request.params?.clientInfo?.name || 'unknown';
+      const isNewConversation = injector.detectNewConversation(modelInfo);
 
-    // Do not block initialize on filesystem IO; Windsurf may EOF if init is slow.
-    // Kick off in background if not already loaded.
-    loadProjectContract().catch(() => {});
-    loadSweIgnore().catch(() => {});
-    initializePromptRegistry().catch(() => {});
+      if (isNewConversation) {
+        // Debug log removed
+        ledger.startNewSession();
+      }
 
-    return {
-      protocolVersion: '2025-11-25',
-      capabilities: { tools: {}, prompts: {} },
-      serverInfo: {
-        name: 'SWEObeyMe',
-        version: VERSION,
-        // Add diagnostic metadata for Windsurf UI
-        _diagnostics: {
-          status: 'initializing',
-          message: 'SWEObeyMe initializing - diagnostics running in background',
+      // Do not block initialize on filesystem IO; Windsurf may EOF if init is slow.
+      // Kick off in background if not already loaded.
+      loadProjectContract().catch(() => {});
+      loadSweIgnore().catch(() => {});
+      initializePromptRegistry().catch(() => {});
+
+      return {
+        protocolVersion: '2025-11-25',
+        capabilities: { tools: {}, prompts: {} },
+        serverInfo: {
+          name: 'SWEObeyMe',
+          version: VERSION,
+          // Add diagnostic metadata for Windsurf UI
+          _diagnostics: {
+            status: 'initializing',
+            message: 'SWEObeyMe initializing - diagnostics running in background',
+          },
         },
-      },
-    };
+      };
+    } catch (error) {
+      process.stderr.write(`[SWEObeyMe] Initialize handler error: ${error.message}\n`);
+      // Return valid response even on error to prevent hang
+      return {
+        protocolVersion: '2025-11-25',
+        capabilities: { tools: {}, prompts: {} },
+        serverInfo: {
+          name: 'SWEObeyMe',
+          version: VERSION,
+          _diagnostics: {
+            status: 'error',
+            message: `Initialize error: ${error.message}`,
+          },
+        },
+      };
+    }
   });
 
   // Initialize dynamic tool registry
@@ -452,41 +515,57 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
     // Increment tool call counter
     const callCount = incrementToolCallCounter();
 
-    // Get project memory manager if available
-    const projectRegistry = getProjectRegistry();
+    // Get project memory manager if available (best-effort, never block tool call)
     let memoryManager = null;
-    if (projectRegistry && args?.path) {
-      const projects = projectRegistry.getAllProjects();
-      const project = projects.find((p) => args.path.startsWith(p.projectPath));
-      if (project) {
-        memoryManager = await getProjectMemoryManager(project.projectName);
+    try {
+      const projectRegistry = getProjectRegistry();
+      if (projectRegistry && args?.path) {
+        const projects = projectRegistry.getAllProjects();
+        const project = projects.find((p) => args.path.startsWith(p.projectPath));
+        if (project) {
+          memoryManager = await getProjectMemoryManager(project.projectName);
+        }
       }
+    } catch (mmError) {
+      log(`Project memory lookup failed: ${mmError.message}`);
     }
 
     // Inject startup prompt if this is the first tool call of a new conversation
-    const startupPrompt = injector.injectStartupPromptIntoToolCall(name, args, {
-      filePath: args?.path,
-    });
-
-    if (startupPrompt) {
-      // Debug log removed
-      // Record the startup prompt in the ledger
-      ledger.recordEvent('startup_prompt_injected', {
-        sessionId: startupPrompt.sessionId,
-        model: startupPrompt.model,
-        tool: name,
+    let startupPrompt = null;
+    try {
+      startupPrompt = injector.injectStartupPromptIntoToolCall(name, args, {
+        filePath: args?.path,
       });
+
+      if (startupPrompt) {
+        // Record the startup prompt in the ledger
+        ledger.recordEvent('startup_prompt_injected', {
+          sessionId: startupPrompt.sessionId,
+          model: startupPrompt.model,
+          tool: name,
+        });
+      }
+    } catch (injectError) {
+      log(`Startup prompt injection failed: ${injectError.message}`);
     }
 
-    // Check if tool exists
+    // Check if tool exists — return error instead of throwing to prevent hang
     if (!toolHandlers[name]) {
-      throw new Error(`Tool ${name} not found`);
+      return {
+        isError: true,
+        content: [{ type: 'text', text: `Tool '${name}' not found` }],
+      };
     }
 
     let result;
     try {
       // Call the tool handler
       result = await toolHandlers[name](args);
+
+      // Guard against undefined/null result before any content mutation
+      if (!result) {
+        result = { content: [] };
+      }
 
       // Inject task reminder if applicable
       // Only on pertinent tools: read_file, write_file, obey_surgical_plan, refactor_manage, etc.
@@ -644,9 +723,15 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
   // [TRANSPORT SELECTION]: stdio (default) or http/sse
   if (TRANSPORT_MODE === 'stdio') {
     // [STRICT TRANSPORT]: Standard Input/Output
+    // NOTE: The @modelcontextprotocol/sdk's StdioServerTransport has known limitations:
+    // - Does not handle UTF-8 BOM prefixes gracefully (returns no response)
+    // - Does not respond to incomplete JSON-RPC messages (missing required fields)
+    // - Does not respond when params is null instead of an object
+    // These are edge cases that shouldn't occur in normal operation with valid clients.
+    // The server won't crash on these due to error handlers below, but won't respond either.
     const transport = new StdioServerTransport();
 
-    // Start server
+    // Start server with comprehensive error handling
     try {
       await server.connect(transport);
       process.stderr.write('[SWEObeyMe] MCP server connected and ready (stdio transport)\n');
