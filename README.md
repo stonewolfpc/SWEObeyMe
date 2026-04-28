@@ -1,6 +1,6 @@
 # SWEObeyMe MCP Server
 
-[![Version](https://img.shields.io/badge/version-5.0.28-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-5.0.29-blue.svg)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/license-Dual--License-yellow.svg)](LICENSE)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-green.svg)](https://nodejs.org)
 [![VS Code](https://img.shields.io/badge/VS%20Code-Extension-purple.svg)](https://marketplace.visualstudio.com)
@@ -53,6 +53,46 @@ I'm sorry for the headache. Genuinely. This extension means a lot to me and you 
 
 This means I can see what's breaking in real time and fix it faster. The full pipeline is silent on failure — it won't crash your session, just queue the issue for review.
 
+### ⚠️ What Data Is Sent
+
+**The following information is sent to the webhook when a governance failure occurs:**
+
+- **Error Type:** validation_failure, self_healing, handler_throw, invalid_domain_action, forbidden_pattern, backup_restore, or chaos_test
+- **Domain:** The governance domain (files, refactor, context, safety, config, memory, agent, csharp, cpp, error, spec, codebase, godot, patreon)
+- **Action:** The specific action that failed (e.g., write_file, code_analyze, validate_code)
+- **Handler Name:** The name of the handler that failed
+- **Diagnostics:** Error message and stack trace
+- **File Path:** (Optional) Path to the file being operated on
+- **Backup Diff:** (Optional) Diff of the backup if self-healing was attempted
+- **Router Trace:** (Optional) Full trace of the governance router execution
+
+**What is NOT sent:**
+
+- **File contents** - Your actual code is never transmitted
+- **Personal information** - No user identity, machine names, or personal data
+- **API keys or secrets** - Never included in error reports
+- **Session context** - No AI conversation history or prompts
+
+### How to Disable Error Reporting
+
+You can disable automatic error reporting entirely by setting the following configuration:
+
+```json
+{
+  "sweObeyMe.errorReporting.enabled": false
+}
+```
+
+Or change the webhook URL to point to your own server:
+
+```json
+{
+  "sweObeyMe.webhookUrl": "https://your-server.com/webhook"
+}
+```
+
+Error reporting is **enabled by default** to help improve SWEObeyMe for everyone. Disabling it means I won't see errors from your install, which may delay bug fixes.
+
 ---
 
 ## 🔧 Auto-Repair Pipeline
@@ -65,7 +105,7 @@ When something breaks in any user's install, here's the full chain:
 2. **Posts to Vercel webhook** → `https://swe-obey-me-ivki.vercel.app/report`
 3. **Vercel creates a GitHub issue** on `stonewolfpc/SWEObeyMe` labeled `auto-reported`
 4. **Local sync daemon** (`Start-SWEObeyMe-Sync.bat`) polls GitHub every 60 seconds, downloads new issues to `%USERPROFILE%\sweobeyme-issues\`
-5. **Issues appear in the Cascade inbox** inside the workspace rules file — I open the project, see the alert, and can say *"hey check this issue out"* directly to the AI
+5. **Issues appear in the Cascade inbox** inside the workspace rules file — I open the project, see the alert, and can say _"hey check this issue out"_ directly to the AI
 
 The auto-repair prompts live **inside the MCP server tools** — not in Windsurf's global rules. This is intentional. Hooking into Windsurf's rule system globally risks breaking the IDE for everyone. The MCP layer is the safe, isolated place for this.
 
@@ -520,4 +560,4 @@ See [LICENSE](LICENSE) for full terms.
 
 ---
 
-*Most of this readme and all changelogs were written by AI, and so was the project. Surprise folks, I'm the anti-vibe coding non-programmer your bosses warned you about! I seriously hope this project helps you as much as it's helping me!*
+_Most of this readme and all changelogs were written by AI, and so was the project. Surprise folks, I'm the anti-vibe coding non-programmer your bosses warned you about! I seriously hope this project helps you as much as it's helping me!_
