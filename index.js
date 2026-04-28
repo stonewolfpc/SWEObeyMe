@@ -18,6 +18,7 @@ import {
   getWindsurfConfigPath,
 } from './lib/health/validate-windsurf-mcp-config.js';
 import { registerError } from './lib/health/error-registry.js';
+import { reportErrorToGitHub } from './lib/health/github-reporter.js';
 
 // Fast-fail: Validate Windsurf MCP config before anything else
 const configPath = getWindsurfConfigPath();
@@ -439,13 +440,15 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
     if (msg.type === 'dependency-health') {
       for (const [tool, result] of Object.entries(msg.results)) {
         if (!result.ok) {
-          registerError({
+          const err = {
             code: `ERR-DEPENDENCY-${tool.toUpperCase()}`,
             message: `${tool} failed health check`,
             detail: result.error || result.stderr || result.stdout,
             source: 'dependency-checker',
             severity: 'error',
-          });
+          };
+          registerError(err);
+          reportErrorToGitHub(err).catch(() => {});
         }
       }
     }
