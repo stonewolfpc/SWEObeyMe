@@ -126,7 +126,7 @@ function writeMcpConfig(extensionPath) {
       path.join(homeDir, '.codeium', 'mcp_config.json'),
     ];
 
-    const serverJsPath = toFileUrl(path.join(extensionPath, 'dist', 'mcp', 'server.js'));
+    const serverJsPath = path.join(extensionPath, 'dist', 'mcp', 'server.js').replace(/\\/g, '/');
     const backupDir = path.join(homeDir, '.sweobeyme-backups').replace(/\\/g, '/');
 
     const serverConfig = {
