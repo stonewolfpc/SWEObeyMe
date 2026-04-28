@@ -305,9 +305,19 @@ SWEObeyMe is a **surgical governance MCP server** with **72+ enforcement tools**
 
 ### Prerequisites
 
-- Node.js 18.0.0 or higher
-- VS Code 1.61.0+ or Windsurf-Next
-- Git (optional, for Git features)
+**Required (You must install these):**
+
+- **Node.js 18.0.0 or higher** - Required for the MCP server to run. Download from [nodejs.org](https://nodejs.org)
+
+**Optional (For specific features):**
+
+- **Git** - Required only if you want to use SWEObeyMe's Git integration features (branch management, commit messages, pre-commit validation). Download from [git-scm.com](https://git-scm.com)
+
+**Built into Windsurf/VS Code (You do NOT need to install these):**
+
+- **C# / .NET tooling** - Provided by Windsurf/VS Code for C# Bridge diagnostics. No separate installation required.
+- **C++ language server (clangd)** - Provided by Windsurf/VS Code for C++ language features. No separate installation required.
+- **TypeScript compiler** - Optional peer dependency for development mode only. Not required for normal use.
 
 ---
 
@@ -332,14 +342,16 @@ This is the default mode - no additional dependencies required.
 
 For developers who want the exact industrial-grade environment:
 
-- ESLint strict
-- TypeScript strict
-- Prettier strict
-- madge (circular dependency detection)
-- npm audit
-- husky (git hooks)
-- lint-staged (pre-commit linting)
+- ESLint strict (npm package - install via npm)
+- TypeScript strict (npm package - install via npm)
+- Prettier strict (npm package - install via npm)
+- madge (circular dependency detection - npm package)
+- npm audit (built into npm CLI)
+- husky (git hooks - npm package)
+- lint-staged (pre-commit linting - npm package)
 - Comprehensive error detection MCP tools
+
+**These are npm packages only - they do NOT require external system tools.**
 
 **⚠️ Important Dependency Constraints:**
 
@@ -483,16 +495,16 @@ Configure via VS Code Settings (`Ctrl+,`) or `settings.json`:
 
 ## Troubleshooting
 
-| Symptom                               | Fix                                                                                                              |
-| ------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| MCP server not loading                | Check extension activation; reload window                                                                        |
-| File write rejected                   | Check line count (max 700) and forbidden patterns                                                                |
-| Duplicate server detected             | Extension auto-cleans stale instances on reload                                                                  |
-| Backup failed                         | Check backup directory permissions                                                                               |
-| C# Bridge silent                      | Ensure .NET project is loaded and bridge is enabled in settings                                                  |
-| C++ Bridge silent                     | Install clang-tidy or cppcheck for deeper analysis; pattern matching works out of box                            |
-| Slow performance                      | Disable C# Bridge if not using .NET; reduce maxBackupsPerFile                                                    |
-| **Transport error: transport closed** | MCP server connection was terminated; restart IDE or reload window; check if MCP server process is still running |
+| Symptom                               | Fix                                                                                                                                                                            |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| MCP server not loading                | Check extension activation; reload window                                                                                                                                      |
+| File write rejected                   | Check line count (max 700) and forbidden patterns                                                                                                                              |
+| Duplicate server detected             | Extension auto-cleans stale instances on reload                                                                                                                                |
+| Backup failed                         | Check backup directory permissions                                                                                                                                             |
+| C# Bridge silent                      | Ensure .NET project is loaded and bridge is enabled in settings. .NET tooling is built into Windsurf/VS Code - no separate installation required.                              |
+| C++ Bridge silent                     | Pattern matching works out of box using Windsurf's built-in clangd. For deeper analysis, optionally install clang-tidy or cppcheck (system-level tools, not MCP dependencies). |
+| Slow performance                      | Disable C# Bridge if not using .NET; reduce maxBackupsPerFile                                                                                                                  |
+| **Transport error: transport closed** | MCP server connection was terminated; restart IDE or reload window; check if MCP server process is still running                                                               |
 
 **Debug mode:** set `SWEOBEYME_DEBUG=1` before launching your IDE.
 
