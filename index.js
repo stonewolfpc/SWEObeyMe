@@ -12,6 +12,19 @@ import os from 'os';
 import crypto from 'crypto';
 import { fileURLToPath } from 'url';
 import path from 'path';
+import {
+  validateWindsurfMcpConfig,
+  getWindsurfConfigPath,
+} from './lib/health/validate-windsurf-mcp-config.js';
+
+// Fast-fail: Validate Windsurf MCP config before anything else
+const configPath = getWindsurfConfigPath();
+if (!validateWindsurfMcpConfig(configPath)) {
+  process.stderr.write(
+    '[SWEObeyMe] MCP CONFIG PROBLEM: Aborting startup due to invalid Windsurf config.\n'
+  );
+  process.exit(42);
+}
 
 // Import from lib modules
 import { ensureBackupDir, setBackupCallback } from './lib/backup.js';
