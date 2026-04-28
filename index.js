@@ -313,23 +313,83 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
     }
   );
 
-  // Global error handlers to prevent crashes from malformed JSON-RPC messages
-  process.on('uncaughtException', (error) => {
-    process.stderr.write(`[SWEObeyMe] Uncaught exception: ${error.message}\n`);
-    process.stderr.write(`[SWEObeyMe] Stack: ${error.stack}\n`);
+  // WINDSURF/SDK Problem Detector - Loud, tagged error messages for upstream issues
+  function windsweptProblem(code, detail) {
+    process.stderr.write(
+      `[WINDSURF PROBLEM] ${code}\n` +
+        `Details: ${detail}\n` +
+        'Attribution: This is a Windsurf/SDK stdin or transport issue, not SWEObeyMe.\n'
+    );
+  }
+
+  // Activity tracking for stall detection
+  let lastActivity = Date.now();
+  const WATCHDOG_INTERVAL_MS = 250;
+  const WATCHDOG_STALL_MS = 1500;
+
+  function markActivity() {
+    lastActivity = Date.now();
+  }
+
+  // Client fingerprint tracking for model swap detection
+  let lastClientFingerprint = null;
+
+  function updateClientFingerprint(params) {
+    const fp = JSON.stringify({
+      model: params?.model,
+      session: params?.sessionId,
+      clientInfo: params?.clientInfo,
+    });
+
+    if (lastClientFingerprint && lastClientFingerprint !== fp) {
+      windsweptProblem(
+        'ERR-MIDSESSION-MODEL-SWAP',
+        'Client/model fingerprint changed mid-session. This often correlates with Windsurf console screaming during hot model swaps.'
+      );
+    }
+
+    lastClientFingerprint = fp;
+  }
+
+  // Watchdog for SDK stall detection
+  const watchdogTimer = setInterval(() => {
+    const delta = Date.now() - lastActivity;
+    if (delta > WATCHDOG_STALL_MS) {
+      windsweptProblem(
+        'ERR-SILENT-STALL',
+        `No JSON-RPC activity for ${delta}ms. Likely SDK stdin/parse failure or mid-session model swap.`
+      );
+    }
+  }, WATCHDOG_INTERVAL_MS);
+
+  // Exit/post-mortem hooks with clear attribution
+  process.on('beforeExit', (code) => {
+    windsweptProblem(
+      'ERR-PREMATURE-EXIT',
+      `Server exiting with code ${code}. If this followed a stall, stdin/SDK likely failed upstream.`
+    );
+  });
+
+  process.on('uncaughtException', (err) => {
+    windsweptProblem(
+      'ERR-UNCAUGHT',
+      `Uncaught exception: ${err && err.message}. Stack: ${err && err.stack}`
+    );
     // Don't exit - log and continue to prevent server crash
   });
 
-  process.on('unhandledRejection', (reason, promise) => {
-    process.stderr.write(`[SWEObeyMe] Unhandled rejection at: ${promise}\n`);
-    process.stderr.write(`[SWEObeyMe] Reason: ${reason}\n`);
+  process.on('unhandledRejection', (reason) => {
+    windsweptProblem('ERR-UNHANDLED-REJECTION', `Unhandled rejection: ${reason}`);
     // Don't exit - log and continue to prevent server crash
   });
 
   // Prevent process.exit() calls from crashing the server
   const originalExit = process.exit;
   process.exit = (code) => {
-    process.stderr.write(`[SWEObeyMe] Process exit called with code ${code} - preventing exit\n`);
+    windsweptProblem(
+      'ERR-FORCED-EXIT',
+      `Process.exit() called with code ${code}. Preventing exit to keep server alive.`
+    );
     // Don't actually exit - keep server alive
   };
 
@@ -366,6 +426,7 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
 
   // Initialize handler - REQUIRED for handshake
   server.setRequestHandler(InitializeRequestSchema, (request) => {
+    markActivity();
     try {
       // Validate request structure to prevent crashes from null/missing params
       if (!request || !request.params) {
@@ -391,6 +452,9 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
         );
         request.params = {};
       }
+
+      // Track client fingerprint for model swap detection
+      updateClientFingerprint(request.params);
 
       const injector = getStartupPromptInjector();
       const ledger = getShadowMemoryLedger();
@@ -446,9 +510,12 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
 
   // ListTools handler - REQUIRED for green dot
   // Uses dynamic registry for project-specific toolsets and corpus disabling
-  server.setRequestHandler(ListToolsRequestSchema, () => ({
-    tools: dynamicRegistry.getFilteredToolDefinitions(),
-  }));
+  server.setRequestHandler(ListToolsRequestSchema, () => {
+    markActivity();
+    return {
+      tools: dynamicRegistry.getFilteredToolDefinitions(),
+    };
+  });
 
   // ListPrompts handler - REQUIRED for prompt discovery
   server.setRequestHandler(ListPromptsRequestSchema, async () => {
@@ -466,6 +533,7 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
 
   // GetPrompt handler - REQUIRED for prompt retrieval
   server.setRequestHandler(GetPromptRequestSchema, async (request) => {
+    markActivity();
     const { name, arguments: args = {} } = request.params;
     const registry = await getPromptRegistry();
     const prompt = registry.getPrompt(name);
@@ -514,6 +582,7 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
 
   // CallTool handler - Core MCP interaction
   server.setRequestHandler(CallToolRequestSchema, async (request) => {
+    markActivity();
     const { name, arguments: args } = request.params;
     const injector = getStartupPromptInjector();
     const ledger = getShadowMemoryLedger();
@@ -745,25 +814,6 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
       silentFailures: 0,
       recoveries: 0,
     };
-
-    // Watchdog for silent failures
-    let lastActivity = Date.now();
-    const WATCHDOG_INTERVAL_MS = 250;
-    const WATCHDOG_STALL_MS = 1500;
-
-    function markActivity() {
-      lastActivity = Date.now();
-    }
-
-    const watchdogTimer = setInterval(() => {
-      const delta = Date.now() - lastActivity;
-      if (delta > WATCHDOG_STALL_MS) {
-        transportHealth.silentFailures++;
-        process.stderr.write(
-          `[SWEObeyMe] TransportWatchdog: No activity for ${delta}ms. Possible silent SDK failure.\n`
-        );
-      }
-    }, WATCHDOG_INTERVAL_MS);
 
     // Log transport health on startup
     function logTransportHealth(prefix = 'Runtime') {
