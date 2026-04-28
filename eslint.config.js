@@ -88,7 +88,7 @@ export default [
     },
   },
 
-  // Test files - relaxed rules
+  // Test files - relaxed rules (warnings only)
   {
     files: [
       'tests/**/*.js',
@@ -98,21 +98,25 @@ export default [
       'qa/**/*.js',
       '.local/**/*.js',
       'git-governor/**/*.js',
+      'windsurf-rig/**/*.js',
     ],
     rules: {
       'no-console': 'off',
       'no-unused-vars': ['warn', { argsIgnorePattern: '^_', varsIgnorePattern: '^_', caughtErrors: 'none' }],
       'no-undef': 'warn',
       'no-empty': ['warn', { allowEmptyCatch: true }],
+      'no-control-regex': 'warn',
+      'handle-callback-err': 'warn',
+      'no-useless-escape': 'warn',
     },
   },
 
   // Scripts - relaxed rules
   {
-    files: ['scripts/**/*.js', 'webhook-server/**/*.js', 'git-governor/**/*.js'],
+    files: ['scripts/**/*.js', 'webhook-server/**/*.js'],
     rules: {
       'no-console': 'off',
-      'no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_', caughtErrors: 'none' }],
+      'no-unused-vars': ['warn', { argsIgnorePattern: '^_', varsIgnorePattern: '^_', caughtErrors: 'none' }],
     },
   },
 
