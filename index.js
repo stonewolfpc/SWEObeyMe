@@ -384,6 +384,14 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
         };
       }
 
+      // Handle null params
+      if (request.params === null) {
+        process.stderr.write(
+          '[SWEObeyMe] Initialize request with null params, using empty object\n'
+        );
+        request.params = {};
+      }
+
       const injector = getStartupPromptInjector();
       const ledger = getShadowMemoryLedger();
 
@@ -722,19 +730,143 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
 
   // [TRANSPORT SELECTION]: stdio (default) or http/sse
   if (TRANSPORT_MODE === 'stdio') {
-    // [STRICT TRANSPORT]: Standard Input/Output
-    // NOTE: The @modelcontextprotocol/sdk's StdioServerTransport has known limitations:
-    // - Does not handle UTF-8 BOM prefixes gracefully (returns no response)
-    // - Does not respond to incomplete JSON-RPC messages (missing required fields)
-    // - Does not respond when params is null instead of an object
-    // These are edge cases that shouldn't occur in normal operation with valid clients.
-    // The server won't crash on these due to error handlers below, but won't respond either.
+    // [STRICT TRANSPORT]: Standard Input/Output with Transport Sentinel
+    // Wrap stdin to intercept and sanitize input before MCP SDK sees it
+    const { PassThrough } = await import('stream');
+    const originalStdin = process.stdin;
+    const sanitizedStdin = new PassThrough();
+
+    // Transport health tracking
+    const transportHealth = {
+      bomStripped: 0,
+      malformedJson: 0,
+      missingFields: 0,
+      nullParams: 0,
+      silentFailures: 0,
+      recoveries: 0,
+    };
+
+    // Watchdog for silent failures
+    let lastActivity = Date.now();
+    const WATCHDOG_INTERVAL_MS = 250;
+    const WATCHDOG_STALL_MS = 1500;
+
+    function markActivity() {
+      lastActivity = Date.now();
+    }
+
+    const watchdogTimer = setInterval(() => {
+      const delta = Date.now() - lastActivity;
+      if (delta > WATCHDOG_STALL_MS) {
+        transportHealth.silentFailures++;
+        process.stderr.write(
+          `[SWEObeyMe] TransportWatchdog: No activity for ${delta}ms. Possible silent SDK failure.\n`
+        );
+      }
+    }, WATCHDOG_INTERVAL_MS);
+
+    // Log transport health on startup
+    function logTransportHealth(prefix = 'Runtime') {
+      process.stderr.write(
+        `[SWEObeyMe] ${prefix} Transport Health:\n` +
+          `  BOM stripped:     ${transportHealth.bomStripped}\n` +
+          `  Malformed JSON:   ${transportHealth.malformedJson}\n` +
+          `  Missing fields:   ${transportHealth.missingFields}\n` +
+          `  Null params:      ${transportHealth.nullParams}\n` +
+          `  Silent failures:  ${transportHealth.silentFailures}\n` +
+          `  Recoveries:      ${transportHealth.recoveries}\n`
+      );
+    }
+
+    logTransportHealth('Startup');
+
+    // Log transport health on shutdown
+    process.on('beforeExit', () => logTransportHealth('Shutdown'));
+
+    // Wrap stdin to sanitize input
+    originalStdin.on('data', (chunk) => {
+      markActivity();
+      let buf = Buffer.from(chunk);
+
+      // 1) Strip BOM
+      if (buf.length >= 3 && buf[0] === 0xef && buf[1] === 0xbb && buf[2] === 0xbf) {
+        transportHealth.bomStripped++;
+        process.stderr.write('[SWEObeyMe] Transport: BOM detected and stripped.\n');
+        buf = buf.slice(3);
+      }
+
+      // 2) Try to parse JSON to detect obvious garbage early
+      const raw = buf.toString('utf8').trim();
+      if (!raw) {
+        // Let SDK deal with empty (but we log it)
+        process.stderr.write('[SWEObeyMe] Transport: Empty chunk received.\n');
+        sanitizedStdin.write(buf);
+        return;
+      }
+
+      let parsed;
+      try {
+        parsed = JSON.parse(raw);
+      } catch (e) {
+        transportHealth.malformedJson++;
+        process.stderr.write('[SWEObeyMe] Transport: Malformed JSON blocked before SDK.\n');
+        // Synthesize JSON-RPC error response
+        const errorResponse =
+          JSON.stringify({
+            jsonrpc: '2.0',
+            id: null,
+            error: {
+              code: -32700,
+              message: 'Parse error',
+            },
+          }) + '\n';
+        process.stdout.write(errorResponse);
+        return;
+      }
+
+      // 3) Validate JSON-RPC shape
+      if (!parsed.method) {
+        transportHealth.missingFields++;
+        process.stderr.write('[SWEObeyMe] Transport: Missing method field, synthesizing error.\n');
+        // Synthesize JSON-RPC error response
+        const errorResponse =
+          JSON.stringify({
+            jsonrpc: '2.0',
+            id: parsed.id || null,
+            error: {
+              code: -32600,
+              message: 'Invalid Request',
+              data: 'Missing method field',
+            },
+          }) + '\n';
+        process.stdout.write(errorResponse);
+        return;
+      }
+
+      // 4) Handle null params
+      if (parsed.params === null) {
+        transportHealth.nullParams++;
+        process.stderr.write('[SWEObeyMe] Transport: params=null, normalizing to {}.\n');
+        parsed.params = {};
+        buf = Buffer.from(JSON.stringify(parsed), 'utf8');
+      }
+
+      sanitizedStdin.write(buf);
+    });
+
+    // Hand sanitized stdin to SDK
+    process.stdin = sanitizedStdin;
+
     const transport = new StdioServerTransport();
+
+    // Restore original stdin after transport is created
+    process.stdin = originalStdin;
 
     // Start server with comprehensive error handling
     try {
       await server.connect(transport);
       process.stderr.write('[SWEObeyMe] MCP server connected and ready (stdio transport)\n');
+      markActivity();
     } catch (error) {
       process.stderr.write(`[CRITICAL]: Handshake Failed: ${error}\n`);
       throw error;
