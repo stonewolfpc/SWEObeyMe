@@ -133,7 +133,7 @@ function writeMcpConfig(extensionPath) {
 
     const serverConfig = {
       command: 'node',
-      args: [serverJsPath],
+      args: ['--no-warnings', serverJsPath],
       env: {
         NODE_ENV: 'production',
         SWEOBEYME_BACKUP_DIR: backupDir,
