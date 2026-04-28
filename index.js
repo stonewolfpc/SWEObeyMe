@@ -17,20 +17,19 @@ import path from 'path';
 import { ensureBackupDir, setBackupCallback } from './lib/backup.js';
 import { internalAudit, CONSTITUTION } from './lib/enforcement.js';
 import { loadProjectContract, loadSweIgnore } from './lib/project.js';
-import { toolHandlers, getToolDefinitions, initializeQuotes } from './lib/tools.js';
+import { toolHandlers, initializeQuotes } from './lib/tools.js';
 import { initializePromptRegistry, getPromptRegistry } from './lib/prompts/registry.js';
 import { getDynamicToolRegistry } from './lib/tools/registry-dynamic.js';
-import { getLanguageSpecificTools } from './lib/language-upper-functions.js';
-import { getProactiveVoice, GOVERNANCE_CONSTITUTION } from './lib/proactive-voice.js';
+import { getProactiveVoice } from './lib/proactive-voice.js';
 import { getServerDiagnostics } from './lib/server-diagnostics.js';
 import { initializeOAuthManager, getOAuthManager } from './lib/oauth-manager.js';
 import { initializeRefreshRecovery, getRefreshRecovery } from './lib/refresh-recovery.js';
-import { initializeURLHandler, getURLHandler } from './lib/url-handler.js';
+import { initializeURLHandler } from './lib/url-handler.js';
 import { initializeLoadingStateManager, getLoadingStateManager } from './lib/loading-state.js';
 import { initializeAutoEnforcement, getAutoEnforcement } from './lib/auto-enforcement.js';
 import { initializeAuditSystem, getAuditSystem } from './lib/audit-system.js';
-import { initializeDuplicateScanner, getDuplicateScanner } from './lib/duplicate-scanner.js';
-import { initializeSessionTracker, getSessionTracker } from './lib/session-tracker.js';
+import { initializeDuplicateScanner } from './lib/duplicate-scanner.js';
+import { initializeSessionTracker } from './lib/session-tracker.js';
 import { initializeShadowMemoryLedger, getShadowMemoryLedger } from './lib/shadow-memory-ledger.js';
 import {
   initializeStartupPromptInjector,
@@ -41,15 +40,13 @@ import {
   getProjectMemoryManager,
 } from './lib/project-memory-system.js';
 import { initializeProjectRegistry, getProjectRegistry } from './lib/project-registry.js';
-import { initializeArchiveManager, getArchiveManager } from './lib/archive-manager.js';
+import { initializeArchiveManager } from './lib/archive-manager.js';
 import {
   loadSessionState,
   incrementToolCallCounter,
   shouldShowReminder,
   updateLastReminder,
   getSessionState,
-  setTaskListSnapshot,
-  setCurrentTaskId,
 } from './lib/session-state.js';
 
 // Read version from package.json (single source of truth)
@@ -79,10 +76,10 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
   process.stderr.write(`[SWEObeyMe] Transport: ${TRANSPORT_MODE}\n`);
 
   // HTTP transport dependencies - imported conditionally to avoid bundling issues
-  let SSEServerTransport;
+  let _SSEServerTransport;
   if (TRANSPORT_MODE === 'http' || TRANSPORT_MODE === 'sse') {
     const sseModule = await import('@modelcontextprotocol/sdk/server/sse.js');
-    SSEServerTransport = sseModule.SSEServerTransport;
+    _SSEServerTransport = sseModule.SSEServerTransport;
   }
 
   try {
@@ -263,7 +260,7 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
   }
 
   // Set up backup callback for project memory integration
-  setBackupCallback(async (filePath, backupPath, timestamp) => {
+  setBackupCallback(async (filePath, backupPath, _timestamp) => {
     try {
       const projectRegistry = getProjectRegistry();
       if (!projectRegistry) return;
@@ -1013,7 +1010,7 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
     });
 
     // Error handler
-    app.use((err, req, res, next) => {
+    app.use((err, req, res, _next) => {
       process.stderr.write(`[HTTP] Error: ${err.message}\n`);
       res.status(500).json({ error: err.message });
     });

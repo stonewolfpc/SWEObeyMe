@@ -22,7 +22,7 @@ function copyPackageJson() {
 
   try {
     fs.copyFileSync(sourcePackageJson, targetPackageJson);
-    console.log('Copied package.json to dist/mcp/package.json');
+    console.info('Copied package.json to dist/mcp/package.json');
   } catch (error) {
     console.error('Failed to copy package.json:', error);
     throw error;
