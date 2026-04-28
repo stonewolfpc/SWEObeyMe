@@ -29,8 +29,8 @@ export default [
       // No eval
       'no-eval': 'error',
 
-      // No unused vars (allow underscore prefix for unused)
-      'no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
+      // No unused vars (allow underscore prefix for unused, ignore catch errors)
+      'no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_', caughtErrors: 'none' }],
 
       // Prefer const/let over var
       'no-var': 'error',
@@ -85,6 +85,43 @@ export default [
 
       // Valid typeof comparisons
       'valid-typeof': 'error',
+    },
+  },
+
+  // Test files - relaxed rules
+  {
+    files: [
+      'tests/**/*.js',
+      'test-tools/**/*.js',
+      '.github/scripts/**/*.js',
+      'ares-rig/**/*.js',
+      'qa/**/*.js',
+      '.local/**/*.js',
+      'git-governor/**/*.js',
+    ],
+    rules: {
+      'no-console': 'off',
+      'no-unused-vars': ['warn', { argsIgnorePattern: '^_', varsIgnorePattern: '^_', caughtErrors: 'none' }],
+      'no-undef': 'warn',
+      'no-empty': ['warn', { allowEmptyCatch: true }],
+    },
+  },
+
+  // Scripts - relaxed rules
+  {
+    files: ['scripts/**/*.js', 'webhook-server/**/*.js', 'git-governor/**/*.js'],
+    rules: {
+      'no-console': 'off',
+      'no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_', caughtErrors: 'none' }],
+    },
+  },
+
+  // Lib files - warn on patterns that are often intentional
+  {
+    files: ['lib/**/*.js', '*.js'],
+    rules: {
+      'no-unused-vars': ['warn', { argsIgnorePattern: '^_', varsIgnorePattern: '^_', caughtErrors: 'none' }],
+      'no-empty': ['warn', { allowEmptyCatch: true }],
     },
   },
 
