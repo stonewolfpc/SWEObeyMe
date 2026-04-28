@@ -126,12 +126,14 @@ function writeMcpConfig(extensionPath) {
       path.join(homeDir, '.codeium', 'mcp_config.json'),
     ];
 
-    const serverJsPath = path.join(extensionPath, 'dist', 'mcp', 'server.js').replace(/\\/g, '/');
+    // Installed extension structure: extension.js, lib/, mcp/server.js, tests/
+    // Not dist/mcp/server.js - that's only for development
+    const serverJsPath = path.join(extensionPath, 'mcp', 'server.js').replace(/\\/g, '/');
     const backupDir = path.join(homeDir, '.sweobeyme-backups').replace(/\\/g, '/');
 
     const serverConfig = {
       command: 'node',
-      args: ['--no-warnings', serverJsPath],
+      args: [serverJsPath],
       env: {
         NODE_ENV: 'production',
         SWEOBEYME_BACKUP_DIR: backupDir,
@@ -158,7 +160,7 @@ function writeMcpConfig(extensionPath) {
 
       config.mcpServers = config.mcpServers || {};
       const existing = config.mcpServers['swe-obey-me'];
-      const pathChanged = existing && existing.args?.[1] !== serverJsPath;
+      const pathChanged = existing && existing.args?.[0] !== serverJsPath;
 
       if (!existing || pathChanged) {
         config.mcpServers['swe-obey-me'] = serverConfig;
