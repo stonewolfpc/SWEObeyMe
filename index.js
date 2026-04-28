@@ -14,7 +14,7 @@ import { fileURLToPath } from 'url';
 import path from 'path';
 
 // Import from lib modules
-import { ensureBackupDir } from './lib/backup.js';
+import { ensureBackupDir, setBackupCallback } from './lib/backup.js';
 import { internalAudit, CONSTITUTION } from './lib/enforcement.js';
 import { loadProjectContract, loadSweIgnore } from './lib/project.js';
 import { toolHandlers, getToolDefinitions, initializeQuotes } from './lib/tools.js';
@@ -42,7 +42,6 @@ import {
 } from './lib/project-memory-system.js';
 import { initializeProjectRegistry, getProjectRegistry } from './lib/project-registry.js';
 import { initializeArchiveManager, getArchiveManager } from './lib/archive-manager.js';
-import { setBackupCallback } from './lib/backup.js';
 import {
   loadSessionState,
   incrementToolCallCounter,
