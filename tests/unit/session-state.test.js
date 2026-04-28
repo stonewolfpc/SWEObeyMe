@@ -24,9 +24,15 @@ const TEST_SESSION_FILE = path.join(os.homedir(), '.sweobeyme', 'session-state.j
 
 describe('session-state module', () => {
   beforeEach(async () => {
-    // Delete session state file before each test
-    if (fs.existsSync(TEST_SESSION_FILE)) {
-      fs.unlinkSync(TEST_SESSION_FILE);
+    // Delete session state file before each test (async with error handling)
+    try {
+      await fs.promises.unlink(TEST_SESSION_FILE);
+    } catch (e) {
+      // ENOENT is fine (file doesn't exist)
+      // EPERM might indicate file lock, but we proceed anyway
+      if (e.code !== 'ENOENT' && e.code !== 'EPERM') {
+        throw e;
+      }
     }
     // Clear in-memory session state
     await clearSessionState();
@@ -35,13 +41,15 @@ describe('session-state module', () => {
   });
 
   afterEach(async () => {
-    // Clean up test file
+    // Clean up test file (async with error handling)
     try {
-      if (fs.existsSync(TEST_SESSION_FILE)) {
-        fs.unlinkSync(TEST_SESSION_FILE);
+      await fs.promises.unlink(TEST_SESSION_FILE);
+    } catch (e) {
+      // ENOENT is fine (file doesn't exist)
+      // EPERM might indicate file lock, but we proceed anyway
+      if (e.code !== 'ENOENT' && e.code !== 'EPERM') {
+        throw e;
       }
-    } catch (error) {
-      // Ignore if file doesn't exist
     }
     // Clear session state after test
     await clearSessionState();
