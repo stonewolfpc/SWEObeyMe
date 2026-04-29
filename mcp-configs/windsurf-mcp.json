@@ -1,9 +1,13 @@
 {
   "mcpServers": {
-    "sweobeyme": {
+    "swe-obey-me": {
       "command": "node",
-      "args": ["./dist/mcp/server.js"],
-      "env": {}
+      "args": ["--no-warnings", "./dist/mcp/server.js"],
+      "env": {
+        "NODE_ENV": "production",
+        "SWEOBEYME_BACKUP_DIR": "~/.sweobeyme-backups",
+        "SWEOBEYME_DEBUG": "1"
+      }
     }
   }
 }

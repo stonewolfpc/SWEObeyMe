@@ -1,6 +1,6 @@
 # SWEObeyMe MCP Server
 
-[![Version](https://img.shields.io/badge/version-5.1.3-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-5.1.4-blue.svg)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/license-Dual--License-yellow.svg)](LICENSE)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-green.svg)](https://nodejs.org)
 [![VS Code](https://img.shields.io/badge/VS%20Code-Extension-purple.svg)](https://marketplace.visualstudio.com)
@@ -40,6 +40,52 @@ Here's what was broken and what fixed it:
 **v5.0.16 is the one that works.** Fresh install, no leftover versions in your extensions folder, full restart of Windsurf-Next. That's all it takes.
 
 I'm sorry for the headache. Genuinely. This extension means a lot to me and you all deserve better than "oops, worked locally." The error reporting pipeline is now live so I'll catch these before you do going forward. — Chris
+
+---
+
+## 🚨 A Note on v5.1.3 — MCP Config Path Issue
+
+I owe another apology for v5.1.3.
+
+**The Problem:**
+The extension hardcoded the MCP config path to `~/.codeium/windsurf-next/mcp_config.json` and actively deleted configs from `~/.codeium/windsurf/mcp_config.json` and `~/.codeium/mcp_config.json`. This meant:
+
+- Users with regular Windsurf (not windsurf-next) couldn't use the extension at all
+- Users with both Windsurf and Windsurf-Next installed would have their regular Windsurf config deleted every time the extension activated
+- The MCP server would show as active briefly then vanish instantly
+
+**The Fix (v5.1.4):**
+The extension now:
+
+- Detects all possible config paths (windsurf-next, windsurf, .codeium)
+- Writes to all existing directories instead of deleting them
+- Uses platform-agnostic paths in sample configs for Windows, macOS, and Linux compatibility
+
+**If You're Still Experiencing Issues:**
+
+1. **Check your config files:**
+   - Windows: `C:\Users\YOUR_USER\.codeium\windsurf\mcp_config.json`
+   - Windows: `C:\Users\YOUR_USER\.codeium\windsurf-next\mcp_config.json`
+   - macOS/Linux: `~/.codeium/windsurf/mcp_config.json`
+   - macOS/Linux: `~/.codeium/windsurf-next/mcp_config.json`
+
+2. **If the config is empty or missing the swe-obey-me entry:**
+   - Update to v5.1.4 or later
+   - Reload your Windsurf window (`Ctrl+Shift+P` → "Developer: Reload Window")
+   - The extension will automatically write to all existing config paths
+
+3. **If you have both Windsurf and Windsurf-Next:**
+   - Both config files should now have the swe-obey-me entry
+   - If one is missing, manually copy the config from the other:
+   - Windows: `Copy-Item C:\Users\YOUR_USER\.codeium\windsurf-next\mcp_config.json C:\Users\YOUR_USER\.codeium\windsurf\mcp_config.json`
+   - macOS/Linux: `cp ~/.codeium/windsurf-next/mcp_config.json ~/.codeium/windsurf/mcp_config.json`
+
+4. **If the MCP server still vanishes:**
+   - Check the Windsurf developer console for error messages
+   - Ensure the extension path in the config points to a valid location
+   - Verify Node.js is installed and accessible
+
+I'm sorry for the disruption. This issue affected users differently depending on which Windsurf version they had installed, which made it harder to catch in testing. The fix ensures compatibility across all Windsurf installations going forward. — Chris
 
 ---
 

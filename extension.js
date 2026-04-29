@@ -120,22 +120,25 @@ function reportError(component, err) {
 function writeMcpConfig(extensionPath) {
   try {
     const homeDir = os.homedir();
-    const configPath = path.join(homeDir, '.codeium', 'windsurf-next', 'mcp_config.json');
 
-    // Clean up old config paths from previous versions
-    const oldConfigPaths = [
+    // Try all possible config paths - write to all that exist
+    const configPaths = [
+      path.join(homeDir, '.codeium', 'windsurf-next', 'mcp_config.json'),
       path.join(homeDir, '.codeium', 'windsurf', 'mcp_config.json'),
       path.join(homeDir, '.codeium', 'mcp_config.json'),
     ];
-    for (const oldPath of oldConfigPaths) {
-      if (fs.existsSync(oldPath)) {
-        try {
-          fs.unlinkSync(oldPath);
-          console.warn(`[SWEObeyMe] Removed stale config at ${oldPath}`);
-        } catch (e) {
-          // Ignore cleanup errors
-        }
+
+    // Filter to only existing paths
+    const existingPaths = configPaths.filter((p) => fs.existsSync(p));
+
+    // If none exist, create windsurf-next as default
+    if (existingPaths.length === 0) {
+      const defaultPath = configPaths[0];
+      const configDir = path.dirname(defaultPath);
+      if (!fs.existsSync(configDir)) {
+        fs.mkdirSync(configDir, { recursive: true });
       }
+      existingPaths.push(defaultPath);
     }
 
     // Dynamic server path resolution (check multiple possible locations)
@@ -183,24 +186,6 @@ function writeMcpConfig(extensionPath) {
       },
     };
 
-    // Ensure config directory exists
-    const configDir = path.dirname(configPath);
-    if (!fs.existsSync(configDir)) {
-      fs.mkdirSync(configDir, { recursive: true });
-    }
-
-    // Load existing config
-    let config = {};
-    if (fs.existsSync(configPath)) {
-      try {
-        const raw = fs.readFileSync(configPath, 'utf8');
-        if (raw.trim()) config = JSON.parse(raw);
-      } catch (e) {
-        console.warn(`[SWEObeyMe] Failed to parse existing config: ${e.message}`);
-        config = {};
-      }
-    }
-
     // Basic validation before write
     if (!serverConfig.command) {
       throw new Error('Node.js path not detected');
@@ -212,16 +197,39 @@ function writeMcpConfig(extensionPath) {
       throw new Error(`Server file not found: ${serverJsPath}`);
     }
 
-    // Add/update SWEObeyMe server
-    config.mcpServers = config.mcpServers || {};
-    config.mcpServers['swe-obey-me'] = serverConfig;
+    // Write to all existing config paths
+    for (const configPath of existingPaths) {
+      // Ensure config directory exists
+      const configDir = path.dirname(configPath);
+      if (!fs.existsSync(configDir)) {
+        fs.mkdirSync(configDir, { recursive: true });
+      }
 
-    // Atomic write
-    const tempPath = configPath + '.tmp';
-    fs.writeFileSync(tempPath, JSON.stringify(config, null, 2));
-    fs.renameSync(tempPath, configPath);
+      // Load existing config
+      let config = {};
+      if (fs.existsSync(configPath)) {
+        try {
+          const raw = fs.readFileSync(configPath, 'utf8');
+          if (raw.trim()) config = JSON.parse(raw);
+        } catch (e) {
+          console.warn(
+            `[SWEObeyMe] Failed to parse existing config at ${configPath}: ${e.message}`
+          );
+          config = {};
+        }
+      }
 
-    process.stderr.write(`[SWEObeyMe] MCP config written to ${configPath}\n`);
+      // Add/update SWEObeyMe server
+      config.mcpServers = config.mcpServers || {};
+      config.mcpServers['swe-obey-me'] = serverConfig;
+
+      // Atomic write
+      const tempPath = configPath + '.tmp';
+      fs.writeFileSync(tempPath, JSON.stringify(config, null, 2));
+      fs.renameSync(tempPath, configPath);
+
+      process.stderr.write(`[SWEObeyMe] MCP config written to ${configPath}\n`);
+    }
   } catch (e) {
     process.stderr.write(`[SWEObeyMe] MCP config write failed: ${e.message}\n`);
   }
