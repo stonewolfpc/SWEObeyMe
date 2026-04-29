@@ -82,7 +82,7 @@ function simulateConfigWrite(extensionPath, backupDir, configPath = null) {
   config.mcpServers = config.mcpServers || {};
   config.mcpServers['swe-obey-me'] = {
     command: 'node',
-    args: ['--no-warnings', normalizedIndexPath],
+    args: [normalizedIndexPath],
     env: {
       NODE_ENV: 'production',
       SWEOBEYME_BACKUP_DIR: normalizedBackupDir,

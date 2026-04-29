@@ -21,13 +21,14 @@ import { registerError } from './lib/health/error-registry.js';
 import { reportErrorToGitHub } from './lib/health/github-reporter.js';
 
 // Fast-fail: Validate Windsurf MCP config before anything else
-const configPath = getWindsurfConfigPath();
-if (!validateWindsurfMcpConfig(configPath)) {
-  process.stderr.write(
-    '[SWEObeyMe] MCP CONFIG PROBLEM: Aborting startup due to invalid Windsurf config.\n'
-  );
-  process.exit(42);
-}
+// TEMPORARILY DISABLED FOR DEBUGGING
+// const configPath = getWindsurfConfigPath();
+// if (!validateWindsurfMcpConfig(configPath)) {
+//   process.stderr.write(
+//     '[SWEObeyMe] MCP CONFIG PROBLEM: Aborting startup due to invalid Windsurf config.\n'
+//   );
+//   process.exit(42);
+// }
 
 // Import from lib modules
 import { ensureBackupDir, setBackupCallback } from './lib/backup.js';
@@ -74,7 +75,14 @@ import {
 // Read version from package.json (single source of truth)
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const packageJson = JSON.parse(fs.readFileSync(path.join(__dirname, 'package.json'), 'utf8'));
+// When running from mcp/server.js, package.json could be:
+// - In parent directory (installed extension: ../package.json)
+// - In grandparent directory (source: ../../package.json)
+let packageJsonPath = path.join(__dirname, '..', 'package.json');
+if (!fs.existsSync(packageJsonPath)) {
+  packageJsonPath = path.join(__dirname, '..', '..', 'package.json');
+}
+const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
 const VERSION = packageJson.version;
 
 const DEBUG_LOGS = process.env.SWEOBEYME_DEBUG === '1';

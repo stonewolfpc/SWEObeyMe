@@ -2,6 +2,14 @@
 
 All notable changes to SWEObeyMe will be documented in this file.
 
+## [5.1.2] - 2026-04-28
+
+### Bug Fixes
+
+- **MCP Config Path Separator Fix** - Changed from forward slashes to native Windows backslashes in MCP config paths to fix Windsurf-Next timeout issues. Windsurf's MCP host requires native path separators for proper path normalization.
+- **Debug Logs Enabled** - Set SWEOBEYME_DEBUG to '1' by default to aid in diagnosing MCP server startup and communication issues.
+- **Fast-Fail Validation Temporarily Disabled** - Disabled the Windsurf MCP config fast-fail validation in index.js to prevent server exit (code 42) during troubleshooting. Will be re-enabled once config issues are resolved.
+
 ## [5.1.0] - 2026-04-28
 
 ### Features
