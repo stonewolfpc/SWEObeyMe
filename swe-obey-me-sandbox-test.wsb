@@ -1,0 +1,14 @@
+<Configuration>
+  <VGpu>Enable</VGpu>
+  <Networking>Enable</Networking>
+  <MappedFolders>
+    <MappedFolder>
+      <HostFolder>D:\SWEObeyMe-restored</HostFolder>
+      <SandboxFolder>D:\SWEObeyMe-restored</SandboxFolder>
+      <ReadOnly>false</ReadOnly>
+    </MappedFolder>
+  </MappedFolders>
+  <LogonCommand>
+    <Command>powershell -Command "Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1')); choco install nodejs -y; cd D:\SWEObeyMe-restored; npm install; npm run build; Write-Host 'SWEObeyMe sandbox ready for testing. Press Enter to exit.'; Read-Host"</Command>
+  </LogonCommand>
+</Configuration>

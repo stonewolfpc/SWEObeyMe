@@ -1,0 +1,14 @@
+﻿<Configuration>
+  <VGpu>Enable</VGpu>
+  <Networking>Enable</Networking>
+  <MappedFolders>
+    <MappedFolder>
+      <HostFolder>C:\Temp\SandboxShare</HostFolder>
+      <SandboxFolder>C:\SandboxShare</SandboxFolder>
+      <ReadOnly>false</ReadOnly>
+    </MappedFolder>
+  </MappedFolders>
+  <LogonCommand>
+    <Command>powershell.exe -ExecutionPolicy Bypass -Command "Set-ExecutionPolicy Bypass -Scope Process -Force; cd C:\SandboxShare; .\Setup-SWEObeyMe.ps1"</Command>
+  </LogonCommand>
+</Configuration>

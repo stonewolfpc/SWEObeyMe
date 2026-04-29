@@ -2,6 +2,13 @@
 
 All notable changes to SWEObeyMe will be documented in this file.
 
+## [5.1.3] - 2026-04-29
+
+### Bug Fixes
+
+- **Critical MCP Server Startup Fix** - Removed stdin manipulation code that caused unhandled rejection. `process.stdin` is read-only in Node.js, so attempting to set it caused "Cannot set property stdin of #<process> which has only a getter" error. This was the root cause of Windsurf-Next MCP server timeout issues.
+- **Local Testing Script Added** - Created `test-mcp-local.js` for local MCP server testing without requiring Windsurf-Next or Windows Sandbox.
+
 ## [5.1.2] - 2026-04-28
 
 ### Bug Fixes

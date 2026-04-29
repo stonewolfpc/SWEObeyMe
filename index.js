@@ -974,13 +974,9 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
       sanitizedStdin.write(buf);
     });
 
-    // Hand sanitized stdin to SDK
-    process.stdin = sanitizedStdin;
-
+    // NOTE: Cannot set process.stdin directly - it's read-only in Node.js
+    // The MCP SDK will read from the current stdin
     const transport = new StdioServerTransport();
-
-    // Restore original stdin after transport is created
-    process.stdin = originalStdin;
 
     // Start server with comprehensive error handling
     try {
