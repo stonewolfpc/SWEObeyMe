@@ -2,6 +2,17 @@
 
 All notable changes to SWEObeyMe will be documented in this file.
 
+## [5.1.5] - 2026-04-29
+
+### Fixed
+
+- **CRITICAL**: Removed top-level await from index.js to fix Windsurf MCP compatibility
+- Replaced synchronous fs operations with async equivalents in validate-windsurf-mcp-config.js
+- Replaced synchronous fs operations with async equivalents in project-awareness.js
+- Replaced synchronous fs operations with async equivalents in extension.js
+- Added error handling to governance tool to prevent hangs on tracker failures
+- Fixed MCP tool hangs caused by blocking synchronous I/O operations
+
 ## [5.1.4] - 2026-04-29
 
 ### Bug Fixes

@@ -1,7 +1,7 @@
 {
   "name": "swe-obey-me",
   "displayName": "SWEObeyMe",
-  "description": "SWEObeyMe - Anti vibe-coding surgical governance for AI-assisted development. 7 semantic tools with governance router enforcing 97+ internal handlers. v5.1.4",
+  "description": "SWEObeyMe - Anti vibe-coding surgical governance for AI-assisted development. 7 semantic tools with governance router enforcing 97+ internal handlers. v5.1.5",
   "version": "5.1.4",
   "type": "module",
   "publisher": "stonewolfpc",
@@ -1237,7 +1237,8 @@
     "publish": "vsce publish",
     "compile": "npm run build",
     "start": "node index.js",
-    "build": "node esbuild.config.js",
+    "build": "esbuild ./extension.js --bundle --outfile=dist/extension.js --external:vscode --format=esm --platform=node && esbuild ./index.mjs --bundle --outfile=dist/mcp/server.js --external:vscode --format=esm --platform=node --external:velocityjs --external:dustjs-linkedin --external:atpl --external:liquor --external:twig --external:ejs --external:eco --external:jazz --external:jqtpl --external:hamljs --external:hamlet --external:whiskers --external:haml-coffee --external:hogan.js --external:templayed --external:walrus --external:mustache --external:just --external:ect --external:mote --external:toffee --external:dot --external:bracket-template --external:ractive --external:htmling --external:babel-core --external:plates --external:react-dom/server --external:react --external:vash --external:slm --external:marko --external:teacup/lib/express --external:coffee-script --external:squirrelly --external:twing",
+    "watch": "esbuild ./extension.js --bundle --outfile=dist/extension.js --external:vscode --format=esm --platform=node --watch & esbuild ./index.mjs --bundle --outfile=dist/mcp/server.js --external:vscode --format=esm --platform=node --watch --external:velocityjs --external:dustjs-linkedin --external:atpl --external:liquor --external:twig --external:ejs --external:eco --external:jazz --external:jqtpl --external:hamljs --external:hamlet --external:whiskers --external:haml-coffee --external:hogan.js --external:templayed --external:walrus --external:mustache --external:just --external:ect --external:mote --external:toffee --external:dot --external:bracket-template --external:ractive --external:htmling --external:babel-core --external:plates --external:react-dom/server --external:react --external:vash --external:slm --external:marko --external:teacup/lib/express --external:coffee-script --external:squirrelly --external:twing",
     "build:public": "NODE_ENV=production BUILD_MODE=public node esbuild.config.js",
     "build:enterprise": "NODE_ENV=production BUILD_MODE=enterprise node esbuild.config.js",
     "build:dev": "BUILD_MODE=dev node esbuild.config.js",

@@ -11,7 +11,8 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import * as os from 'os';
-import * as fs from 'fs';
+import fs from 'fs/promises';
+import fssync from 'fs';
 import * as http from 'http';
 import * as https from 'https';
 import { fileURLToPath, pathToFileURL } from 'url';
@@ -117,7 +118,7 @@ function reportError(component, err) {
   } catch (_) {}
 }
 
-function writeMcpConfig(extensionPath) {
+async function writeMcpConfig(extensionPath) {
   try {
     const homeDir = os.homedir();
 
@@ -129,14 +130,24 @@ function writeMcpConfig(extensionPath) {
     ];
 
     // Filter to only existing paths
-    const existingPaths = configPaths.filter((p) => fs.existsSync(p));
+    const existingPaths = [];
+    for (const p of configPaths) {
+      try {
+        await fs.access(p);
+        existingPaths.push(p);
+      } catch {
+        // File doesn't exist
+      }
+    }
 
     // If none exist, create windsurf-next as default
     if (existingPaths.length === 0) {
       const defaultPath = configPaths[0];
       const configDir = path.dirname(defaultPath);
-      if (!fs.existsSync(configDir)) {
-        fs.mkdirSync(configDir, { recursive: true });
+      try {
+        await fs.access(configDir);
+      } catch {
+        await fs.mkdir(configDir, { recursive: true });
       }
       existingPaths.push(defaultPath);
     }
@@ -193,7 +204,9 @@ function writeMcpConfig(extensionPath) {
     if (!Array.isArray(serverConfig.args) || serverConfig.args.length === 0) {
       throw new Error('Invalid server args');
     }
-    if (!fs.existsSync(serverJsPath)) {
+    try {
+      await fs.access(serverJsPath);
+    } catch {
       throw new Error(`Server file not found: ${serverJsPath}`);
     }
 
@@ -201,22 +214,25 @@ function writeMcpConfig(extensionPath) {
     for (const configPath of existingPaths) {
       // Ensure config directory exists
       const configDir = path.dirname(configPath);
-      if (!fs.existsSync(configDir)) {
-        fs.mkdirSync(configDir, { recursive: true });
+      try {
+        await fs.access(configDir);
+      } catch {
+        await fs.mkdir(configDir, { recursive: true });
       }
 
       // Load existing config
       let config = {};
-      if (fs.existsSync(configPath)) {
-        try {
-          const raw = fs.readFileSync(configPath, 'utf8');
-          if (raw.trim()) config = JSON.parse(raw);
-        } catch (e) {
+      try {
+        await fs.access(configPath);
+        const raw = await fs.readFile(configPath, 'utf8');
+        if (raw.trim()) config = JSON.parse(raw);
+      } catch (e) {
+        if (e.code !== 'ENOENT') {
           console.warn(
             `[SWEObeyMe] Failed to parse existing config at ${configPath}: ${e.message}`
           );
-          config = {};
         }
+        config = {};
       }
 
       // Add/update SWEObeyMe server
@@ -225,8 +241,8 @@ function writeMcpConfig(extensionPath) {
 
       // Atomic write
       const tempPath = configPath + '.tmp';
-      fs.writeFileSync(tempPath, JSON.stringify(config, null, 2));
-      fs.renameSync(tempPath, configPath);
+      await fs.writeFile(tempPath, JSON.stringify(config, null, 2));
+      await fs.rename(tempPath, configPath);
 
       process.stderr.write(`[SWEObeyMe] MCP config written to ${configPath}\n`);
     }
@@ -244,7 +260,7 @@ async function activate(context) {
 
   const ext = vscode.extensions.getExtension('stonewolfpc.swe-obey-me');
   const extensionPath = ext?.extensionPath || path.join(__dirname, '..');
-  writeMcpConfig(extensionPath);
+  await writeMcpConfig(extensionPath);
 
   // Initialize checkpoint manager
   try {

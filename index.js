@@ -7,7 +7,8 @@ import {
   ListPromptsRequestSchema,
   GetPromptRequestSchema,
 } from '@modelcontextprotocol/sdk/types.js';
-import fs from 'fs';
+import fs from 'fs/promises';
+import fssync from 'fs';
 import os from 'os';
 import crypto from 'crypto';
 import { fileURLToPath } from 'url';
@@ -79,10 +80,10 @@ const __dirname = path.dirname(__filename);
 // - In parent directory (installed extension: ../package.json)
 // - In grandparent directory (source: ../../package.json)
 let packageJsonPath = path.join(__dirname, '..', 'package.json');
-if (!fs.existsSync(packageJsonPath)) {
+if (!fssync.existsSync(packageJsonPath)) {
   packageJsonPath = path.join(__dirname, '..', '..', 'package.json');
 }
-const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
+const packageJson = JSON.parse(fssync.readFileSync(packageJsonPath, 'utf8'));
 const VERSION = packageJson.version;
 
 const DEBUG_LOGS = process.env.SWEOBEYME_DEBUG === '1';
@@ -286,7 +287,7 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
     await loadSessionState();
     // Debug log removed
   } catch (error) {
-    console.error('[SWEObeyMe] Failed to load session state:', error);
+    console.error('[SWEObeyMe]: Failed to load session state:', error);
   }
 
   // Set up backup callback for project memory integration
@@ -413,25 +414,6 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
   process.on('unhandledRejection', (reason) => {
     windsweptProblem('ERR-UNHANDLED-REJECTION', `Unhandled rejection: ${reason}`);
     // Don't exit - log and continue to prevent server crash
-  });
-
-  // Prevent process.exit() calls from crashing the server
-  const originalExit = process.exit;
-  process.exit = (code) => {
-    windsweptProblem(
-      'ERR-FORCED-EXIT',
-      `Process.exit() called with code ${code}. Preventing exit to keep server alive.`
-    );
-    // Don't actually exit - keep server alive
-  };
-
-  // Prevent SIGTERM/SIGINT from killing the server (let it handle gracefully)
-  process.on('SIGTERM', () => {
-    process.stderr.write('[SWEObeyMe] SIGTERM received - ignoring to prevent crash\n');
-  });
-
-  process.on('SIGINT', () => {
-    process.stderr.write('[SWEObeyMe] SIGINT received - ignoring to prevent crash\n');
   });
 
   // Ensure backup directory exists
@@ -869,118 +851,13 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
 
   // [TRANSPORT SELECTION]: stdio (default) or http/sse
   if (TRANSPORT_MODE === 'stdio') {
-    // [STRICT TRANSPORT]: Standard Input/Output with Transport Sentinel
-    // Wrap stdin to intercept and sanitize input before MCP SDK sees it
-    const { PassThrough } = await import('stream');
-    const originalStdin = process.stdin;
-    const sanitizedStdin = new PassThrough();
-
-    // Transport health tracking
-    const transportHealth = {
-      bomStripped: 0,
-      malformedJson: 0,
-      missingFields: 0,
-      nullParams: 0,
-      silentFailures: 0,
-      recoveries: 0,
-    };
-
-    // Log transport health on startup
-    function logTransportHealth(prefix = 'Runtime') {
-      process.stderr.write(
-        `[SWEObeyMe] ${prefix} Transport Health:\n` +
-          `  BOM stripped:     ${transportHealth.bomStripped}\n` +
-          `  Malformed JSON:   ${transportHealth.malformedJson}\n` +
-          `  Missing fields:   ${transportHealth.missingFields}\n` +
-          `  Null params:      ${transportHealth.nullParams}\n` +
-          `  Silent failures:  ${transportHealth.silentFailures}\n` +
-          `  Recoveries:      ${transportHealth.recoveries}\n`
-      );
-    }
-
-    logTransportHealth('Startup');
-
-    // Log transport health on shutdown
-    process.on('beforeExit', () => logTransportHealth('Shutdown'));
-
-    // Wrap stdin to sanitize input
-    originalStdin.on('data', (chunk) => {
-      markActivity();
-      let buf = Buffer.from(chunk);
-
-      // 1) Strip BOM
-      if (buf.length >= 3 && buf[0] === 0xef && buf[1] === 0xbb && buf[2] === 0xbf) {
-        transportHealth.bomStripped++;
-        process.stderr.write('[SWEObeyMe] Transport: BOM detected and stripped.\n');
-        buf = buf.slice(3);
-      }
-
-      // 2) Try to parse JSON to detect obvious garbage early
-      const raw = buf.toString('utf8').trim();
-      if (!raw) {
-        // Let SDK deal with empty (but we log it)
-        process.stderr.write('[SWEObeyMe] Transport: Empty chunk received.\n');
-        sanitizedStdin.write(buf);
-        return;
-      }
-
-      let parsed;
-      try {
-        parsed = JSON.parse(raw);
-      } catch (e) {
-        transportHealth.malformedJson++;
-        process.stderr.write('[SWEObeyMe] Transport: Malformed JSON blocked before SDK.\n');
-        // Synthesize JSON-RPC error response
-        const errorResponse =
-          JSON.stringify({
-            jsonrpc: '2.0',
-            id: null,
-            error: {
-              code: -32700,
-              message: 'Parse error',
-            },
-          }) + '\n';
-        process.stdout.write(errorResponse);
-        return;
-      }
-
-      // 3) Validate JSON-RPC shape
-      if (!parsed.method) {
-        transportHealth.missingFields++;
-        process.stderr.write('[SWEObeyMe] Transport: Missing method field, synthesizing error.\n');
-        // Synthesize JSON-RPC error response
-        const errorResponse =
-          JSON.stringify({
-            jsonrpc: '2.0',
-            id: parsed.id || null,
-            error: {
-              code: -32600,
-              message: 'Invalid Request',
-              data: 'Missing method field',
-            },
-          }) + '\n';
-        process.stdout.write(errorResponse);
-        return;
-      }
-
-      // 4) Handle null params
-      if (parsed.params === null) {
-        transportHealth.nullParams++;
-        process.stderr.write('[SWEObeyMe] Transport: params=null, normalizing to {}.\n');
-        parsed.params = {};
-        buf = Buffer.from(JSON.stringify(parsed), 'utf8');
-      }
-
-      sanitizedStdin.write(buf);
-    });
-
-    // NOTE: Cannot set process.stdin directly - it's read-only in Node.js
-    // The MCP SDK will read from the current stdin
-    const transport = new StdioServerTransport();
-
-    // Start server with comprehensive error handling
     try {
-      await server.connect(transport);
+      // Use process.stdin directly - PassThrough wrapper causes transport errors
+      const stdioTransport = new StdioServerTransport({
+        stdin: process.stdin,
+        stdout: process.stdout,
+      });
+      await server.connect(stdioTransport);
       process.stderr.write('[SWEObeyMe] MCP server connected and ready (stdio transport)\n');
       markActivity();
     } catch (error) {
@@ -1226,15 +1103,14 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
     });
 
     // Validate a file against rules
-    app.post('/enforcement/validate', (req, res) => {
+    app.post('/enforcement/validate', async (req, res) => {
       try {
         const { filePath } = req.body;
         if (!filePath) {
           return res.status(400).json({ error: 'File path is required' });
         }
 
-        const fs = require('fs');
-        const content = fs.readFileSync(filePath, 'utf8');
+        const content = await fs.readFile(filePath, 'utf8');
         const { autoEnforcement } = getAutoEnforcement();
         const validation = autoEnforcement.validateFile(filePath, content);
 
