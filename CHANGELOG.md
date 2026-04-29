@@ -2,6 +2,17 @@
 
 All notable changes to SWEObeyMe will be documented in this file.
 
+## [5.1.6] - 2026-04-29
+
+### Bug Fixes
+
+- **Surface Layer Timeout Protection** - Added 30-second timeout wrappers to all surface layer handlers (file_ops, backup_restore, project_context, sweobeyme_execute) to prevent indefinite hangs when calling governance router.
+- **Comprehensive Timeout Coverage** - Timeout protection now at three levels: CallTool handler, governance router handler execution, and surface layer handlers.
+
+### Known Issues
+
+- **Tool Hanging in Windsurf-Next** - Tools hang when invoked from Windsurf-Next despite fuzzer passing. Root cause investigation ongoing. Timeout wrappers now prevent indefinite hangs but don't fix the underlying issue.
+
 ## [5.1.5] - 2026-04-29
 
 ### Bug Fixes
