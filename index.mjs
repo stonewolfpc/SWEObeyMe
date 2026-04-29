@@ -1,4 +1,4 @@
-﻿// [LOCKDOWN]: Ensure NOTHING hits stdout except the MCP Protocol
+// [LOCKDOWN]: Ensure NOTHING hits stdout except the MCP Protocol
 const originalLog = console.log;
 console.log = (...args) => {
   // Redirects all standard logs to the error channel (safe for Windsurf)
@@ -77,7 +77,7 @@ const log = msg => {
   server.setRequestHandler(CallToolRequestSchema, async request => {
     const { name, arguments: args } = request.params;
 
-    log(`Tool called: ${name}`);
+    log(`Tool called: ${name} with args: ${JSON.stringify(args)}`);
 
     // Check if tool exists
     if (!toolHandlers[name]) {
@@ -86,8 +86,13 @@ const log = msg => {
 
     let result;
     try {
-      // Call the tool handler
-      result = await toolHandlers[name](args);
+      // Add 30-second timeout to prevent indefinite hangs
+      const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error(`Tool ${name} execution timeout (30s)`)), 30000)
+      );
+      // Call the tool handler with timeout
+      result = await Promise.race([toolHandlers[name](args), timeoutPromise]);
+      log(`Tool ${name} completed successfully.`);
 
       // PHASE 10: Pre-flight hook - Update internalAudit based on result
       if (result && result.isError) {
@@ -207,3 +212,5 @@ const log = msg => {
     initiateShutdown('Uncaught Exception');
   });
 })(); // Close async IIFE
+
+export { toolHandlers };

@@ -4,6 +4,26 @@ All notable changes to SWEObeyMe will be documented in this file.
 
 ## [5.1.5] - 2026-04-29
 
+### Bug Fixes
+
+- **Tool Hanging Prevention** - Added 30-second timeout wrappers to governance router handler execution and CallTool handler to prevent indefinite hangs. This is a safety net while root cause investigation continues.
+- **Protocol Invariants Fix** - Fuzzer now passes all protocol invariants (previously failing on malformed message handling).
+
+### Known Issues
+
+- **Tool Hanging in Windsurf-Next** - Tools hang when invoked from Windsurf-Next despite fuzzer passing. Root cause investigation ongoing. Timeout wrappers now prevent indefinite hangs but don't fix the underlying issue.
+
+## [5.1.4] - 2026-04-29
+
+### Bug Fixes
+
+- **Critical MCP Config Multi-Editor Support** - Fixed hardcoded windsurf-only path that prevented users with regular Windsurf (not windsurf-next) from using the extension. The extension now detects all possible config paths (windsurf-next, windsurf, .codeium) and writes to all existing directories instead of deleting configs from other editors. This ensures compatibility for users with both Windsurf and Windsurf-Next installed.
+- **Removed Config Deletion Logic** - Removed code that deleted MCP configs from `windsurf` and `.codeium` directories, which broke the extension for users with multiple Windsurf installations.
+- **Universal Sample Configs** - Updated sample configs in `mcp-configs/` to use platform-agnostic paths (`node` command, relative paths, `~/.sweobeyme-backups`) for Windows, macOS, and Linux compatibility.
+- **Server Name Consistency** - Changed sample config server name from `sweobeyme` to `swe-obey-me` to match the actual server name written by the extension.
+
+## [5.1.3] - 2026-04-29
+
 ### Fixed
 
 - **CRITICAL**: Removed top-level await from index.js to fix Windsurf MCP compatibility
