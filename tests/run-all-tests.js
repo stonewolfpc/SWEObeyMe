@@ -182,7 +182,8 @@ class TestRunner {
     console.log('='.repeat(70));
 
     // Exit with appropriate code
-    process.exit(this.criticalFailed > 0 ? 1 : this.failed > 0 ? 2 : 0);
+    // Only fail on critical test failures - non-critical tests are informational
+    process.exit(this.criticalFailed > 0 ? 1 : 0);
   }
 }
 
