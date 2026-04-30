@@ -65,7 +65,7 @@ process.stdout.on('error', (err) => {
 import { ensureBackupDir, setBackupCallback } from './lib/backup.js';
 import { internalAudit, CONSTITUTION } from './lib/enforcement.js';
 import { loadProjectContract, loadSweIgnore } from './lib/project.js';
-import { toolHandlers, initializeQuotes } from './lib/tools.js';
+import { toolHandlers } from './lib/tools.js';
 import { initializePromptRegistry, getPromptRegistry } from './lib/prompts/registry.js';
 import { getDynamicToolRegistry } from './lib/tools/registry-dynamic.js';
 import { getProactiveVoice } from './lib/proactive-voice.js';
@@ -141,13 +141,6 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
   if (TRANSPORT_MODE === 'http' || TRANSPORT_MODE === 'sse') {
     const sseModule = await import('@modelcontextprotocol/sdk/server/sse.js');
     _SSEServerTransport = sseModule.SSEServerTransport;
-  }
-
-  try {
-    // Initialize quotes module
-    await initializeQuotes();
-  } catch (error) {
-    console.error('[SWEObeyMe]: Failed to initialize quotes:', error);
   }
 
   // Initialize OAuth manager
