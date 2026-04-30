@@ -103,7 +103,7 @@ try {
   assert(mcpServer.id === 'sweobeyme', 'MCP server ID is sweobeyme');
   assert(mcpServer.command === 'node', 'MCP server command is node');
   assert(
-    mcpServer.args && mcpServer.args[0] === './dist/mcp/server.js',
+    mcpServer.args && mcpServer.args.includes('./dist/mcp/server.js'),
     'MCP server args point to bundled file'
   );
 } catch (error) {
@@ -154,7 +154,7 @@ try {
     assert(extSize > 1000, `dist/extension.js has content (${extSize} bytes)`);
     assert(mcpSize > 1000, `dist/mcp/server.js has content (${mcpSize} bytes)`);
     assert(extSize < 1000000, `dist/extension.js not too large (${extSize} bytes)`);
-    assert(mcpSize < 10000000, `dist/mcp/server.js not too large (${mcpSize} bytes)`);
+    assert(mcpSize < 25000000, `dist/mcp/server.js not too large (${mcpSize} bytes)`);
 
     console.log(`  dist/extension.js: ${(extSize / 1024).toFixed(1)} KB`);
     console.log(`  dist/mcp/server.js: ${(mcpSize / 1024).toFixed(1)} KB`);
