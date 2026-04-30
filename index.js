@@ -105,8 +105,16 @@ import {
 
 // Read version from package.json (single source of truth)
 // Use process.cwd() as base for MCP server to avoid fileURLToPath issues with coverage instrumentation
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+let __filename, __dirname;
+try {
+  __filename = fileURLToPath(import.meta.url);
+  __dirname = path.dirname(__filename);
+} catch (e) {
+  // If fileURLToPath fails, use process.cwd() as fallback
+  __filename = path.join(process.cwd(), 'index.js');
+  __dirname = process.cwd();
+}
+
 let packageJsonPath = path.join(process.cwd(), 'package.json');
 if (!fssync.existsSync(packageJsonPath)) {
   // Fallback to fileURLToPath for extension context
