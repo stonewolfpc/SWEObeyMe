@@ -104,14 +104,16 @@ import {
 } from './lib/health/dependency-sentinel.js';
 
 // Read version from package.json (single source of truth)
+// Use process.cwd() as base for MCP server to avoid fileURLToPath issues with coverage instrumentation
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-// When running from mcp/server.js, package.json could be:
-// - In parent directory (installed extension: ../package.json)
-// - In grandparent directory (source: ../../package.json)
-let packageJsonPath = path.join(__dirname, '..', 'package.json');
+let packageJsonPath = path.join(process.cwd(), 'package.json');
 if (!fssync.existsSync(packageJsonPath)) {
-  packageJsonPath = path.join(__dirname, '..', '..', 'package.json');
+  // Fallback to fileURLToPath for extension context
+  packageJsonPath = path.join(__dirname, '..', 'package.json');
+  if (!fssync.existsSync(packageJsonPath)) {
+    packageJsonPath = path.join(__dirname, '..', '..', 'package.json');
+  }
 }
 const packageJson = JSON.parse(fssync.readFileSync(packageJsonPath, 'utf8'));
 const VERSION = packageJson.version;
