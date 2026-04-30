@@ -89,7 +89,75 @@ I'm sorry for the disruption. This issue affected users differently depending on
 
 ---
 
-## �🚀 New in v5.0 - Automatic Error Reporting
+## 🚨 A Note on PRE 5.1.9 Release — Major Config Problems
+
+I owe another apology for the PRE 5.1.9 release.
+
+**The Problem:**
+Users still running the PRE 5.1.9 release experienced major configuration problems that prevented the extension from working correctly.
+
+**The Fix (v5.1.9 Final):**
+
+Before updating to v5.1.9, you MUST uninstall the extension ENTIRELY:
+
+1. **Uninstall the extension** from your Windsurf extensions folder
+2. **Delete the configuration** for SWEObeyMe in the Windsurf MCP config menu
+3. **Restart Windsurf** completely
+4. **Install v5.1.9** fresh
+
+**Default install paths for reference:**
+
+- Windows: `C:\Users\YOUR_USER\.codeium\windsurf-next\extensions\`
+- macOS/Linux: `~/.codeium/windsurf-next/extensions/`
+
+**Testing:**
+This fix has been tested on a spare computer without source files and under a different installation directory to ensure it works for fresh installations.
+
+**If You're Still Experiencing Issues:**
+
+If your config file is showing a red dot or having problems:
+
+- **Contact me on GitHub** with an issue: https://github.com/stonewolfpc/SWEObeyMe/issues
+- **Email me directly**: stonewolfpcrepair01@gmail.com
+- Include the error, a copy of your exact config, and I will work my fastest to push a release for you and respond with the proper config for your installation
+
+**For Cursor Users:**
+I do not have a way to test this at the moment without a paid membership. Any errors you encounter WILL need logs for me to fix them. If continuing development for Cursor is important enough, please consider donating to my Ko-Fi and I will promptly get a subscription and begin proper testing and upgrading!
+
+Likewise, if you would like me to work on testing this with any other platforms, feel free to drop me a line. Any free memberships allow me to test fully and hopefully debug before credits run out!
+
+---
+
+## 🤝 About the Developer
+
+I'm just one guy with 128GB of RAM running a GTX 1080 8GB, and almost no history in programming. It's amazing what getting the right tools can do when you have dreams.
+
+**My Philosophy:**
+I believe governance of AI is the future — not bigger, not more expensive, not smarter AI. **GOVERNANCE.** My reasoning is simple: if you control the AI, if you can tell it what it's missing, if you can keep it from drifting and you can heal the mistakes before it even has a chance to make them, it should be perfect. Or very nearly, on the first try.
+
+**Why I Built This:**
+I use this tool, and it's helping me finish some very complex problems. I intend to continue development in Windsurf-Next. Windsurf-Next IS recommended — if you're used to SWE 1.5 and SWE 1.6 in Windsurf, Windsurf-Next is a whole new beast. I'm not sure why, but they are more powerful and more capable than Windsurf's stable release dev. I don't understand how this is besides perhaps a little better governance on their part, or perhaps more adept prompting and tool capability?
+
+**Support Me:**
+
+- **Ko-Fi**: [Donate here](https://ko-fi.com/stonewolfpc) — donations help me test on Cursor and other platforms
+- **Leave a review**: Reviews tell me this isn't just being downloaded, it's being noticed. The more people who notice it, the more likely I am to dig into what you guys need most and provide you with updated, better functionality
+
+Thanks everyone for your support. Donations or not, I use this tool, and it's helping me finish some very complex problems. I intend to continue development in Windsurf-Next.
+
+---
+
+## 🆕 New in v5.1.9 - Personal Corpus & PDF Reading
+
+**Personal Corpus Documentation Download:**
+You can now download your own documentation via tooling and have it placed DIRECTLY in your own personal corpus attached to this extension. This gives your AI a research guideline that's updated/specified directly for a version match so it's not making as many online calls, allowing a larger amount of context, and with any luck, SPEED.
+
+**PDF Reading Capability:**
+I've done my best to provide you with PDF reading capability where it was, before, impossible and the AI would say "pdf is binary" — it SHOULD now be able to READ those PDF documents!
+
+---
+
+## 🚀 New in v5.0 - Automatic Error Reporting
 
 **Governance failures now automatically report to GitHub.** When the extension detects a router failure, validation error, or forbidden pattern, it:
 

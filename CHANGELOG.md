@@ -2,6 +2,39 @@
 
 All notable changes to SWEObeyMe will be documented in this file.
 
+## [5.1.9] - 2026-04-30
+
+### 🚨 IMPORTANT - Migration Notice for PRE 5.1.9 Users
+
+Users still running the PRE 5.1.9 release experienced major configuration problems. Before updating to v5.1.9, you MUST:
+
+1. **Uninstall the extension** from your Windsurf extensions folder
+2. **Delete the configuration** for SWEObeyMe in the Windsurf MCP config menu
+3. **Restart Windsurf** completely
+4. **Install v5.1.9** fresh
+
+This fix has been tested on a spare computer without source files and under a different installation directory to ensure it works for fresh installations.
+
+### Features
+
+- **Personal Corpus Documentation Download** - Download your own documentation via tooling and have it placed DIRECTLY in your own personal corpus attached to this extension. This gives your AI a research guideline that's updated/specified directly for a version match so it's not making as many online calls, allowing a larger amount of context, and with any luck, SPEED.
+- **PDF Reading Capability** - Added PDF reading capability where it was, before, impossible and the AI would say "pdf is binary" — it should now be able to READ those PDF documents!
+
+### Bug Fixes
+
+- Fixed UI regression test for async ensureRegistryExists - updated to check for async fs methods instead of sync methods
+- Fixed marketplace packaging test bundle size threshold from 3MB to 25MB to match pre-release validation
+- Fixed cross-platform integration test config files - updated to use "sweobeyme" server ID instead of "swe-obey-me"
+- Fixed comprehensive test exit logic to not fail on non-critical test failures
+- Updated esbuild target from node18 to node24 for Node.js v24.15.0 compatibility
+- Updated GitHub Actions workflow to use Node.js 24.x for e2e job
+
+### Support
+
+- For issues with config files showing red dots, contact on GitHub or email stonewolfpcrepair01@gmail.com
+- For Cursor users: Cannot test without paid membership - logs required for debugging
+- Donations via Ko-Fi help fund Cursor testing and other platform development
+
 ## [5.1.6] - 2026-04-29
 
 ### Bug Fixes
