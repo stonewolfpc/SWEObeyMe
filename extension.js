@@ -158,7 +158,7 @@ async function writeMcpConfig(extensionPath) {
       path.join(extensionPath, 'out', 'mcp', 'server.js'),
       path.join(extensionPath, 'lib', 'mcp', 'server.js'),
     ];
-    let serverJsPath = possibleServerPaths.find((p) => fs.existsSync(p));
+    let serverJsPath = possibleServerPaths.find((p) => fssync.existsSync(p));
     if (!serverJsPath) {
       console.warn('[SWEObeyMe] MCP server not found, using dist/mcp/server.js as fallback');
       serverJsPath = path.join(extensionPath, 'dist', 'mcp', 'server.js');
@@ -177,7 +177,7 @@ async function writeMcpConfig(extensionPath) {
         path.join('C:', 'Program Files (x86)', 'nodejs', 'node.exe'),
       ];
       for (const testPath of possibleNodePaths) {
-        if (fs.existsSync(testPath)) {
+        if (fssync.existsSync(testPath)) {
           nodePath = testPath;
           break;
         }
@@ -244,10 +244,14 @@ async function writeMcpConfig(extensionPath) {
       await fs.writeFile(tempPath, JSON.stringify(config, null, 2));
       await fs.rename(tempPath, configPath);
 
-      process.stderr.write(`[SWEObeyMe] MCP config written to ${configPath}\n`);
+      try {
+        process.stderr.write(`[SWEObeyMe] MCP config written to ${configPath}\n`);
+      } catch (_e) {}
     }
   } catch (e) {
-    process.stderr.write(`[SWEObeyMe] MCP config write failed: ${e.message}\n`);
+    try {
+      process.stderr.write(`[SWEObeyMe] MCP config write failed: ${e.message}\n`);
+    } catch (_e) {}
   }
 }
 

@@ -73,8 +73,8 @@ const log = msg => {
     tools: getToolDefinitions(),
   }));
 
-  // CallTool handler - Core MCP interaction
-  server.setRequestHandler(CallToolRequestSchema, async request => {
+  // Define the raw CallTool handler as a separate function
+  const callToolHandler = async request => {
     const { name, arguments: args } = request.params;
 
     log(`Tool called: ${name} with args: ${JSON.stringify(args)}`);
@@ -126,7 +126,38 @@ const log = msg => {
         content: [{ type: 'text', text: error.message }],
       };
     }
-  });
+  };
+
+  // Register with SDK (creates validation wrapper)
+  server.setRequestHandler(CallToolRequestSchema, callToolHandler);
+
+  // HACK: MCP SDK v1.29.0 wraps tools/call with task-creation logic that rejects
+  // requests when params.task is present but the server doesn't declare task support.
+  // Windsurf 5.0+ sends params.task on every tool call, causing all tools to return
+  // "Server does not support task creation" error.
+  //
+  // TWO separate SDK mechanisms block the call:
+  // 1. Protocol._onrequest calls assertTaskHandlerCapability BEFORE invoking handler
+  // 2. Server.setRequestHandler wraps tools/call handler with CreateTaskResultSchema validation
+  //
+  // Fix #1: Monkey-patch the capability check to a no-op
+  if (server.assertTaskHandlerCapability) {
+    server.assertTaskHandlerCapability = () => {};
+  }
+  // Fix #2: Overwrite the internal handler to bypass SDK wrapper and strip task params
+  if (server._requestHandlers) {
+    server._requestHandlers.set('tools/call', async (request, extra) => {
+      if (request?.params?.task) {
+        const cleanRequest = {
+          ...request,
+          params: { ...request.params }
+        };
+        delete cleanRequest.params.task;
+        return callToolHandler(cleanRequest, extra);
+      }
+      return callToolHandler(request, extra);
+    });
+  }
 
   // [STRICT TRANSPORT]: Standard Input/Output
   const transport = new StdioServerTransport();

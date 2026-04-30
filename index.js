@@ -21,6 +21,36 @@ import {
 import { registerError } from './lib/health/error-registry.js';
 import { reportErrorToGitHub } from './lib/health/github-reporter.js';
 
+// --- GLOBAL CRASH PROTECTION ---
+// Prevent ANY unhandled error from killing the MCP server process
+process.on('uncaughtException', (err) => {
+  try {
+    process.stderr.write(`[SWEObeyMe-CRASH-GUARD] uncaughtException: ${err?.message || err}\n`);
+  } catch (_e) {
+    /* stderr may be closed */
+  }
+});
+process.on('unhandledRejection', (reason) => {
+  try {
+    process.stderr.write(
+      `[SWEObeyMe-CRASH-GUARD] unhandledRejection: ${reason?.message || reason}\n`
+    );
+  } catch (_e) {
+    /* stderr may be closed */
+  }
+});
+// Guard against EPIPE on stderr — any write to a closed pipe kills Node by default
+process.stderr.on('error', () => {
+  /* swallow silently — stderr is non-critical for MCP protocol */
+});
+process.stdout.on('error', (err) => {
+  try {
+    process.stderr.write(`[SWEObeyMe-CRASH-GUARD] stdout error: ${err?.message}\n`);
+  } catch (_e) {
+    /* stderr may also be closed */
+  }
+});
+
 // Fast-fail: Validate Windsurf MCP config before anything else
 // TEMPORARILY DISABLED FOR DEBUGGING
 // const configPath = getWindsurfConfigPath();
@@ -324,9 +354,9 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
   // This prevents pollution from old global memory and starts fresh with project-based system
   try {
     const oldShadowMemoryDir = path.join(os.homedir(), '.sweobeyme-shadow-memory');
-    if (fs.existsSync(oldShadowMemoryDir)) {
+    if (fssync.existsSync(oldShadowMemoryDir)) {
       // Debug log removed
-      fs.rmSync(oldShadowMemoryDir, { recursive: true, force: true });
+      fssync.rmSync(oldShadowMemoryDir, { recursive: true, force: true });
       // Debug log removed
     }
   } catch (error) {
@@ -598,7 +628,7 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
     if (prompt.dynamic) {
       try {
         const defDir = path.join(__dirname, 'lib', 'prompts', 'definitions');
-        const files = fs.readdirSync(defDir).filter((f) => f.endsWith('.js'));
+        const files = fssync.readdirSync(defDir).filter((f) => f.endsWith('.js'));
         for (const file of files) {
           const fileUrl = `file://${path.join(defDir, file).replace(/\\/g, '/')}`;
           const mod = await import(fileUrl);
@@ -633,9 +663,17 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
   });
 
   // CallTool handler - Core MCP interaction
-  server.setRequestHandler(CallToolRequestSchema, async (request) => {
+  // Defined as separate function so we can reuse it when bypassing SDK wrapper
+  const callToolHandler = async (request) => {
     markActivity();
+    const toolTracePath = path.join(os.homedir(), '.sweobeyme-trace.log');
+    try {
+      fssync.appendFileSync(toolTracePath, `[${Date.now()}] CallTool ENTER\n`);
+    } catch (_e) {}
     const { name, arguments: args } = request.params;
+    try {
+      fssync.appendFileSync(toolTracePath, `[${Date.now()}] Tool name: ${name}\n`);
+    } catch (_e) {}
     const injector = getStartupPromptInjector();
     const ledger = getShadowMemoryLedger();
 
@@ -688,8 +726,14 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
 
     let result;
     try {
+      try {
+        fssync.appendFileSync(toolTracePath, `[${Date.now()}] Pre-call handler: ${name}\n`);
+      } catch (_e) {}
       // Call the tool handler
       result = await toolHandlers[name](args);
+      try {
+        fssync.appendFileSync(toolTracePath, `[${Date.now()}] Post-call handler: ${name}\n`);
+      } catch (_e) {}
 
       // Guard against undefined/null result before any content mutation
       if (!result) {
@@ -827,8 +871,17 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
         });
       }
 
+      try {
+        fssync.appendFileSync(toolTracePath, `[${Date.now()}] Return result: ${name}\n`);
+      } catch (_e) {}
       return result;
     } catch (error) {
+      try {
+        fssync.appendFileSync(
+          toolTracePath,
+          `[${Date.now()}] CATCH error: ${name} - ${error.message}\n`
+        );
+      } catch (_e) {}
       // PHASE 10: Update audit on errors too
       internalAudit.consecutiveFailures++;
       internalAudit.surgicalIntegrityScore -= 5;
@@ -847,21 +900,45 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
         },
       };
     }
-  });
+  };
+
+  // Register with SDK (creates validation wrapper)
+  server.setRequestHandler(CallToolRequestSchema, callToolHandler);
+
+  // HACK: MCP SDK v1.29.0 wraps tools/call with task-creation logic that rejects
+  // requests when params.task is present but the server doesn't declare task support.
+  // Windsurf 5.0+ sends params.task on every tool call, causing all tools to return
+  // "Server does not support task creation" error. Overwrite the internal handler
+  // to strip task params and bypass the SDK wrapper entirely.
+  if (server._requestHandlers) {
+    server._requestHandlers.set('tools/call', async (request, extra) => {
+      // Strip task params to prevent SDK task creation logic
+      if (request?.params?.task) {
+        const cleanRequest = {
+          ...request,
+          params: { ...request.params },
+        };
+        delete cleanRequest.params.task;
+        return callToolHandler(cleanRequest, extra);
+      }
+      return callToolHandler(request, extra);
+    });
+  }
 
   // [TRANSPORT SELECTION]: stdio (default) or http/sse
   if (TRANSPORT_MODE === 'stdio') {
     try {
       // Use process.stdin directly - PassThrough wrapper causes transport errors
-      const stdioTransport = new StdioServerTransport({
-        stdin: process.stdin,
-        stdout: process.stdout,
-      });
+      const stdioTransport = new StdioServerTransport(process.stdin, process.stdout);
       await server.connect(stdioTransport);
-      process.stderr.write('[SWEObeyMe] MCP server connected and ready (stdio transport)\n');
+      try {
+        process.stderr.write('[SWEObeyMe] MCP server connected and ready (stdio transport)\n');
+      } catch (_e) {}
       markActivity();
     } catch (error) {
-      process.stderr.write(`[CRITICAL]: Handshake Failed: ${error}\n`);
+      try {
+        process.stderr.write(`[CRITICAL]: Handshake Failed: ${error}\n`);
+      } catch (_e) {}
       throw error;
     }
   } else if (TRANSPORT_MODE === 'http') {
@@ -1249,6 +1326,8 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
 
   // Simple error handling - let process exit naturally on stdio close
   process.on('uncaughtException', (err) => {
-    process.stderr.write(`[CRITICAL ERROR] ${err.message}\n`);
+    try {
+      process.stderr.write(`[CRITICAL ERROR] ${err.message}\n`);
+    } catch (_e) {}
   });
 })();
