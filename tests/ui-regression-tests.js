@@ -62,19 +62,25 @@ if (template) {
   assert(template.includes('.tab-panel.active'), '.tab-panel.active visibility defined');
 
   // tab-panel default is display:none
-  assert(/\.tab-panel\s*\{[^}]*display\s*:\s*none/s.test(template), '.tab-panel default is display:none');
+  assert(
+    /\.tab-panel\s*\{[^}]*display\s*:\s*none/s.test(template),
+    '.tab-panel default is display:none'
+  );
 
   // Script is wrapped in DOMContentLoaded
   assert(
     template.includes("document.addEventListener('DOMContentLoaded'") ||
-    template.includes('document.addEventListener("DOMContentLoaded"'),
+      template.includes('document.addEventListener("DOMContentLoaded"'),
     'Script wrapped in DOMContentLoaded guard'
   );
 
   // Single script tag close
   const scriptCloseCount = (template.match(/<\/script>/g) || []).length;
   const scriptOpenCount = (template.match(/<script[^>]*>/g) || []).length;
-  assert(scriptOpenCount === scriptCloseCount, `Script tags balanced (${scriptOpenCount} open, ${scriptCloseCount} close)`);
+  assert(
+    scriptOpenCount === scriptCloseCount,
+    `Script tags balanced (${scriptOpenCount} open, ${scriptCloseCount} close)`
+  );
 
   // backupPath and stats are wrapped in String() to prevent [object Object]
   const backupPathAssign = template.match(/getElementById\('backupPath'\)\.textContent\s*=\s*(.+)/);
@@ -105,7 +111,7 @@ if (factory) {
   // Must await async html generators
   assert(
     factory.includes('instanceof Promise ? await htmlResult : htmlResult') ||
-    factory.includes('await htmlResult'),
+      factory.includes('await htmlResult'),
     'Factory awaits async html generators (prevents Promise [object Object])'
   );
 
@@ -143,10 +149,7 @@ assert(bridge !== null, 'csharp-bridge-html.js exists');
 
 if (bridge) {
   // Uses fileURLToPath for Windows compatibility
-  assert(
-    bridge.includes('fileURLToPath'),
-    'Uses fileURLToPath for Windows path compatibility'
-  );
+  assert(bridge.includes('fileURLToPath'), 'Uses fileURLToPath for Windows path compatibility');
 
   // Is async (reads template file)
   assert(
@@ -175,7 +178,7 @@ if (settings) {
   assert(!settings.includes('[object Object]'), 'Settings HTML has no [object Object]');
   assert(
     settings.includes("document.addEventListener('DOMContentLoaded'") ||
-    settings.includes('DOMContentLoaded'),
+      settings.includes('DOMContentLoaded'),
     'Settings script uses DOMContentLoaded'
   );
   assert(settings.includes('acquireVsCodeApi'), 'Settings HTML acquires VS Code API');
@@ -192,7 +195,7 @@ if (admin) {
   assert(!admin.includes('[object Object]'), 'Admin dashboard has no [object Object]');
   assert(
     admin.includes("document.addEventListener('DOMContentLoaded'") ||
-    admin.includes('DOMContentLoaded'),
+      admin.includes('DOMContentLoaded'),
     'Admin script uses DOMContentLoaded'
   );
   assert(admin.includes('acquireVsCodeApi'), 'Admin HTML acquires VS Code API');
@@ -216,10 +219,7 @@ if (provider) {
     'Nonce injected into ALL script tags (not just first)'
   );
 
-  assert(
-    provider.includes('getNonce'),
-    'Provider generates nonce per session'
-  );
+  assert(provider.includes('getNonce'), 'Provider generates nonce per session');
 
   assert(
     provider.includes('script-src') && provider.includes('nonce-'),
@@ -241,18 +241,18 @@ if (awareness) {
     'Imports synchronous fs as fssync'
   );
 
-  // ensureRegistryExists uses fssync, not fs
+  // ensureRegistryExists uses async fs methods (changed to async in v5.x)
   assert(
     awareness.includes('fssync.existsSync'),
-    'ensureRegistryExists uses fssync.existsSync (not fs.existsSync from fs/promises)'
+    'ensureRegistryExists uses fssync.existsSync for checking'
   );
   assert(
-    awareness.includes('fssync.mkdirSync'),
-    'ensureRegistryExists uses fssync.mkdirSync'
+    awareness.includes('fs.mkdir'),
+    'ensureRegistryExists uses fs.mkdir (async) for creating directories'
   );
   assert(
-    awareness.includes('fssync.writeFileSync'),
-    'ensureRegistryExists uses fssync.writeFileSync'
+    awareness.includes('fs.writeFile'),
+    'ensureRegistryExists uses fs.writeFile (async) for writing files'
   );
 
   // fs/promises import still present for async ops
@@ -307,7 +307,9 @@ console.log(`  Rate:    ${rate}%`);
 
 if (results.failed > 0) {
   console.log('\nFailed tests:');
-  results.errors.forEach(e => console.log(`  \u2717 ${e.test}${e.details ? ' \u2014 ' + e.details : ''}`));
+  results.errors.forEach((e) =>
+    console.log(`  \u2717 ${e.test}${e.details ? ' \u2014 ' + e.details : ''}`)
+  );
   console.log('\n\u2717 UI REGRESSION TESTS FAILED \u2014 Fix all issues before shipping.');
   process.exit(1);
 } else {
