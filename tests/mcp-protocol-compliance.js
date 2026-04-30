@@ -46,7 +46,10 @@ function sendRequest(method, params = {}, allowError = false) {
     }, 8000);
 
     const dataHandler = (data) => {
-      const lines = data.toString().split('\n').filter(l => l.trim());
+      const lines = data
+        .toString()
+        .split('\n')
+        .filter((l) => l.trim());
       for (const line of lines) {
         try {
           const response = JSON.parse(line);
@@ -60,7 +63,7 @@ function sendRequest(method, params = {}, allowError = false) {
               resolve(response);
             }
           }
-        } catch { }
+        } catch {}
       }
     };
 
@@ -74,8 +77,10 @@ function validateJsonRpc(response) {
   if (typeof response !== 'object' || response === null) errors.push('response must be an object');
   if (response.jsonrpc !== '2.0') errors.push(`jsonrpc must be "2.0", got "${response.jsonrpc}"`);
   if (response.id === undefined) errors.push('missing id field');
-  if (response.result === undefined && response.error === undefined) errors.push('missing result and error');
-  if (response.result !== undefined && response.error !== undefined) errors.push('cannot have both result and error');
+  if (response.result === undefined && response.error === undefined)
+    errors.push('missing result and error');
+  if (response.result !== undefined && response.error !== undefined)
+    errors.push('cannot have both result and error');
   if (response.error) {
     if (typeof response.error.code !== 'number') errors.push('error.code must be a number');
     if (typeof response.error.message !== 'string') errors.push('error.message must be a string');
@@ -85,10 +90,14 @@ function validateJsonRpc(response) {
 
 function validateTool(tool) {
   const errors = [];
-  if (typeof tool.name !== 'string' || !tool.name) errors.push('tool.name must be a non-empty string');
-  if (typeof tool.description !== 'string') errors.push(`tool.description must be a string (tool: ${tool.name})`);
-  if (!tool.inputSchema || typeof tool.inputSchema !== 'object') errors.push(`tool.inputSchema missing (tool: ${tool.name})`);
-  if (tool.inputSchema && tool.inputSchema.type !== 'object') errors.push(`tool.inputSchema.type must be "object" (tool: ${tool.name})`);
+  if (typeof tool.name !== 'string' || !tool.name)
+    errors.push('tool.name must be a non-empty string');
+  if (typeof tool.description !== 'string')
+    errors.push(`tool.description must be a string (tool: ${tool.name})`);
+  if (!tool.inputSchema || typeof tool.inputSchema !== 'object')
+    errors.push(`tool.inputSchema missing (tool: ${tool.name})`);
+  if (tool.inputSchema && tool.inputSchema.type !== 'object')
+    errors.push(`tool.inputSchema.type must be "object" (tool: ${tool.name})`);
   return errors;
 }
 
@@ -109,11 +118,15 @@ async function runTests() {
   });
 
   let stderrBuffer = '';
-  serverProcess.stderr.on('data', d => { stderrBuffer += d.toString(); });
+  serverProcess.stderr.on('data', (d) => {
+    stderrBuffer += d.toString();
+  });
 
-  serverProcess.on('error', err => { console.error('Server process error:', err.message); });
+  serverProcess.on('error', (err) => {
+    console.error('Server process error:', err.message);
+  });
 
-  await new Promise(resolve => setTimeout(resolve, 1500));
+  await new Promise((resolve) => setTimeout(resolve, 1500));
 
   try {
     // ─── Suite 1: Initialize Handshake ──────────────────────────────────
@@ -132,11 +145,26 @@ async function runTests() {
     }
 
     const initErrors = validateJsonRpc(initResponse);
-    assert(initErrors.length === 0, 'Initialize response is valid JSON-RPC 2.0', initErrors.join('; '));
-    assert(typeof initResponse.result === 'object' && initResponse.result !== null, 'Initialize result is an object');
+    assert(
+      initErrors.length === 0,
+      'Initialize response is valid JSON-RPC 2.0',
+      initErrors.join('; ')
+    );
+    assert(
+      typeof initResponse.result === 'object' && initResponse.result !== null,
+      'Initialize result is an object'
+    );
     assert(typeof initResponse.result.serverInfo === 'object', 'serverInfo present');
-    assert(typeof initResponse.result.serverInfo?.name === 'string' && initResponse.result.serverInfo.name.length > 0, 'serverInfo.name is a non-empty string');
-    assert(typeof initResponse.result.serverInfo?.version === 'string' && initResponse.result.serverInfo.version.length > 0, 'serverInfo.version is a non-empty string');
+    assert(
+      typeof initResponse.result.serverInfo?.name === 'string' &&
+        initResponse.result.serverInfo.name.length > 0,
+      'serverInfo.name is a non-empty string'
+    );
+    assert(
+      typeof initResponse.result.serverInfo?.version === 'string' &&
+        initResponse.result.serverInfo.version.length > 0,
+      'serverInfo.version is a non-empty string'
+    );
     assert(typeof initResponse.result.capabilities === 'object', 'capabilities present');
     assert(initResponse.result.protocolVersion !== undefined, 'protocolVersion echoed back');
 
@@ -144,37 +172,54 @@ async function runTests() {
     console.log('\n=== Suite 2: Tool Listing ===');
     const toolsResponse = await sendRequest('tools/list');
     const toolsErrors = validateJsonRpc(toolsResponse);
-    assert(toolsErrors.length === 0, 'tools/list response is valid JSON-RPC 2.0', toolsErrors.join('; '));
+    assert(
+      toolsErrors.length === 0,
+      'tools/list response is valid JSON-RPC 2.0',
+      toolsErrors.join('; ')
+    );
     assert(typeof toolsResponse.result === 'object', 'tools/list result is an object');
     assert(Array.isArray(toolsResponse.result.tools), 'result.tools is an array');
-    assert(toolsResponse.result.tools.length >= 10, `At least 10 tools registered (got ${toolsResponse.result.tools.length})`);
+    assert(
+      toolsResponse.result.tools.length >= 10,
+      `At least 10 tools registered (got ${toolsResponse.result.tools.length})`
+    );
     toolList = toolsResponse.result.tools;
 
     let toolSchemaErrors = 0;
-    toolList.forEach(tool => {
+    toolList.forEach((tool) => {
       const errs = validateTool(tool);
       if (errs.length > 0) {
-        errs.forEach(e => assert(false, `Tool schema valid: ${tool.name}`, e));
+        errs.forEach((e) => assert(false, `Tool schema valid: ${tool.name}`, e));
         toolSchemaErrors++;
       }
     });
-    if (toolSchemaErrors === 0) assert(true, `All ${toolList.length} tool schemas are spec-compliant`);
+    if (toolSchemaErrors === 0)
+      assert(true, `All ${toolList.length} tool schemas are spec-compliant`);
 
-    const toolNames = toolList.map(t => t.name);
+    const toolNames = toolList.map((t) => t.name);
     // Only check tools with priority >= 95 that appear in the filtered listing.
     // Tools like obey_me_status (priority=50) are callable but excluded from tools/list
     // by the dynamic registry's high-priority filter — this is by design.
     const requiredListedTools = [
-      'get_governance_constitution', 'get_validation_status',
-      'read_file', 'write_file', 'obey_surgical_plan', 'validate_code',
-      'audit', 'auto_enforce', 'preflight_change',
+      'get_governance_constitution',
+      'get_validation_status',
+      'swe_read_file',
+      'swe_write_file',
+      'obey_surgical_plan',
+      'validate_code',
+      'audit',
+      'auto_enforce',
+      'preflight_change',
     ];
-    requiredListedTools.forEach(name => {
+    requiredListedTools.forEach((name) => {
       assert(toolNames.includes(name), `Required tool in tools/list: ${name}`);
     });
     // Verify obey_me_status is callable even if not listed (design feature)
     const obeyCalled = await sendRequest('tools/call', { name: 'obey_me_status', arguments: {} });
-    assert(obeyCalled.result !== undefined, 'obey_me_status is callable even when not in tools/list');
+    assert(
+      obeyCalled.result !== undefined,
+      'obey_me_status is callable even when not in tools/list'
+    );
 
     // ─── Suite 3: Tool Calls ───────────────────────────────────────────
     console.log('\n=== Suite 3: Tool Calls ===');
@@ -189,8 +234,10 @@ async function runTests() {
         assert(r.result.content.length > 0, `${label}: content is non-empty`);
         r.result.content.forEach((item, i) => {
           assert(typeof item.type === 'string', `${label}: content[${i}].type is a string`);
-          assert(item.type === 'text' ? typeof item.text === 'string' : true,
-            `${label}: content[${i}].text is a string when type=text`);
+          assert(
+            item.type === 'text' ? typeof item.text === 'string' : true,
+            `${label}: content[${i}].text is a string when type=text`
+          );
         });
         return r;
       } catch (e) {
@@ -202,28 +249,50 @@ async function runTests() {
     await callAndValidate('obey_me_status', {}, 'obey_me_status()');
     await callAndValidate('get_governance_constitution', {}, 'get_governance_constitution()');
     await callAndValidate('get_validation_status', {}, 'get_validation_status()');
-    await callAndValidate('get_server_diagnostics', { runChecks: false }, 'get_server_diagnostics()');
+    await callAndValidate(
+      'get_server_diagnostics',
+      { runChecks: false },
+      'get_server_diagnostics()'
+    );
     await callAndValidate('audit', { operation: 'status' }, 'audit(status)');
     await callAndValidate('docs_list_corpora', {}, 'docs_list_corpora()');
 
     // ─── Suite 4: Error Handling ───────────────────────────────────────
     console.log('\n=== Suite 4: Error Handling ===');
 
-    const unknownToolResp = await sendRequest('tools/call', {
-      name: 'definitely_not_a_real_tool_xyz123',
-      arguments: {},
-    }, true);
+    const unknownToolResp = await sendRequest(
+      'tools/call',
+      {
+        name: 'definitely_not_a_real_tool_xyz123',
+        arguments: {},
+      },
+      true
+    );
     const unknownErrs = validateJsonRpc(unknownToolResp);
-    assert(unknownErrs.length === 0, 'Unknown tool returns valid JSON-RPC error response', unknownErrs.join('; '));
-    assert(unknownToolResp.error !== undefined || unknownToolResp.result !== undefined,
-      'Unknown tool response has result or error');
+    assert(
+      unknownErrs.length === 0,
+      'Unknown tool returns valid JSON-RPC error response',
+      unknownErrs.join('; ')
+    );
+    assert(
+      unknownToolResp.error !== undefined || unknownToolResp.result !== undefined,
+      'Unknown tool response has result or error'
+    );
 
-    const malformedResp = await sendRequest('tools/call', {
-      name: 'read_file',
-      arguments: {},
-    }, true);
+    const malformedResp = await sendRequest(
+      'tools/call',
+      {
+        name: 'read_file',
+        arguments: {},
+      },
+      true
+    );
     const malformedErrs = validateJsonRpc(malformedResp);
-    assert(malformedErrs.length === 0, 'Missing required arg returns valid JSON-RPC response', malformedErrs.join('; '));
+    assert(
+      malformedErrs.length === 0,
+      'Missing required arg returns valid JSON-RPC response',
+      malformedErrs.join('; ')
+    );
 
     // ─── Suite 5: Concurrent Requests ───────────────────────────────────
     console.log('\n=== Suite 5: Concurrent Requests ===');
@@ -235,10 +304,14 @@ async function runTests() {
       ]);
       concurrentResults.forEach((r, i) => {
         const errs = validateJsonRpc(r);
-        assert(errs.length === 0, `Concurrent request ${i + 1} returns valid JSON-RPC`, errs.join('; '));
+        assert(
+          errs.length === 0,
+          `Concurrent request ${i + 1} returns valid JSON-RPC`,
+          errs.join('; ')
+        );
         assert(r.id !== undefined, `Concurrent request ${i + 1} has correct id`);
       });
-      const ids = concurrentResults.map(r => r.id);
+      const ids = concurrentResults.map((r) => r.id);
       assert(new Set(ids).size === ids.length, 'All concurrent responses have unique IDs');
     } catch (e) {
       assert(false, 'Concurrent requests handled correctly', e.message);
@@ -250,7 +323,10 @@ async function runTests() {
       const r1 = await sendRequest('tools/call', { name: 'obey_me_status', arguments: {} });
       const r2 = await sendRequest('tools/call', { name: 'obey_me_status', arguments: {} });
       assert(r1.result?.content[0]?.type === 'text', 'obey_me_status returns text content');
-      assert(typeof r1.result?.content[0]?.text === 'string', 'obey_me_status content.text is a string');
+      assert(
+        typeof r1.result?.content[0]?.text === 'string',
+        'obey_me_status content.text is a string'
+      );
       assert(r1.result?.content[0]?.text.length > 0, 'obey_me_status content.text is non-empty');
       assert(r1.id !== r2.id, 'Repeated calls have different IDs');
     } catch (e) {
@@ -260,10 +336,16 @@ async function runTests() {
     // ─── Suite 7: Large Payload Handling ────────────────────────────────
     console.log('\n=== Suite 7: Governance Constitution (Large Payload) ===');
     try {
-      const r = await sendRequest('tools/call', { name: 'get_governance_constitution', arguments: {} });
+      const r = await sendRequest('tools/call', {
+        name: 'get_governance_constitution',
+        arguments: {},
+      });
       const text = r.result?.content[0]?.text || '';
       assert(text.length > 100, 'Governance constitution is substantive (>100 chars)');
-      assert(!text.includes('[object Object]'), 'Constitution text is not corrupted ([object Object])');
+      assert(
+        !text.includes('[object Object]'),
+        'Constitution text is not corrupted ([object Object])'
+      );
       assert(!text.includes('undefined'), 'Constitution text contains no undefined values');
     } catch (e) {
       assert(false, 'Large payload governance test', e.message);
@@ -278,7 +360,6 @@ async function runTests() {
     } catch (e) {
       assert(false, 'Unknown method handling', e.message);
     }
-
   } finally {
     if (serverProcess) {
       serverProcess.stdin.end();
@@ -298,16 +379,20 @@ async function runTests() {
 
   if (results.failed > 0) {
     console.log('\nFailed tests:');
-    results.errors.forEach(e => console.log(`  \u2717 ${e.test}${e.details ? ' — ' + e.details : ''}`) );
+    results.errors.forEach((e) =>
+      console.log(`  \u2717 ${e.test}${e.details ? ' — ' + e.details : ''}`)
+    );
     console.log('\n\u2717 MCP COMPLIANCE FAILED — Fix all issues before shipping.');
     process.exit(1);
   } else {
-    console.log('\n\u2713 ALL MCP COMPLIANCE TESTS PASSED — Server is spec-compliant and release-ready.');
+    console.log(
+      '\n\u2713 ALL MCP COMPLIANCE TESTS PASSED — Server is spec-compliant and release-ready.'
+    );
     process.exit(0);
   }
 }
 
-runTests().catch(err => {
+runTests().catch((err) => {
   console.error('\nFATAL:', err.message);
   if (serverProcess) serverProcess.kill();
   process.exit(1);
