@@ -25,7 +25,7 @@ SWEObeyMe is a self-correcting, hardware-optimized AI governance system designed
 
 **🧠 Think Model Orchestration:** A master AI coordinates specialized models to handle tasks with surgical precision.
 
-**⚡ Local, Lightning-Fast:** No cloud dependencies. No quota limits. Pure, unthrottled performance.
+**⚡ Lightning-Fast Governance:** Works with Windsurf's powerful AI models. Requires a Windsurf subscription or free tier with VS Code integration.
 
 **🛡️ Zero Tolerance for Failure:** Governance layers refuse to expose errors to users. If it doesn't work, it fixes itself.
 
@@ -37,13 +37,13 @@ SWEObeyMe is a self-correcting, hardware-optimized AI governance system designed
 
 ## 💡 Why This Release is a Big Deal
 
-| Before                      | Now (5.1.9)                        |
-| --------------------------- | ---------------------------------- |
-| ❌ "Kinda works"            | ✅ Fully functional                |
-| ❌ Bloated, unclear outputs | ✅ Precise, single-line edits      |
-| ❌ Context pollution        | ✅ Zero pollution, maximum clarity |
-| ❌ Cloud-dependent          | ✅ 100% local, hardware-optimized  |
-| ❌ Fake responses           | ✅ No bullshit. Just results.      |
+| Before                      | Now (5.1.9)                               |
+| --------------------------- | ----------------------------------------- |
+| ❌ "Kinda works"            | ✅ Fully functional                       |
+| ❌ Bloated, unclear outputs | ✅ Precise, single-line edits             |
+| ❌ Context pollution        | ✅ Zero pollution, maximum clarity        |
+| ❌ Cloud-dependent          | ✅ Windsurf-powered, optimized governance |
+| ❌ Fake responses           | ✅ No bullshit. Just results.             |
 
 This is the version where users will finally say:
 
@@ -168,7 +168,7 @@ function maybeFixThis(code) {
 
 | Metric           | SWEObeyMe 5.1.9                    | Competitors              |
 | ---------------- | ---------------------------------- | ------------------------ |
-| Speed            | ⚡ Near-instant (CPU/RAM only)     | ⏳ Cloud latency         |
+| Speed            | ⚡ Near-instant (Windsurf-powered) | ⏳ Cloud latency         |
 | Context Handling | 🧠 32K+ with rollover enhancements | 📉 Degrades at scale     |
 | Accuracy         | 🎯 99%+ tool calling               | ~80%                     |
 | Stability        | 🛡️ Self-correcting governance      | ❌ Manual fixes required |
