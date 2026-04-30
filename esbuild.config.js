@@ -109,14 +109,47 @@ function copyTestsFolder() {
 
 // Node.js built-ins - always external (provided by Node runtime)
 const nodeBuiltins = [
-  'fs', 'fs/promises', 'path', 'os', 'crypto', 'stream', 'util',
-  'url', 'http', 'https', 'net', 'tls', 'child_process', 'events',
-  'buffer', 'zlib', 'assert', 'readline', 'worker_threads', 'perf_hooks',
-  'node:fs', 'node:path', 'node:os', 'node:crypto', 'node:stream',
-  'node:util', 'node:url', 'node:http', 'node:https', 'node:net',
-  'node:tls', 'node:child_process', 'node:events', 'node:buffer',
-  'node:zlib', 'node:assert', 'node:readline', 'node:worker_threads',
-  'node:perf_hooks', 'node:process', 'node:original-fs',
+  'fs',
+  'fs/promises',
+  'path',
+  'os',
+  'crypto',
+  'stream',
+  'util',
+  'url',
+  'http',
+  'https',
+  'net',
+  'tls',
+  'child_process',
+  'events',
+  'buffer',
+  'zlib',
+  'assert',
+  'readline',
+  'worker_threads',
+  'perf_hooks',
+  'node:fs',
+  'node:path',
+  'node:os',
+  'node:crypto',
+  'node:stream',
+  'node:util',
+  'node:url',
+  'node:http',
+  'node:https',
+  'node:net',
+  'node:tls',
+  'node:child_process',
+  'node:events',
+  'node:buffer',
+  'node:zlib',
+  'node:assert',
+  'node:readline',
+  'node:worker_threads',
+  'node:perf_hooks',
+  'node:process',
+  'node:original-fs',
 ];
 
 // Dev-only tools: dynamically required by detection/analysis logic only.
@@ -134,7 +167,7 @@ const devToolsExternal = [
 
 const commonConfig = {
   platform: 'node',
-  target: 'node18',
+  target: 'node24',
   format: 'esm',
   sourcemap: isDev,
   minify: isProduction && !isDev,
@@ -153,8 +186,8 @@ const extensionConfig = {
   define: {
     'process.env.NODE_ENV': JSON.stringify(isProduction ? 'production' : 'development'),
     'process.env.BUILD_MODE': JSON.stringify(isEnterprise ? 'enterprise' : 'public'),
-    '__dirname': '__dirname',
-    '__filename': '__filename',
+    __dirname: '__dirname',
+    __filename: '__filename',
   },
 };
 
@@ -170,8 +203,8 @@ const mcpConfig = {
   define: {
     'process.env.NODE_ENV': JSON.stringify(isProduction ? 'production' : 'development'),
     'process.env.BUILD_MODE': JSON.stringify(isEnterprise ? 'enterprise' : 'public'),
-    '__dirname': '__dirname',
-    '__filename': '__filename',
+    __dirname: '__dirname',
+    __filename: '__filename',
   },
 };
 
@@ -180,7 +213,9 @@ function syncToInstalledExtension() {
   const extBase = join(os.homedir(), '.windsurf-next', 'extensions');
   if (!fs.existsSync(extBase)) return;
 
-  const candidates = fs.readdirSync(extBase).filter(n => n.startsWith('stonewolfpc.swe-obey-me-'));
+  const candidates = fs
+    .readdirSync(extBase)
+    .filter((n) => n.startsWith('stonewolfpc.swe-obey-me-'));
   if (candidates.length === 0) return;
 
   // Pick the highest version
