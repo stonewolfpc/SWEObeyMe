@@ -1,6 +1,6 @@
 {
   "mcpServers": {
-    "swe-obey-me": {
+    "sweobeyme": {
       "command": "node",
       "args": ["--no-warnings", "./dist/mcp/server.js"],
       "env": {

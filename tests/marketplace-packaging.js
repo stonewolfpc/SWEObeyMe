@@ -185,7 +185,7 @@ class MarketplacePackagingTest {
       }
 
       // Check bundle sizes
-      const maxSize = 3 * 1024 * 1024; // 3MB
+      const maxSize = 25 * 1024 * 1024; // 25MB (MCP server includes corpus and dependencies)
       const files = await fs.readdir(distDir, { recursive: true });
 
       for (const file of files) {
