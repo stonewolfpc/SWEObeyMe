@@ -29,9 +29,7 @@ SWEObeyMe is a self-correcting, hardware-optimized AI governance system designed
 
 **🛡️ Zero Tolerance for Failure:** Governance layers refuse to expose errors to users. If it doesn't work, it fixes itself.
 
-**📚 20GB Codex Integration:** A complete library of every legally distributable programming language, with full grammar sets. Your AI doesn't just code—it understands.
-
-**🔄 Context That Gets Smarter:** Unlike traditional models, rollover doesn't degrade performance—it enhances it. The more context, the more deterministic the results.
+**📚 400MB Documentation Corpus:** Complete technical documentation across 18 specialized corpora including math, FDQ, training, Godot, C#, C++, enterprise security, web development, and more. Your AI has access to comprehensive technical references.
 
 ---
 
@@ -109,7 +107,7 @@ I'm sorry for the headache. Genuinely. This extension means a lot to me and you 
 ### Prerequisites
 
 - Node.js 24.15.0+ (LTS recommended)
-- Windsurf 5.0+ (for full MCP integration)
+- Windsurf 2.0+ (Wave 14+, for full MCP integration)
 
 ### 1. Install from Windsurf Marketplace
 
@@ -209,6 +207,8 @@ MIT © Christofer Wade
 
 ---
 
-## 🔥 Ready to experience AI governance the way it was meant to be?
+## 🔥 Ready to experience LIMITED AI governance?
 
-Install SWEObeyMe 5.1.9 today and never look back.
+Install SWEObeyMe 5.1.9 today.
+
+**Note:** SWEObeyMe operates within Windsurf's MCP server and prompting limitations. While we provide surgical governance, the overall effectiveness depends on Windsurf's model behavior and tool invocation constraints.
