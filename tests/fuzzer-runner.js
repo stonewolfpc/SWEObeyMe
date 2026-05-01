@@ -44,7 +44,7 @@ class FuzzerRunner {
       switch (platform) {
         case 'windsurf':
           fuzzer = new WindsurfRuntimeFuzzer({
-            timeout: this.timeout,
+            timeout: process.env.CI ? 10000 : this.timeout,
             maxIterations: this.iterations,
             parallel: this.parallel,
             batchSize: this.batchSize,

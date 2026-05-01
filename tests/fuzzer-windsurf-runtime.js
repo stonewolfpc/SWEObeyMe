@@ -23,7 +23,8 @@ export class WindsurfRuntimeFuzzer {
     this.serverPath = options.serverPath || path.join(__dirname, '..', 'dist', 'mcp', 'server.js');
     this.configPath =
       options.configPath || path.join(__dirname, '..', 'mcp-configs', 'windsurf-mcp.json');
-    this.timeout = options.timeout || 5000; // Reduced from 30000 to 5000ms for faster testing
+    // CI environments need longer timeout - 10s default, allow override
+    this.timeout = options.timeout || (process.env.CI ? 10000 : 5000);
     this.maxIterations = options.maxIterations || 50; // Reduced from 100 to 50 for faster feedback
     this.parallel = options.parallel !== false; // Enable parallel execution by default
     this.batchSize = options.batchSize || 10; // Process tests in batches for parallel execution
@@ -273,13 +274,19 @@ export class WindsurfRuntimeFuzzer {
 
     try {
       const response = await this.sendMessage(message);
-      const lines = response.split('\n').map(l => l.trim()).filter(Boolean);
+      const lines = response
+        .split('\n')
+        .map((l) => l.trim())
+        .filter(Boolean);
       for (const line of lines) {
         try {
           JSON.parse(line);
         } catch (e) {
           if (e instanceof SyntaxError) {
-            this.errors.push({ invariant: 'NO_INVALID_JSON', error: `Invalid JSON line: ${line.slice(0, 80)}` });
+            this.errors.push({
+              invariant: 'NO_INVALID_JSON',
+              error: `Invalid JSON line: ${line.slice(0, 80)}`,
+            });
             return false;
           }
         }
@@ -383,14 +390,17 @@ export class WindsurfRuntimeFuzzer {
 
     try {
       const response = await this.sendMessage(message);
-      const lines = response.split('\n').map(l => l.trim()).filter(Boolean);
+      const lines = response
+        .split('\n')
+        .map((l) => l.trim())
+        .filter(Boolean);
       for (const line of lines) {
         try {
           const parsed = JSON.parse(line);
           if (parsed.id !== undefined) {
             return parsed.id === message.id || parsed.id !== null;
           }
-        } catch { }
+        } catch {}
       }
       return true; // No id-bearing line found = acceptable for non-request messages
     } catch (e) {
@@ -406,14 +416,17 @@ export class WindsurfRuntimeFuzzer {
 
     try {
       const response = await this.sendMessage(message);
-      const lines = response.split('\n').map(l => l.trim()).filter(Boolean);
+      const lines = response
+        .split('\n')
+        .map((l) => l.trim())
+        .filter(Boolean);
       for (const line of lines) {
         try {
           const parsed = JSON.parse(line);
           if (parsed.jsonrpc !== undefined) {
             return parsed.jsonrpc === '2.0';
           }
-        } catch { }
+        } catch {}
       }
       return true; // No jsonrpc-bearing line = acceptable (e.g. server log line)
     } catch (e) {
@@ -488,7 +501,7 @@ export class WindsurfRuntimeFuzzer {
       // Fail only if server crashed (no response) or returned raw file contents.
       if (parsed.error) return true; // JSON-RPC level rejection
       if (parsed.result && Array.isArray(parsed.result.content)) {
-        const text = parsed.result.content.map(c => c.text || '').join('');
+        const text = parsed.result.content.map((c) => c.text || '').join('');
         // Must NOT contain raw /etc/passwd contents (root: as first word is a tell)
         return !text.match(/^root:/m);
       }
@@ -525,7 +538,10 @@ export class WindsurfRuntimeFuzzer {
       // Either a JSON-RPC error OR a result.content message about unknown tool is a pass.
       if (parsed.error) return true;
       if (parsed.result && Array.isArray(parsed.result.content)) {
-        const text = parsed.result.content.map(c => c.text || '').join('').toLowerCase();
+        const text = parsed.result.content
+          .map((c) => c.text || '')
+          .join('')
+          .toLowerCase();
         return text.includes('unknown') || text.includes('not found') || text.includes('error');
       }
       return false; // Got a clean result for a destructive op — violation
@@ -560,11 +576,19 @@ export class WindsurfRuntimeFuzzer {
       const parsed = JSON.parse(response);
       if (parsed.error) return true; // JSON-RPC level rejection = pass
       if (parsed.result && Array.isArray(parsed.result.content)) {
-        const text = parsed.result.content.map(c => c.text || '').join('').toLowerCase();
+        const text = parsed.result.content
+          .map((c) => c.text || '')
+          .join('')
+          .toLowerCase();
         // Tool must reject with an error message — not silently succeed
-        return text.includes('error') || text.includes('reject') ||
-               text.includes('forbidden') || text.includes('outside') ||
-               text.includes('permission') || text.includes('blocked');
+        return (
+          text.includes('error') ||
+          text.includes('reject') ||
+          text.includes('forbidden') ||
+          text.includes('outside') ||
+          text.includes('permission') ||
+          text.includes('blocked')
+        );
       }
       return false; // Responded with clean result for /etc/passwd write = violation
     } catch (e) {
@@ -623,11 +647,13 @@ export class WindsurfRuntimeFuzzer {
       const parsed = JSON.parse(response);
       if (parsed.error) return true; // Rejected at protocol level
       if (parsed.result && Array.isArray(parsed.result.content)) {
-        const text = parsed.result.content.map(c => c.text || '').join('');
+        const text = parsed.result.content.map((c) => c.text || '').join('');
         // Fail if we got actual private key contents
-        return !text.includes('BEGIN RSA PRIVATE KEY') &&
-               !text.includes('BEGIN OPENSSH PRIVATE KEY') &&
-               !text.includes('BEGIN PRIVATE KEY');
+        return (
+          !text.includes('BEGIN RSA PRIVATE KEY') &&
+          !text.includes('BEGIN OPENSSH PRIVATE KEY') &&
+          !text.includes('BEGIN PRIVATE KEY')
+        );
       }
       return true; // No content = no exposure
     } catch (e) {
@@ -658,7 +684,10 @@ export class WindsurfRuntimeFuzzer {
       if (e.message.includes('timeout') || e.message.includes('Timeout')) return true;
       // Server crash = fail
       if (!this.server || this.server.killed) {
-        this.errors.push({ invariant: 'NO_DENIAL_OF_SERVICE', error: `Server crashed on huge payload: ${e.message}` });
+        this.errors.push({
+          invariant: 'NO_DENIAL_OF_SERVICE',
+          error: `Server crashed on huge payload: ${e.message}`,
+        });
         return false;
       }
       // Any other error from an alive server = pass (rejected gracefully)
@@ -679,7 +708,30 @@ export class WindsurfRuntimeFuzzer {
       // Start server
       console.log('Starting MCP server...');
       await this.startServer();
-      console.log('Server started\n');
+      console.log('Server started');
+
+      // MCP requires initialize handshake before any tool calls
+      console.log('Sending initialize handshake...');
+      try {
+        const initResponse = await this.sendMessage({
+          jsonrpc: '2.0',
+          id: 0,
+          method: 'initialize',
+          params: {
+            protocolVersion: '2024-11-05',
+            capabilities: {},
+            clientInfo: { name: 'fuzzer', version: '1.0.0' },
+          },
+        });
+        const initParsed = JSON.parse(initResponse.split('\n').filter((l) => l.trim())[0]);
+        if (initParsed.error) {
+          console.warn('Initialize warning:', initParsed.error.message);
+        } else {
+          console.log('Initialize successful\n');
+        }
+      } catch (e) {
+        console.warn('Initialize failed (continuing):', e.message);
+      }
 
       // Test invariants
       console.log('Testing server invariants...');
@@ -744,11 +796,16 @@ export class WindsurfRuntimeFuzzer {
         return this.sendMessage(msg);
       };
       const timingResults = await this.timingFuzzer.runFuzzBatch(timingOperation, 10);
-      timingResults.forEach(r => {
+      timingResults.forEach((r) => {
         // Only count real failures — cancellations and timeouts are acceptable
-        if (!r.success && r.error &&
-            !r.error.includes('timeout') && !r.error.includes('Timeout') &&
-            !r.error.includes('cancelled') && !r.error.includes('Server not running')) {
+        if (
+          !r.success &&
+          r.error &&
+          !r.error.includes('timeout') &&
+          !r.error.includes('Timeout') &&
+          !r.error.includes('cancelled') &&
+          !r.error.includes('Server not running')
+        ) {
           this.errors.push({ type: r.scenarioType, error: r.error });
         }
       });
