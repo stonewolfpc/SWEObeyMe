@@ -2,7 +2,7 @@
 
 The AI Governance System That Actually Works
 
-[![Version](https://img.shields.io/badge/version-5.1.9-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-5.1.20-blue.svg)](CHANGELOG.md)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D24.15.0-green.svg)](https://nodejs.org)
 [![Vitest](https://img.shields.io/badge/vitest-latest-orange.svg)](https://vitest.dev)
 [![Users](https://img.shields.io/badge/users-12K%2B-brightgreen.svg)](https://github.com/stonewolfpc/SWEObeyMe/stargazers)
@@ -11,7 +11,7 @@ The AI Governance System That Actually Works
 
 ## 🔥 First Fully Functional Release
 
-**5.1.9 is here.** After months of relentless debugging, auditing, and testing across every environment imaginable (yes, even my son's mom's laptop), SWEObeyMe is finally ready to unleash its full potential.
+**5.1.20 is here.** After months of relentless debugging, auditing, and testing across every environment imaginable (yes, even my son's mom's laptop), SWEObeyMe is finally ready to unleash its full potential.
 
 This isn't just an update. This is the moment you've been waiting for.
 
@@ -35,7 +35,7 @@ SWEObeyMe is a self-correcting, hardware-optimized AI governance system designed
 
 ## 💡 Why This Release is a Big Deal
 
-| Before                      | Now (5.1.9)                               |
+| Before                      | Now (5.1.20)                              |
 | --------------------------- | ----------------------------------------- |
 | ❌ "Kinda works"            | ✅ Fully functional                       |
 | ❌ Bloated, unclear outputs | ✅ Precise, single-line edits             |
@@ -51,12 +51,12 @@ _"Oh… THIS is what it was always supposed to do… holy SMOKES."_
 
 ## 🚨 Migration Notice for PRE 5.1.9 Users
 
-**Users still running the PRE 5.1.9 release experienced major configuration problems.** Before updating to v5.1.9, you MUST:
+**Users still running the PRE 5.1.9 release experienced major configuration problems.** Before updating to v5.1.20, you MUST:
 
 1. **Uninstall the extension** from your Windsurf extensions folder
 2. **Delete the configuration** for SWEObeyMe in the Windsurf MCP config menu
 3. **Restart Windsurf** completely
-4. **Install v5.1.9** fresh
+4. **Install v5.1.20** fresh
 
 **Default install paths:**
 
@@ -164,7 +164,7 @@ function maybeFixThis(code) {
 
 ## 📊 Performance
 
-| Metric           | SWEObeyMe 5.1.9                    | Competitors              |
+| Metric           | SWEObeyMe 5.1.20                   | Competitors              |
 | ---------------- | ---------------------------------- | ------------------------ |
 | Speed            | ⚡ Near-instant (Windsurf-powered) | ⏳ Cloud latency         |
 | Context Handling | 🧠 32K+ with rollover enhancements | 📉 Degrades at scale     |
@@ -209,6 +209,6 @@ MIT © Christofer Wade
 
 ## 🔥 Ready to experience LIMITED AI governance?
 
-Install SWEObeyMe 5.1.9 today.
+Install SWEObeyMe 5.1.20 today.
 
 **Note:** SWEObeyMe operates within Windsurf's MCP server and prompting limitations. While we provide surgical governance, the overall effectiveness depends on Windsurf's model behavior and tool invocation constraints.
