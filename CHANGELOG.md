@@ -2,6 +2,18 @@
 
 All notable changes to SWEObeyMe will be documented in this file.
 
+## [5.1.22] - 2026-05-01
+
+### Bug Fixes
+
+- **Project Awareness `loadProjects()`** — Added the missing `loadProjects()` method that was referenced in `initialize()` but never implemented. This caused project registry data to never be restored from disk on startup, meaning all persisted project history, context, and task lists were lost every time the MCP server restarted. Now properly loads `~/.sweobeyme/project_registry/projects.json` into the projects Map on initialization.
+- **Backup system for direct `swe_write_file` calls** — When calling `swe_write_file` directly (bypassing the governance router), the auto-backup-before-edit system was not firing because only the governance router called `autoBackupBeforeEdit()`. Added the backup call directly into `writeFileHandler` so pre-edit backups happen regardless of routing path.
+- **UI notifications for backup/snapshot events** — Added `pushRouterEvent()` calls to `backup-auto.js` so the Cockpit UI receives real-time backup and snapshot event notifications even when tools are called directly without routing through the governance router.
+
+### Internal
+
+- Added regression test for `project_context` MCP response format validation to ensure `content` array and `isError` boolean are always present.
+
 ## [5.1.9] - 2026-04-30
 
 ### 🚨 IMPORTANT - Migration Notice for PRE 5.1.9 Users
