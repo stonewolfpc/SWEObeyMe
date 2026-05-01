@@ -2,7 +2,7 @@
 
 The AI Governance System That Actually Works
 
-[![Version](https://img.shields.io/badge/version-5.1.20-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-5.1.21-blue.svg)](CHANGELOG.md)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D24.15.0-green.svg)](https://nodejs.org)
 [![Vitest](https://img.shields.io/badge/vitest-latest-orange.svg)](https://vitest.dev)
 [![Users](https://img.shields.io/badge/users-12K%2B-brightgreen.svg)](https://github.com/stonewolfpc/SWEObeyMe/stargazers)
