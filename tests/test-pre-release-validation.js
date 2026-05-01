@@ -76,7 +76,10 @@ try {
 
   assert(packageJson.main === 'dist/extension.js', 'package.json main points to dist/extension.js');
   assert(esbuildConfig.includes('extension.js'), 'esbuild config includes extension bundle');
-  assert(esbuildConfig.includes('index.js'), 'esbuild config includes MCP server bundle');
+  assert(
+    esbuildConfig.includes('index.js') || esbuildConfig.includes('index.mjs'),
+    'esbuild config includes MCP server bundle'
+  );
   assert(
     esbuildConfig.includes('dist') || esbuildConfig.includes("'dist'"),
     'esbuild config outputs to dist/'
@@ -386,12 +389,12 @@ if (errors.length > 0) {
 
 console.log('='.repeat(50));
 
-if (testsFailed > 0) {
+const exitCode = testsFailed > 0 ? 1 : 0;
+if (exitCode === 1) {
   console.log('\n❌ PRE-RELEASE VALIDATION FAILED');
   console.log('Fix the above errors before pushing to Windsurf-Next release.');
-  process.exit(1);
 } else {
   console.log('\n✅ PRE-RELEASE VALIDATION PASSED');
   console.log('Ready for Windsurf-Next release.');
-  process.exit(0);
 }
+process.exit(exitCode);
