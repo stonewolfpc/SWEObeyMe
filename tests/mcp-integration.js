@@ -199,6 +199,37 @@ async function runTests() {
       testsFailed++;
     }
 
+    // Test 6.5: project_context MCP response format validation (regression test)
+    console.log('\nTest 6.5: project_context MCP format validation...');
+    try {
+      const result = await sendRequest('tools/call', {
+        name: 'project_context',
+        arguments: {
+          operation: 'get_current',
+        },
+      });
+      // Validate MCP-compliant response format
+      if (!result.content || !Array.isArray(result.content)) {
+        throw new Error('Response missing content array - governance router response not transformed');
+      }
+      if (result.content.length === 0) {
+        throw new Error('Response content array is empty');
+      }
+      if (!result.content[0].type || !result.content[0].text) {
+        throw new Error('Response content item missing type or text');
+      }
+      if (typeof result.isError !== 'boolean') {
+        throw new Error('Response missing isError boolean');
+      }
+      console.log('✓ project_context MCP format valid');
+      console.log('   content.length:', result.content.length);
+      console.log('   isError:', result.isError);
+      testsPassed++;
+    } catch (error) {
+      console.error('✗ project_context MCP format invalid:', error.message);
+      testsFailed++;
+    }
+
     // Test 7: docs_manage - Documentation lookup
     console.log('\nTest 7: docs_manage (list_corpora)...');
     try {
