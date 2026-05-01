@@ -251,20 +251,21 @@ async function runTests() {
       `📊 Success Rate: ${((testsPassed / (testsPassed + testsFailed)) * 100).toFixed(1)}%`
     );
 
-    if (testsFailed > 0) {
+    const exitCode = testsFailed > 0 ? 1 : 0;
+    if (exitCode === 1) {
       console.log('\n❌ SOME TESTS FAILED!');
-      process.exit(1);
     } else {
       console.log('\n✅ ALL TESTS PASSED!');
-      process.exit(0);
     }
+    return exitCode;
   } catch (error) {
     console.error('❌ Critical error:', error);
-    process.exit(1);
+    return 1;
   } finally {
-    // Clean up
+    // Clean up - must run before process.exit or the CI hangs
     serverProcess.kill();
+    await new Promise((resolve) => setTimeout(resolve, 500));
   }
 }
 
-runTests();
+runTests().then((code) => process.exit(code));
