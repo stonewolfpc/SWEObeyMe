@@ -1,214 +1,205 @@
-# 🚀 SWEObeyMe
+# SWEObeyMe
 
-The AI Governance System That Actually Works
+AI Governance System for Surgical Code Editing
 
-[![Version](https://img.shields.io/badge/version-5.1.22-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-5.3.0-blue.svg)](CHANGELOG.md)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D24.15.0-green.svg)](https://nodejs.org)
 [![Vitest](https://img.shields.io/badge/vitest-latest-orange.svg)](https://vitest.dev)
-[![Users](https://img.shields.io/badge/users-12K%2B-brightgreen.svg)](https://github.com/stonewolfpc/SWEObeyMe/stargazers)
 
 ---
 
-## 🔥 First Fully Functional Release
+## Overview
 
-**5.1.20 is here.** After months of relentless debugging, auditing, and testing across every environment imaginable (yes, even my son's mom's laptop), SWEObeyMe is finally ready to unleash its full potential.
+SWEObeyMe is an MCP (Model Context Protocol) server that enforces architectural discipline on AI coding assistants. It prevents common AI failure modes: hallucinated file paths, bloated edits, context pollution, and separation-of-concerns violations.
 
-This isn't just an update. This is the moment you've been waiting for.
+**Key capabilities:**
 
-No more "kinda works." No more workarounds. This is what AI governance was always supposed to be.
-
----
-
-## 📌 What is SWEObeyMe?
-
-SWEObeyMe is a self-correcting, hardware-optimized AI governance system designed to eliminate context pollution, enforce separation of concerns, and deliver deterministic, high-precision results—every single time.
-
-**🧠 Think Model Orchestration:** A master AI coordinates specialized models to handle tasks with surgical precision.
-
-**⚡ Lightning-Fast Governance:** Works with Windsurf's powerful AI models. Requires a Windsurf subscription or free tier with VS Code integration.
-
-**🛡️ Zero Tolerance for Failure:** Governance layers refuse to expose errors to users. If it doesn't work, it fixes itself.
-
-**📚 400MB Documentation Corpus:** Complete technical documentation across 18 specialized corpora including math, FDQ, training, Godot, C#, C++, enterprise security, web development, and more. Your AI has access to comprehensive technical references.
+- **Surgical editing**: Enforces minimal diffs, single-responsibility files, 700-line limits
+- **Governance constitution**: Mandatory workflow rules injected at session start
+- **10 public tools, 90+ internal**: Clean surface API with deep functionality via router
+- **Self-correcting**: Automatic error detection, backup/restore, integrity scoring
+- **Documentation corpus**: 35+ technical categories (MCP spec, Windsurf, Godot, C#, C++, math, quantization)
 
 ---
 
-## 💡 Why This Release is a Big Deal
+## Architecture
 
-| Before                      | Now (5.1.20)                              |
-| --------------------------- | ----------------------------------------- |
-| ❌ "Kinda works"            | ✅ Fully functional                       |
-| ❌ Bloated, unclear outputs | ✅ Precise, single-line edits             |
-| ❌ Context pollution        | ✅ Zero pollution, maximum clarity        |
-| ❌ Cloud-dependent          | ✅ Windsurf-powered, optimized governance |
-| ❌ Fake responses           | ✅ No bullshit. Just results.             |
+### Tool Surface (10 Public MCP Tools)
 
-This is the version where users will finally say:
+| Tool                  | Domain     | Purpose                                    |
+| --------------------- | ---------- | ------------------------------------------ |
+| `file_ops`            | Files      | Read, write, backup, restore               |
+| `swe_search_code`     | Search     | Grep, find, codebase exploration           |
+| `backup_restore`      | Safety     | Snapshots, recovery, rollback              |
+| `project_context`     | Context    | Project rules, conventions, detection      |
+| `docs_manage`         | Docs       | Search 35+ documentation corpora           |
+| `swe_workflow_manage` | Workflow   | Multi-step procedures, automation          |
+| `sweobeyme_execute`   | Router     | Access 90+ internal tools by domain/action |
+| `validate_code`       | Quality    | Syntax, anti-patterns, compliance          |
+| `governance_manage`   | Governance | Constitution, status, validation           |
+| `safety_manage`       | Safety     | Test coverage, confirmation, checks        |
 
-_"Oh… THIS is what it was always supposed to do… holy SMOKES."_
+### Internal Router Domains
 
----
+Call via `sweobeyme_execute(domain, action, payload)`:
 
-## 🚨 Migration Notice for PRE 5.1.9 Users
-
-**Users still running the PRE 5.1.9 release experienced major configuration problems.** Before updating to v5.1.20, you MUST:
-
-1. **Uninstall the extension** from your Windsurf extensions folder
-2. **Delete the configuration** for SWEObeyMe in the Windsurf MCP config menu
-3. **Restart Windsurf** completely
-4. **Install v5.1.20** fresh
-
-**Default install paths:**
-
-- Windows: `C:\Users\YOUR_USER\.codeium\windsurf-next\extensions\`
-- macOS/Linux: `~/.codeium/windsurf-next/extensions/`
-
-**Testing:** This fix has been tested on a spare computer without source files and under a different installation directory.
-
-**If You're Still Experiencing Issues:**
-
-- Contact on GitHub: https://github.com/stonewolfpc/SWEObeyMe/issues
-- Email: stonewolfpcrepair01@gmail.com
-
----
-
-## 🚨 A Note on v5.1.3 — MCP Config Path Issue
-
-**The Problem:**
-The extension hardcoded the MCP config path to `~/.codeium/windsurf-next/mcp_config.json` and actively deleted configs from `~/.codeium/windsurf/mcp_config.json` and `~/.codeium/mcp_config.json`. This meant:
-
-- Users with regular Windsurf (not windsurf-next) couldn't use the extension at all
-- Users with both Windsurf and Windsurf-Next installed would have their regular Windsurf config deleted every time the extension activated
-- The MCP server would show as active briefly then vanish instantly
-
-**The Fix (v5.1.4):**
-The extension now:
-
-- Detects all possible config paths (windsurf-next, windsurf, .codeium)
-- Writes to all existing directories instead of deleting them
-- Uses platform-agnostic paths in sample configs for Windows, macOS, and Linux compatibility
+- `files` — write, read, analyze, extract, refactor
+- `refactor` — move blocks, extract to new file
+- `context` — file analysis, impact assessment
+- `safety` — test coverage, dangerous operation confirmation
+- `config` — get/set settings
+- `memory` — project history, decisions, patterns
+- `agent` — spawn, dashboard, orchestrate
+- `csharp` — error detection, integrity reports
+- `cpp` — memory safety, clang-tidy integration
+- `error_detect` — comprehensive scanning
+- `spec` — requirements tracking, verification
+- `codebase` — orientation, exploration
+- `godot` — GDScript, scene organization
+- `patreon` — content management
 
 ---
 
-## 🚨 A Note on v5.0.10 through v5.0.15 — "It Worked On My Machine"
-
-Okay, real talk — I owe you guys an apology.
-
-Versions 5.0.10 through 5.0.15 were, to put it diplomatically, a mess for anyone who wasn't me. The MCP server crashed on startup, the sidebar icon never appeared, and the config file wrote to the wrong directory. Every single one of these worked perfectly on my local machine, which made them genuinely hard to catch before release.
-
-**v5.0.16 is the one that works.** Fresh install, no leftover versions in your extensions folder, full restart of Windsurf-Next. That's all it takes.
-
-I'm sorry for the headache. Genuinely. This extension means a lot to me and you all deserve better than "oops, worked locally." The error reporting pipeline is now live so I'll catch these before you do going forward. — Chris
-
----
-
-## 🚀 Installation
+## Quick Start
 
 ### Prerequisites
 
-- Node.js 24.15.0+ (LTS recommended)
-- Windsurf 2.0+ (Wave 14+, for full MCP integration)
+- Node.js 24.15.0+
+- Windsurf 2.0+ (Wave 14+)
 
-### 1. Install from Windsurf Marketplace
-
-1. Open Windsurf
-2. Go to Extensions > Marketplace
-3. Search for "SWEObeyMe"
-4. Click Install
-
-### 2. Manual Installation (Advanced)
+### Install
 
 ```bash
-# Clone the repo
+# Marketplace
+# Search "SWEObeyMe" in Windsurf Extensions
+
+# Or manual
 git clone https://github.com/stonewolfpc/SWEObeyMe.git
 cd SWEObeyMe
-
-# Install dependencies
 npm install
-
-# Build
 npm run build
-
-# Test (optional, but recommended)
 npm test
 ```
 
+### MCP Configuration
+
+Windsurf auto-detects the MCP server. Manual config path:
+
+- Windows: `~/.codeium/windsurf-next/mcp_config.json`
+- macOS/Linux: `~/.codeium/windsurf/mcp_config.json`
+
 ---
 
-## 🛠️ Usage
+## AI Skill System
 
-### Basic Setup
+SWEObeyMe includes progressive-disclosure skills in `.windsurf/skills/`:
 
-1. Configure your MCP server (see MCP Docs)
-2. Load SWEObeyMe in Windsurf
-3. Start governing your AI with zero setup friction
+| Skill              | Level             | When Activated               |
+| ------------------ | ----------------- | ---------------------------- |
+| `mcp-tools`        | Beginner→Advanced | Working with SWEObeyMe tools |
+| `surgical-editing` | Intermediate      | Modifying any code file      |
+| `error-recovery`   | Beginner          | On tool errors or failures   |
 
-### Example: Precision Code Editing
+Skills teach:
 
-**Before: Bloated, unclear**
+- Tool calling patterns (direct vs router)
+- Edit validation workflow
+- Error response protocols
+- Integrity score recovery
 
-```javascript
-function maybeFixThis(code) {
-  // ... 50 lines of guesswork ...
-}
+---
+
+## Cascade Hooks
+
+Automation triggers in `.windsurf/hooks.json`:
+
+| Hook                    | Trigger          | Action                      |
+| ----------------------- | ---------------- | --------------------------- |
+| `pre-mcp-tool-call`     | Before tool use  | Validate arguments          |
+| `post-mcp-tool-call`    | After tool use   | Validate response format    |
+| `pre-write-code`        | Before file edit | Surgical plan check         |
+| `post-write-code`       | After file edit  | Auto-validate and test      |
+| `pre-run-command`       | Before shell cmd | Safety confirmation         |
+| `post-run-command`      | After shell cmd  | Error pattern detection     |
+| `pre-user-prompt`       | New session      | Load constitution + context |
+| `post-cascade-response` | After response   | Quality validation          |
+
+---
+
+## Project Rules
+
+Always-on rules in `.windsurf/rules/project-conventions.md`:
+
+- JavaScript (Node.js), CommonJS modules
+- Vitest for tests, no TypeScript
+- 700-line hard limit per `.js` file
+- One responsibility per file
+- No `console.log`/`debugger`/`eval` in production code
+- Tool names: `snake_case`, no `windsurf_`/`cascade_` prefixes
+- MCP responses: `{ content: [{ type: 'text', text: string }] }`
+
+---
+
+## Agent System
+
+Domain-specialized agents defined in `AGENTS.md`:
+
+| Agent                | Role                           | Tools                                |
+| -------------------- | ------------------------------ | ------------------------------------ |
+| `governance-agent`   | Session init, rule enforcement | `governance_manage`, `safety_manage` |
+| `surgical-agent`     | File edits, code changes       | `file_ops`, `validate_code`          |
+| `research-agent`     | Exploration, docs              | `swe_search_code`, `docs_manage`     |
+| `orchestrator-agent` | Multi-step workflows           | `swe_workflow_manage`                |
+| `diagnostics-agent`  | Error detection, health        | `error_detect`, `validate_code`      |
+| `csharp-agent`       | C# analysis                    | `csharp_manage`                      |
+| `cpp-agent`          | C++ safety                     | `cpp_manage`                         |
+| `godot-agent`        | Godot dev                      | `godot_manage`                       |
+| `patreon-agent`      | Content mgmt                   | `patreon_manage`                     |
+
+---
+
+## Development
+
+```bash
+# Run all tests
+npm test
+
+# Protocol compliance
+npm run test:protocol
+
+# Package VSIX
+npm run package
+
+# Build MCP server
+npm run build:mcp
 ```
 
-**After: SWEObeyMe**
+---
 
-```javascript
-// "I see an error on line 42. Let me fix that."
-// *Single-line edit applied*
-```
+## Migration Notes
+
+### From pre-5.1.9
+
+1. Uninstall old extension from Windsurf extensions folder
+2. Delete SWEObeyMe MCP config entries
+3. Restart Windsurf completely
+4. Install fresh
+
+Install paths:
+
+- Windows: `C:\Users\USER\.codeium\windsurf-next\extensions\`
+- macOS/Linux: `~/.codeium/windsurf-next/extensions/`
 
 ---
 
-## 📊 Performance
-
-| Metric           | SWEObeyMe 5.1.20                   | Competitors              |
-| ---------------- | ---------------------------------- | ------------------------ |
-| Speed            | ⚡ Near-instant (Windsurf-powered) | ⏳ Cloud latency         |
-| Context Handling | 🧠 32K+ with rollover enhancements | 📉 Degrades at scale     |
-| Accuracy         | 🎯 99%+ tool calling               | ~80%                     |
-| Stability        | 🛡️ Self-correcting governance      | ❌ Manual fixes required |
-
----
-
-## 🔧 Known Limitations (Side Projects)
-
-2 UI elements are still in development (non-critical). These do not affect core functionality.
-
-Track progress in the [ui-tweaks](https://github.com/stonewolfpc/SWEObeyMe/tree/ui-tweaks) branch.
-
----
-
-## 🙌 Acknowledgments
-
-To the 12,000+ early adopters: You believed in this when it was broken. Now, it's unbreakable.
-
-To the Windsurf team: For pushing the boundaries of what MCP can do.
-
-To my son's mom: For letting me test on her laptop. True hero.
-
----
-
-## 📜 License
+## License
 
 MIT © Christofer Wade
 
 ---
 
-## 💬 Support
+## Support
 
 - **Issues:** [GitHub Issues](https://github.com/stonewolfpc/SWEObeyMe/issues)
-- **Discussions:** [GitHub Discussions](https://github.com/stonewolfpc/SWEObeyMe/discussions)
-- **Discord:** [Join our Discord](https://discord.gg/WHvc2EGe)
-- **Patreon:** [Support on Patreon](https://patreon.com/StoneWolfSystems)
-- **Donations:** [Ko-fi](https://ko-fi.com/stonewolfpc) (Fuel the revolution!)
-
----
-
-## 🔥 Ready to experience LIMITED AI governance?
-
-Install SWEObeyMe 5.1.20 today.
-
-**Note:** SWEObeyMe operates within Windsurf's MCP server and prompting limitations. While we provide surgical governance, the overall effectiveness depends on Windsurf's model behavior and tool invocation constraints.
+- **Discord:** [discord.gg/WHvc2EGe](https://discord.gg/WHvc2EGe)
+- **Patreon:** [patreon.com/StoneWolfSystems](https://patreon.com/StoneWolfSystems)

@@ -2,6 +2,20 @@
 
 All notable changes to SWEObeyMe will be documented in this file.
 
+## [5.3.0] - 2026-05-01
+
+### Bug Fixes
+
+- **Governance status handler** — Added missing `governance_status` handler to governance domain. The `status` action was mapped in the governance router but the handler implementation was missing, causing "Unknown action 'status' for domain 'governance'" errors. Now returns system status including version, constitution load status, session data, and integrity score.
+- **Safety manage confirm response format** — Fixed `safety_manage` confirm operation to return proper MCP response format with `content` array. Previously returned raw object from `confirmDangerousOperation`, causing "content is missing" errors. Now wraps result in `{ content: [{ type: 'text', text: JSON.stringify(result) }] }`.
+- **README version badge** — Updated version badge from 1.0.21 to 5.3.0 to match current release version.
+
+### Testing
+
+- All 10 public MCP tools verified working through direct usage testing
+- Git configuration validation passing
+- Refactoring tools verified exposed to AI through governance system
+
 ## [5.1.22] - 2026-05-01
 
 ### Bug Fixes
