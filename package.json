@@ -1233,6 +1233,7 @@
     }
   },
   "scripts": {
+    "vscode:uninstall": "node scripts/uninstall.js",
     "package": "vsce package",
     "publish": "vsce publish",
     "compile": "npm run build",

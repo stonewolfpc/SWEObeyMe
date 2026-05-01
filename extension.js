@@ -118,6 +118,37 @@ function reportError(component, err) {
   } catch (_) {}
 }
 
+async function upgradeCleanup(extensionPath) {
+  const SERVER_ID = 'swe-obey-me';
+  const homeDir = os.homedir();
+  const configPaths = [
+    path.join(homeDir, '.cursor', 'mcp.json'),
+    path.join(homeDir, '.cursor', 'mcp_config.json'),
+    path.join(homeDir, '.vscode', 'mcp_config.json'),
+    path.join(homeDir, '.codeium', 'windsurf-next', 'mcp_config.json'),
+    path.join(homeDir, '.codeium', 'windsurf', 'mcp_config.json'),
+    path.join(homeDir, '.codeium', 'mcp_config.json'),
+  ];
+
+  for (const configPath of configPaths) {
+    try {
+      await fs.access(configPath);
+      const raw = await fs.readFile(configPath, 'utf8');
+      const config = JSON.parse(raw);
+      const existing = config.mcpServers?.[SERVER_ID];
+      if (existing && existing.extensionPath !== extensionPath) {
+        delete config.mcpServers[SERVER_ID];
+        if (Object.keys(config.mcpServers || {}).length === 0) {
+          delete config.mcpServers;
+        }
+        await fs.writeFile(configPath, JSON.stringify(config, null, 2));
+      }
+    } catch {
+      // Config file doesn't exist or isn't parseable — skip
+    }
+  }
+}
+
 async function writeMcpConfig(extensionPath) {
   try {
     const homeDir = os.homedir();
@@ -268,6 +299,10 @@ async function activate(context) {
 
   const ext = vscode.extensions.getExtension('stonewolfpc.swe-obey-me');
   const extensionPath = ext?.extensionPath || path.join(__dirname, '..');
+
+  // Remove stale entries from previous versions before registering current path
+  await upgradeCleanup(extensionPath);
+
   await writeMcpConfig(extensionPath);
 
   // Initialize checkpoint manager
@@ -442,14 +477,30 @@ async function activate(context) {
 function deactivate() {
   // [REMOVED BY SWEObeyMe]: Forbidden Pattern('SWEObeyMe extension deactivated');
 
-  // Clean up managers
-  if (checkpointManager?.dispose) checkpointManager.dispose();
-  if (providerManager?.dispose) providerManager.dispose();
-  if (diffReviewManager?.dispose) diffReviewManager.dispose();
+  // Dispose managers and their resources (timers, intervals, file watchers, webviews)
+  try {
+    if (checkpointManager?.dispose) {
+      checkpointManager.dispose();
+    }
+    if (providerManager?.dispose) {
+      providerManager.dispose();
+    }
+    if (diffReviewManager?.dispose) {
+      diffReviewManager.dispose();
+    }
+  } catch (err) {
+    // Suppress disposal errors — shutdown should be graceful
+    console.error('[SWEObeyMe] Error during manager disposal:', err.message);
+  }
 
+  // Clear all lazy-loaded references so next activate() gets fresh instances
   checkpointManager = null;
   providerManager = null;
   diffReviewManager = null;
+
+  // NOTE: We intentionally do NOT delete user data (backups, snapshots, settings)
+  // or MCP config files here. deactivate() fires on disable/shutdown, not uninstall.
+  // Config cleanup is handled by the vscode:uninstall script (scripts/uninstall.js).
 }
 
 export { activate, deactivate };
