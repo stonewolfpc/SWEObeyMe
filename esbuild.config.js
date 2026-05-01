@@ -194,7 +194,7 @@ const extensionConfig = {
 // MCP server bundle configuration
 const mcpConfig = {
   ...commonConfig,
-  entryPoints: [join(__dirname, 'index.js')],
+  entryPoints: [join(__dirname, 'index.mjs')],
   outfile: join(__dirname, 'dist', 'mcp', 'server.js'),
   bundle: true,
   banner: {

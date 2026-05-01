@@ -20,31 +20,39 @@ const homeDir = os.homedir();
 console.log(`Platform: ${platform}`);
 console.log(`Home directory: ${homeDir}`);
 
-// WindSurf requires config at ~/.codeium/windsurf/mcp_config.json on ALL platforms
-const expectedPath = path.join(homeDir, '.codeium', 'windsurf', 'mcp_config.json');
+// Supported editor config paths (matches extension.js writeMcpConfig)
+const possiblePaths = [
+  path.join(homeDir, '.cursor', 'mcp.json'),
+  path.join(homeDir, '.cursor', 'mcp_config.json'),
+  path.join(homeDir, '.vscode', 'mcp_config.json'),
+  path.join(homeDir, '.codeium', 'windsurf-next', 'mcp_config.json'),
+  path.join(homeDir, '.codeium', 'windsurf', 'mcp_config.json'),
+  path.join(homeDir, '.codeium', 'mcp_config.json'),
+];
+
+// Use the first existing path, or windsurf-next default
+const expectedPath = possiblePaths.find((p) => fs.existsSync(p)) || possiblePaths[3];
 console.log(`Expected config path: ${expectedPath}`);
 
-// Validate the path structure
+// Validate the path structure is one of the known valid patterns
 const pathComponents = expectedPath.split(path.sep);
-const hasCodeium = pathComponents.includes('.codeium');
-const hasWindsurf = pathComponents.includes('windsurf');
-const hasMcpConfig = pathComponents[pathComponents.length - 1] === 'mcp_config.json';
+const hasMcpConfig =
+  pathComponents[pathComponents.length - 1] === 'mcp_config.json' ||
+  pathComponents[pathComponents.length - 1] === 'mcp.json';
+const hasValidEditorDir =
+  pathComponents.includes('.codeium') ||
+  pathComponents.includes('.cursor') ||
+  pathComponents.includes('.vscode');
 
-if (!hasCodeium) {
-  console.error('\n❌ Path missing .codeium directory');
-  console.error('   WindSurf requires: ~/.codeium/windsurf/mcp_config.json');
-  process.exit(1);
-}
-
-if (!hasWindsurf) {
-  console.error('\n❌ Path missing windsurf directory');
-  console.error('   WindSurf requires: ~/.codeium/windsurf/mcp_config.json');
+if (!hasValidEditorDir) {
+  console.error('\n❌ Path missing known editor directory');
+  console.error('   Expected one of: .codeium, .cursor, .vscode');
   process.exit(1);
 }
 
 if (!hasMcpConfig) {
   console.error('\n❌ Wrong filename');
-  console.error('   Must be: mcp_config.json');
+  console.error('   Must be: mcp_config.json or mcp.json');
   process.exit(1);
 }
 

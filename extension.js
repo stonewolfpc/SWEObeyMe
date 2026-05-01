@@ -123,7 +123,11 @@ async function writeMcpConfig(extensionPath) {
     const homeDir = os.homedir();
 
     // Try all possible config paths - write to all that exist
+    // Supports Windsurf (windsurf-next, windsurf), Cursor, and VS Code
     const configPaths = [
+      path.join(homeDir, '.cursor', 'mcp.json'),
+      path.join(homeDir, '.cursor', 'mcp_config.json'),
+      path.join(homeDir, '.vscode', 'mcp_config.json'),
       path.join(homeDir, '.codeium', 'windsurf-next', 'mcp_config.json'),
       path.join(homeDir, '.codeium', 'windsurf', 'mcp_config.json'),
       path.join(homeDir, '.codeium', 'mcp_config.json'),
