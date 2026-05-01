@@ -30,6 +30,9 @@ final-test.js
 simple-test.js
 test-with-content.js
 
+# Development-only integration tests (async factory issues, kept local for dev reference)
+tests/integration/project-track.test.js
+
 # VSIX (we release this separately)
 *.vsix
 
