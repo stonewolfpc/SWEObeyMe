@@ -229,6 +229,15 @@ function syncToInstalledExtension() {
     fs.copyFileSync(join(src, 'mcp', 'server.js'), join(target, 'mcp', 'server.js'));
     fs.copyFileSync(join(src, 'mcp', 'package.json'), join(target, 'mcp', 'package.json'));
     copyRecursive(join(src, 'lib'), join(target, 'lib'));
+    // Copy ide_mcp_corpus index.json for docs_list_categories
+    const corpusTarget = join(target, 'mcp', 'ide_mcp_corpus');
+    if (!fs.existsSync(corpusTarget)) {
+      fs.mkdirSync(corpusTarget, { recursive: true });
+    }
+    fs.copyFileSync(
+      join(src, 'mcp', 'ide_mcp_corpus', 'index.json'),
+      join(corpusTarget, 'index.json')
+    );
     console.log(`Synced to installed extension: ${candidates[0]}`);
   } catch (err) {
     console.warn(`Sync to installed extension failed: ${err.message}`);

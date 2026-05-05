@@ -2,11 +2,13 @@
 
 All notable changes to SWEObeyMe will be documented in this file.
 
-## [5.3.1] - 2026-05-01
+## [5.3.1] - 2026-05-05
 
 ### Bug Fixes
 
 - **File operation hangs** — Added comprehensive timeout protection to prevent MCP file read/info operations from hanging indefinitely on locked files, network drives, or slow filesystems. Wrapped `fs.stat()` calls with 5s timeouts, stream operations with 30s timeouts, and project initialization with 3s timeouts. Reduced surface-level timeout from 30s to 10s for read operations to fail fast. Fixes hangs reported on `extension.js`, `index.js`, and `tool-registry.js` when called via `mcp0_file_ops`.
+- **Tool call hardening** — Added parameter validation to handlers to prevent undefined/null parameter errors. Tools now validate required parameters before execution and return clear error messages instead of throwing.
+- **PowerShell build issue** — **RESOLVED after extensive debugging** — Build script PowerShell execution error was traced to Node.js version compatibility. Build now completes successfully on Windows PowerShell environments.
 
 ## [5.3.0] - 2026-05-01
 
