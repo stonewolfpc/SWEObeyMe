@@ -27,6 +27,14 @@ function runCommand(cmd, args = [], timeout = 5000) {
     child.stdout.on('data', (d) => (stdout += d.toString()));
     child.stderr.on('data', (d) => (stderr += d.toString()));
 
+    child.on('error', (err) => {
+      if (!finished) {
+        finished = true;
+        clearTimeout(timer);
+        resolve({ ok: false, error: err.code === 'ENOENT' ? 'not installed' : err.message });
+      }
+    });
+
     child.on('exit', (code) => {
       if (finished) return;
       clearTimeout(timer);
@@ -53,7 +61,9 @@ async function checkAll() {
   results.npm = await runCommand('npm', ['--version']);
   results.node = await runCommand('node', ['--version']);
 
-  process.send({ type: 'dependency-health', results });
+  if (process.send) {
+    process.send({ type: 'dependency-health', results });
+  }
 }
 
 async function loop() {

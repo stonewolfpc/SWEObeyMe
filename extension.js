@@ -122,12 +122,12 @@ async function upgradeCleanup(extensionPath) {
   const SERVER_ID = 'swe-obey-me';
   const homeDir = os.homedir();
   const configPaths = [
-    path.join(homeDir, '.cursor', 'mcp.json'),
-    path.join(homeDir, '.cursor', 'mcp_config.json'),
-    path.join(homeDir, '.vscode', 'mcp_config.json'),
     path.join(homeDir, '.codeium', 'windsurf-next', 'mcp_config.json'),
     path.join(homeDir, '.codeium', 'windsurf', 'mcp_config.json'),
     path.join(homeDir, '.codeium', 'mcp_config.json'),
+    path.join(homeDir, '.cursor', 'mcp.json'),
+    path.join(homeDir, '.cursor', 'mcp_config.json'),
+    path.join(homeDir, '.vscode', 'mcp_config.json'),
   ];
 
   for (const configPath of configPaths) {
@@ -155,13 +155,14 @@ async function writeMcpConfig(extensionPath) {
 
     // Try all possible config paths - write to all that exist
     // Supports Windsurf (windsurf-next, windsurf), Cursor, and VS Code
+    // IMPORTANT: windsurf-next must be FIRST so it is the default when no configs exist
     const configPaths = [
-      path.join(homeDir, '.cursor', 'mcp.json'),
-      path.join(homeDir, '.cursor', 'mcp_config.json'),
-      path.join(homeDir, '.vscode', 'mcp_config.json'),
       path.join(homeDir, '.codeium', 'windsurf-next', 'mcp_config.json'),
       path.join(homeDir, '.codeium', 'windsurf', 'mcp_config.json'),
       path.join(homeDir, '.codeium', 'mcp_config.json'),
+      path.join(homeDir, '.cursor', 'mcp.json'),
+      path.join(homeDir, '.cursor', 'mcp_config.json'),
+      path.join(homeDir, '.vscode', 'mcp_config.json'),
     ];
 
     // Filter to only existing paths
@@ -177,7 +178,7 @@ async function writeMcpConfig(extensionPath) {
 
     // If none exist, create windsurf-next as default
     if (existingPaths.length === 0) {
-      const defaultPath = configPaths[0];
+      const defaultPath = configPaths[0]; // windsurf-next
       const configDir = path.dirname(defaultPath);
       try {
         await fs.access(configDir);

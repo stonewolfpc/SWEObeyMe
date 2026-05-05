@@ -340,9 +340,9 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
           const sessionState = getSessionState();
           const taskContext = sessionState.currentTaskId
             ? {
-              taskId: sessionState.currentTaskId,
-              taskList: sessionState.taskListSnapshot || [],
-            }
+                taskId: sessionState.currentTaskId,
+                taskList: sessionState.taskListSnapshot || [],
+              }
             : null;
 
           memoryManager.linkToBackup(filePath, backupPath, taskContext);
@@ -458,6 +458,8 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
   // Spawn external dependency checker process (non-blocking)
   const checkerPath = path.resolve(__dirname, 'dependency-checker.js');
   let checker = fork(checkerPath, [], { stdio: ['pipe', 'pipe', 'pipe', 'ipc'] });
+  let checkerRestartCount = 0;
+  const MAX_CHECKER_RESTARTS = 2;
 
   checker.on('message', (msg) => {
     if (msg.type === 'dependency-health') {
@@ -478,6 +480,11 @@ const HTTP_HOST = process.env.SWEOBEYME_HOST || '127.0.0.1';
   });
 
   checker.on('exit', () => {
+    checkerRestartCount++;
+    if (checkerRestartCount > MAX_CHECKER_RESTARTS) {
+      log('Dependency checker exceeded max restarts, giving up.');
+      return;
+    }
     registerError({
       code: 'ERR-DEPENDENCY-CHECKER-CRASH',
       message: 'Dependency checker crashed and was restarted',
