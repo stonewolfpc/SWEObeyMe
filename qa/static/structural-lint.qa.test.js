@@ -54,7 +54,7 @@ describe('Static: lib/ file size limits (hard limit: 700 lines)', () => {
     expect(libFiles.length).toBeGreaterThan(0);
   });
 
-  it.each(libFiles.map(f => [path.relative(ROOT, f), f]))(
+  it.each(libFiles.map((f) => [path.relative(ROOT, f), f]))(
     '%s is under %i lines (hard governance limit)',
     (_rel, fullPath) => {
       const lines = countLines(fullPath);
@@ -67,12 +67,14 @@ describe('Static: lib/ file size limits (hard limit: 700 lines)', () => {
 
   it('reports files between 500 and 700 lines (refactoring candidates)', () => {
     const overWarn = libFiles
-      .map(f => ({ rel: path.relative(ROOT, f), lines: countLines(f) }))
-      .filter(f => f.lines > WARN_LIMIT && f.lines <= HARD_LIMIT);
+      .map((f) => ({ rel: path.relative(ROOT, f), lines: countLines(f) }))
+      .filter((f) => f.lines > WARN_LIMIT && f.lines <= HARD_LIMIT);
     if (overWarn.length > 0) {
       console.warn(
-        '[QA Static] Files over ' + WARN_LIMIT + ' lines (refactoring recommended):\n' +
-        overWarn.map(f => `  ${f.rel}: ${f.lines} lines`).join('\n')
+        '[QA Static] Files over ' +
+          WARN_LIMIT +
+          ' lines (refactoring recommended):\n' +
+          overWarn.map((f) => `  ${f.rel}: ${f.lines} lines`).join('\n')
       );
     }
     expect(overWarn).toBeInstanceOf(Array);
@@ -98,7 +100,7 @@ function isPatternInStringLiteral(line) {
     /forbidden.*eval/i.test(trimmed) ||
     /['"`][^'"`]*process\.exit[^'"`]*['"`]/.test(trimmed) ||
     /includes\(['"`]/.test(trimmed) ||
-    /\.push\(/.test(trimmed) && /['"`].*eval/.test(trimmed)
+    (/\.push\(/.test(trimmed) && /['"`].*eval/.test(trimmed))
   );
 }
 
@@ -119,17 +121,17 @@ describe('Static: forbidden patterns in lib/', () => {
   const libFiles = walkDir(LIB);
 
   for (const { pattern, label } of FORBIDDEN) {
-    it.each(libFiles.map(f => [path.relative(ROOT, f), f]))(
+    it.each(libFiles.map((f) => [path.relative(ROOT, f), f]))(
       `%s does not use ${label}`,
       (_rel, fullPath) => {
         const content = fs.readFileSync(fullPath, 'utf8');
         const lines = content.split('\n');
         const hits = lines
           .map((l, i) => ({ line: i + 1, text: l }))
-          .filter(l => pattern.test(l.text) && !isPatternInStringLiteral(l.text));
+          .filter((l) => pattern.test(l.text) && !isPatternInStringLiteral(l.text));
         expect(
           hits,
-          `${path.relative(ROOT, fullPath)} uses ${label} at lines: ${hits.map(h => h.line).join(', ')}`
+          `${path.relative(ROOT, fullPath)} uses ${label} at lines: ${hits.map((h) => h.line).join(', ')}`
         ).toHaveLength(0);
       }
     );
@@ -143,7 +145,9 @@ describe('Static: package.json structure', () => {
 
   it('package.json is valid JSON', () => {
     const raw = fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8');
-    expect(() => { pkg = JSON.parse(raw); }).not.toThrow();
+    expect(() => {
+      pkg = JSON.parse(raw);
+    }).not.toThrow();
   });
 
   it('version is semver-compatible (x.y.z)', () => {
@@ -217,9 +221,13 @@ describe('Static: qa/ directory isolation', () => {
 
   it('qa/ test files use .qa.test.js suffix (release guard)', () => {
     const qaFiles = walkDir(QA_DIR);
-    const nonConforming = qaFiles.filter(f => !f.endsWith('.qa.test.js'));
+    const nonConforming = qaFiles.filter((f) => {
+      // Skip utility/helper files that are not tests
+      if (f.endsWith('test-utils.js')) return false;
+      return !f.endsWith('.qa.test.js');
+    });
     expect(
-      nonConforming.map(f => path.relative(ROOT, f)),
+      nonConforming.map((f) => path.relative(ROOT, f)),
       'All QA test files must use .qa.test.js suffix'
     ).toHaveLength(0);
   });
