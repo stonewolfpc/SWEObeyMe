@@ -2,6 +2,26 @@
 
 All notable changes to SWEObeyMe will be documented in this file.
 
+## [5.3.21] - 2026-05-05
+
+### Bug Fixes
+
+- **Dependency checker false positives** — Fixed dependency-checker to properly detect tools installed in common Windows locations (C:\Program Files\LLVM\bin, C:\Program Files\Cppcheck). Previously reported ERR-DEPENDENCY errors for clangd, clang-tidy, and cppcheck even when installed. Now correctly finds executables via common path fallback when not in PATH.
+
+## [5.3.2] - 2026-05-05
+
+### Features
+
+- **Tool exposure reduction** — Reduced exposed MCP tools from 91 to 10 core tools for cleaner surface API. Core tools: get_governance_constitution, get_validation_status, get_server_diagnostics, swe_read_file, swe_write_file, obey_surgical_plan, validate_code, audit, auto_enforce, preflight_change. All 91 tools remain callable by name via governance router.
+
+### Security
+
+- **Privacy fix** — Sanitized error reporting to prevent private data leakage in GitHub issues. Removed CWD from environment info, replaced usernames in paths with [REDACTED], truncated diagnostics to 2000 chars, completely redacted backup diffs (contain code), truncated router traces to 2000 chars. Added privacy note to all issues.
+
+### Bug Fixes
+
+- **Duplicate installation detection** — Enhanced uninstall routine to detect and warn about duplicate SWEObeyMe installations that could cause config conflicts.
+
 ## [5.3.1] - 2026-05-05
 
 ### Bug Fixes
