@@ -1,0 +1,16 @@
+﻿{
+  "name": "external-directory",
+  "description": "Test MCP server from external directory (ARES) - reproduces stdout swallowing bug",
+  "cwd": "D:\\ARES",
+  "serverPath": "d:\\SWEObeyMe-restored\\dist\\mcp\\server.js",
+  "sequence": [
+    { "action": "initialize", "timeout": 10000 },
+    { "action": "list_tools", "timeout": 10000 },
+    { "action": "call_tool", "tool": "get_server_diagnostics", "timeout": 30000 }
+  ],
+  "expected": {
+    "initialize": "success",
+    "list_tools": "success",
+    "call_tool": "success"
+  }
+}

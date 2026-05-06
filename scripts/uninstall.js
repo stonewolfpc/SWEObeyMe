@@ -2,11 +2,11 @@
 /**
  * SWEObeyMe Uninstall Cleanup
  * Runs in standalone Node process — NO vscode API available.
- * Responsibility: Remove auto-generated MCP config entries only.
+ * Responsibility: Remove auto-generated MCP config entries and detect duplicate installations.
  * NEVER touches user data (backups, snapshots, settings).
  *
  * @module uninstall
- * @version 1.0.0
+ * @version 2.0.0
  */
 
 import fs from 'fs';
@@ -14,6 +14,7 @@ import path from 'path';
 import os from 'os';
 
 const SERVER_ID = 'swe-obey-me';
+const PUBLISHER = 'stonewolfpc';
 
 const configPaths = [
   path.join(os.homedir(), '.codeium', 'windsurf-next', 'mcp_config.json'),
@@ -24,9 +25,18 @@ const configPaths = [
   path.join(os.homedir(), '.vscode', 'mcp_config.json'),
 ];
 
+const extensionDirs = [
+  path.join(os.homedir(), '.codeium', 'windsurf-next', 'extensions'),
+  path.join(os.homedir(), '.codeium', 'windsurf', 'extensions'),
+  path.join(os.homedir(), '.cursor', 'extensions'),
+  path.join(os.homedir(), '.vscode', 'extensions'),
+];
+
 let cleaned = 0;
 let errors = 0;
+let duplicateCount = 0;
 
+// Clean MCP configs
 for (const configPath of configPaths) {
   try {
     if (!fs.existsSync(configPath)) continue;
@@ -55,10 +65,36 @@ for (const configPath of configPaths) {
   }
 }
 
-if (cleaned === 0 && errors === 0) {
-  console.log('[SWEObeyMe Uninstall] No MCP configs found to clean');
+// Detect duplicate extension installations
+for (const extDir of extensionDirs) {
+  try {
+    if (!fs.existsSync(extDir)) continue;
+
+    const entries = fs.readdirSync(extDir);
+    const sweObeyMeEntries = entries.filter((e) => e.startsWith(`${PUBLISHER}.swe-obey-me`));
+
+    if (sweObeyMeEntries.length > 1) {
+      duplicateCount += sweObeyMeEntries.length;
+      console.warn(
+        `[SWEObeyMe Uninstall] WARNING: Found ${sweObeyMeEntries.length} duplicate installations in ${extDir}:`
+      );
+      sweObeyMeEntries.forEach((e) => console.warn(`  - ${e}`));
+      console.warn(
+        '[SWEObeyMe Uninstall] Manual cleanup required. Remove all but one installation.'
+      );
+    }
+  } catch (err) {
+    errors++;
+    console.error(`[SWEObeyMe Uninstall] Failed to check ${extDir}: ${err.message}`);
+  }
+}
+
+if (cleaned === 0 && errors === 0 && duplicateCount === 0) {
+  console.log('[SWEObeyMe Uninstall] No MCP configs found to clean, no duplicates detected');
 } else {
-  console.log(`[SWEObeyMe Uninstall] Cleaned ${cleaned} config(s), ${errors} error(s)`);
+  console.log(
+    `[SWEObeyMe Uninstall] Cleaned ${cleaned} config(s), ${errors} error(s), ${duplicateCount} duplicate(s) detected`
+  );
 }
 
 // User data is intentionally preserved:

@@ -1,0 +1,10 @@
+{
+  "command": "C:\\Program Files\\nodejs\\node.exe",
+  "args": ["D:\\SWEObeyMe-restored\\dist\\mcp\\server.js"],
+  "cwd": "D:\\SWEObeyMe-restored",
+  "env": {
+    "NODE_ENV": "production",
+    "SWEOBEYME_DEBUG": "1",
+    "SWEOBEYME_DEBUG_ENV": "0"
+  }
+}

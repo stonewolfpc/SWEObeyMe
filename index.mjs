@@ -24,12 +24,32 @@ import { ensureBackupDir } from './lib/backup.js';
 import { internalAudit, CONSTITUTION } from './lib/enforcement.js';
 import { loadProjectContract, loadSweIgnore } from './lib/project.js';
 import { toolHandlers, getToolDefinitions, initializeQuotes } from './lib/tools.js';
+import { getDynamicToolRegistry } from './lib/tools/registry-dynamic.js';
 
 const DEBUG_LOGS = process.env.SWEOBEYME_DEBUG === '1';
+const DEBUG_ENV = process.env.SWEOBEYME_DEBUG_ENV === '1';
 const log = msg => {
   if (!DEBUG_LOGS) return;
   process.stderr.write(`[SWEObeyMe-Audit]: ${msg}\n`);
 };
+
+// Environment dump for debugging Windsurf spawn issues
+if (DEBUG_ENV) {
+  try {
+    import('fs').then(fs => {
+      const dump = {
+        argv: process.argv,
+        cwd: process.cwd(),
+        env: process.env,
+        timestamp: new Date().toISOString(),
+      };
+      fs.writeFileSync('windsurf-env-dump.json', JSON.stringify(dump, null, 2));
+      process.stderr.write('[SWEObeyMe]: Environment dump written to windsurf-env-dump.json\n');
+    });
+  } catch (error) {
+    process.stderr.write('[SWEObeyMe]: Failed to write environment dump: ' + error.message + '\n');
+  }
+}
 
 // Main async initialization
 (async () => {
@@ -69,9 +89,11 @@ const log = msg => {
   });
 
   // ListTools handler - REQUIRED for green dot
-  server.setRequestHandler(ListToolsRequestSchema, async () => ({
-    tools: getToolDefinitions(),
-  }));
+  // Uses dynamic registry to expose only core 10 tools
+  server.setRequestHandler(ListToolsRequestSchema, async () => {
+    const dynamicRegistry = getDynamicToolRegistry();
+    return { tools: dynamicRegistry.getFilteredToolDefinitions() };
+  });
 
   // Define the raw CallTool handler as a separate function
   const callToolHandler = async request => {

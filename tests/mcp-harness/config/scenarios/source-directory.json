@@ -1,0 +1,26 @@
+{
+  "name": "source-directory",
+  "description": "Test MCP server from source directory (baseline)",
+  "cwd": "D:/SWEObeyMe-restored",
+  "serverPath": "dist/mcp/server.js",
+  "sequence": [
+    {
+      "action": "initialize",
+      "timeout": 10000
+    },
+    {
+      "action": "list_tools",
+      "timeout": 10000
+    },
+    {
+      "action": "call_tool",
+      "tool": "get_server_diagnostics",
+      "timeout": 30000
+    }
+  ],
+  "expected": {
+    "initialize": "success",
+    "list_tools": "success",
+    "call_tool": "success"
+  }
+}
