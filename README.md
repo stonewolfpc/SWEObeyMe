@@ -2,7 +2,7 @@
 
 AI Governance System for Surgical Code Editing
 
-[![Version](https://img.shields.io/badge/version-5.3.21-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-5.3.22-blue.svg)](CHANGELOG.md)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D24.15.0-green.svg)](https://nodejs.org)
 [![Vitest](https://img.shields.io/badge/vitest-latest-orange.svg)](https://vitest.dev)
 
@@ -203,3 +203,24 @@ MIT © Christofer Wade
 - **Issues:** [GitHub Issues](https://github.com/stonewolfpc/SWEObeyMe/issues)
 - **Discord:** [discord.gg/WHvc2EGe](https://discord.gg/WHvc2EGe)
 - **Patreon:** [patreon.com/StoneWolfSystems](https://patreon.com/StoneWolfSystems)
+
+---
+
+## Cross-Platform Testing Note
+
+**Development Environment:** SWEObeyMe is developed on Windows. I do not have physical Linux or macOS hardware available for manual testing.
+
+**Testing Strategy:** To ensure cross-platform stability, I use:
+
+- GitHub Actions CI pipeline (`.github/workflows/pre-release-test.yml`) that tests on `ubuntu-latest` (Linux) and `macos-latest` (macOS)
+- Cross-platform unit tests (`tests/cross-platform-backup-dir.test.js`) that validate platform-specific path logic
+- XDG Base Directory specification compliance for Linux/macOS
+
+**Use at Your Discretion:** While CI tests provide automated validation, they cannot catch every platform-specific edge case. Linux and macOS users should use SWEObeyMe at their own discretion.
+
+**Report Issues:** If you encounter platform-specific bugs on Linux or macOS, please report them via GitHub Issues. Your reports provide critical insight for fixing cross-platform issues in future releases. Include:
+
+- Platform (Linux distribution or macOS version)
+- Node.js version
+- Error messages or unexpected behavior
+- Steps to reproduce

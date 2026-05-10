@@ -2,6 +2,19 @@
 
 All notable changes to SWEObeyMe will be documented in this file.
 
+## [5.3.22] - 2026-05-10
+
+### Bug Fixes
+
+- **Cross-platform backup system** — Fixed backup directory path logic to support Linux and macOS. Previously used Windows-only logic that created invalid absolute paths like `/SWEObeyMe/.sweobeyme-backups` on Unix-like systems, causing 8 auto-reported issues (#49-56). Now uses XDG Base Directory specification compliant paths: `$HOME/.local/share/SWEObeyMe/.sweobeyme-backups` on Linux/macOS, `%LOCALAPPDATA%/SWEObeyMe/.sweobeyme-backups` on Windows. Added graceful fallback with multiple path attempts if primary path fails.
+- **Platform detection logging** — Added platform detection and environment variable logging to backup system module load for debugging cross-platform issues. Logs platform, arch, Node version, backup/snapshot directory paths, HOME, LOCALAPPDATA, and XDG_DATA_HOME.
+- **Cross-platform test coverage** — Added `tests/cross-platform-backup-dir.test.js` with 12 tests validating backup directory paths for Windows, Linux, and macOS. Tests all environment variable combinations and ensures no root-level absolute paths are created.
+
+### Testing
+
+- All 12 cross-platform backup directory tests passing
+- Existing CI pipeline (`.github/workflows/pre-release-test.yml`) already validates on Linux and macOS
+
 ## [5.3.21] - 2026-05-05
 
 ### Bug Fixes
