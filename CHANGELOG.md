@@ -2,6 +2,12 @@
 
 All notable changes to SWEObeyMe will be documented in this file.
 
+## [5.3.23] - 2026-05-10
+
+### Bug Fixes
+
+- **UI last backup section** — Fixed cockpit UI "Last Backup" section not updating when backups are created. Root cause was duplicate event emission (both backup-auto.js and governance router emitting events for same operation) and early return bug in updateBackupIndicator() that prevented updating simpleLastBackup element if statusEl was missing. Removed duplicate event emission from backup-auto.js (governance router is now single source of truth) and fixed updateBackupIndicator() to check each element independently.
+
 ## [5.3.22] - 2026-05-10
 
 ### Bug Fixes
