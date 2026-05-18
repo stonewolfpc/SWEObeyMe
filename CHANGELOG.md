@@ -2,6 +2,12 @@
 
 All notable changes to SWEObeyMe will be documented in this file.
 
+## [5.3.25] - 2026-05-18
+
+### Hotfix
+
+- **Optional tool error code mismatch** — Added `ERR-DEPENDENCY-CLANGD`, `ERR-DEPENDENCY-CLANGTIDY`, `ERR-DEPENDENCY-CPPCHECK`, `ERR-DEPENDENCY-DOTNET`, `ERR-DEPENDENCY-GIT`, `ERR-DEPENDENCY-NPM` to `OPTIONAL_SYSTEM_TOOLS` in `dependency-sentinel.js`. Previous fix only included `ERR-*-MISSING` codes but actual errors use `ERR-DEPENDENCY-*` format, causing issues #69-70 to still create GitHub issues. Both code patterns now downgraded to stderr warnings only.
+
 ## [5.3.24] - 2026-05-18
 
 ### Critical Fixes
