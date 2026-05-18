@@ -7,6 +7,10 @@ All notable changes to SWEObeyMe will be documented in this file.
 ### Hotfix
 
 - **Optional tool error code mismatch** — Added `ERR-DEPENDENCY-CLANGD`, `ERR-DEPENDENCY-CLANGTIDY`, `ERR-DEPENDENCY-CPPCHECK`, `ERR-DEPENDENCY-DOTNET`, `ERR-DEPENDENCY-GIT`, `ERR-DEPENDENCY-NPM` to `OPTIONAL_SYSTEM_TOOLS` in `dependency-sentinel.js`. Previous fix only included `ERR-*-MISSING` codes but actual errors use `ERR-DEPENDENCY-*` format, causing issues #69-70 to still create GitHub issues. Both code patterns now downgraded to stderr warnings only.
+- **Backup UI empty state** — Fixed three issues causing backup section to appear blank:
+  1. **Event loss**: Added event queue to `router-event-bus.js` — events now queue when no listener is registered and replay when cockpit opens, preventing lost backup events from early file saves.
+  2. **Hydration sort**: Fixed `_hydrateBackupStateFromDisk()` to use numeric timestamp sorting instead of alphabetical, ensuring the most recent backup is found correctly.
+  3. **Activity list**: Added hydrated backup to `recentEvents` so the activity list shows data on initial load, not just "No backup activity recorded."
 
 ## [5.3.24] - 2026-05-18
 
