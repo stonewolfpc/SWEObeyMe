@@ -445,6 +445,17 @@ async function activate(context) {
     })
   );
 
+  // Register automated backup watcher — fires on ALL file saves, not just SWEObeyMe tool calls
+  try {
+    const { registerBackupWatcher } = await import(
+      toFileUrl(path.join(__dirname, 'lib', 'backup-watcher.js'))
+    );
+    registerBackupWatcher(context);
+  } catch (err) {
+    console.error('[SWEObeyMe] Backup watcher failed to register:', err);
+    reportError('backup-watcher', err);
+  }
+
   // Wire up C# and C++ Monaco diagnostics
   try {
     const { setupLanguageBridges } = await import(

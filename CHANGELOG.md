@@ -2,6 +2,30 @@
 
 All notable changes to SWEObeyMe will be documented in this file.
 
+## [5.3.24] - 2026-05-18
+
+### Critical Fixes
+
+- **Tool hangs** — Fixed MCP transport sentinel watchdog timeout from 150ms to 10000ms. Previous threshold was below realistic async handler response times, causing premature recovery that corrupted in-flight responses. Added inflight-request tracking so `triggerRecovery()` never fires while a request is active. Eliminates tool hangs reported across 68 issues.
+- **Backup path resolution** — Fixed `backup-auto.js` module-level `BACKUP_DIR`/`SNAPSHOT_DIR` constants. Fallback paths updated local variables but writes still used broken `/SWEObeyMe/` path. Converted to `let` and updated on successful fallback. Also fixed `utils.js getDefaultBackupDir()` to null-guard all `path.join` calls with guaranteed `cwd()` fallback. Resolves ERR-BACKUP-DIR-CREATE, ERR-BACKUP-FILE-READ, ERR-SNAPSHOT-FAILED on Linux/macOS.
+
+### Features
+
+- **Universal backup automation** — Added `lib/backup-watcher.js` with VSCode `onWillSaveTextDocument` (pre-save backup) and `onDidSaveTextDocument` (post-save snapshot) watchers. Backups now fire on **every file save** in the IDE — Ctrl+S, autosave, external tools — not just SWEObeyMe `write_file` tool calls. Registered in `extension.js` activate(). Provides 18k users with unconditional backup coverage.
+- **Backup UI hydration** — Added `_hydrateBackupStateFromDisk()` in cockpit provider. On startup, scans backup directory to pre-populate `lastAttempt`/`lastSuccess` so UI shows real history immediately, not just "Never / UNKNOWN". Fixed `path.basename()` crash in webview (Node module unavailable) with inline string split. Added 60-second interval to refresh relative timestamps ("3m ago").
+
+### Bug Fixes
+
+- **Router action gaps** — Added 7 missing actions in `governance-router-handler.js`: `governance.{status,verify}`, `validation.preflight_change`, `refactor.{list,refactor_manage}`, `project.{files,init}`. Resolves `invalid_domain_action` errors across issues #11, #40, #49.
+- **project_context_handler crash** — Added `typeof project_path !== 'string'` + `trim()` guard before `path.basename` in `switch` operation. Prevents TypeError when callers omit `project_path` or pass wrong param name (issue #30).
+- **Optional tool GitHub flood** — Fixed `dependency-sentinel.js` to downgrade clangd/clang-tidy/cppcheck/dotnet/git/npm absence from error to info. Added `OPTIONAL_SYSTEM_TOOLS` set; absence never calls `reportErrorToGitHub`. Optional tool absence is expected on JS/TS projects, not a failure.
+- **Test canary noise** — Fixed `handlers-error-test.js` and `scripts/test-webhook.js` to gate `createFailureIssue()` calls behind `SWEOBEYME_TEST_MODE=1`. Production runs never create real GitHub issues from synthetic tests. Added `--dry-run` flag to test-webhook.js.
+- **GitHub issue deduplication** — Added 1-hour deduplication cache in `lib/health/github-reporter.js`. Same `code:source` key never re-reports within the window, preventing issue floods from high-frequency callers (backup-auto, dependency-sentinel).
+
+### Testing
+
+- Added `qa/regression/root-cause-fixes.test.js` with 11 regression tests covering all 6 root cause areas: backup fallback path resolution, router action completeness, project_manage param guard, optional-dep no-issue, transport watchdog threshold, file-save watcher fires.
+
 ## [5.3.23] - 2026-05-10
 
 ### Bug Fixes

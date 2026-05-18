@@ -8,6 +8,11 @@
  * Usage:
  *   node scripts/test-webhook.js --url https://sweobeyme-webhook.vercel.app
  *   node scripts/test-webhook.js --url https://sweobeyme-webhook.vercel.app --secret mySecret
+ *   node scripts/test-webhook.js --url https://sweobeyme-webhook.vercel.app --dry-run
+ *
+ * IMPORTANT: This script creates REAL GitHub issues. Never run it in automated pipelines
+ * without explicit intent. Use --dry-run to verify payload shape without sending.
+ * Set SWEOBEYME_TEST_MODE=1 to enable live sends in CI environments.
  */
 
 import https from 'https';
@@ -18,12 +23,15 @@ const urlIndex = args.indexOf('--url');
 const secretIndex = args.indexOf('--secret');
 
 if (urlIndex === -1 || !args[urlIndex + 1]) {
-  console.error('Usage: node scripts/test-webhook.js --url <webhook-url> [--secret <webhook-secret>]');
+  console.error(
+    'Usage: node scripts/test-webhook.js --url <webhook-url> [--secret <webhook-secret>]'
+  );
   process.exit(1);
 }
 
 const WEBHOOK_URL = args[urlIndex + 1].replace(/\/$/, '') + '/report';
 const WEBHOOK_SECRET = secretIndex !== -1 ? args[secretIndex + 1] : '';
+const DRY_RUN = args.includes('--dry-run') || process.env.SWEOBEYME_TEST_MODE !== '1';
 
 const payload = {
   type: 'handler_throw',
@@ -45,10 +53,8 @@ function buildHeaders(body, secret) {
     'User-Agent': 'SWEObeyMe-test-webhook',
   };
   if (secret) {
-    headers['x-webhook-signature'] = 'sha256=' + crypto
-      .createHmac('sha256', secret)
-      .update(body)
-      .digest('hex');
+    headers['x-webhook-signature'] =
+      'sha256=' + crypto.createHmac('sha256', secret).update(body).digest('hex');
   }
   return headers;
 }
@@ -65,7 +71,9 @@ function post(urlStr, body, headers) {
     };
     const req = https.request(options, (res) => {
       let data = '';
-      res.on('data', (c) => { data += c; });
+      res.on('data', (c) => {
+        data += c;
+      });
       res.on('end', () => {
         try {
           resolve({ status: res.statusCode, body: JSON.parse(data) });
@@ -80,8 +88,17 @@ function post(urlStr, body, headers) {
   });
 }
 
-console.log(`[test-webhook] POST → ${WEBHOOK_URL}`);
-console.log(`[test-webhook] Payload type: ${payload.type} | domain: ${payload.domain}.${payload.action}`);
+console.log(`[test-webhook] Target: ${WEBHOOK_URL}`);
+console.log(
+  `[test-webhook] Payload type: ${payload.type} | domain: ${payload.domain}.${payload.action}`
+);
+
+if (DRY_RUN) {
+  console.log('\n[DRY RUN] Payload that would be sent:');
+  console.log(JSON.stringify(payload, null, 2));
+  console.log('\n[DRY RUN] No request sent. Set SWEOBEYME_TEST_MODE=1 to send live.');
+  process.exit(0);
+}
 
 try {
   const headers = buildHeaders(body, WEBHOOK_SECRET);

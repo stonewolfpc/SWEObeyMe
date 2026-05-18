@@ -2,7 +2,7 @@
 
 AI Governance System for Surgical Code Editing
 
-[![Version](https://img.shields.io/badge/version-5.3.23-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-5.3.24-blue.svg)](CHANGELOG.md)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D24.15.0-green.svg)](https://nodejs.org)
 [![Vitest](https://img.shields.io/badge/vitest-latest-orange.svg)](https://vitest.dev)
 
