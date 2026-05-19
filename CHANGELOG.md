@@ -1,6 +1,17 @@
 # Changelog
 
-All notable changes to SWEObeyMe will be documented in this file.
+All notable changes to this project will be documented in this file.
+
+## [5.3.31] - 2026-05-19
+
+### Fixed
+
+- **`lib/shared/streaming-utils.js`** — Fixed race condition in `StreamingFileWriter.write()` and `StreamingFileWriter.append()` where `writeStream.end()` was called before `finish`/`error` listeners were attached. This caused hangs on fast/small writes. Added 30-second timeout guards to prevent indefinite hangs.
+- **`lib/backup-watcher.js`** — Added `vscode.workspace.createFileSystemWatcher()` to catch file writes from external tools (Windsurf edit, CLI) that bypass VSCode's `onWillSaveTextDocument`. Now backups/snapshots fire for ALL file changes, not just VSCode-managed saves.
+
+### Changed
+
+- **`lib/backup-watcher.js`** — Extended backup coverage to include files open in the editor when changed on disk by external tools, ensuring pre-edit state is captured even for non-VSCode writes.
 
 ## [5.3.30] - 2026-05-18
 
