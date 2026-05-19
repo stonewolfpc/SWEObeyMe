@@ -2,6 +2,24 @@
 
 All notable changes to SWEObeyMe will be documented in this file.
 
+## [5.3.29] - 2026-05-18
+
+### Added
+
+- **`lib/lang-profile.js`** — New single source of truth for per-language rule profiles. Defines language detection (20 extensions), JS-family membership, default max file sizes (Go=2000, Python=1000, Rust/C#/Java=1500, JS/TS=700), naming convention rules per language, and language-appropriate function keywords. All validation and enforcement logic now imports from here — no more scattered JS assumptions.
+
+### Fixed
+
+- **Codebase-aware validation** — `checkAntiPatterns`, `validateNamingConventions`, `validateCodeComprehensive`, `enforceStrictMode`, and all `validate_code` handler paths now derive language from the source file's extension automatically. No configuration required.
+- **Naming conventions are now per-language** — Go PascalCase exported functions, C# PascalCase methods, Python snake_case functions, Rust snake_case functions: all correct for their language. JS/TS camelCase rules only apply to JS/TS files.
+- **Auto-enforcement file size is language-aware zero-config** — `AutoEnforcementEngine.validateFile` takes the language default from `lang-profile` at check time (`Math.max(configured, langDefault)`), so a Go file is judged against 2000 lines, a Python file against 1000, etc. — without any `.sweobeyme-project.json` required.
+- **Monolithic file detection uses correct function keyword per language** — Go uses `func`, Python/Ruby/Scala use `def`, Rust uses `fn`, Kotlin uses `fun`. Class-count violations only apply to JS/TS where `class` is the primary OOP mechanism.
+- **`readWithTimeout` helper extracted** — Eliminated 3 duplicated `Promise.race` blocks in `validation-handlers.js`, fixing a persistent eslint/prettier indent conflict.
+
+### Tests
+
+- **64 new regression tests** in `qa/static/lang-aware-validation.qa.test.js` — covers language detection, JS-family gating, default limits, anti-pattern gating, naming convention correctness per language, enforcement thresholds, monolithic detection, and file split extension correctness. Suite now at 745 tests.
+
 ## [5.3.28] - 2026-05-18
 
 ### Fixed
