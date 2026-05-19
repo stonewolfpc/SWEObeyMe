@@ -2,6 +2,17 @@
 
 All notable changes to SWEObeyMe will be documented in this file.
 
+## [5.3.30] - 2026-05-18
+
+### Fixed
+
+- **MCP Server Process Lifecycle** — Fixed issue where multiple SWEObeyMe MCP server processes would accumulate over time, consuming CPU. Added `killStaleSWEObeyMeProcesses()` to kill old-version processes on activation, and `killAllSWEObeyMeProcesses()` to clean up on deactivation. This prevents the 10-20 node process buildup that users were experiencing.
+
+### Internal
+
+- **Refactoring Engine Modularization** — Split `refactoring-engine.js` into focused modules: `extractors.js` (language-aware function extraction), `generators.js` (file generation), and `validator.js` (code validation). Main file is now a 33-line re-export module.
+- **Auto-enforcement.js trim** — Compressed to 699 lines (under 700-line limit) by removing dead code and using the new refactoring engine.
+
 ## [5.3.29] - 2026-05-18
 
 ### Added

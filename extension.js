@@ -16,6 +16,7 @@ import fssync from 'fs';
 import * as http from 'http';
 import * as https from 'https';
 import { fileURLToPath, pathToFileURL } from 'url';
+import { execSync } from 'child_process';
 
 // ESM-safe __dirname with Windows path handling
 let __dirname;
@@ -292,6 +293,36 @@ async function writeMcpConfig(extensionPath) {
 }
 
 /**
+ * Kill stale SWEObeyMe MCP server processes from older versions
+ * Prevents multiple server instances from running simultaneously
+ */
+function killStaleSWEObeyMeProcesses(currentExtensionPath) {
+  try {
+    // On Windows, use PowerShell to find and kill SWEObeyMe server processes
+    // that are NOT from the current extension path
+    const psCommand = `Get-WmiObject Win32_Process | Where-Object { $_.CommandLine -like '*swe-obey-me*' -and $_.CommandLine -like '*server.js*' -and $_.CommandLine -notlike '*${currentExtensionPath.replace(/\\/g, '\\')}*' } | ForEach-Object { Stop-Process -Id $_.ProcessId -Force }`;
+
+    execSync(psCommand, { stdio: 'pipe', windowsHide: true });
+  } catch (e) {
+    // Ignore errors - processes may not exist or we may not have permission
+    // This is a best-effort cleanup
+  }
+}
+
+/**
+ * Kill all SWEObeyMe MCP server processes (used on deactivation)
+ */
+function killAllSWEObeyMeProcesses() {
+  try {
+    const psCommand =
+      "Get-WmiObject Win32_Process | Where-Object { $_.CommandLine -like '*swe-obey-me*' -and $_.CommandLine -like '*server.js*' } | ForEach-Object { Stop-Process -Id $_.ProcessId -Force }";
+    execSync(psCommand, { stdio: 'pipe', windowsHide: true });
+  } catch (e) {
+    // Ignore errors - processes may not exist
+  }
+}
+
+/**
  * Extension activation - Entry point
  * @param {vscode.ExtensionContext} context
  */
@@ -300,6 +331,10 @@ async function activate(context) {
 
   const ext = vscode.extensions.getExtension('stonewolfpc.swe-obey-me');
   const extensionPath = ext?.extensionPath || path.join(__dirname, '..');
+
+  // Kill stale SWEObeyMe MCP server processes from older versions
+  // This prevents multiple server instances from running simultaneously
+  killStaleSWEObeyMeProcesses(extensionPath);
 
   // Remove stale entries from previous versions before registering current path
   await upgradeCleanup(extensionPath);
@@ -488,6 +523,9 @@ async function activate(context) {
  */
 function deactivate() {
   // [REMOVED BY SWEObeyMe]: Forbidden Pattern('SWEObeyMe extension deactivated');
+
+  // Kill all SWEObeyMe MCP server processes to prevent orphaned processes
+  killAllSWEObeyMeProcesses();
 
   // Dispose managers and their resources (timers, intervals, file watchers, webviews)
   try {
