@@ -2,6 +2,17 @@
 
 All notable changes to SWEObeyMe will be documented in this file.
 
+## [5.3.28] - 2026-05-18
+
+### Fixed
+
+- **Language-aware anti-pattern checks** — `checkAntiPatterns` now detects the language from file extension. JS-only rules (`var` declarations, `console.log`) no longer fire on Go, Python, Rust, C#, etc. The `language` param is now threaded through `validate_code` and `check_for_anti_patterns` end-to-end.
+- **Magic number threshold** — Raised from 4-digit to 6-digit to stop flagging valid port numbers (8080), years (2024), and context sizes (4096) as magic numbers.
+- **Auto-enforce threshold sync** — `AutoEnforcementEngine` default `maxFileSize` corrected from 500 → 700 to match `obey_surgical_plan`. Both tools now read `.sweobeyme-project.json` from the target file's directory tree, so all tools agree on the limit for non-JS projects.
+- **False positive WIP pattern** — `/wip/i` tightened to `/\bwip\b/i` (word boundary). Previously flagged Go variable names like `wipePath`, `wipeDir`, `swipe` as fake implementations.
+- **Split/concern suggestions use correct file extension** — `suggestFileSplit` and `suggestSeparationOfConcerns` now preserve the source file's extension (`.go`, `.py`, etc.) instead of always generating `.js` filenames.
+- **Pre-existing indentation errors** — Fixed misaligned `Promise.race` blocks in `validation-handlers.js`.
+
 ## [5.3.26] - 2026-05-18
 
 ### Hotfix
